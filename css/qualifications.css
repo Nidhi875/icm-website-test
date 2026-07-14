@@ -1,0 +1,1323 @@
+/*====================================================
+
+QUALIFICATIONS PAGE
+
+=====================================================*/
+
+/* ===========================================
+   QUALIFICATIONS BANNER
+=========================================== */
+
+.qualifications-banner{
+    position:relative;
+    height:350px;
+    min-height:350px;
+    display:flex;
+    align-items:center;
+    padding:0;
+    overflow:hidden;
+}
+
+
+.qualifications-banner img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 40%;
+}
+
+.banner-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(18,35,67,.45);
+}
+
+.qualifications-banner .container{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    align-items:center;
+}
+
+.banner-content{
+    margin-left:40px;
+    max-width:720px;
+    position:relative;
+    z-index:2;
+    max-width:560px;
+}
+
+
+.banner-content span{
+    display:inline-block;
+    padding:10px 26px;
+    border-radius:40px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+.banner-content h1{
+    color:#fff;
+    font-size:64px;
+    line-height:1;
+    margin-bottom:18px;
+    font-weight:800;
+}
+
+.banner-content p{
+    color:#fff;
+    font-size:16px;
+    line-height:1.8;
+    max-width:520px;
+}
+
+/* ==========================================
+   INTRO SECTION
+========================================== */
+
+.qualifications-intro{
+    background:#fff;
+    padding:55px 0 20px;
+}
+
+
+
+.intro-grid{
+
+    display:grid;
+
+    grid-template-columns:260px 1fr;
+
+    column-gap:60px;
+
+    align-items:start;
+
+    position:relative;
+
+}
+
+.intro-grid::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:290px;
+
+    top:0;
+
+    bottom:0;
+
+    width:1px;
+
+    background:#e5e5e5;
+
+}
+/*=====================================
+ICM SIDEBAR
+======================================*/
+
+.qualification-sidebar{
+
+    position:sticky;
+
+    top:15px;
+
+    align-self:start;
+
+    width:300px;
+
+}
+
+.sidebar-menu{
+
+    border:1px solid #e4e4e4;
+
+    background:#f8f8f8;
+
+      box-shadow:0 2px 8px rgba(0,0,0,.04);
+
+}
+
+.menu-item{
+
+    display:block;
+
+    padding:18px 22px;
+
+    border-bottom:1px solid #e9e9e9;
+
+    text-decoration:none;
+
+    color:#444;
+
+    font-size:16px;
+
+    background:#f8f8f8;
+
+    transition:.25s;
+
+}
+
+.menu-item:hover{
+
+    background:#ffffff;
+
+    color:#a32135;
+
+    transition:.25s;
+
+}
+
+.menu-item.active-main{
+
+    background:#a31f34;
+
+    color:#fff;
+
+    font-weight:600;
+
+}
+
+.submenu{
+
+    background:#f4f4f4;
+
+}
+
+.submenu-item{
+
+    display:block;
+
+    padding:12px 20px 12px 34px;
+
+    text-decoration:none;
+
+    color:#666;
+
+    font-size:15px;
+
+    border-bottom:1px solid #ececec;
+
+    transition:.25s;
+
+}
+
+.submenu-item:hover{
+
+    background:#fff;
+
+    color:#a31f34;
+
+}
+
+.submenu-item.active{
+
+    background:#efefef;
+
+    border-left:4px solid #a32135;
+
+    color:#a32135;
+
+    font-weight:600;
+
+}
+
+.submenu-item.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:-16px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    border-top:16px solid transparent;
+
+    border-bottom:16px solid transparent;
+
+    border-left:16px solid #ececec;
+
+}
+
+
+.qualification-content{
+    max-width:860px;
+    width:100%;
+    margin-top:12px;
+    padding:0;
+}
+
+.qualification-content h2{
+
+    font-size:40px;
+
+    line-height:1.15;
+
+    color:#333;
+
+    font-weight:300;
+
+    margin:0;
+
+     margin:0 0 10px;
+
+}
+
+.title-line{
+    width:165px;
+    height:2px;
+    background:#a32135;
+    margin:14px 0 20px;
+}
+
+
+.qualification-content h4{
+
+    font-size:24px;
+
+    font-weight:400;
+
+    margin:0 0 20px;
+
+    margin-top:35px;
+
+    margin-bottom:20px;
+
+    color:#444;
+
+}
+
+.qualification-content p{
+
+    width:100%;
+
+    max-width:860px;
+
+    font-size:16px;
+
+    line-height:1.9;
+
+    color:#555;
+
+     margin:0 0 16px;
+
+}
+/*================================================
+TITLING OF QUALIFICATIONS
+================================================*/
+
+.qualification-titling{
+
+margin-top:45px;
+
+padding:0;
+
+background:transparent;
+
+}
+.qualification-titling h2{
+
+font-size:32px;
+
+font-weight:400;
+
+line-height:1.3;
+
+color:#333;
+
+margin-bottom:18px;
+
+}
+
+.qualification-titling p{
+
+font-size:16px;
+
+line-height:1.8;
+
+color:#555;
+
+margin-bottom:20px;
+
+max-width:900px;
+
+
+}
+
+.qualification-subheading{
+
+font-size:20px;
+
+font-weight:600;
+
+margin:40px 0 25px;
+
+color:#333;
+
+}
+
+
+.qualification-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:40px;
+
+margin-bottom:50px;
+
+}
+
+.qualification-table th{
+
+background:#8d2232;
+
+color:#fff;
+
+padding:18px;
+
+text-align:left;
+
+font-weight:600;
+
+}
+
+.qualification-table td{
+
+padding:18px;
+
+border:1px solid #e5e7eb;
+
+font-size:16px;
+
+}
+
+.qualification-table tbody tr:nth-child(even){
+
+background:#fafafa;
+
+}
+
+.example-heading{
+
+margin-bottom:20px;
+
+font-size:28px;
+
+}
+
+.qualification-example{
+
+background:#f8f8f8;
+
+border-left:5px solid #8d2232;
+
+padding:30px;
+
+font-size:24px;
+
+line-height:1.8;
+
+font-weight:600;
+
+}
+
+@media(max-width:768px){
+
+.qualification-titling h2{
+
+font-size:28px;
+
+}
+
+.qualification-table{
+
+display:block;
+
+overflow-x:auto;
+
+}
+
+.qualification-example{
+
+font-size:20px;
+
+}
+
+}
+
+/*=========================================
+PAGE LAYOUT
+=========================================*/
+
+
+.qualification-list{
+
+margin-left:22px;
+
+margin-bottom:40px;
+
+}
+
+.qualification-list li{
+
+margin-bottom:12px;
+
+line-height:1.8;
+
+}
+
+/*==============================
+ICM SPLIT TABLE
+==============================*/
+
+
+.split-row{
+
+
+
+
+ display:grid;
+
+grid-template-columns:48% 52%;
+
+gap:10px;
+
+margin-bottom:10px;
+
+
+
+}
+
+.blue-column{
+
+background:#2f5067;
+
+color:#fff;
+
+padding:22px;
+
+display:flex;
+
+align-items:center;
+
+font-size:17px;
+
+
+
+}
+
+.grey-column{
+
+background:#ececec;
+
+padding:22px;
+
+display:flex;
+
+align-items:center;
+
+font-size:17px;
+
+color:#2f5067;
+
+
+
+}
+
+/*==========================================
+QUALIFICATION SUBMENU
+==========================================*/
+
+.qualification-submenu{
+
+list-style:none;
+
+padding:0;
+
+margin:0;
+
+background:#f5f5f5;
+position:static;
+
+border-top:1px solid #e5e5e5;
+
+}
+
+.qualification-submenu li{
+
+
+ min-height:46px;
+
+    height:auto;
+
+    border-bottom:1px solid #e8e8e8;
+
+  display:block;
+
+    border:none;
+
+}
+
+.qualification-submenu a{
+
+display:block;
+
+text-decoration:none;
+
+background:#f7f7f7;
+
+transition:.3s;
+
+
+padding:13px 20px 13px 48px;
+
+font-size:15px;
+
+color:#555;
+
+
+}
+
+.qualification-submenu a:hover{
+
+background:#ffffff;
+
+color:#a32135;
+
+}
+
+.qualification-submenu a.current{
+
+background:#ffffff;
+
+border-left:4px solid #a32135;
+
+font-weight:600;
+
+color:#a32135;
+
+}
+
+
+/*==========================================
+QUALIFICATION CONTENT SECTIONS
+==========================================*/
+
+.qualification-framework,
+.qualification-level,
+.qualification-tqt,
+.qualification-titling,
+.relative-equivalencies,
+.subject-area{
+
+    margin-top:30px;
+    margin-bottom:0;
+
+}
+
+
+.qualification-framework h2,
+.qualification-level h2,
+.qualification-tqt h2,
+.qualification-titling h2,
+.relative-equivalencies h2,
+.subject-area h2{
+
+    font-size:34px;
+    font-weight:400;
+    color:#333;
+    margin:0 0 8px;
+
+}
+
+.qualification-framework p{
+    max-width:880px;
+    margin:0 0 12px 0;
+}
+
+.qualification-framework p:last-child{
+    margin-bottom:0;
+}
+
+.qualification-level{
+    margin-top:35px;
+}
+
+.qualification-level h2{
+    margin:0 0 16px 0;
+}
+
+.qualification-tqt{
+
+    margin-top:35px;
+
+}
+
+.tqt-list{
+
+    margin:25px 0 0 25px;
+
+}
+
+.tqt-list li{
+
+    margin-bottom:10px;
+
+}
+
+/*=========================================
+RELATIVE EQUIVALENCIES CARD
+=========================================*/
+.relative-equivalencies{
+
+    margin-top:30px;
+    margin-bottom:40px;
+    width:100%;
+    max-width:580px;
+
+}
+
+
+.equivalency-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#f5f5f5;
+
+
+    border:1px solid #a32135;
+
+    padding:2px 20px;
+    
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.equivalency-card:hover{
+
+    background:#efefef;
+
+}
+
+.card-content span{
+
+    color:#a32135;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    font-size:1px;
+    font-weight:600;
+
+}
+
+.card-content h3{
+
+    font-size:16px;
+
+    font-weight:300;
+
+    color:#222;
+
+    margin:15px 0;
+
+}
+
+.card-content p{
+
+    margin:0;
+
+    color:#666;
+
+}
+
+.card-arrow{
+
+    font-size:44px;
+
+    color:#a32135;
+
+    font-weight:300;
+
+}
+
+/*================================================
+SUBJECT AREAS
+================================================*/
+
+.subject-area{
+
+width:100%;
+
+max-width:860px;
+
+margin:60px 0;
+
+padding:0;
+
+}
+
+.subject-area h2{
+
+    font-size:34px;
+
+    font-weight:400;
+
+    color:#333;
+
+}
+
+.subject-area p{
+
+    max-width:900px;
+
+    margin-bottom:40px;
+
+}
+
+.subject-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:30px;
+
+}
+
+.subject-card{
+
+    background:#f6f6f6;
+
+    border:1px solid #a32135;
+
+    padding:2px 20px;
+
+    text-decoration:none;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:.3s;
+
+}
+
+.subject-card:hover{
+
+    background:#efefef;
+
+    transform:translateY(-3px);
+
+}
+
+.subject-card h3{
+
+    font-size:26px;
+
+    font-weight:400;
+
+    margin:15px 0;
+
+    color:#222;
+
+}
+
+.subject-card:hover .subject-arrow{
+
+    transform:translateX(8px);
+
+}
+
+@media(max-width:900px){
+
+.subject-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*==========================================
+SUBJECT TABLE
+==========================================*/
+
+/*==========================================
+SUBJECT MATRIX
+==========================================*/
+
+.subject-matrix{
+
+width:100%;
+
+margin-top:35px;
+
+}
+
+
+.matrix-row{
+
+    display:grid;
+
+    grid-template-columns:48% 52%;
+
+    gap:12px;
+
+    margin-bottom:10px;
+    
+
+}
+
+.matrix-left{
+
+    background:#2d5068;
+
+    color:#fff;
+
+    padding:24px;
+
+    font-size:18px;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.matrix-right{
+
+    background:#ececef;
+
+    padding:22px 28px;
+
+}
+
+.matrix-right ul{
+
+    margin:0;
+
+    padding-left:22px;
+
+}
+
+.matrix-right li{
+
+    margin-bottom:12px;
+
+    color:#36516a;
+
+    font-size:18px;
+
+}
+
+/*==========================================
+SUBJECT BUTTONS
+==========================================*/
+
+.subject-links{
+
+    display:flex;
+
+    justify-content:align-items;
+
+    gap:26px;
+
+    margin-top:-30px;
+
+    margin-bottom:30px;
+
+    flex-wrap:wrap;
+
+}
+
+.subject-link-btn{
+
+    min-width:280px;
+
+    padding:18px 35px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    font-size:17px;
+
+    font-weight:500;
+
+    color:#444;
+
+    background:#fff;
+
+    border:1px solid #a32135;
+
+    transition:.3s;
+
+}
+
+.subject-link-btn:hover{
+
+    background:#a32135;
+
+    color:#fff;
+
+}
+
+/*==================================================
+ENQUIRY FORM
+==================================================*/
+
+.qualification-enquiry{
+
+    width:100%;
+    max-width:860px;
+
+    margin:60px 0 0;
+
+    padding:0;
+
+}
+
+
+.qualification-enquiry h2{
+
+    font-size:34px;
+
+    font-weight:400;
+
+    color:#333;
+
+}
+
+.qualification-enquiry p{
+
+    margin-bottom:35px;
+
+    color:#555;
+
+    line-height:1.8;
+
+}
+
+.qualification-form{
+
+    width:100%;
+
+}
+
+.form-row{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+
+    margin-bottom:25px;
+
+}
+
+.form-group{
+
+    margin-bottom:25px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    margin-bottom:10px;
+
+    color:#444;
+
+}
+
+.form-group input,
+
+.form-group textarea{
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border:1px solid #d9d9d9;
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.3s;
+
+    font-family:inherit;
+
+}
+
+.form-group textarea{
+
+    resize:vertical;
+
+}
+
+.form-group input:focus,
+
+.form-group textarea:focus{
+
+    border-color:#a32135;
+
+}
+
+.submit-btn{
+
+    background:#a32135;
+
+    color:#fff;
+
+    border:none;
+
+    padding:16px 40px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.submit-btn:hover{
+
+    background:#7d1626;
+
+}
+
+@media(max-width:768px){
+
+.form-row{
+
+grid-template-columns:1fr;
+
+}
+
+.submit-btn{
+
+width:100%;
+
+}
+
+}
+
+/*==========================================
+FORM CONSENT
+==========================================*/
+
+/*==========================================
+FORM CONSENT
+==========================================*/
+
+.form-consent{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:14px;
+
+    margin:30px 0;
+
+}
+
+.form-consent input{
+
+    width:20px;
+
+    height:20px;
+
+    margin-top:3px;
+
+    flex-shrink:0;
+
+}
+
+.form-consent label{
+
+    font-size:17px;
+
+    line-height:1.8;
+
+    color:#444;
+
+}
+
+.form-consent a{
+
+    color:#a32135;
+
+    text-decoration:underline;
+
+}
+
+.form-consent a:hover{
+
+    color:#7d1626;
+
+}
+.submit-btn{
+
+    background:#a32135;
+
+    color:#fff;
+
+    border:none;
+
+    padding:18px 55px;
+
+    font-size:20px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.submit-btn:hover{
+
+    background:#7f1828;
+
+}
+
+/*==================================================
+FOOTER
+==================================================*/
+
+.site-footer{
+
+    background:#1f2430;
+
+    color:#fff;
+
+    margin-top:90px;
+
+}
+
+.footer-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr 1fr;
+
+    gap:60px;
+
+    padding:70px 0;
+
+}
+
+.footer-logo{
+
+    width:120px;
+
+    margin-bottom:25px;
+
+}
+
+.footer-column h3{
+
+    margin-bottom:22px;
+
+    font-size:22px;
+
+    font-weight:600;
+
+}
+
+.footer-column p{
+
+    color:#cfcfcf;
+
+    line-height:1.8;
+
+}
+
+.footer-column ul{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.footer-column li{
+
+    margin-bottom:15px;
+
+}
+
+.footer-column a{
+
+    color:#cfcfcf;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.footer-column a:hover{
+
+    color:#fff;
+
+}
+
+.footer-bottom{
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+    padding:25px;
+
+    text-align:center;
+
+    color:#bbb;
+
+}
+
+@media(max-width:900px){
+
+.footer-grid{
+
+grid-template-columns:1fr;
+
+gap:45px;
+
+}
+
+}

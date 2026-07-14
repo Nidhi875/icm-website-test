@@ -1,0 +1,315 @@
+/*==================================================
+PAGE LAYOUT
+==================================================*/
+
+
+.page-introduction h1{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:56px;
+
+    font-weight:300;
+
+    color:#222;
+
+    margin-bottom:18px;
+
+}
+
+.title-divider{
+
+    width:175px;
+
+    height:3px;
+
+    background:#a32135;
+
+    margin:22px 0 38px;
+
+}
+
+.professional-page{
+
+    background:#fff;
+
+    padding:80px 0 120px;
+
+}
+
+.professional-grid{
+
+    display:grid;
+
+    grid-template-columns:300px minmax(0,980px);
+
+    gap:80px;
+
+    justify-content:center;
+
+    align-items:start;
+
+}
+
+.qualification-sidebar{
+
+    position:sticky;
+
+    top:35px;
+
+    align-self:start;
+
+    width:300px;
+
+    height:max-content;
+
+}
+
+.single-content{
+
+    width:100%;
+
+    max-width:980px;
+
+    padding-top:20px;
+
+}
+
+.single-content{
+
+    width:100%;
+
+}
+
+/*========================*/
+
+.subject-categories{
+
+    margin-top:90px;
+
+}
+
+.subject-categories h2{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:42px;
+
+    font-weight:300;
+
+    color:#2d2d2d;
+
+}
+
+.section-divider{
+
+    width:150px;
+
+    height:3px;
+
+    background:#a32135;
+
+    margin:22px 0 30px;
+
+}
+
+.subject-categories p{
+
+    font-size:17px;
+
+    color:#666;
+
+    margin-bottom:45px;
+
+}
+
+/*========================*/
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+/*========================*/
+
+.category-box{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    min-height:86px;
+
+    background:#f2f2f2;
+
+    border:1px solid #dedede;
+
+    text-decoration:none;
+
+    color:#2d2d2d;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    transition:.25s;
+
+}
+
+.category-box:hover{
+
+    background:#294f67;
+
+    color:#fff;
+
+}
+
+
+.professional-grid{
+
+    display:grid;
+
+    grid-template-columns:300px minmax(0,1fr);
+
+    gap:70px;
+
+    align-items:start;
+
+}
+
+.single-content{
+
+    min-width:0;
+
+    width:100%;
+    
+}
+
+/*==================================================
+SUBJECTS LIST
+==================================================*/
+
+.subjects-list-section{
+
+    margin-top:90px;
+
+    padding-top:50px;
+
+    border-top:1px solid #e4e4e4;
+
+}
+
+.alphabet-group{
+
+    display:flex;
+
+    gap:55px;
+
+    align-items:flex-start;
+
+}
+
+/*========================*/
+
+.alphabet-badge{
+
+    width:84px;
+
+    height:84px;
+
+    border-radius:50%;
+
+    background:#294f67;
+
+    color:#fff;
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:34px;
+
+    font-weight:500;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+}
+
+/*========================*/
+
+.subjects-columns{
+
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:80px;
+
+}
+
+.subjects-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/*========================*/
+
+.subjects-column a{
+
+    text-decoration:none;
+
+    color:#555;
+
+    font-size:17px;
+
+    line-height:1.45;
+
+    padding:10px 12px;
+
+    transition:.25s;
+
+}
+
+/*========================*/
+
+.subjects-column a:hover{
+
+    background:#f2f2f2;
+
+    color:#a32135;
+
+}
+
+/*========================*/
+
+.active-subject{
+
+    background:#f2f2f2;
+
+    color:#a32135 !important;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}

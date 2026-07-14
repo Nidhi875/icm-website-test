@@ -1,0 +1,128 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+
+<link rel="stylesheet"
+      href="css/login.css">
+
+
+
+
+</head>
+
+<body>
+
+<section class="portal-login">
+
+    <div class="login-box">
+
+        <img src="../images/logo.png"
+             class="login-logo">
+
+       <h1>
+               Student<br>
+               Portal
+            </h1>
+
+
+        <p>
+
+            Sign in to continue
+
+        </p>
+
+       
+<form id="registerForm">
+
+    <input id="fullName"
+           type="text"
+           placeholder="Full Name"
+           required>
+
+    <input id="email"
+           type="email"
+           placeholder="Email"
+           required>
+
+    <input id="studentId"
+           type="text"
+           placeholder="Student ID"
+           required>
+
+    <input id="password"
+           type="password"
+           placeholder="Password"
+           required>
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>
+
+<script>
+
+document
+.getElementById("registerForm")
+.addEventListener("submit",
+async function(e){
+
+    e.preventDefault();
+
+    const fullName =
+    document.getElementById("fullName").value;
+
+    const email =
+    document.getElementById("email").value;
+
+    const studentId =
+    document.getElementById("studentId").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const response =
+    await fetch(
+        "http://localhost:5000/api/auth/register",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                fullName,
+                email,
+                studentId,
+                password
+            })
+        }
+    );
+
+    const data = await response.json();
+
+console.log(data);
+
+if(response.ok){
+
+    alert("Registration Successful!");
+
+    window.location = "login.html";
+
+}
+else{
+
+    alert(data.message || "Registration Failed");
+
+}
+
+});
+</script>
+
+</body>
+</html>

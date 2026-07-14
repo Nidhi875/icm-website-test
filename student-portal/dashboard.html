@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<script>
+
+const token =
+localStorage.getItem("token");
+
+const user =
+JSON.parse(
+localStorage.getItem("user")
+);
+
+if(!token || !user){
+
+    window.location.href =
+    "login.html";
+
+}
+
+</script>
+
+<!-- PROFILE CARD -->
+
+<section class="profile-card">
+
+    <div class="profile-left">
+
+        <div class="profile-avatar"
+             id="avatar">
+
+            NS
+
+        </div>
+
+        <div>
+
+            <h2 id="studentName">
+
+                Loading...
+
+            </h2>
+
+            <p id="studentId">
+
+                Loading...
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="profile-right">
+
+        Active Student
+
+    </div>
+
+</section>
+
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <img src="images/logo.png"
+             class="sidebar-logo">
+
+        <h2>
+
+            Student Portal
+
+        </h2>
+
+        <nav>
+
+            <a href="dashboard.html"
+               class="active">
+
+                Dashboard
+
+            </a>
+
+            <a href="qualifications.html">
+
+                Qualifications
+
+            </a>
+
+            <a href="assignments.html">
+
+                Assignments
+
+            </a>
+
+            <a href="results.html">
+
+                Results
+
+            </a>
+
+            <a href="certificates.html">
+
+                Certificates
+
+            </a>
+
+            <a href="messages.html">
+
+                Messages
+
+            </a>
+
+            <a href="settings.html">
+
+                Settings
+
+            </a>
+
+            <a href="#"
+               onclick="logout()">
+
+                Logout
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <header>
+
+            <h1>
+
+                Welcome Back,
+                <span id="welcomeName">
+
+                    Student
+
+                </span>
+
+            </h1>
+
+        </header>
+
+
+        <!-- STATS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Enrolled Courses
+
+                </h3>
+
+                <span>
+
+                    6
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Assignments Due
+
+                </h3>
+
+                <span>
+
+                    3
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Certificates
+
+                </h3>
+
+                <span>
+
+                    4
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Notifications
+
+                </h3>
+
+                <span>
+
+                    2
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Profile Completion
+
+                </h3>
+
+                <span>
+
+                    85%
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Attendance
+
+                </h3>
+
+                <span>
+
+                    92%
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    GPA
+
+                </h3>
+
+                <span>
+
+                    3.8
+
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+
+                    Messages
+
+                </h3>
+
+                <span>
+
+                    2
+
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- DEADLINES -->
+
+        <section class="dashboard-grid">
+
+            <div class="dashboard-panel">
+
+                <h3>
+
+                    Upcoming Deadlines
+
+                </h3>
+
+                <div class="dashboard-title-line">
+
+                </div>
+
+                <div class="deadline-item">
+
+                    <div>
+
+                        <h4>
+
+                            Marketing Assignment
+
+                        </h4>
+
+                        <span>
+
+                            Due:
+                            15 July 2026
+
+                        </span>
+
+                    </div>
+
+                    <a href="assignments.html"
+                       class="submit-btn">
+
+                        Submit
+
+                    </a>
+
+                </div>
+
+
+                <div class="deadline-item">
+
+                    <div>
+
+                        <h4>
+
+                            Finance Quiz
+
+                        </h4>
+
+                        <span>
+
+                            Due:
+                            20 July 2026
+
+                        </span>
+
+                    </div>
+
+                    <a href="assignments.html"
+                       class="submit-btn">
+
+                        Submit
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- CALENDAR -->
+
+            <div class="dashboard-panel">
+
+                <h3>
+
+                    Academic Calendar
+
+                </h3>
+
+                <p>
+
+                    Semester ends on
+                    30 September.
+
+                </p>
+
+                <ul class="deadline-list">
+
+                    <li>
+
+                        Semester Starts
+
+                        <span>
+
+                            10 Jan
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        Examination Week
+
+                        <span>
+
+                            15 Sep
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        Semester Ends
+
+                        <span>
+
+                            30 Sep
+
+                        </span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROGRESS -->
+
+        <section class="dashboard-panel">
+
+            <h3>
+
+                Qualification Progress
+
+            </h3>
+
+            <div class="progress-item">
+
+                <p>
+
+                    Business Management
+
+                </p>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"
+                         style="width:70%">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT ACTIVITY + NOTIFICATIONS -->
+
+        <section class="dashboard-grid">
+
+            <div class="dashboard-panel">
+
+                <h3>
+
+                    Recent Activity
+
+                </h3>
+
+                <ul>
+
+                    <li>
+
+                        Assignment submitted successfully.
+
+                        <span>
+
+                            2 hours ago
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        Qualification module unlocked.
+
+                        <span>
+
+                            Yesterday
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        Certificate downloaded.
+
+                        <span>
+
+                            2 days ago
+
+                        </span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="dashboard-panel">
+
+                <h3>
+
+                    Notifications
+
+                </h3>
+
+                <ul>
+
+                    <li>
+
+                        2 assignments due this week.
+
+                        <span>
+
+                            Today
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        New message from tutor.
+
+                        <span>
+
+                            1 hour ago
+
+                        </span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const studentName =
+user.full_name ||
+user.fullName;
+
+const studentId =
+user.student_id ||
+user.studentId;
+
+document
+.getElementById(
+"studentName"
+)
+.innerText =
+studentName;
+
+document
+.getElementById(
+"welcomeName"
+)
+.innerText =
+studentName;
+
+document
+.getElementById(
+"studentId"
+)
+.innerText =
+"Student ID: "
++
+studentId;
+
+document
+.getElementById(
+"avatar"
+)
+.innerText =
+studentName
+.split(" ")
+.map(
+name =>
+name[0]
+)
+.join("")
+.toUpperCase();
+
+
+function logout(){
+
+    localStorage.clear();
+
+    window.location.href =
+    "login.html";
+
+}
+
+</script>
+
+</body>
+</html>

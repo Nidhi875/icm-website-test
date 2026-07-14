@@ -1,0 +1,437 @@
+/*====================================================
+GOULDINGS GLOBAL ACADEMY
+COMPONENT LIBRARY
+Version 1.0
+====================================================*/
+
+
+/*===================================
+Container
+===================================*/
+
+.container{
+
+width:100%;
+
+margin:auto;
+
+
+}
+
+
+/*===================================
+Section Spacing
+===================================*/
+
+.content-section{
+
+padding:100px 0;
+
+}
+
+
+/*===================================
+Buttons
+===================================*/
+
+.btn-primary{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:18px 38px;
+
+background:#0B2D6B;
+
+color:#fff;
+
+font-weight:600;
+
+border-radius:14px;
+
+text-decoration:none;
+
+transition:.35s ease;
+
+cursor:pointer;
+
+}
+
+.btn-primary:hover{
+
+transform:translateY(-6px);
+
+background:#1849A7;
+
+}
+
+
+.btn-secondary{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:18px 38px;
+
+border:2px solid #fff;
+
+color:#fff;
+
+font-weight:600;
+
+border-radius:14px;
+
+text-decoration:none;
+
+transition:.35s;
+
+}
+
+.btn-secondary:hover{
+
+background:#fff;
+
+color:#0B2D6B;
+
+transform:translateY(-6px);
+
+}
+
+
+/*===================================
+Section Title
+===================================*/
+
+.section-title{
+
+max-width:700px;
+
+margin-bottom:70px;
+
+}
+
+.section-title span{
+
+display:inline-block;
+
+margin-bottom:18px;
+
+font-size:14px;
+
+letter-spacing:2px;
+
+font-weight:700;
+
+color:#0B2D6B;
+
+text-transform:uppercase;
+
+}
+
+.section-title h2{
+
+font-size:52px;
+
+line-height:1.15;
+
+font-weight:800;
+
+color:#081F4D;
+
+margin-bottom:25px;
+
+}
+
+.section-title p{
+
+font-size:18px;
+
+line-height:1.9;
+
+color:#5E6470;
+
+}
+
+/*===================================
+Cards
+===================================*/
+
+.card{
+
+background:#fff;
+
+border-radius:24px;
+
+padding:40px;
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.07);
+
+transition:.4s;
+
+}
+
+.card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:
+
+0 30px 80px rgba(0,0,0,.12);
+
+}
+
+
+/*===================================
+Images
+===================================*/
+
+.img-cover{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+
+/*===================================
+Section Backgrounds
+===================================*/
+
+.bg-light{
+
+background:#F7F9FC;
+
+}
+
+.bg-white{
+
+background:#fff;
+
+}
+
+/*===================================
+PAGE BANNER
+===================================*/
+
+/*===================================
+PAGE BANNER
+===================================*/
+
+.qualifications-banner{
+    position:relative;
+    height:390px;
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+}
+
+.qualifications-banner img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    animation:bannerZoom 10s ease forwards;
+}
+
+.banner-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(15,33,70,.38), rgba(15,33,70,.38));
+}
+
+.banner-content{
+    padding: top 35px;
+    position:relative;
+    z-index:2;
+    max-width:650px;
+    color:#fff;
+}
+
+.banner-tag{
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:50px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(10px);
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:24px;
+}
+
+.banner-content h1{
+    font-size:60px;
+    font-weight:800;
+    line-height:1.05;
+    margin-bottom:18px;
+}
+
+.banner-content p{
+    font-size:19px;
+    line-height:1.8;
+    max-width:560px;
+}
+
+
+
+@media(max-width:992px){
+
+    .qualifications-banner{
+        height:340px;
+    }
+
+    .banner-content h1{
+        font-size:48px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .qualifications-banner{
+        height:300px;
+    }
+
+    .banner-content h1{
+        font-size:36px;
+    }
+
+    .banner-content p{
+        font-size:16px;
+    }
+
+}
+
+.qualifications-intro{
+    padding:55px 0 80px;
+}
+
+/*====================================================
+FOOTER
+====================================================*/
+
+.footer-top{
+
+    background:#3b3939;
+
+    padding:70px 0;
+
+}
+
+.footer-container{
+
+    display:grid;
+
+    grid-template-columns:1.4fr 220px 1.4fr;
+
+    align-items:center;
+
+    column-gap:40px;
+
+}
+
+.footer-links{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:70px;
+
+}
+
+.footer-links a{
+
+    display:block;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:18px;
+
+    margin-bottom:22px;
+
+}
+
+.footer-logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    justify-self:center;
+
+    text-align:center;
+
+}
+
+.footer-logo img{
+
+    width:140px;
+
+    display:block;
+
+    margin:0 auto;
+
+}
+
+.footer-contact{
+
+    text-align:right;
+
+}
+
+.footer-contact p{
+
+    color:#fff;
+
+    font-size:18px;
+
+    line-height:2;
+
+}
+
+nav a.active{
+
+    color:#a32135;
+
+    position:relative;
+
+}
+
+nav a.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-10px;
+
+    width:100%;
+
+    height:3px;
+
+    background:#a32135;
+
+}

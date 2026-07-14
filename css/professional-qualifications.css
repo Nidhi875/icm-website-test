@@ -1,0 +1,441 @@
+/*==================================================
+PROFESSIONAL QUALIFICATIONS PAGE
+==================================================*/
+
+/*=====================================
+LAYOUT
+=====================================*/
+
+.professional-page{
+    background:#fff;
+    padding:70px 0 120px;
+}
+
+.professional-grid{
+
+    display:grid;
+
+    grid-template-columns:300px minmax(0,1fr);
+
+    gap:70px;
+
+    align-items:start;
+
+}
+
+#qualification-sidebar{
+
+    width:100%;
+
+}
+
+.professional-content{
+
+    width:100%;
+
+    min-width:0;
+
+}
+/*==================================================
+PAGE INTRODUCTION
+==================================================*/
+
+.page-introduction{
+    margin-bottom:70px;
+}
+
+.page-introduction h1{
+    font-family:"Plus Jakarta Sans",sans-serif;
+    font-size:40px;
+    font-weight:300;
+    line-height:1.15;
+    color:#333;
+    margin:0 0 18px;
+}
+
+.title-divider{
+    width:180px;
+    height:3px;
+    background:#a32135;
+    margin:0 0 40px;
+}
+
+.page-introduction p{
+    font-size:19px;
+    line-height:1.9;
+    color:#555;
+    max-width:860px;
+    margin:0 0 22px;
+}
+
+/*==================================================
+NEW PROFESSIONAL DIPLOMAS
+==================================================*/
+
+/*==================================================
+NEW PROFESSIONAL DIPLOMAS
+==================================================*/
+/*=========================================
+NEW PROFESSIONAL DIPLOMAS
+=========================================*/
+
+.professional-diplomas{
+
+    margin-top:100px;
+
+}
+
+.new-professional-diplomas h2{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:40px;
+
+    font-weight:300;
+
+     color:#333;
+
+    margin-bottom:14px;
+    
+}
+
+.section-divider{
+
+    width:145px;
+
+    height:2px;
+
+    background:#a32135;
+
+    margin-bottom:28px;
+
+}
+
+.section-description{
+
+   
+
+
+     font-size:19px;
+    line-height:1.9;
+    color:#555;
+    max-width:860px;
+    margin:0 0 22px;
+
+}
+
+.diploma-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(5, minmax(0,1fr));
+
+    width:100%;
+
+    gap:2px;
+
+    margin-top:28px;
+
+    align-items:stretch;
+
+    padding-right: 300px;
+
+}
+
+.diploma-card{
+
+    position:relative;
+
+    background:#ececec;
+
+    height:165px;
+
+    padding:18px 16px 34px;
+
+    text-decoration:none;
+
+    color:#222;
+
+    transition:.25s;
+
+    overflow:hidden;
+
+}
+
+.diploma-card:hover{
+
+    background:#e4e4e4;
+
+}
+
+.diploma-icon{
+
+    font-size:20px;
+
+    color:#2f5876;
+
+    margin-bottom:14px;
+
+}
+
+.diploma-card h3{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:12px;
+
+    font-weight:400;
+
+    line-height:1.45;
+
+    color:#222;
+
+    margin:0;
+
+    max-width:145px;
+
+}
+
+.card-arrow{
+
+    position:absolute;
+
+    right:0;
+
+    bottom:0;
+
+    width:24px;
+
+    height:24px;
+
+    background:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:11px;
+
+    color:#888;
+
+}
+
+.card-arrow i{
+
+    font-size:11px;
+
+}
+.diploma-card:hover .card-arrow{
+
+    color:#a32135;
+
+}
+
+@media(max-width:768px){
+
+    .diploma-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:1100px){
+
+    .professional-grid{
+        grid-template-columns:1fr;
+    }
+
+    #qualification-sidebar{
+        position:relative;
+        top:0;
+        margin-bottom:40px;
+    }
+
+   .professional-content{
+
+    width:100%;
+
+    min-width:0;
+
+}
+}
+
+/*=========================================
+PROFESSIONAL CATALOGUE
+=========================================*/
+
+/*==================================================
+PROFESSIONAL QUALIFICATIONS
+==================================================*/
+
+.professional-catalogue{
+
+    margin-top:90px;
+
+}
+
+.professional-catalogue h2{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:42px;
+
+    font-weight:300;
+
+    color:#2d2d2d;
+
+    margin:0;
+
+}
+
+.catalogue-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:24px;
+
+    margin-top:42px;
+    padding-right: 300px;
+   
+
+}
+
+/*========================*/
+
+.qualification-card{
+
+    border:1px solid #2d5672;
+
+    background:#fff;
+
+    display:flex;
+
+    flex-direction:column;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+
+    box-shadow:none;
+
+}
+
+.qualification-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.5);
+
+}
+/*========================*/
+
+.qualification-card-top{
+
+    padding:32px 24px;
+
+    min-height:190px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/*========================*/
+
+.qualification-icon{
+
+    width:54px;
+
+    height:54px;
+
+    margin-bottom:18px;
+
+}
+
+.qualification-icon i{
+
+    font-size:34px;
+
+    color:#2d5672;
+
+}
+
+/*========================*/
+
+.qualification-card-top h3{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:24px;
+
+    font-weight:300;
+
+    line-height:1.35;
+
+    color:#2d2d2d;
+
+    margin:0;
+
+}
+/*========================*/
+
+.qualification-card-bottom{
+
+    background:#efefef;
+
+    padding:18px 20px 20px;
+
+}
+
+.qualification-card-bottom h4{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    margin-bottom:14px;
+
+}
+
+.qualification-card-bottom ul{
+
+    margin:0;
+
+    padding-left:20px;
+
+}
+
+.qualification-card-bottom li{
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    margin-bottom:6px;
+
+}
