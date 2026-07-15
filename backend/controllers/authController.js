@@ -108,3 +108,13 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+router.post(
+  "/forgot-password",
+  forgotPassword
+);
+
+router.post(
+  "/reset-password",
+  resetPassword
+);
