@@ -179,6 +179,7 @@ exports.forgotPassword = async (req, res) => {
   message: "Email service unavailable",
   resetLink
 });
+    }
 
     const info =
       await transporter.sendMail({
