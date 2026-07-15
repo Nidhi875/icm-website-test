@@ -107,10 +107,13 @@ res.json({
   }
 };
 
+
 exports.forgotPassword = async (req, res) => {
   try {
 
     const { email } = req.body;
+
+    console.log("Forgot password request:", email);
 
     const result = await pool.query(
       "SELECT * FROM users WHERE email=$1",
@@ -148,103 +151,65 @@ exports.forgotPassword = async (req, res) => {
     const resetLink =
       `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
+    console.log("EMAIL:", process.env.EMAIL_USER);
+    console.log("PASS EXISTS:", !!process.env.EMAIL_PASS);
+    console.log("RESET LINK:", resetLink);
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+    const transporter =
+      nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        family: 4,
+        connectionTimeout: 30000,
+        greetingTimeout: 30000,
+        socketTimeout: 30000,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        }
+      });
 
-console.log("EMAIL:", process.env.EMAIL_USER);
-console.log("PASS EXISTS:", !!process.env.EMAIL_PASS);
+    try {
+      await transporter.verify();
+      console.log("SMTP VERIFIED");
+    } catch (smtpError) {
+      console.log("SMTP ERROR:");
+      console.log(smtpError);
 
-await transporter.verify();
-console.log("SMTP VERIFIED");
-  
-  await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Password Reset",
-      html: `
-      <h2>Password Reset</h2>
-      <p>Click below to reset your password:</p>
-
-      <a href="${resetLink}">
-        Reset Password
-      </a>
-      `
-    });
-
-    res.json({
-      message: "Reset email sent"
-    });
-
-  } catch (err) {
-
-    console.log(err);
-
-    res.status(500).json({
-      message: err.message
-    });
-
-  }
-};
-
-exports.resetPassword = async (req, res) => {
-  try {
-
-    const { token, password } = req.body;
-
-    const result =
-      await pool.query(
-        `
-        SELECT *
-        FROM users
-        WHERE reset_token=$1
-        AND reset_token_expiry > NOW()
-        `,
-        [token]
-      );
-
-    if (result.rows.length === 0) {
-      return res.status(400).json({
-        message: "Invalid or expired token"
+      return res.status(500).json({
+        message: "SMTP connection failed",
+        error: smtpError.message
       });
     }
 
-    const user = result.rows[0];
+    const info =
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Password Reset",
+        html: `
+          <h2>Password Reset</h2>
 
-    const hashed =
-      await bcrypt.hash(password, 10);
+          <p>
+            Click below to reset your password:
+          </p>
 
-    await pool.query(
-      `
-      UPDATE users
-      SET password=$1,
-          reset_token=NULL,
-          reset_token_expiry=NULL
-      WHERE id=$2
-      `,
-      [
-        hashed,
-        user.id
-      ]
-    );
+          <a href="${resetLink}">
+            Reset Password
+          </a>
+        `
+      });
+
+    console.log("MAIL SENT:", info.messageId);
 
     res.json({
-      message: "Password updated successfully"
+      message: "Reset email sent successfully"
     });
 
   } catch (err) {
 
+    console.log("FORGOT PASSWORD ERROR:");
     console.log(err);
 
     res.status(500).json({
