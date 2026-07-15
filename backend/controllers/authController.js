@@ -161,7 +161,13 @@ exports.forgotPassword = async (req, res) => {
     }
   });
 
-    await transporter.sendMail({
+  console.log("EMAIL:", process.env.EMAIL_USER);
+
+await transporter.verify();
+
+console.log("SMTP VERIFIED");  
+  
+  await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Password Reset",
