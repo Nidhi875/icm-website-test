@@ -91,10 +91,12 @@ exports.login = async (req, res) => {
       }
     );
 
-    res.json({
-      token,
-      user
-    });
+    delete user.password;
+
+res.json({
+  token,
+  user
+});
 
   } catch (error) {
     console.log(error);
@@ -147,25 +149,25 @@ exports.forgotPassword = async (req, res) => {
       `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
 
-      const transporter =
-  nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    },
-    tls: {
-      rejectUnauthorized: false
-    }
-  });
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  family: 4,
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
-  console.log("EMAIL:", process.env.EMAIL_USER);
+console.log("EMAIL:", process.env.EMAIL_USER);
+console.log("PASS EXISTS:", !!process.env.EMAIL_PASS);
 
 await transporter.verify();
-
-console.log("SMTP VERIFIED");  
+console.log("SMTP VERIFIED");
   
   await transporter.sendMail({
       from: process.env.EMAIL_USER,
