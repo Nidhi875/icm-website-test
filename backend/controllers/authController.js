@@ -239,6 +239,9 @@ console.log("EMAIL USER:", process.env.EMAIL_USER);
 console.log("EMAIL PASS EXISTS:", !!process.env.EMAIL_PASS);
 
 const transporter = nodemailer.createTransport({
+
+  const SibApiV3Sdk =
+require("sib-api-v3-sdk");
   host: "smtp-relay.brevo.com",
   port: 2525,
   secure: false,
