@@ -2,8 +2,7 @@ const pool = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-
+const SibApiV3Sdk = require("sib-api-v3-sdk");
 
 exports.register = async (req, res) => {
   try {
@@ -21,20 +20,14 @@ exports.register = async (req, res) => {
         [email]
       );
 
-    if (
-      existingUser.rows.length > 0
-    ) {
+    if (existingUser.rows.length > 0) {
       return res.status(400).json({
-        message:
-          "User already exists"
+        message: "User already exists"
       });
     }
 
     const hashedPassword =
-      await bcrypt.hash(
-        password,
-        10
-      );
+      await bcrypt.hash(password, 10);
 
     const result =
       await pool.query(
@@ -63,23 +56,22 @@ exports.register = async (req, res) => {
     delete result.rows[0].password;
 
     res.status(201).json({
-      message:
-        "Registration Successful",
-      user:
-        result.rows[0]
+      message: "Registration Successful",
+      user: result.rows[0]
     });
 
-  } catch (error) {
+  }
+  catch (error) {
 
     console.log(error);
 
     res.status(500).json({
-      message:
-        error.message
+      message: error.message
     });
 
   }
 };
+
 
 
 exports.login = async (
@@ -100,9 +92,7 @@ exports.login = async (
         [email]
       );
 
-    if (
-      result.rows.length === 0
-    ) {
+    if (result.rows.length === 0) {
       return res.status(400).json({
         message:
           "Invalid credentials"
@@ -143,7 +133,8 @@ exports.login = async (
       user
     });
 
-  } catch (error) {
+  }
+  catch (error) {
 
     console.log(error);
 
@@ -154,6 +145,7 @@ exports.login = async (
 
   }
 };
+
 
 
 exports.forgotPassword =
@@ -230,105 +222,103 @@ async (
 
     try {
 
+      const defaultClient =
+        SibApiV3Sdk
+          .ApiClient
+          .instance;
 
+      defaultClient
+        .authentications["api-key"]
+        .apiKey =
+        process.env.BREVO_API_KEY;
 
-      console.log("RESET LINK:", resetLink);
+      const apiInstance =
+        new SibApiV3Sdk
+          .TransactionalEmailsApi();
 
-console.log("EMAIL HOST:", process.env.EMAIL_HOST);
-console.log("EMAIL USER:", process.env.EMAIL_USER);
-console.log("EMAIL PASS EXISTS:", !!process.env.EMAIL_PASS);
+      await apiInstance
+        .sendTransacEmail({
 
-const transporter = nodemailer.createTransport({
+          sender: {
+            name:
+              "Gouldings Global Academy",
+            email:
+              "Nidhi2437@gmail.com"
+          },
 
-  const SibApiV3Sdk =
-require("sib-api-v3-sdk");
-  host: "smtp-relay.brevo.com",
-  port: 2525,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+          to: [
+            {
+              email: email
+            }
+          ],
 
+          subject:
+            "Reset Your Password",
 
+          htmlContent: `
+            <h2>Password Reset</h2>
 
-await transporter.verify();
-console.log("BREVO VERIFIED");
+            <p>
+            Click below to reset your password.
+            </p>
 
-    const info =
-  await transporter.sendMail({
-    from: `"Gouldings Global Academy" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: "Reset Your Password",
-    html: `
-      <h2>Password Reset</h2>
+            <a
+            href="${resetLink}"
+            style="
+              background:#002147;
+              color:white;
+              padding:12px 20px;
+              text-decoration:none;
+              border-radius:6px;
+              display:inline-block;
+            "
+            >
+            Reset Password
+            </a>
 
-      <p>
-        Click below to reset your password.
-      </p>
+            <p>
+            This link expires in 1 hour.
+            </p>
+          `
+        });
 
-      <a
-        href="${resetLink}"
-        style="
-          background:#002147;
-          color:white;
-          padding:12px 20px;
-          text-decoration:none;
-          border-radius:6px;
-          display:inline-block;
-        "
-      >
-        Reset Password
-      </a>
-
-      <p>
-        This link expires in 1 hour.
-      </p>
-    `
-  });
-
-console.log(
-  "MAIL SENT:",
-  info.messageId
-);
-
+      console.log(
+        "MAIL SENT SUCCESSFULLY"
+      );
 
       return res.json({
         message:
           "Reset email sent successfully"
       });
 
-    } catch (smtpError) {
+    }
+    catch (emailError) {
 
       console.log(
-        "SMTP FAILED"
-      );
-
-      console.log(
-        smtpError
+        emailError
       );
 
       return res.status(500).json({
-  message:
-    "Email service unavailable",
-  resetLink
-});
+        message:
+          "Email sending failed"
+      });
 
     }
 
-  } catch (err) {
+  }
+  catch (error) {
 
-    console.log(err);
+    console.log(error);
 
     res.status(500).json({
       message:
-        err.message
+        error.message
     });
 
   }
+
 };
+
 
 
 exports.resetPassword =
@@ -395,11 +385,10 @@ async (
         "Password updated successfully"
     });
 
-  } catch (error) {
+  }
+  catch (error) {
 
-    console.log(
-      error
-    );
+    console.log(error);
 
     res.status(500).json({
       message:
@@ -407,7 +396,5 @@ async (
     });
 
   }
+
 };
-
-
-
