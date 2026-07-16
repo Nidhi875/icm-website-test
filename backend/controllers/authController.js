@@ -155,18 +155,20 @@ exports.forgotPassword = async (req, res) => {
     console.log("PASS EXISTS:", !!process.env.EMAIL_PASS);
     console.log("RESET LINK:", resetLink);
 
-    const transporter = nodemailer.createTransport({
-  service: "gmail",
+   const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
-  family: 4,
+  requireTLS: true,
   tls: {
+    family: 4,
     rejectUnauthorized: false
   }
 });
-
 
     try {
       await transporter.verify();
