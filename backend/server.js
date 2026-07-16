@@ -5,21 +5,39 @@ const cors = require("cors");
 
 require("./config/db");
 
-const authRoutes = require("./routes/authRoutes");
+const authRoutes =
+require("./routes/authRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "https://gouldingsglobalacademy.com",
+    "https://www.gouldingsglobalacademy.com"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+app.use(
+  "/api/auth",
+  authRoutes
+);
 
 app.get("/", (req, res) => {
-  res.send("Student Portal Backend Running");
+  res.send(
+    "Student Portal Backend Running"
+  );
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT =
+process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(
+    `Server running on port ${PORT}`
+  );
 });
