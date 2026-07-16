@@ -230,47 +230,66 @@ async (
 
     try {
 
-      const transporter =
-        nodemailer.createTransport({
-          service:
-            "gmail",
-          auth: {
-            user:
-              process.env.EMAIL_USER,
-            pass:
-              process.env.EMAIL_PASS
-          }
-        });
 
-      const info =
-        await transporter.sendMail({
-          from:
-            process.env.EMAIL_USER,
-          to:
-            email,
-          subject:
-            "Password Reset",
-          html:
-          `
-          <h2>
-            Password Reset
-          </h2>
 
-          <p>
-            Click below
-            to reset
-            password
-          </p>
+      console.log("RESET LINK:", resetLink);
 
-          <a href="${resetLink}">
-            Reset Password
-          </a>
-          `
-        });
+console.log("EMAIL HOST:", process.env.EMAIL_HOST);
+console.log("EMAIL USER:", process.env.EMAIL_USER);
+console.log("EMAIL PASS EXISTS:", !!process.env.EMAIL_PASS);
 
-      console.log(
-        info.messageId
-      );
+     const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+
+
+await transporter.verify();
+console.log("BREVO VERIFIED");
+
+    const info =
+  await transporter.sendMail({
+    from: `"Gouldings Global Academy" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "Reset Your Password",
+    html: `
+      <h2>Password Reset</h2>
+
+      <p>
+        Click below to reset your password.
+      </p>
+
+      <a
+        href="${resetLink}"
+        style="
+          background:#002147;
+          color:white;
+          padding:12px 20px;
+          text-decoration:none;
+          border-radius:6px;
+          display:inline-block;
+        "
+      >
+        Reset Password
+      </a>
+
+      <p>
+        This link expires in 1 hour.
+      </p>
+    `
+  });
+
+console.log(
+  "MAIL SENT:",
+  info.messageId
+);
+
 
       return res.json({
         message:
@@ -287,11 +306,11 @@ async (
         smtpError
       );
 
-      return res.json({
-        message:
-          "Email service unavailable",
-        resetLink
-      });
+      return res.status(500).json({
+  message:
+    "Email service unavailable",
+  resetLink
+});
 
     }
 
