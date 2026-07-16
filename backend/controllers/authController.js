@@ -238,10 +238,11 @@ console.log("EMAIL HOST:", process.env.EMAIL_HOST);
 console.log("EMAIL USER:", process.env.EMAIL_USER);
 console.log("EMAIL PASS EXISTS:", !!process.env.EMAIL_PASS);
 
-     const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 2525,
   secure: false,
+  requireTLS: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
