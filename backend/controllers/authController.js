@@ -2,7 +2,13 @@ const pool = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const SibApiV3Sdk = require("sib-api-v3-sdk");
+const { Resend } =
+require("resend");
+
+const resend =
+new Resend(
+process.env.RESEND_API_KEY
+);
 
 exports.register = async (req, res) => {
   try {
@@ -233,15 +239,10 @@ async (
         new SibApiV3Sdk
           .TransactionalEmailsApi();
 
-      await apiInstance
-        .sendTransacEmail({
+      await resend.emails.send({
 
-          sender: {
-            name:
-              "Gouldings Global Academy",
-            email:
-              "support@gouldings.education"
-          },
+           from:
+  "Gouldings Global Academy <support@gouldings.education>",
 
           to: [
             {
@@ -252,7 +253,7 @@ async (
           subject:
             "Reset Your Password",
 
-          htmlContent: `
+          html: `
             <h2>Password Reset</h2>
 
             <p>
