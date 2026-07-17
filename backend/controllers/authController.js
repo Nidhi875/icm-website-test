@@ -66,7 +66,7 @@ exports.register = async (req, res) => {
     console.log(error);
 
     res.status(500).json({
-      message: error.message
+        "Internal server error"
     });
 
   }
@@ -139,8 +139,7 @@ exports.login = async (
     console.log(error);
 
     res.status(500).json({
-      message:
-        error.message
+       "Internal server error"
     });
 
   }
@@ -160,9 +159,8 @@ async (
       req.body;
 
     console.log(
-      "Forgot password:",
-      email
-    );
+  "Password reset requested."
+);
 
     const result =
       await pool.query(
@@ -215,13 +213,9 @@ async (
     const resetLink =
       `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
-    console.log("TOKEN CREATED:", resetToken);
-    console.log("RESET LINK:", resetLink);  
-
-    console.log(
-      "RESET LINK:",
-      resetLink
-    );
+   console.log(
+  "Password reset email prepared."
+);
 
     try {
 
@@ -285,9 +279,9 @@ async (
           `
         });
 
-      console.log(
-        "MAIL SENT SUCCESSFULLY"
-      );
+     console.log(
+  "Password reset email sent."
+);
 
       return res.json({
         message:
@@ -314,8 +308,7 @@ async (
     console.log(error);
 
     res.status(500).json({
-      message:
-        error.message
+      "Internal server error"
     });
 
   }
@@ -337,8 +330,7 @@ async (
       password
     } = req.body;
 
-    console.log("BODY:", req.body);
-    console.log("TOKEN RECEIVED:", token);
+  
 
     const result =
       await pool.query(
@@ -353,9 +345,9 @@ async (
         [token]
       );
 
-      console.log(
-  "DB RESULT:",
-  result.rows
+
+console.log(
+  "Password reset token verification started."
 );
 
 
@@ -392,6 +384,7 @@ async (
       ]
     );
 
+
     res.json({
       message:
         "Password updated successfully"
@@ -403,8 +396,7 @@ async (
     console.log(error);
 
     res.status(500).json({
-      message:
-        error.message
+       "Internal server error"
     });
 
   }
