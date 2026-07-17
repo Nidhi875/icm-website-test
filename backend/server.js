@@ -15,10 +15,12 @@ app.use(cors({
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "https://gouldingsglobalacademy.com",
-    "https://www.gouldingsglobalacademy.com"
+    "https://icm-website-test.vercel.app"
   ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
 
 app.use(express.json());
 
