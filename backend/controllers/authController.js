@@ -223,6 +223,8 @@ async (
   "Password reset email prepared."
 );
 
+  console.log("RESET LINK:", resetLink);
+
     try {
      
        await resend.emails.send({
