@@ -240,7 +240,7 @@ async (
             name:
               "Gouldings Global Academy",
             email:
-              "Nidhi2437@gmail.com"
+              "support@gouldings.education"
           },
 
           to: [
