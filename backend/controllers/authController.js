@@ -215,6 +215,9 @@ async (
     const resetLink =
       `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
+    console.log("TOKEN CREATED:", resetToken);
+    console.log("RESET LINK:", resetLink);  
+
     console.log(
       "RESET LINK:",
       resetLink
@@ -334,6 +337,9 @@ async (
       password
     } = req.body;
 
+    console.log("BODY:", req.body);
+    console.log("TOKEN RECEIVED:", token);
+
     const result =
       await pool.query(
         `
@@ -346,6 +352,12 @@ async (
         `,
         [token]
       );
+
+      console.log(
+  "DB RESULT:",
+  result.rows
+);
+
 
     if (
       result.rows.length === 0
