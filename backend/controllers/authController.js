@@ -223,7 +223,8 @@ async (
   "Password reset email prepared."
 );
 
-  console.log("RESET LINK:", resetLink);
+ console.log("FRONTEND_URL =", process.env.FRONTEND_URL);
+console.log("RESET LINK =", resetLink);
 
     try {
      
