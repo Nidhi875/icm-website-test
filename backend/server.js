@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 require("./config/db");
 
@@ -9,13 +11,27 @@ const authRoutes =
 require("./routes/authRoutes");
 
 const app = express();
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    message:
+      "Too many requests. Please try again later."
+  }
+});
+
+app.use(limiter);
 
 app.use(cors({
   origin: [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "https://gouldingsglobalacademy.com",
-    "https://icm-website-test.vercel.app"
+    "https://www.gouldings.education",
+    "https://gouldings.education"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
