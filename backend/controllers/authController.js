@@ -224,31 +224,13 @@ async (
 );
 
     try {
-
-      const defaultClient =
-        SibApiV3Sdk
-          .ApiClient
-          .instance;
-
-      defaultClient
-        .authentications["api-key"]
-        .apiKey =
-        process.env.BREVO_API_KEY;
-
-      const apiInstance =
-        new SibApiV3Sdk
-          .TransactionalEmailsApi();
-
-      await resend.emails.send({
+     
+       await resend.emails.send({
 
            from:
   "Gouldings Global Academy <support@gouldings.education>",
 
-          to: [
-            {
-              email: email
-            }
-          ],
+        to: [email],
 
           subject:
             "Reset Your Password",
