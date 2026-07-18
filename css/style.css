@@ -529,6 +529,8 @@ height:100vh;
 overflow:hidden;
 }
 
+
+
 .story-image{
 position:absolute;
 top:0;
@@ -1255,17 +1257,18 @@ ICM STORY MOBILE
     grid-template-columns:1fr;
 }
 
+@media(max-width:768px){
+
 .story-images{
 
-    position:sticky;
+    position:relative;
 
-    top:75px;
+    top:auto;
 
-    height:340px;
-
-    overflow:hidden;
+    height:auto;
 }
 
+}
 .story-image{
 
     position:absolute;
@@ -1311,13 +1314,18 @@ ICM STORY MOBILE
 
 .story-block h2{
 
-    font-size:48px;
+    font-size:58px;
 
     line-height:1.05;
 
-    font-weight:300;
+    font-weight:200;
 
-    letter-spacing:-1px;
+    letter-spacing:-2px;
+
+     font-family:
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
 }
 
 .story-block p{
@@ -1371,6 +1379,59 @@ ICM STORY MOBILE
     border:none;
 
     padding:0;
+}
+
+}
+
+.mobile-story-image{
+    display:none;
+}
+
+@media(max-width:768px){
+
+.story-images{
+    display:none;
+}
+
+.mobile-story-image{
+    display:block;
+
+    width:100%;
+    height:280px;
+
+    object-fit:cover;
+
+    margin-bottom:40px;
+}
+
+}
+
+
+
+
+.mobile-story-image{
+    display:none;
+}
+
+@media(max-width:768px){
+
+.story-images{
+    display:none;
+}
+
+.mobile-story-image{
+
+    display:block;
+
+    width:100%;
+
+    height:280px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+    margin-bottom:35px;
 }
 
 }
