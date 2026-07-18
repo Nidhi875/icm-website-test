@@ -46,6 +46,18 @@ body{
 
 }
 
+.portal-logo {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+.hero img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+}
+
 .login-box h1{
 
     font-size:42px;

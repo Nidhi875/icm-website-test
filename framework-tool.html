@@ -1,0 +1,415 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Framework Alignment Tool</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+h1{
+    margin:0 0 25px;
+    font-size:52px;
+    color:#8c2332;
+}
+
+/* TOP BUTTONS */
+
+.top-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:20px;
+    
+}
+
+.action-btn{
+    background:#8c2332;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    padding:12px 20px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.action-btn:hover{
+    opacity:.9;
+}
+
+/* FILTERS */
+
+.filter-wrapper{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+
+    background:#fff;
+    padding:20px;
+    margin-bottom:20px;
+
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+        transition: all .4s ease;
+    overflow: hidden;
+
+}
+
+#countrySearch{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-bottom:10px;
+}
+
+.country-btn{
+    padding:12px 18px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .25s ease;
+}
+
+.country-btn:hover{
+    background:#8c2332;
+    color:#fff;
+    transform: translateX(-2px);
+}
+
+/* TABLE WRAPPER */
+
+.table-wrapper{
+    background:#fff;
+    border-radius:8px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+#defaultMessage{
+    padding:40px;
+    text-align:center;
+    color:#666;
+    font-size:18px;
+}
+
+#countryContent{
+    overflow-x:auto;
+}
+
+/* TABLE */
+
+#countryContent table{
+    border-collapse:collapse;
+    width:max-content;
+    min-width:100%;
+}
+
+#countryContent td{
+    border:1px solid #d9d9d9;
+    padding:18px;
+    vertical-align:top;
+    font-size:15px;
+}
+
+/* HEADER ROW */
+
+#countryContent tr:first-child td{
+    background:#224a75;
+    color:#fff;
+    font-weight:bold;
+}
+
+
+
+/* ICM LEVEL COLUMN */
+
+#countryContent td.level{
+    width:90px;
+    min-width:90px;
+    max-width:90px;
+    height:90px;
+
+    padding:0;
+
+    background:#224a75;
+    color:#fff;
+
+    text-align:center;
+    vertical-align:middle;
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* ICM QUALIFICATION COLUMN */
+
+.icm-title{
+    min-width:280px;
+}
+
+.icm-qualification{
+    min-width:280px;
+    background:#f5f7fa;
+    font-weight:600;
+}
+
+/* COUNTRY COLUMNS */
+
+#countryContent td:not(.level){
+    min-width:320px;
+}
+
+/* ANIMATION */
+
+#countryContent table{
+    animation:fadeIn .35s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+#countryContent td.level{
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background:#224a75;
+}
+
+#countryContent td.icm-title,
+#countryContent td.icm-qualification{
+    position: sticky;
+    left: 90px;
+}
+
+#countryContent td.icm-title{
+    background:#224a75;
+    z-index:4;
+}
+
+#countryContent td.icm-qualification{
+    background:#f5f7fa;
+    z-index:3;
+}
+
+#countryContent tr:first-child td{
+    position: sticky;
+    top: 0;
+    z-index: 6;
+}
+#countryContent{
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 75vh;
+}
+
+#countryContent::-webkit-scrollbar{
+    height: 12px;
+}
+
+#countryContent::-webkit-scrollbar-thumb{
+    background: #8c2332;
+    border-radius: 10px;
+}
+/* MOBILE */
+
+@media (max-width:768px){
+
+    h1{
+        font-size:34px;
+    }
+
+    .top-buttons{
+        flex-direction:column;
+    }
+
+    .action-btn{
+        width:100%;
+    }
+
+}
+
+#selectionInfo{
+    margin-bottom: 15px;
+    color: #666;
+    font-weight: 600;
+}
+
+#countryButtons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    width:100%;
+}
+
+
+@media (max-width: 768px) {
+
+    .container{
+        width:100%;
+        padding:20px 10px;
+    }
+
+    h1{
+        font-size:32px;
+        margin-bottom:20px;
+    }
+
+    .top-buttons{
+        flex-direction:column;
+    }
+
+    .action-btn{
+        width:100%;
+    }
+
+    .filter-wrapper{
+        padding:15px;
+    }
+
+    .country-btn{
+        width:100%;
+        text-align:left;
+    }
+
+    #countrySearch{
+        font-size:16px;
+    }
+
+    .table-wrapper{
+        padding:10px;
+        border-radius:0;
+    }
+
+    #countryContent{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    #countryContent table{
+        min-width:900px;
+    }
+
+    #countryContent td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    #countryContent td.level{
+        width:60px;
+        min-width:60px;
+        max-width:60px;
+        height:60px;
+        font-size:16px;
+    }
+
+    .icm-title,
+    .icm-qualification{
+        min-width:180px;
+    }
+
+    #countryContent td:not(.level){
+        min-width:180px;
+    }
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Framework Alignment Tool</h1>
+
+    <div class="top-buttons">
+
+        <button class="action-btn" onclick="showFilters()">
+            Filter By Country
+        </button>
+
+        <button class="action-btn" onclick="hideFilters()">
+            Hide Country Filters
+        </button>
+
+        <button class="action-btn" onclick="selectAllCountries()">
+    Select All
+</button>
+
+       <button class="action-btn" onclick="resetTool()">
+    Reset
+</button>
+
+<button class="action-btn" onclick="clearSearch()">
+    Clear Search
+</button>
+
+<button class="action-btn" onclick="exportCSV()">
+    Export CSV
+</button>
+    </div>
+
+    <div id="filters" class="filter-wrapper">
+
+        <input
+            type="text"
+            id="countrySearch"
+            placeholder="Search country..."
+            onkeyup="filterCountries()"
+        >
+
+        <div id="countryButtons"></div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <div id="defaultMessage">
+            Select a country above
+        </div>
+         <div id="selectionInfo"></div> 
+        <div id="countryContent"></div>
+
+    </div>
+
+</div>
+
+<script src="js/framework-data.js"></script>
+<script src="js/framework-tool.js"></script>
+
+</body>
+</html>
+
