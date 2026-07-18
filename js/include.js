@@ -16,6 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
             if(page === "qualifications.html")
                 document.getElementById("nav-qualifications")?.classList.add("active");
         });
+  
+
+    const menuBtn =
+document.querySelector(
+".menu-toggle"
+);
+
+const nav =
+document.querySelector("nav");
+
+if(menuBtn){
+
+menuBtn.addEventListener(
+"click",
+()=>{
+
+    nav.classList.toggle(
+        "active"
+    );
+
+});
+
+}
+
 
     // Qualifications Sidebar
     const sidebar = document.getElementById("qualification-sidebar");
