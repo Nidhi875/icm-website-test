@@ -50,9 +50,26 @@ menuBtn.addEventListener(
             .then(r => r.text())
             .then(data => {
                 sidebar.innerHTML = data;
-            });
+                 const currentPage =
+    window.location.pathname
+    .split("/")
+    .pop();
 
-    }
+    document
+    .querySelectorAll(
+        ".submenu-item"
+    )
+    .forEach(item=>{
+
+        if(
+            item.getAttribute("href")
+            === currentPage
+        ){
+            item.classList.add(
+                "active"
+            );
+        }
+    });
 
     // Footer
     fetch("components/footer.html")
@@ -60,5 +77,6 @@ menuBtn.addEventListener(
         .then(data => {
             document.getElementById("footer").innerHTML = data;
         });
-
+    });
+}
 });
