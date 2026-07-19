@@ -71,12 +71,21 @@ menuBtn.addEventListener(
         }
     });
 
-    // Footer
-    fetch("components/footer.html")
-        .then(r => r.text())
-        .then(data => {
-            document.getElementById("footer").innerHTML = data;
-        });
+   // Footer
+fetch("components/footer.html")
+    .then(r => r.text())
+    .then(data => {
+
+        const footer =
+        document.getElementById("footer");
+
+        if(footer){
+            footer.innerHTML = data;
+        }
+
     });
-}
+
+});
+    }
+
 });
