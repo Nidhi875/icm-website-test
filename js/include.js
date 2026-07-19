@@ -2,90 +2,65 @@ console.log("include.js loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Navbar
+    // NAVBAR
     fetch("components/navbar.html")
         .then(r => r.text())
         .then(data => {
-            document.getElementById("navbar").innerHTML = data;
 
-            const page = window.location.pathname.split("/").pop();
+            const navbar =
+                document.getElementById("navbar");
 
-            if(page === "" || page === "index.html")
-                document.getElementById("nav-home")?.classList.add("active");
-
-            if(page === "qualifications.html")
-                document.getElementById("nav-qualifications")?.classList.add("active");
+            if (navbar) {
+                navbar.innerHTML = data;
+            }
         });
-  
-
-    const menuBtn =
-document.querySelector(
-".menu-toggle"
-);
-
-const nav =
-document.querySelector("nav");
-
-if(menuBtn){
-
-menuBtn.addEventListener(
-"click",
-()=>{
-
-    nav.classList.toggle(
-        "active"
-    );
-
-});
-
-}
 
 
-    // Qualifications Sidebar
-    const sidebar = document.getElementById("qualification-sidebar");
+    // SIDEBAR
+    const sidebar =
+        document.getElementById(
+            "qualification-sidebar"
+        );
 
-    if(sidebar){
+    if (sidebar) {
 
-        fetch("components/qualifications-sidebar.html")
-            .then(r => r.text())
-            .then(data => {
-                sidebar.innerHTML = data;
-                 const currentPage =
-    window.location.pathname
-    .split("/")
-    .pop();
+        fetch(
+            "components/qualifications-sidebar.html"
+        )
+        .then(r => r.text())
+        .then(data => {
+            sidebar.innerHTML = data;
+        });
 
-    document
-    .querySelectorAll(
-        ".submenu-item"
-    )
-    .forEach(item=>{
+    }
 
-        if(
-            item.getAttribute("href")
-            === currentPage
-        ){
-            item.classList.add(
-                "active"
-            );
-        }
-    });
 
-   // Footer
-fetch("components/footer.html")
-    .then(r => r.text())
-    .then(data => {
-
-        const footer =
+    // FOOTER
+    const footer =
         document.getElementById("footer");
 
-        if(footer){
-            footer.innerHTML = data;
-        }
+    if (footer) {
 
-    });
+        fetch("components/footer.html")
+            .then(r => r.text())
+            .then(data => {
 
-});
+                footer.innerHTML = data;
+
+                console.log(
+                    "Footer Loaded"
+                );
+
+            })
+            .catch(err => {
+
+                console.error(
+                    "Footer Error:",
+                    err
+                );
+
+            });
+
     }
 
 });
