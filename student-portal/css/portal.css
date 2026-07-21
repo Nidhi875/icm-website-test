@@ -384,3 +384,122 @@ body{
 
     font-size:14px;
 }
+
+.hero-badge{
+
+    display:inline-block;
+
+    background:#d4af37;
+
+    color:#fff;
+
+    padding:10px 22px;
+
+    border-radius:40px;
+
+    margin-bottom:25px;
+}
+
+.hero-buttons{
+
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.primary-btn,
+.secondary-btn{
+
+    padding:16px 35px;
+
+    text-decoration:none;
+
+    border-radius:8px;
+}
+
+.primary-btn{
+
+    background:white;
+    color:#244c69;
+}
+
+.secondary-btn{
+
+    border:2px solid white;
+    color:white;
+}
+
+.portal-stats{
+
+    background:#244c69;
+
+    color:white;
+
+    padding:70px 20px;
+
+    display:flex;
+    justify-content:center;
+    gap:80px;
+    flex-wrap:wrap;
+}
+
+.stats-card{
+
+    text-align:center;
+}
+
+.stats-card h2{
+
+    font-size:52px;
+}
+
+.quick-access{
+
+    padding:100px 0;
+}
+
+.quick-access h2{
+
+    text-align:center;
+    font-size:48px;
+    margin-bottom:60px;
+}
+
+.access-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:30px;
+}
+
+.access-card{
+
+    background:white;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+}
+
+.access-card:hover{
+
+    transform:translateY(-10px);
+}
+
+.access-card h3{
+
+    margin-top:20px;
+}
+
+
