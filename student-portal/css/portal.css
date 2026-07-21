@@ -48,7 +48,7 @@ body{
 
 .portal-logo {
     width: 180px;
-    height: auto;
+    height: 55px;
     object-fit: contain;
 }
 
@@ -100,4 +100,15 @@ body{
 
     cursor:pointer;
 
+}
+
+.header-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.portal-nav{
+    display:flex;
+    gap:35px;
 }
