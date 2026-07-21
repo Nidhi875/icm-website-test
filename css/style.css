@@ -1318,8 +1318,7 @@ MOBILE STORY IMAGES
     display:none;
 }
 
-.sidebar-menu.open
-.submenu{
+.sidebar-menu.open .submenu{
 
     display:block;
 }

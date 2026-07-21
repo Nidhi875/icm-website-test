@@ -3,18 +3,40 @@ console.log("include.js loaded");
 document.addEventListener("DOMContentLoaded", () => {
 
     // NAVBAR
-    fetch("components/navbar.html")
-        .then(r => r.text())
-        .then(data => {
+   fetch("components/navbar.html")
+    .then(r => r.text())
+    .then(data => {
 
-            const navbar =
-                document.getElementById("navbar");
+        const navbar =
+            document.getElementById("navbar");
 
-            if (navbar) {
-                navbar.innerHTML = data;
-            }
-        });
+        if (navbar) {
+            navbar.innerHTML = data;
+        }
 
+        // MOBILE MENU
+        const menuBtn =
+            document.querySelector(".menu-toggle");
+
+        const nav =
+            document.querySelector("nav");
+
+        if(menuBtn && nav){
+
+            menuBtn.addEventListener(
+                "click",
+                () => {
+
+                    nav.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+    });
 
     // SIDEBAR
     const sidebar =
