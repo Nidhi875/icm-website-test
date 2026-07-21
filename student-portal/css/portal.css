@@ -112,3 +112,219 @@ body{
     display:flex;
     gap:35px;
 }
+
+/* HEADER */
+
+.portal-header{
+    background:white;
+    box-shadow:0 2px 20px rgba(0,0,0,.08);
+    padding:20px 0;
+}
+
+.header-container{
+    width:min(1300px,92%);
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.portal-nav{
+    display:flex;
+    gap:40px;
+}
+
+.portal-nav a{
+    text-decoration:none;
+    color:#222;
+    font-weight:600;
+}
+
+.header-actions{
+    display:flex;
+    gap:15px;
+}
+
+.language-btn,
+.login-btn{
+
+    padding:12px 25px;
+
+    border:none;
+
+    text-decoration:none;
+
+    background:#244c69;
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:6px;
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    height:700px;
+    overflow:hidden;
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.45);
+}
+
+.hero-content{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    text-align:center;
+
+    color:white;
+
+    width:min(900px,90%);
+}
+
+.hero-content h1{
+    font-size:64px;
+    margin-bottom:25px;
+}
+
+.hero-content p{
+    font-size:22px;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.hero-content a{
+    background:white;
+    color:#244c69;
+
+    padding:16px 40px;
+
+    text-decoration:none;
+
+    border-radius:6px;
+}
+
+/* COURSES */
+
+.popular-courses{
+    padding:100px 0;
+}
+
+.container{
+    width:min(1280px,92%);
+    margin:auto;
+}
+
+.popular-courses h2{
+    text-align:center;
+    font-size:48px;
+    margin-bottom:60px;
+}
+
+.courses-grid{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.course-card{
+
+    width:320px;
+
+    background:white;
+
+    padding:45px;
+
+    text-align:center;
+
+    border-radius:14px;
+
+    box-shadow:
+    0 10px 35px
+    rgba(0,0,0,.08);
+}
+
+/* INFO */
+
+.portal-info{
+    padding:100px 0;
+}
+
+.portal-info .container{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.info-card{
+
+    width:420px;
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:14px;
+
+    box-shadow:
+    0 10px 35px
+    rgba(0,0,0,.08);
+}
+
+.info-card h3{
+    font-size:34px;
+    margin-bottom:20px;
+}
+
+.info-card p{
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .header-container{
+        flex-direction:column;
+        gap:20px;
+    }
+
+    .portal-nav{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .hero{
+        height:600px;
+    }
+
+    .hero-content h1{
+        font-size:38px;
+    }
+
+    .hero-content p{
+        font-size:18px;
+    }
+
+}
