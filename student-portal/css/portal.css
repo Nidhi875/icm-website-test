@@ -328,3 +328,59 @@ body{
     }
 
 }
+
+.portal-footer{
+
+    background:#244c69;
+
+    color:white;
+
+    text-align:center;
+
+    padding:80px 20px;
+}
+
+.footer-logo{
+
+    width:180px;
+
+    margin-bottom:30px;
+}
+
+.portal-footer p{
+
+    max-width:800px;
+
+    margin:auto;
+
+    line-height:1.8;
+
+    margin-bottom:25px;
+}
+
+.footer-links{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:30px;
+}
+
+.footer-links a{
+
+    color:white;
+
+    text-decoration:none;
+}
+
+.copyright{
+
+    opacity:.8;
+
+    font-size:14px;
+}
