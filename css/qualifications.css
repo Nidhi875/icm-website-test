@@ -131,7 +131,10 @@ ICM SIDEBAR
 
     align-self:start;
 
-    width:300px;
+        width:260px;
+
+
+
 
 }
 
@@ -1319,5 +1322,131 @@ grid-template-columns:1fr;
 gap:45px;
 
 }
+
+}
+
+/* ==========================================
+QUALIFICATIONS MOBILE RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+    .qualifications-banner{
+        height:300px;
+        min-height:300px;
+    }
+
+    .banner-content{
+        margin-left:0;
+        max-width:100%;
+    }
+
+    .banner-content h1{
+        font-size:42px;
+        line-height:1.1;
+    }
+
+    .banner-content p{
+        font-size:15px;
+    }
+
+    /* Sidebar + Content */
+
+    .intro-grid{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .intro-grid::before{
+        display:none;
+    }
+
+    .qualification-sidebar{
+        position:static;
+        width:100%;
+    }
+
+    .qualification-content{
+        max-width:100%;
+    }
+
+    .qualification-content h2,
+    .qualification-framework h2,
+    .qualification-level h2,
+    .qualification-tqt h2,
+    .qualification-titling h2,
+    .subject-area h2,
+    .qualification-enquiry h2{
+
+        font-size:30px;
+    }
+
+    /* Split table */
+
+    .split-row{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .blue-column,
+    .grey-column{
+        font-size:15px;
+        padding:18px;
+    }
+
+    /* Subject matrix */
+
+    .matrix-row{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .matrix-left,
+    .matrix-right{
+        padding:20px;
+    }
+
+    .matrix-left{
+        font-size:16px;
+    }
+
+    .matrix-right li{
+        font-size:16px;
+    }
+
+    /* Subject buttons */
+
+    .subject-links{
+        flex-direction:column;
+        gap:15px;
+        margin-top:10px;
+    }
+
+    .subject-link-btn{
+        width:100%;
+        min-width:auto;
+    }
+
+    /* Equivalency card */
+
+    .equivalency-card{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:20px;
+    }
+
+    /* Form */
+
+    .qualification-enquiry{
+        margin-top:50px;
+    }
+
+    .form-consent{
+        align-items:flex-start;
+    }
+
+    .form-consent label{
+        font-size:15px;
+    }
 
 }
