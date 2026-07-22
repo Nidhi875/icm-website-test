@@ -931,9 +931,9 @@ font-size:20px;
 }
 
 .footer-logo{
-padding:0 60px;
-border-left:1px solid rgba(255,255,255,.15);
-border-right:1px solid rgba(255,255,255,.15);
+    padding:0 60px;
+    border-left:1px solid rgba(255,255,255,.15);
+    border-right:1px solid rgba(255,255,255,.15);
 }
 
 .footer-logo img{
@@ -1322,6 +1322,85 @@ MOBILE STORY IMAGES
 
     display:block;
 }
+
+}
+
+
+@media(max-width:768px){
+
+    .footer-container{
+        flex-direction:column;
+        text-align:center;
+        gap:50px;
+        padding:0 25px;
+    }
+
+    .footer-links{
+        flex-direction:column;
+        gap:35px;
+        width:100%;
+    }
+
+    .footer-links div{
+        gap:15px;
+    }
+
+    .footer-links a{
+        font-size:18px;
+    }
+
+    .footer-logo{
+        border:none;
+        padding:0;
+        order:-1;
+    }
+
+    .footer-logo img{
+        width:120px;
+    }
+
+    .footer-contact{
+        max-width:100%;
+    }
+
+    .footer-contact p{
+        font-size:16px;
+        line-height:1.7;
+    }
+
+    .social-icons{
+        gap:30px;
+        flex-wrap:wrap;
+    }
+
+    .social-icons a{
+        font-size:34px;
+    }
+
+    .footer-buttons{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .footer-buttons a{
+        width:90%;
+        text-align:center;
+    }
+
+    .partner-badges{
+        flex-wrap:wrap;
+        gap:20px;
+    }
+
+    .partner-badges img{
+        height:65px;
+    }
+
+    .copyright{
+        font-size:14px;
+        line-height:1.7;
+        padding:0 20px;
+    }
 
 }
 
