@@ -1198,11 +1198,17 @@ FOOTER MOBILE ONLY
     }
 
     .footer-links{
-        display:flex;
-        flex-direction:column;
-        gap:25px;
-    }
+    display:grid;
+    grid-template-columns:repeat(2,auto);
+    gap:20px 60px;
+    justify-content:center;
+}
 
+.footer-links div{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
     .footer-logo{
         border:none;
         width:100%;

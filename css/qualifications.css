@@ -1442,22 +1442,5 @@ QUALIFICATIONS MOBILE FINAL FIX
 
     /* Footer fix */
 
-    .footer-container{
-        flex-direction:column !important;
-        text-align:center !important;
-        gap:45px !important;
     }
 
-    .footer-links{
-    display:grid !important;
-    grid-template-columns:repeat(2,auto) !important;
-    gap:20px 50px !important;
-    justify-content:center !important;
-}
-
-
-    .footer-logo{
-        border:none !important;
-    }
-
-}
