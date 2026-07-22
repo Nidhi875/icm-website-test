@@ -1332,8 +1332,8 @@ QUALIFICATIONS MOBILE RESPONSIVE
 @media(max-width:768px){
 
     .qualifications-banner{
-        height:300px;
-        min-height:300px;
+        height:230px;
+        min-height:230px;
     }
 
     .banner-content{
@@ -1347,7 +1347,8 @@ QUALIFICATIONS MOBILE RESPONSIVE
     }
 
     .banner-content p{
-        font-size:15px;
+        font-size:14px;
+        max-width:100%;
     }
 
     /* Sidebar + Content */
@@ -1446,6 +1447,84 @@ QUALIFICATIONS MOBILE RESPONSIVE
     }
 
     .form-consent label{
+        font-size:15px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .qualification-sidebar{
+        display:none;
+    }
+
+    .intro-grid{
+        display:block;
+    }
+
+    .intro-grid::before{
+        display:none;
+    }
+
+    .qualification-content{
+        width:100%;
+        max-width:100%;
+        padding:0;
+        margin-top:0;
+    }
+
+    .qualifications-intro{
+        padding:35px 0;
+    }
+
+    .container{
+        width:92%;
+    }
+
+    .qualification-content h2,
+    .qualification-framework h2,
+    .qualification-level h2,
+    .qualification-tqt h2,
+    .qualification-titling h2,
+    .subject-area h2,
+    .qualification-enquiry h2{
+
+        font-size:32px;
+        line-height:1.2;
+    }
+
+    .qualification-content h4{
+        font-size:22px;
+    }
+
+    .qualification-content p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .split-row{
+        grid-template-columns:42% 58%;
+        gap:8px;
+    }
+
+    .matrix-row{
+        grid-template-columns:42% 58%;
+        gap:8px;
+    }
+
+    .blue-column,
+    .grey-column,
+    .matrix-left,
+    .matrix-right{
+        padding:16px;
+        font-size:15px;
+    }
+
+    .matrix-right li{
         font-size:15px;
     }
 
