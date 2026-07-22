@@ -3,7 +3,7 @@ console.log("include.js loaded");
 document.addEventListener("DOMContentLoaded", () => {
 
     // NAVBAR
-   fetch("components/navbar.html")
+   fetch("/components/navbar.html")
     .then(r => r.text())
     .then(data => {
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (footer) {
 
-        fetch("components/footer.html")
+        fetch("/components/footer.html")
             .then(r => r.text())
             .then(data => {
 
