@@ -591,4 +591,51 @@ body{
     font-weight:600;
 }
 
+.access-card{
+
+    background:white;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+}
+
+.access-card:hover{
+
+    transform:translateY(-12px);
+}
+
+.access-btn{
+
+    display:inline-block;
+
+    margin-top:25px;
+
+    padding:12px 28px;
+
+    background:#244c69;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.access-btn:hover{
+
+    background:#1a3b52;
+}
+
 
