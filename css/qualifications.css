@@ -1258,7 +1258,7 @@ QUALIFICATIONS MOBILE
 /* Sidebar */
 
 .qualification-sidebar{
-    display:block;
+    display:none;
     width:100%;
     position:static;
     margin-bottom:30px;
