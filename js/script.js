@@ -76,3 +76,23 @@ sidebarMenu.classList.toggle("open");
 });
 
 }
+
+
+/* ==========================================
+QUALIFICATIONS MOBILE SIDEBAR
+========================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (window.innerWidth > 768) return;
+
+    const toggle = document.querySelector(".active-main");
+    const sidebar = document.querySelector(".sidebar-menu");
+
+    if (!toggle || !sidebar) return;
+
+    toggle.addEventListener("click", function () {
+        sidebar.classList.toggle("open");
+    });
+
+});

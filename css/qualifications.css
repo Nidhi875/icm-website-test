@@ -1217,303 +1217,169 @@ FORM CONSENT
 
 }
 
-/* QUALIFICATIONS MOBILE RESPONSIVE
-========================================== */
-
-@media(max-width:768px){
-
-    .qualifications-banner{
-        height:230px;
-        min-height:230px;
-    }
-
-    .banner-content{
-        margin-left:0;
-        max-width:100%;
-    }
-
-    .banner-content h1{
-        font-size:42px;
-        line-height:1.1;
-    }
-
-    .banner-content p{
-        font-size:14px;
-        max-width:100%;
-    }
-
-    /* Sidebar + Content */
-
-    .intro-grid{
-        grid-template-columns:1fr;
-        gap:40px;
-    }
-
-    .intro-grid::before{
-        display:none;
-    }
-
-    .qualification-sidebar{
-        position:static;
-        width:100%;
-    }
-
-    .qualification-content{
-        max-width:100%;
-    }
-
-    .qualification-content h2,
-    .qualification-framework h2,
-    .qualification-level h2,
-    .qualification-tqt h2,
-    .qualification-titling h2,
-    .subject-area h2,
-    .qualification-enquiry h2{
-
-        font-size:30px;
-    }
-
-    /* Split table */
-
-    
-
-    /* Subject buttons */
-
-    .subject-links{
-        flex-direction:column;
-        gap:15px;
-        margin-top:10px;
-    }
-
-    .subject-link-btn{
-        width:100%;
-        min-width:auto;
-    }
-
-    /* Equivalency card */
-
-    .equivalency-card{
-        flex-direction:column;
-        align-items:flex-start;
-        padding:20px;
-    }
-
-    /* Form */
-
-    .qualification-enquiry{
-        margin-top:50px;
-    }
-
-    .form-consent{
-        align-items:flex-start;
-    }
-
-    .form-consent label{
-        font-size:15px;
-    }
-
-}
-
-@media(max-width:768px){
-
-    .qualification-sidebar{
-        display:none;
-    }
-
-    .intro-grid{
-        display:block;
-    }
-
-    .intro-grid::before{
-        display:none;
-    }
-
-    .qualification-content{
-        width:100%;
-        max-width:100%;
-        padding:0;
-        margin-top:0;
-    }
-
-    .qualifications-intro{
-        padding:35px 0;
-    }
-
-    .container{
-        width:92%;
-    }
-
-    .qualification-content h2,
-    .qualification-framework h2,
-    .qualification-level h2,
-    .qualification-tqt h2,
-    .qualification-titling h2,
-    .subject-area h2,
-    .qualification-enquiry h2{
-
-        font-size:32px;
-        line-height:1.2;
-    }
-
-    .qualification-content h4{
-        font-size:22px;
-    }
-
-    .qualification-content p{
-        font-size:16px;
-        line-height:1.8;
-    }
-
-}
-
-@media(max-width:768px){
-
-    .split-row{
-        grid-template-columns:42% 58%;
-        gap:8px;
-    }
-
-    .matrix-row{
-        grid-template-columns:42% 58%;
-        gap:8px;
-    }
-
-    .blue-column,
-    .grey-column,
-    .matrix-left,
-    .matrix-right{
-        padding:16px;
-        font-size:15px;
-    }
-
-    .matrix-right li{
-        font-size:15px;
-    }
-
-}
-
-@media(max-width:768px){
-
-    .qualification-sidebar{
-        display:none !important;
-    }
-
-    .intro-grid{
-        display:block !important;
-    }
-
-    .qualification-content{
-        width:100%;
-        max-width:100%;
-        padding:0;
-        margin:0;
-    }
-
-}
-
-
-
-/* ==========================================
-QUALIFICATIONS MOBILE FINAL FIX
-========================================== */
-
-@media(max-width:768px){
-
-    /* Hide sidebar exactly like ICM */
-
-    .qualification-sidebar{
-        display:none !important;
-    }
-
-    .intro-grid{
-        display:block !important;
-    }
-
-    .intro-grid::before{
-        display:none !important;
-    }
-
-    .qualification-content{
-        width:100%;
-        max-width:100%;
-        margin:0;
-        padding:0;
-    }
-
-    /* Footer fix */
-
-    }
-
-/* ==========================================
-MOBILE SIDEBAR ACCORDION
-========================================== */
+/* ===================================================
+QUALIFICATIONS MOBILE
+=================================================== */
 
 @media (max-width:768px){
 
+/* Banner */
+
+.qualifications-banner{
+    height:230px;
+    min-height:230px;
+}
+
+.banner-content{
+    margin-left:0;
+    max-width:100%;
+}
+
+.banner-content h1{
+    font-size:42px;
+    line-height:1.1;
+}
+
+.banner-content p{
+    font-size:15px;
+    max-width:100%;
+}
+
+/* Layout */
+
+.intro-grid{
+    display:block;
+}
+
+.intro-grid::before{
+    display:none;
+}
+
+/* Sidebar */
+
+.qualification-sidebar{
+    display:block;
+    width:100%;
+    position:static;
+    margin-bottom:30px;
+}
+
 .sidebar-menu{
-    border:1px solid #e5e7eb;
-    border-radius:10px;
+    border:1px solid #e5e5e5;
+    border-radius:8px;
     overflow:hidden;
     background:#fff;
 }
 
 .menu-item{
-
-    display:block;
-
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     padding:18px 20px;
-
-    border-bottom:1px solid #ececec;
+    border-bottom:1px solid #e5e5e5;
 }
 
 .active-main{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
     cursor:pointer;
-
-    user-select:none;
-}
-
-.active-main::after{
-
-    content:"+";
-
-    font-size:26px;
-
-    font-weight:300;
-
-    transition:.3s;
-}
-
-.sidebar-menu.open .active-main::after{
-
-    content:"−";
 }
 
 .submenu{
-
     display:none;
-
     background:#fafafa;
 }
 
 .sidebar-menu.open .submenu{
-
     display:block;
 }
 
 .submenu a{
-
     display:block;
-
-    padding:16px 28px;
-
+    padding:16px 30px;
     border-top:1px solid #ececec;
+}
+
+/* Arrow */
+
+.sidebar-arrow{
+    transition:.3s;
+}
+
+.sidebar-menu.open .sidebar-arrow{
+    transform:rotate(180deg);
+}
+
+/* Main Content */
+
+.qualification-content{
+    width:100%;
+    max-width:100%;
+    padding:0;
+    margin-top:30px;
+}
+
+.container{
+    width:92%;
+}
+
+.qualification-content h2,
+.qualification-framework h2,
+.qualification-level h2,
+.qualification-tqt h2,
+.qualification-titling h2,
+.subject-area h2,
+.qualification-enquiry h2{
+    font-size:32px;
+    line-height:1.2;
+}
+
+.qualification-content h4{
+    font-size:22px;
+}
+
+.qualification-content p{
+    font-size:16px;
+    line-height:1.8;
+}
+
+/* Tables */
+
+.split-row,
+.matrix-row{
+    grid-template-columns:42% 58%;
+    gap:8px;
+}
+
+.blue-column,
+.grey-column,
+.matrix-left,
+.matrix-right{
+    padding:16px;
+    font-size:15px;
+}
+
+.matrix-right li{
+    font-size:15px;
+}
+
+/* Buttons */
+
+.subject-links{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.subject-link-btn{
+    width:100%;
+}
+
+.equivalency-card{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.form-consent{
+    align-items:flex-start;
 }
 
 }
