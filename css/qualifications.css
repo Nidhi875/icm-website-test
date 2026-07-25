@@ -1120,10 +1120,19 @@ ENQUIRY FORM
 
 }
 
+@media(max-width:768px){
+
+.form-row{
+
+grid-template-columns:1fr;
+
+}
 
 .submit-btn{
 
 width:100%;
+
+}
 
 }
 
@@ -1208,11 +1217,10 @@ FORM CONSENT
 
 }
 
-/* ==========================================
-QUALIFICATIONS MOBILE
+/* QUALIFICATIONS MOBILE RESPONSIVE
 ========================================== */
 
-@media (max-width:768px){
+@media(max-width:768px){
 
     .qualifications-banner{
         height:230px;
@@ -1231,10 +1239,85 @@ QUALIFICATIONS MOBILE
 
     .banner-content p{
         font-size:14px;
+        max-width:100%;
     }
 
-    .qualifications-intro{
-        padding:35px 0;
+    /* Sidebar + Content */
+
+    .intro-grid{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .intro-grid::before{
+        display:none;
+    }
+
+    .qualification-sidebar{
+        position:static;
+        width:100%;
+    }
+
+    .qualification-content{
+        max-width:100%;
+    }
+
+    .qualification-content h2,
+    .qualification-framework h2,
+    .qualification-level h2,
+    .qualification-tqt h2,
+    .qualification-titling h2,
+    .subject-area h2,
+    .qualification-enquiry h2{
+
+        font-size:30px;
+    }
+
+    /* Split table */
+
+    
+
+    /* Subject buttons */
+
+    .subject-links{
+        flex-direction:column;
+        gap:15px;
+        margin-top:10px;
+    }
+
+    .subject-link-btn{
+        width:100%;
+        min-width:auto;
+    }
+
+    /* Equivalency card */
+
+    .equivalency-card{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:20px;
+    }
+
+    /* Form */
+
+    .qualification-enquiry{
+        margin-top:50px;
+    }
+
+    .form-consent{
+        align-items:flex-start;
+    }
+
+    .form-consent label{
+        font-size:15px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .qualification-sidebar{
+        display:none;
     }
 
     .intro-grid{
@@ -1245,15 +1328,19 @@ QUALIFICATIONS MOBILE
         display:none;
     }
 
-    .qualification-sidebar{
-        display:none;
-    }
-
     .qualification-content{
         width:100%;
         max-width:100%;
-        margin:0;
         padding:0;
+        margin-top:0;
+    }
+
+    .qualifications-intro{
+        padding:35px 0;
+    }
+
+    .container{
+        width:92%;
     }
 
     .qualification-content h2,
@@ -1263,41 +1350,97 @@ QUALIFICATIONS MOBILE
     .qualification-titling h2,
     .subject-area h2,
     .qualification-enquiry h2{
+
         font-size:32px;
         line-height:1.2;
     }
 
-    .split-row,
+    .qualification-content h4{
+        font-size:22px;
+    }
+
+    .qualification-content p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .split-row{
+        grid-template-columns:42% 58%;
+        gap:8px;
+    }
+
     .matrix-row{
-        grid-template-columns:1fr;
+        grid-template-columns:42% 58%;
+        gap:8px;
     }
 
-    .subject-links{
-        flex-direction:column;
-        gap:15px;
-        margin-top:20px;
-    }
-
-    .subject-link-btn{
-        width:100%;
-        min-width:0;
-    }
-
-    .equivalency-card{
-        flex-direction:column;
-        align-items:flex-start;
-        padding:20px;
-    }
-
-    .form-row{
-        grid-template-columns:1fr;
-    }
-
-    .form-consent{
-        align-items:flex-start;
-    }
-
-    .form-consent label{
+    .blue-column,
+    .grey-column,
+    .matrix-left,
+    .matrix-right{
+        padding:16px;
         font-size:15px;
     }
+
+    .matrix-right li{
+        font-size:15px;
+    }
+
 }
+
+@media(max-width:768px){
+
+    .qualification-sidebar{
+        display:none !important;
+    }
+
+    .intro-grid{
+        display:block !important;
+    }
+
+    .qualification-content{
+        width:100%;
+        max-width:100%;
+        padding:0;
+        margin:0;
+    }
+
+}
+
+
+
+/* ==========================================
+QUALIFICATIONS MOBILE FINAL FIX
+========================================== */
+
+@media(max-width:768px){
+
+    /* Hide sidebar exactly like ICM */
+
+    .qualification-sidebar{
+        display:none !important;
+    }
+
+    .intro-grid{
+        display:block !important;
+    }
+
+    .intro-grid::before{
+        display:none !important;
+    }
+
+    .qualification-content{
+        width:100%;
+        max-width:100%;
+        margin:0;
+        padding:0;
+    }
+
+    /* Footer fix */
+
+    }
+
