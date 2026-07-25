@@ -36,6 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+        const qualificationItem = document.querySelector(".nav-item--has-submenu");
+        const qualificationToggle = qualificationItem?.querySelector(".nav-title");
+
+        if (qualificationItem && qualificationToggle) {
+            qualificationToggle.addEventListener("click", () => {
+                if (window.innerWidth > 768) return;
+
+                const isOpen = qualificationItem.classList.toggle("open");
+                qualificationToggle.setAttribute("aria-expanded", String(isOpen));
+            });
+        }
+
     });
 
     // SIDEBAR
