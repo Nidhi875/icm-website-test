@@ -800,68 +800,6 @@ opacity:.8;
 
 
 
-.footer-top{
-    background:#343434;
-    padding:90px 50px;
-    color:white;
-}
-
-.footer-container{
-    max-width:1400px;
-    margin:auto;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:60px;
-}
-
-
-.footer-links{
-    display:flex;
-    gap:90px;
-}
-
-.footer-links div{
-    display:flex;
-    flex-direction:column;
-    gap:22px;
-}
-
-
-.footer-links a{
-    color:white;
-    text-decoration:none;
-    font-size:20px;
-}
-
-.footer-logo{
-    padding:0 55px;
-    border-left:1px solid rgba(255,255,255,.15);
-    border-right:1px solid rgba(255,255,255,.15);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.footer-logo img{
-    width:140px;
-}
-
-.footer-contact{
-    max-width:390px;
-}
-
-.footer-contact p{
-    font-size:20px;
-    line-height:1.9;
-    margin-bottom:15px;
-}
-
-
-
-
 
 .floating-globe{
 position:fixed;
