@@ -54,3 +54,25 @@ threshold:0.5
 blocks.forEach(block=>{
 observer.observe(block);
 });
+
+// MOBILE QUALIFICATIONS SIDEBAR
+
+const sidebarMenu =
+document.querySelector(".sidebar-menu");
+
+const activeMain =
+document.querySelector(".active-main");
+
+if(sidebarMenu && activeMain){
+
+activeMain.addEventListener("click",()=>{
+
+if(window.innerWidth<=768){
+
+sidebarMenu.classList.toggle("open");
+
+}
+
+});
+
+}

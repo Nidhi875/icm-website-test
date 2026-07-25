@@ -1444,4 +1444,76 @@ QUALIFICATIONS MOBILE FINAL FIX
 
     }
 
+/* ==========================================
+MOBILE SIDEBAR ACCORDION
+========================================== */
 
+@media (max-width:768px){
+
+.sidebar-menu{
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.menu-item{
+
+    display:block;
+
+    padding:18px 20px;
+
+    border-bottom:1px solid #ececec;
+}
+
+.active-main{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    user-select:none;
+}
+
+.active-main::after{
+
+    content:"+";
+
+    font-size:26px;
+
+    font-weight:300;
+
+    transition:.3s;
+}
+
+.sidebar-menu.open .active-main::after{
+
+    content:"−";
+}
+
+.submenu{
+
+    display:none;
+
+    background:#fafafa;
+}
+
+.sidebar-menu.open .submenu{
+
+    display:block;
+}
+
+.submenu a{
+
+    display:block;
+
+    padding:16px 28px;
+
+    border-top:1px solid #ececec;
+}
+
+}
