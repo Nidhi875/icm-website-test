@@ -100,7 +100,7 @@ function exportCSV() {
 
     csv += "\n";
 
-    for (let level = 10; level >= 1; level--) {
+    for (let level = 8; level >= 1; level--) {
 
         csv += `${level},"${icmLevels[level] || "-"}",`;
 
@@ -174,7 +174,7 @@ function renderComparison() {
     html += "</tr>";
 
     // LEVEL ROWS
-    for (let level = 10; level >= 1; level--) {
+    for (let level = 8; level >= 1; level--) {
 
         html += "<tr>";
 

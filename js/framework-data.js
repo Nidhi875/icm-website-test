@@ -1,14 +1,13 @@
+
 const icmLevels = {
-    10: "Doctoral Degree",
-    9: "Master's Degree",
-    8: "Postgraduate Diploma",
-    7: "Advanced Diploma",
-    6: "Diploma",
-    5: "Higher Diploma",
-    4: "Foundation Diploma",
-    3: "Certificate",
-    2: "Award",
-    1: "Award"
+    8: "Level 8 Diploma",
+    7: "Post Graduate Diploma",
+    6: "Advanced Diploma (as a progression route), Graduate Diploma",
+    5: "Diploma",
+    4: "Certificate",
+    3: "",
+    2: "",
+    1: ""
 };
 
 
