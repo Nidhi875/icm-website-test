@@ -1383,3 +1383,48 @@ QUALIFICATIONS MOBILE
 }
 
 }
+
+
+
+
+
+.diploma-levels{
+    margin:70px 0;
+}
+
+.diploma-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+}
+
+.diploma-card{
+    background:#fff;
+    border-radius:14px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.diploma-card:hover{
+    transform:translateY(-8px);
+}
+
+.level-badge{
+    background:#0b3b71;
+    color:#fff;
+    padding:8px 18px;
+    border-radius:50px;
+    display:inline-block;
+    margin-bottom:20px;
+}
+
+.diploma-btn{
+    display:inline-block;
+    margin-top:20px;
+    background:#0b3b71;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:6px;
+    text-decoration:none;
+}

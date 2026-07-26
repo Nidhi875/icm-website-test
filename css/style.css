@@ -27,30 +27,68 @@ justify-content:space-between;
 }
 
 header{
-    background:white;
-    padding:8px 0;
-    box-shadow:0 2px 15px rgba(0,0,0,.08);
+
+    background:#fff;
+
     position:sticky;
+
     top:0;
+
     z-index:1000;
+
+    box-shadow:0 2px 15px rgba(0,0,0,.08);
+
 }
 
 .navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
+
+    width:100%;
+
+    background:#fff;
+
+    box-shadow:0 2px 15px rgba(0,0,0,.08);
+
+}
+
+.navbar-inner{
+    max-width:1700px;
+    width:100%;
+    margin:0 auto;
+    padding:0 1px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:95px;
 }
 
 .logo{
-font-size:28px;
-font-weight:bold;
+
+    display:flex;
+
+    align-items:center;
+
+    flex-shrink:0;
+
 }
 
 nav a{
-text-decoration:none;
-color:#222;
-margin-left:30px;
-font-weight:600;
+
+    text-decoration:none;
+
+    color:#222;
+
+    font-weight:600;
+
+    margin:0;
+
+    transition:.25s;
+
+}
+
+nav a:hover{
+
+    color:#a32135;
+
 }
 
 .hero{
@@ -153,9 +191,26 @@ padding:60px 20px;
 }
 
 .logo img{
-height:60px;
+height:100px;
 width:auto;
+ display:block;
+
 }
+
+nav{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:34px;
+
+}
+
 
 .stats{
 background:#001f4d;
@@ -979,15 +1034,19 @@ header{
 
 .navbar{
 
-    height:75px;
+    height: 150px;
 
-    padding:0;
+    padding:-30;
 
     display:flex;
 
     justify-content:space-between;
 
     align-items:center;
+
+      gap:60px;
+
+    min-height:100px;
 }
 
 .logo img{
@@ -1435,9 +1494,17 @@ nav > a{
 
 }
 @media (min-width:769px){
-    .navbar nav{
+
+    .navbar-inner nav{
+
         display:flex;
+
+        justify-content:flex-end;
+
         align-items:center;
+
+        gap:32px;
+
     }
 
 .nav-item--has-submenu{

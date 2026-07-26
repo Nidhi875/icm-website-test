@@ -1,0 +1,444 @@
+/* =====================================================
+GOULDINGS CHECKOUT
+===================================================== */
+
+.checkout-hero{
+
+    background:linear-gradient(135deg,#001f4d,#0a3d91);
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:120px 20px 90px;
+
+}
+
+.checkout-tag{
+
+    display:inline-block;
+
+    background:#d4af37;
+
+    color:#001f4d;
+
+    padding:10px 22px;
+
+    border-radius:50px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:25px;
+
+}
+
+.checkout-hero h1{
+
+    font-size:56px;
+
+    margin-bottom:20px;
+
+}
+
+.checkout-hero p{
+
+    font-size:22px;
+
+    opacity:.9;
+
+}
+
+/* ========================= */
+
+.checkout-section{
+
+    background:#f5f7fb;
+
+    padding:80px 0;
+
+}
+
+.checkout-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:40px;
+
+    align-items:start;
+
+}
+
+/* ========================= */
+
+.checkout-form{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:45px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+.checkout-form h2{
+
+    margin-bottom:30px;
+
+    color:#001f4d;
+
+}
+
+.form-row{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.form-group{
+
+    margin-bottom:22px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+.form-group input,
+.form-group select{
+
+    width:100%;
+
+    padding:15px;
+
+    border:1px solid #d9d9d9;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+.form-group input:focus,
+.form-group select:focus{
+
+    outline:none;
+
+    border-color:#001f4d;
+
+    box-shadow:0 0 0 3px rgba(0,31,77,.12);
+
+}
+
+/* ========================= */
+
+.order-summary{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    position:sticky;
+
+    top:110px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+.order-summary h2{
+
+    color:#001f4d;
+
+    margin-bottom:25px;
+
+}
+
+.course-card{
+
+    display:flex;
+
+    gap:18px;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.course-card img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+}
+
+.summary-row,
+.summary-total{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:18px 0;
+
+}
+
+.summary-total{
+
+    border-top:1px solid #e6e6e6;
+
+    padding-top:20px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+.coupon-box{
+
+    display:flex;
+
+    gap:10px;
+
+    margin:30px 0;
+
+}
+
+.coupon-box input{
+
+    flex:1;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+}
+
+.coupon-box button{
+
+    padding:14px 24px;
+
+    background:#001f4d;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.payment-icons{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+    margin:25px 0;
+
+}
+
+.payment-icons div{
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    padding:16px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.payment-icons div:hover{
+
+    border-color:#d4af37;
+
+    transform:translateY(-3px);
+
+}
+
+.payment-icons i{
+
+    font-size:34px;
+
+    margin-bottom:10px;
+
+    display:block;
+
+}
+
+.checkout-btn{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    background:#d4af37;
+
+    color:#001f4d;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.checkout-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:#c89d18;
+
+}
+
+.secure{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+/* =====================================================
+TABLET
+===================================================== */
+
+@media(max-width:992px){
+
+.checkout-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.order-summary{
+
+    position:relative;
+
+    top:auto;
+
+}
+
+}
+
+/* =====================================================
+MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+.checkout-hero{
+
+    padding:90px 20px 70px;
+
+}
+
+.checkout-hero h1{
+
+    font-size:38px;
+
+}
+
+.checkout-hero p{
+
+    font-size:18px;
+
+}
+
+.checkout-form{
+
+    padding:25px;
+
+}
+
+.form-row{
+
+    grid-template-columns:1fr;
+
+}
+
+.payment-icons{
+
+    grid-template-columns:1fr;
+
+}
+
+}
+
+/* =====================================================
+SMALL MOBILE
+===================================================== */
+
+@media(max-width:480px){
+
+.checkout-hero h1{
+
+    font-size:30px;
+
+}
+
+.checkout-form{
+
+    padding:20px;
+
+}
+
+.order-summary{
+
+    padding:22px;
+
+}
+
+}
