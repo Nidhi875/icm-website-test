@@ -1,0 +1,515 @@
+/*==================================================
+COURSE DETAILS
+==================================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    background:#f7f9fc;
+
+    color:#222;
+
+}
+
+/*==================================================
+HERO
+==================================================*/
+
+.course-hero{
+
+    background:#294f67;
+
+    padding:90px 0;
+
+}
+
+.course-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:60px;
+
+    align-items:center;
+
+}
+
+.level-tag{
+
+    display:inline-block;
+
+    background:#d4af37;
+
+    color:#fff;
+
+    padding:10px 22px;
+
+    border-radius:40px;
+
+    font-weight:600;
+
+    margin-bottom:25px;
+
+}
+
+.course-left h1{
+
+    color:#fff;
+
+    font-size:58px;
+
+    margin-bottom:20px;
+
+}
+
+.course-left p{
+
+    color:#e7eef4;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    max-width:700px;
+
+}
+
+.course-info{
+
+    display:flex;
+
+    gap:35px;
+
+    margin-top:40px;
+
+    color:#fff;
+
+    flex-wrap:wrap;
+
+}
+
+.course-info div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:18px;
+
+}
+
+/*==================================================
+RIGHT CARD
+==================================================*/
+
+.course-card-side{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
+
+}
+
+.course-card-side img{
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:cover;
+
+}
+
+.price{
+
+    text-align:center;
+
+    font-size:44px;
+
+    font-weight:700;
+
+    color:#294f67;
+
+    padding:35px 20px 20px;
+
+}
+
+.price small{
+
+    font-size:20px;
+
+    color:#666;
+
+}
+
+.buy-btn{
+
+    display:block;
+
+    margin:0 30px 35px;
+
+    text-align:center;
+
+    background:#a32135;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:18px;
+
+    border-radius:8px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.buy-btn:hover{
+
+    background:#7d1b2c;
+
+}
+
+/*==================================================
+CONTENT
+==================================================*/
+
+.course-content{
+
+    padding:90px 0;
+
+}
+
+.course-content h2{
+
+    font-size:40px;
+
+    color:#294f67;
+
+    margin-bottom:25px;
+
+}
+
+.course-content ul{
+
+    margin-bottom:60px;
+
+    padding-left:25px;
+
+}
+
+.course-content li{
+
+    font-size:18px;
+
+    margin-bottom:18px;
+
+    line-height:1.8;
+
+}
+
+.module{
+
+    background:#fff;
+
+    border-left:6px solid #a32135;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    border-radius:10px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.module h3{
+
+    color:#294f67;
+
+    margin-bottom:12px;
+
+}
+
+/*==================================================
+MOBILE
+==================================================*/
+
+@media(max-width:768px){
+
+.course-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.course-left h1{
+
+    font-size:42px;
+
+}
+
+.course-left p{
+
+    font-size:18px;
+
+}
+
+.course-info{
+
+    gap:20px;
+
+}
+
+.price{
+
+    font-size:36px;
+
+}
+
+}
+
+
+
+/*==================================================
+TABLET
+==================================================*/
+
+@media (max-width:992px){
+
+.course-grid{
+
+    grid-template-columns:1fr;
+
+    gap:40px;
+
+}
+
+.course-left{
+
+    text-align:center;
+
+}
+
+.course-left p{
+
+    margin:auto;
+
+}
+
+.course-info{
+
+    justify-content:center;
+
+}
+
+.course-card-side{
+
+    max-width:500px;
+
+    margin:auto;
+
+}
+
+}
+
+
+/*==================================================
+MOBILE
+==================================================*/
+
+@media (max-width:768px){
+
+.course-hero{
+
+    padding:60px 0;
+
+}
+
+.course-grid{
+
+    grid-template-columns:1fr;
+
+    gap:30px;
+
+}
+
+.course-left{
+
+    text-align:center;
+
+}
+
+.level-tag{
+
+    font-size:13px;
+
+    padding:8px 18px;
+
+}
+
+.course-left h1{
+
+    font-size:34px;
+
+    line-height:1.2;
+
+    margin-bottom:15px;
+
+}
+
+.course-left p{
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    max-width:100%;
+
+}
+
+.course-info{
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.course-card-side{
+
+    max-width:100%;
+
+    margin:auto;
+
+}
+
+.course-card-side img{
+
+    height:220px;
+
+}
+
+.price{
+
+    font-size:34px;
+
+    padding:25px 15px 15px;
+
+}
+
+.buy-btn{
+
+    margin:0 20px 25px;
+
+    padding:16px;
+
+    font-size:17px;
+
+}
+
+.course-content{
+
+    padding:60px 0;
+
+}
+
+.course-content h2{
+
+    font-size:30px;
+
+}
+
+.course-content li{
+
+    font-size:16px;
+
+}
+
+.module{
+
+    padding:20px;
+
+}
+
+}
+
+
+/*==================================================
+SMALL MOBILE
+==================================================*/
+
+@media (max-width:480px){
+
+.course-hero{
+
+    padding:45px 0;
+
+}
+
+.course-left h1{
+
+    font-size:28px;
+
+}
+
+.course-left p{
+
+    font-size:15px;
+
+}
+
+.course-info div{
+
+    font-size:15px;
+
+}
+
+.course-card-side img{
+
+    height:180px;
+
+}
+
+.price{
+
+    font-size:30px;
+
+}
+
+.course-content h2{
+
+    font-size:26px;
+
+}
+
+.buy-btn{
+
+    font-size:16px;
+
+}
+
+}

@@ -439,3 +439,176 @@ PROFESSIONAL QUALIFICATIONS
     margin-bottom:6px;
 
 }
+
+
+/*==================================================
+PROFESSIONAL QUALIFICATIONS RESPONSIVE
+==================================================*/
+
+@media (max-width:1100px){
+
+.professional-grid{
+
+    grid-template-columns:1fr;
+
+    gap:40px;
+
+}
+
+#qualification-sidebar{
+
+    display:none;
+
+}
+
+.professional-content{
+
+    width:100%;
+
+}
+
+.diploma-grid{
+
+    grid-template-columns:repeat(3,1fr);
+
+    padding-right:0;
+
+}
+
+.catalogue-grid{
+
+    grid-template-columns:repeat(2,1fr);
+
+    padding-right:0;
+
+}
+
+}
+
+
+@media (max-width:768px){
+
+.professional-page{
+
+    padding:40px 0 70px;
+
+}
+
+.page-introduction h1{
+
+    font-size:34px;
+
+}
+
+.page-introduction p{
+
+    font-size:16px;
+
+    line-height:1.8;
+
+}
+
+.professional-diplomas{
+
+    margin-top:60px;
+
+}
+
+.professional-catalogue{
+
+    margin-top:60px;
+
+}
+
+.professional-catalogue h2{
+
+    font-size:34px;
+
+}
+
+.diploma-grid{
+
+    grid-template-columns:1fr;
+
+    gap:15px;
+
+    padding-right:0;
+
+}
+
+.diploma-card{
+
+    height:auto;
+
+    min-height:140px;
+
+}
+
+.diploma-card h3{
+
+    font-size:18px;
+
+    max-width:100%;
+
+}
+
+.catalogue-grid{
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+
+    padding-right:0;
+
+}
+
+.qualification-card-top{
+
+    min-height:auto;
+
+    padding:30px 20px;
+
+}
+
+.qualification-card-top h3{
+
+    font-size:22px;
+
+}
+
+}
+
+
+@media (max-width:480px){
+
+.page-introduction h1{
+
+    font-size:28px;
+
+}
+
+.professional-catalogue h2{
+
+    font-size:28px;
+
+}
+
+.section-description{
+
+    font-size:15px;
+
+}
+
+.diploma-card{
+
+    padding:20px;
+
+}
+
+.qualification-card-top h3{
+
+    font-size:20px;
+
+}
+
+}
