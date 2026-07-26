@@ -102,8 +102,9 @@ h1{
 
 .table-wrapper{
     background:#fff;
-    border-radius:8px;
-    padding:20px;
+    border-radius: 10px;
+    padding:12px;
+      min-height:850px;
     box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
@@ -125,6 +126,7 @@ h1{
     width:max-content;
     min-width:100%;
 }
+
 
 #countryContent td{
     border:1px solid #d9d9d9;
@@ -177,8 +179,14 @@ h1{
 
 /* COUNTRY COLUMNS */
 
-#countryContent td:not(.level){
-    min-width:320px;
+#countryContent td:not(.level):not(.country-level){
+    width:280px;
+    min-width:280px;
+    max-width:280px;
+    white-space:normal;
+    word-break:break-word;
+    overflow-wrap:break-word;
+    vertical-align:top;
 }
 
 /* ANIMATION */
@@ -200,38 +208,49 @@ h1{
 }
 
 
+/* Sticky Level Column */
 #countryContent td.level{
     position: sticky;
     left: 0;
-    z-index: 5;
+    z-index: 30;
     background:#224a75;
+    color:#fff;
 }
 
-#countryContent td.icm-title,
-#countryContent td.icm-qualification{
-    position: sticky;
-    left: 90px;
-}
+/* ICM Column (NOT sticky) */
 
 #countryContent td.icm-title{
     background:#224a75;
-    z-index:4;
+    color:#fff;
+    min-width:340px;
 }
 
 #countryContent td.icm-qualification{
-    background:#f5f7fa;
-    z-index:3;
+    background:#f7f8fa;
+    min-width:340px;
+    font-weight:600;
 }
 
+/* Sticky Header */
 #countryContent tr:first-child td{
     position: sticky;
-    top: 0;
-    z-index: 6;
+    top:0;
+    z-index:35;
 }
+
+/* Top-left "Level" header */
+#countryContent tr:first-child td.level{
+    top:0;
+    left:0;
+    z-index:200;
+}
+
+
 #countryContent{
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 75vh;
+    overflow:auto;
+    max-height:95vh;
+    min-height:900px;
+    scroll-behavior:smooth;
 }
 
 #countryContent::-webkit-scrollbar{
@@ -242,6 +261,37 @@ h1{
     background: #8c2332;
     border-radius: 10px;
 }
+
+
+
+.country-level,
+.country-level-header{
+
+    width:90px !important;
+    min-width:90px !important;
+    max-width:90px !important;
+
+    padding:20 !important;
+
+    text-align:center;
+    vertical-align:middle;
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+
+
+
+.blank-level{
+    background:#ffffff !important;
+    color:transparent !important;
+}
+
+.blank-cell{
+    background:#ffffff !important;
+}
+
 /* MOBILE */
 
 @media (max-width:768px){

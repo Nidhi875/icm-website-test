@@ -1,13 +1,26 @@
 
+
+
 const icmLevels = {
-    8: "Level 8 Diploma",
-    7: "Post Graduate Diploma",
-    6: "Advanced Diploma (as a progression route), Graduate Diploma",
-    5: "Diploma",
-    4: "Certificate",
-    3: "",
-    2: "",
-    1: ""
+
+    8:"-",
+
+    7:"Post Graduate Diploma",
+
+    6:"Advanced Diploma (as a progression route), Graduate Diploma",
+
+    5:"Diploma",
+
+    4:"Certificate",
+
+    3:"-",
+
+    2:"-",
+
+    1:"-",
+
+    "Entry Level":"-"
+
 };
 
 
@@ -155,23 +168,23 @@ guyana: {
     ]
 },
 
-southafrica: {
+"SOUTH AFRICA": {
     framework: "South African National Qualifications Framework",
     levels: [
         [10, "Doctoral Degree"],
-        [9, "Master's Degree"],
-        [8, "Bachelor Honours Degree, Postgraduate Diploma"],
-        [7, "Bachelor's Degree, Advanced Diploma"],
-        [6, "Diploma, Advanced Certificate"],
+        [9, "Master's Degrees, Master's Degree Professional, Bachelor's of Veterinary Science"],
+        [8, "Bachelor's Degree with Honours, Postgraduate Diploma, Bachelor's Degree, Occupational Certificate Level 8"],
+        [7, "Bachelor's Degree, Advanced Diploma, Occupational Certificate Level 7"],
+        [6, "Diploma, Advanced Certificate, Occupational Certificate Level 6"],
         [5, "Higher Certificate, Occupational Certificate Level 5"],
-        [4, "National Senior Certificate, Further Education and Training Certificate"],
-        [3, "General Education and Training Certificate, Occupational Certificate Level 3"],
-        [2, "Occupational Certificate Level 2"],
-        [1, "Occupational Certificate Level 1"]
+        [4, "National Certificate, Occupational Certificate Level 4"],
+        [3, "Intermediate Certificate, Occupational Certificate Level 3"],
+        [2, "Elementary Certificate, Occupational Certificate Level 2"],
+        [1, "General Certificate,Occupational Certificate Level 1"]
     ]
 },
 
-uk: {
+UK: {
     framework: "Regulated Qualifications Framework (United Kingdom)",
     levels: [
         ["8", "Doctoral Degree"],
@@ -230,18 +243,20 @@ canada: {
         ["1", "National Certificate Level 1"]
     ]
 },
-Ireland: {
-    framework: "Irish National Framework of Qualifications",
+"Framework for Higher Education Qualifications in England, Wales and Northern Ireland": {
+    framework: "Framework for Higher Education Qualifications in England, Wales and Northern Ireland",
     levels: [   ["10", "Doctoral Degree"],
     ["9", "Master's Degree"],
-    ["8", "Postgraduate Diploma, Bachelor Honours Degree"],
-    ["7", "Bachelor's Degree"], 
-    ["6", "Graduate Certificate, Graduate Diploma, Diploma"],
-    ["5", "Diploma"],
-    ["4", "Certificate Level 4"],
-    ["3", "Certificate Level 3"],
-    ["2", "Certificate Level 2"],
-    ["1", "Certificate Level 1"]]
+    ["8", "Doctoral Degrees"],
+    ["7", "Master's Degree, Integrated Master's Degrees, Postgraduate Diplomas, Postgraduate Certificate in Education (PGCE), Postgraduate Certificates"],
+    ["6", "Bachelor's Degrees with Honours, Bachelor's Degrees, Professional Graduate Certificate in Education (PGCE), Graduate Diplomas, Graduate Certificates"],
+    ["5", "Foundation Degrees, Diplomas of Higher Education (DipHE), Higher National Diplomas (HND)"],
+    ["4", "Higher National Certificates (HNC), Certificates of Higher Education (CertHE)"],
+    ["3", "Access to HE Diploma"],
+    ["2", "-"],
+    ["1", "-"]
+  ]
+
 },
 
 Singapore: {
@@ -256,17 +271,90 @@ Singapore: {
     ["1", "Certificate Level 1"]]
 },
 
-Malaysia: {
+
+Tanzania: {
+    framework: "Tanzania Qualifications Framework",
+    levels: [ 
+           ["10", "Doctoral Degrees"],
+            ["9", "Master's (Technology) Degree, Master's Degree, Postgraduate Diploma, Postgraduate Diploma, Professional Level 4"],
+           ["8", "Vocational Bachelor's Degree, Bachelor's (Technology) Degree, Bachelor's Degree, Professional Level 3"],
+    ["7", "Higher Vocational Diploma, Higher Diploma, Professional Level 2"],
+    ["6", "Ordinary Vocational Diploma, Ordinary Diploma, Professional Level 1"],
+    ["5", "Advanced Certificate of Secondary Education, Advanced Vocational Certificate, Technician Certificate, Technician Level 2"],
+    ["4", "Certificate of Secondary Education, Vocational Certificate, Basic Technician Certificate, Technician Level 1"],
+    ["3", "Basic Vocational Certificate"],
+    ["2", "VET Level 1"],
+    ["1", "Certificate of Primary Education"]]
+},
+
+
+"Malaysia": {
     framework: "Malaysia Qualifications Framework",
     levels: [  ["8", "Doctoral Degree"],
-    ["7", "Master's Degree"],
-    ["6", "Postgraduate Diploma, Bachelor Honours Degree"],
-    ["5", "Bachelor's Degree"],
-    ["4", "Graduate Certificate, Graduate Diploma, Diploma"],
-    ["3", "Diploma"],
-    ["2", "Certificate Level 2"],
-    ["1", "Certificate Level 1"]]
+    ["7", "Master's Degrees, Postgraduate Diploma, Postgraduate Certificate"],
+    ["6", "Bachelor's Degree Honours/Ordinary Graduate Diploma, Graduate Certificate"],
+    ["5", "Advanced Diploma"],
+    ["4", "Diploma"],
+    ["3", "Certificate"],
+    ["2", "Certificate"],
+    ["1", "Certificate"]]
 },
+
+
+"TRINIDAD & TOBAGO": {
+    framework: "Trinidad and Tobago National Qualifications Framework",
+    levels: [  ["8", "-"],
+    ["7", "Doctoral Degree"],
+    ["6", "Master's Degree, Postgraduate Diploma, Professional Qualifications"],
+    ["5", "Baccalaureate, Bachelor's Degree, Honours Degree, Graduate Diploma"],
+    ["4", "Associate Degree, Higher National Diploma"],
+    ["3", "Diploma"],
+    ["2", "Certificate"],
+    ["1", "Certificate"]]
+},
+
+
+"Republic Of Cameroon": {
+    framework: "Republic of Cameroon (Unofficial) National Qualification Framework",
+    levels: [  ["-"],
+    ["7", "Master's Degrees, Postgraduate Diploma, Doctoral Degrees"],
+    ["6", "Master's Degrees, Postgraduate Diplomas, Bachelor's Degrees, Diploma"],
+    ["5", "Higher National Diploma, Superior Technician Diploma, Associate Degree, General University Diploma"],
+    ["4", "Technician Diploma, Technician Certificate, General Certification of Education Advanced Level"],
+    ["3", "Technician Diploma, Technician Certificate, General Certification of Education Ordinary Level"],
+    ["2", "General Certificate of Education, Ordinary Level (at least 6 subjects with a final result of Grade A, B or C)"],
+    ["1", "Professional Aptitude Certificate (CAP)"]
+
+]
+},
+
+"Sierra Leone": {
+    framework: "Sierra Leone (Unofficial) Qualifications Framework",
+    levels: [  ["8", "Doctoral Degree"],
+    ["7", "Master's Degrees"],
+    ["6", "Bachelor Degree Honours, Bachelor Degree General"],
+    ["5", "Foundation Degree, International Baccalaureate, A-Level (Cambridge Overseas), Higher National Diploma (From a recognised Institute)"],
+    ["4", "West African Senior School Certificate (WASSC) (C6 or above in 5-6 subjects), Cambridge Overseas School Certificate (COSC) (Grades A-C or 1-6), GCE O-Level"],
+    ["3", "Master's Degrees"], 
+]
+},
+
+
+"Uganda": {
+    framework: "Uganda National Qualifications Framework",
+    levels: [  ["8", "Doctoral Degree"],
+    ["7", "Master's Degrees"],
+    ["6", "Bachelor Degree Honours, Bachelor Degree General"],
+    ["5", "Foundation Degree, International Baccalaureate, A-Level (Cambridge Overseas), Higher National Diploma (From a recognised Institute)"],
+    ["4", "West African Senior School Certificate (WASSC) (C6 or above in 5-6 subjects), Cambridge Overseas School Certificate (COSC) (Grades A-C or 1-6), GCE O-Level"],
+     ["3", "Master's Degrees"],
+      ["2", "Master's Degrees"],
+       ["1", "Certificate of Education Grades 7-9, Certificate 1"],
+]
+},
+
+
+
 
 
 "United Arab Emirates": {
@@ -297,7 +385,7 @@ Malaysia: {
     ["1", "Certificate Level 1"]]
 },
 
-usa: {
+USA: {
     framework: "United States Qualifications Framework",
     levels: [
         ["10", "Doctoral Degree"],
@@ -397,7 +485,7 @@ japan: {
     ]
 },
 
-southkorea: {
+"South korea": {
     framework: "Korean Qualifications Framework",
     levels: [
         ["8", "Doctoral Degree"],

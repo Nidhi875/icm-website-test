@@ -164,39 +164,46 @@ function renderComparison() {
 
     selectedCountries.forEach(countryName => {
 
-        html += `
-            <td>
-                <strong>${frameworkData[countryName].framework}</strong>
-            </td>
-        `;
-    });
+   html += `
+    <td class="country-level-header">Level</td>
+
+    <td class="country-framework">
+        <strong>${frameworkData[countryName].framework}</strong>
+    </td>
+`;
+});
 
     html += "</tr>";
 
     // LEVEL ROWS
-    for (let level = 8; level >= 1; level--) {
+    // LEVEL ROWS
+const displayLevels = [10,9,8,7,6,5,4,3,2,1,"Entry Level"];
 
-        html += "<tr>";
+displayLevels.forEach(level => {
 
-        html += `<td class="level">${level}</td>`;
+    html += "<tr>";
 
-        html += `
-            <td class="icm-qualification">
-                ${icmLevels[level] || "-"}
-            </td>
-        `;
+    html += `<td class="level">${level}</td>`;
 
-        selectedCountries.forEach(countryName => {
+    html += `
+        <td class="icm-qualification">
+            ${icmLevels[level] || "-"}
+        </td>
+    `;
 
-            const item = frameworkData[countryName].levels.find(
-                x => parseInt(x[0], 10) === level
-            );
+    selectedCountries.forEach(countryName => {
 
-            html += `<td>${item ? item[1] : "-"}</td>`;
-        });
+    const item = frameworkData[countryName].levels.find(
+        x => x[0] == level
+    );
 
-        html += "</tr>";
-    }
+   html += `<td class="country-level">${level}</td>`;
+
+html += `<td class="country-framework">${item ? item[1] : "-"}</td>`;
+});
+    html += "</tr>";
+
+});
 
     html += "</table>";
 
