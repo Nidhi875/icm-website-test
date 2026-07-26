@@ -40,14 +40,14 @@ body{
 
 .login-logo{
 
-    width:100px;
+    width:300px;
 
     margin-bottom:25px;
 
 }
 
 .portal-logo {
-    width: 180px;
+    width: 480px;
     height: 55px;
     object-fit: contain;
 }
@@ -324,7 +324,7 @@ body{
 
 .footer-logo{
 
-    width:180px;
+    width:280px;
 
     margin-bottom:30px;
 }

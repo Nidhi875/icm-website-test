@@ -313,3 +313,75 @@ html{
     scroll-behavior:smooth;
 
 }
+
+
+
+/*=========================================
+SINGLE SUBJECTS MOBILE
+=========================================*/
+
+@media (max-width:768px){
+
+.professional-grid{
+    display:block;
+}
+
+.qualification-sidebar{
+    display:none;
+}
+
+.single-content{
+    max-width:100%;
+    width:100%;
+    padding-top:0;
+}
+
+.page-introduction h1{
+    font-size:38px;
+    line-height:1.15;
+}
+
+.subject-categories h2{
+    font-size:34px;
+}
+
+.page-introduction,
+.subject-categories,
+.subjects-list-section{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.category-grid{
+    grid-template-columns:1fr;
+    gap:14px;
+}
+
+.category-box{
+    min-height:72px;
+    font-size:17px;
+    padding:15px;
+}
+
+.alphabet-group{
+    flex-direction:column;
+    gap:25px;
+}
+
+.alphabet-badge{
+    width:65px;
+    height:65px;
+    font-size:28px;
+}
+
+.subjects-columns{
+    grid-template-columns:1fr;
+    gap:0;
+}
+
+.subjects-column a{
+    padding:16px 0;
+    font-size:16px;
+}
+
+}

@@ -515,3 +515,136 @@ STICKY SIDEBAR
     height: max-content;
 
 }
+
+/*==================================================
+ICM MOBILE
+==================================================*/
+
+@media (max-width:768px){
+
+/* Hide sidebar */
+
+.relative-grid{
+    display:block;
+}
+
+#qualification-sidebar{
+    display:none;
+}
+
+/* Page */
+
+.relative-page{
+    padding:40px 0 70px;
+}
+
+.relative-content{
+    width:100%;
+}
+
+/* Heading */
+
+.page-header{
+    margin-bottom:45px;
+}
+
+.page-header h1{
+    font-size:34px;
+    line-height:1.2;
+}
+
+.page-header p{
+    font-size:17px;
+    line-height:1.8;
+}
+
+.level-header h2{
+    font-size:28px;
+}
+
+.level-header p{
+    font-size:16px;
+}
+
+/* Comparison */
+
+.comparison-wrapper{
+
+    display:flex;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    gap:4px;
+
+    padding-bottom:8px;
+
+    -webkit-overflow-scrolling:touch;
+
+    scroll-snap-type:x proximity;
+
+}
+
+.comparison-card{
+
+    flex:0 0 205px;
+
+    min-width:205px;
+
+    min-height:auto;
+
+    margin:0;
+
+    scroll-snap-align:start;
+
+}
+
+.comparison-header{
+
+    min-height:65px;
+
+    padding:14px 10px;
+
+    font-size:16px;
+
+}
+
+
+.comparison-content{
+
+    padding:14px;
+
+}
+
+.comparison-content p{
+
+    font-size:15px;
+
+    line-height:1.6;
+
+}
+
+/* Descriptor */
+
+.descriptor-btn{
+
+    padding:18px 22px;
+
+    font-size:18px;
+
+}
+
+.descriptor-content{
+
+    padding:0 20px;
+
+}
+
+.descriptor.open .descriptor-content{
+
+    padding:20px;
+
+}
+
+}
