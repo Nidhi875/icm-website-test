@@ -704,75 +704,41 @@ STAT CARDS
 
 
 .portal-footer{
-
     background:#244c69;
-
     color:#fff;
-
     text-align:center;
-
-    padding:45px 20px;
-
-    margin-top:60px;
-
+    padding:28px 20px;
+    margin-top:40px;
 }
 
 .footer-logo{
-
-    width:90px;
-
-    margin-bottom:20px;
-
+    width:75px;
+    margin-bottom:15px;
 }
 
 .portal-footer p{
-
-    max-width:700px;
-
-    margin:0 auto 18px;
-
-    line-height:1.7;
-
-    font-size:16px;
-
+    max-width:650px;
+    margin:0 auto 12px;
+    line-height:1.6;
+    font-size:15px;
 }
 
 .footer-links{
-
     display:flex;
-
     justify-content:center;
-
-    gap:25px;
-
+    gap:20px;
     flex-wrap:wrap;
-
-    margin:20px 0;
-
+    margin:15px 0;
 }
 
 .footer-links a{
-
     color:#fff;
-
     text-decoration:none;
-
-    font-size:15px;
-
-}
-
-.footer-links a:hover{
-
-    text-decoration:underline;
-
+    font-size:14px;
 }
 
 .copyright{
-
-    margin-top:15px;
-
-    font-size:14px;
-
+    margin-top:10px;
+    font-size:13px;
     opacity:.8;
-
 }
