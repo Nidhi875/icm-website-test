@@ -15,8 +15,8 @@ margin:auto;
 }
 
 .topbar{
-background:#001f4d;
-color:white;
+background:#a17112;
+color:#fff;
 padding:10px 0;
 font-size:14px;
 }
@@ -28,7 +28,7 @@ justify-content:space-between;
 
 header{
 
-    background:#fff;
+       background:#0b2a57;
 
     position:sticky;
 
@@ -43,8 +43,7 @@ header{
 .navbar{
 
     width:100%;
-
-    background:#fff;
+       background:#001f4d;
 
     box-shadow:0 2px 15px rgba(0,0,0,.08);
 
@@ -68,6 +67,7 @@ header{
     align-items:center;
 
     flex-shrink:0;
+     margin-left:-70px;
 
 }
 
@@ -75,7 +75,7 @@ nav a{
 
     text-decoration:none;
 
-    color:#222;
+    color:#fff;
 
     font-weight:600;
 
@@ -191,7 +191,7 @@ padding:60px 20px;
 }
 
 .logo img{
-height:140px;
+height:100px;
 width:auto;
  display:block;
 
@@ -993,7 +993,9 @@ FOOTER DESKTOP
 }
 
 .footer-logo img{
-    width:140px;
+    width:330px;
+    height:auto;
+    display:block;
 }
 
 .footer-contact{
@@ -1034,9 +1036,9 @@ header{
 
 .navbar{
 
-    height: 150px;
+    height: 90px;
 
-    padding:-30;
+    padding: 0, 8px;
 
     display:flex;
 
@@ -1044,13 +1046,13 @@ header{
 
     align-items:center;
 
-      gap:60px;
+      gap:0;
 
-    min-height:100px;
+    min-height:90px;
 }
 
 .logo img{
-    height:45px;
+    height:75px;
 }
 
 }
@@ -1072,7 +1074,7 @@ nav{
 
     position:fixed;
 
-    top:75px;
+    top:90px;
     left:-100%;
 
     width:100%;
@@ -1307,7 +1309,7 @@ FOOTER MOBILE ONLY
 }
 
 .footer-bottom{
-    background:#a92a2a;
+    background:#001f4d;
     padding:50px 20px;
     text-align:center;
     color:white;
@@ -1375,7 +1377,7 @@ ICM MOBILE NAVIGATION
     height:46px;
     cursor:pointer;
     font-size:28px;
-    color:#333;
+    color:#fff;
 }
 
 nav{
@@ -1407,19 +1409,26 @@ nav.active{
 
 nav > a{
 
-    display:block;
+    display:flex;
+    align-items:center;
 
-    padding:20px 24px;
+    width:100%;
+
+    min-height:68px;
+
+    padding:0 28px;
+
+    color:#222;
 
     text-decoration:none;
 
-    color:#333;
-
-    border-bottom:1px solid #ececec;
+    font-size:18px;
 
     font-weight:500;
 
-    margin:0;
+    border-bottom:1px solid #ececec;
+
+    box-sizing:border-box;
 }
 
 /* Accordion */
@@ -1495,139 +1504,72 @@ nav > a{
 }
 @media (min-width:769px){
 
-    .navbar-inner nav{
+.navbar-inner nav{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:34px;
+}
 
-        display:flex;
-
-        justify-content:flex-end;
-
-        align-items:center;
-
-        gap:32px;
-
-    }
-
+/* parent */
 .nav-item--has-submenu{
-
     position:relative;
-
 }
 
+/* invisible hover bridge */
 .nav-item--has-submenu::after{
-
     content:"";
-
     position:absolute;
-
     left:0;
-
     right:0;
-
     top:100%;
-
-    height:18px;
-
+    height:8px;
 }
 
+/* title */
 
-    .nav-title{
+.nav-title{
 
     display:flex;
-
     align-items:center;
+    gap:8px;
 
-    height:100%;
-
-    margin:0 0 0 30px;
+    height:95px;
 
     padding:0;
 
-    border:0;
+    background:none;
+    border:none;
 
-    background:transparent;
+    color:#fff;
 
-    color:#222;
-
-    font:inherit;
-
+    font-size:18px;
     font-weight:600;
 
     cursor:pointer;
 
-    line-height:1;
-
-    appearance:none;
-
+    transition:.3s;
 }
 
-    .nav-title i{
-        font-size:11px;
-    }
+.nav-title i{
 
-   .nav-submenu{
+    color:#fff;
+    font-size:11px;
 
-    position:absolute;
-
-    top:100%;
-
-    left:30px;
-
-    min-width:260px;
-
-    background:#fff;
-
-    border-radius:10px;
-
-    overflow:hidden;
-
-    box-shadow:0 12px 35px rgba(0,0,0,.15);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    pointer-events:none;
-
-    transform:translateY(10px);
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease,
-        visibility .25s ease;
-
-    z-index:1001;
-
+    transition:.3s;
 }
 
+.nav-title:hover{
 
-
-  .nav-item--has-submenu:hover .nav-submenu,
-.nav-item--has-submenu:focus-within .nav-submenu{
-
-    opacity:1;
-
-    visibility:visible;
-
-    pointer-events:auto;
-
-    transform:translateY(0);
-
+    color:#d4af37;
 }
 
+.nav-title:hover i{
 
-    .nav-submenu a{
-        display:block;
-        margin:0;
-        padding:12px 18px;
-        font-size:14px;
-        font-weight:500;
-    }
-
-    .nav-submenu a:hover{
-        background:#f7f7f7;
-        color:#a32135;
-    }
+    color:#d4af37;
+    transform:rotate(180deg);
 }
+
 
 @media (max-width:768px){
     .nav-title{
@@ -1637,4 +1579,79 @@ nav > a{
         font:inherit;
         text-align:left;
     }
+}
+
+}
+
+/* =========================================
+   DESKTOP DROPDOWN
+========================================= */
+
+@media (min-width:769px){
+
+.nav-submenu{
+
+    position:absolute;
+    top:calc(100% + 8px);
+    left:50%;
+    transform:translateX(-50%) translateY(12px);
+
+    min-width:320px;
+
+    background:#ffffff;
+
+    border-radius:12px;
+
+    box-shadow:0 18px 45px rgba(0,0,0,.18);
+
+    overflow:hidden;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transition:
+        opacity .30s ease,
+        transform .30s ease;
+
+    z-index:99999;
+}
+
+.nav-item--has-submenu:hover .nav-submenu,
+.nav-item--has-submenu:focus-within .nav-submenu{
+
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+
+    transform:translateX(-50%) translateY(0);
+}
+
+.nav-submenu a{
+
+    display:block;
+
+    padding:16px 24px;
+
+    color:#222;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    transition:.25s;
+}
+
+.nav-submenu a:hover{
+
+    background:#001f4d;
+
+    color:#fff;
+
+    padding-left:30px;
+}
+
+}
 }
