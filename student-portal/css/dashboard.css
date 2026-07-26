@@ -707,29 +707,34 @@ STAT CARDS
 
     background:#244c69;
 
-    color:white;
+    color:#fff;
 
     text-align:center;
 
-    padding:80px 20px;
+    padding:45px 20px;
+
+    margin-top:60px;
+
 }
 
 .footer-logo{
 
-    width:180px;
+    width:90px;
 
-    margin-bottom:30px;
+    margin-bottom:20px;
+
 }
 
 .portal-footer p{
 
-    max-width:800px;
+    max-width:700px;
 
-    margin:auto;
+    margin:0 auto 18px;
 
-    line-height:1.8;
+    line-height:1.7;
 
-    margin-bottom:25px;
+    font-size:16px;
+
 }
 
 .footer-links{
@@ -738,24 +743,36 @@ STAT CARDS
 
     justify-content:center;
 
-    gap:30px;
+    gap:25px;
 
     flex-wrap:wrap;
 
-    margin-bottom:30px;
+    margin:20px 0;
+
 }
 
 .footer-links a{
 
-    color:white;
+    color:#fff;
 
     text-decoration:none;
+
+    font-size:15px;
+
+}
+
+.footer-links a:hover{
+
+    text-decoration:underline;
+
 }
 
 .copyright{
 
-    opacity:.8;
+    margin-top:15px;
 
     font-size:14px;
-}
 
+    opacity:.8;
+
+}
