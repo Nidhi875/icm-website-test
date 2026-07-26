@@ -327,160 +327,182 @@ FOOTER
 ====================================================*/
 
 .footer-top{
-
-    background:#3b3939;
-
-    padding:70px 0;
-
+    background:#343434;
+    padding:90px 50px;
+    color:#fff;
 }
 
 .footer-container{
-
-    display:grid;
-
-    grid-template-columns:1.4fr 220px 1.4fr;
-
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-
-    column-gap:40px;
-
+    gap:60px;
 }
 
 .footer-links{
+    display:flex;
+    gap:90px;
+}
 
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:70px;
-
+.footer-links div{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
 }
 
 .footer-links a{
-
-    display:block;
-
     color:#fff;
-
     text-decoration:none;
+    font-size:20px;
+    transition:.3s;
+}
 
-    font-size:18px;
-
-    margin-bottom:22px;
-
+.footer-links a:hover{
+    color:#d4af37;
 }
 
 .footer-logo{
-
+    padding:0 55px;
+    border-left:1px solid rgba(255,255,255,.15);
+    border-right:1px solid rgba(255,255,255,.15);
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-    justify-self:center;
-
-    text-align:center;
-
 }
 
 .footer-logo img{
-
-    width:140px;
-
+    width:330px;
+    height:auto;
     display:block;
-
-    margin:0 auto;
-
 }
 
 .footer-contact{
-
-    text-align:right;
-
+    max-width:390px;
 }
 
 .footer-contact p{
-
-    color:#fff;
-
-    font-size:18px;
-
-    line-height:2;
-
+    font-size:20px;
+    line-height:1.9;
+    margin-bottom:15px;
 }
 
-nav a.active{
 
-    color:#a32135;
+/* ================= MOBILE FIXES ================= */
+/* FOOTER MOBILE ONLY
+========================== */
 
-    position:relative;
+@media(max-width:768px){
 
-}
-
-nav a.active::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    bottom:-10px;
-
-    width:100%;
-
-    height:3px;
-
-    background:#a32135;
-
-}
-/* ===========================================
-   FOOTER: PHONE LAYOUT
-   Keep the desktop grid above intact; the component stylesheet loads
-   after style.css, so the mobile layout must be defined here as well.
-=========================================== */
-@media (max-width:768px){
-    .footer-top{ padding:48px 24px; }
+    .footer-top{
+        padding:55px 30px;
+    }
 
     .footer-container{
-        display:flex;
         flex-direction:column;
-        align-items:center;
-        gap:32px;
-        width:100%;
-        max-width:420px;
-        margin:0 auto;
         text-align:center;
+        gap:45px;
     }
 
     .footer-links{
-        width:100%;
-        max-width:340px;
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-        gap:16px 24px;
-    }
+    display:grid;
+    grid-template-columns:repeat(2,auto);
+    gap:20px 60px;
+    justify-content:center;
+}
 
-    .footer-links a{
-        margin-bottom:14px;
-        font-size:16px;
-        line-height:1.35;
-    }
-
+.footer-links div{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
     .footer-logo{
+        border:none;
         width:100%;
         max-width:300px;
-        padding:28px 0;
-        border-top:1px solid rgba(255,255,255,.15);
-        border-right:0;
-        border-bottom:1px solid rgba(255,255,255,.15);
-        border-left:0;
+        padding:35px 0;
+        position:relative;
     }
 
-    .footer-contact{ width:100%; text-align:center; }
+    .footer-logo::before,
+    .footer-logo::after{
+        content:"";
+        position:absolute;
+        left:50%;
+        transform:translateX(-50%);
+        width:100%;
+        height:1px;
+        background:rgba(255,255,255,.15);
+    }
+
+    .footer-logo::before{
+        top:0;
+    }
+
+    .footer-logo::after{
+        bottom:0;
+    }
+
+    .footer-contact{
+        max-width:100%;
+    }
 
     .footer-contact p{
-        font-size:16px;
-        line-height:1.65;
+        font-size:17px;
     }
+}
+
+.footer-bottom{
+    background:#001f4d;
+    padding:50px 20px;
+    text-align:center;
+    color:white;
+}
+
+.social-icons{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    margin-bottom:35px;
+}
+
+.social-icons a{
+    color:white;
+    font-size:42px;
+    text-decoration:none;
+}
+
+.footer-buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:40px;
+}
+
+.footer-buttons a{
+    border:1px solid white;
+    padding:12px 22px;
+    text-decoration:none;
+    color:white;
+}
+
+.partner-badges{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.partner-badges img{
+    height:90px;
+    background:white;
+    padding:10px;
+}
+
+.copyright{
+    font-size:18px;
+    line-height:1.8;
 }
