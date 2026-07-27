@@ -97,6 +97,7 @@ NEW PROFESSIONAL DIPLOMAS
 
     margin-bottom:14px;
     
+    
 }
 
 .section-divider{
@@ -438,6 +439,51 @@ PROFESSIONAL QUALIFICATIONS
 
     margin-bottom:6px;
 
+}
+
+
+
+.qualification-intro{
+    margin-bottom:50px;
+}
+
+.qualification-intro h2{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+    font-size:40px;
+    font-weight:300;
+    line-height:1.15;
+    color:#333;
+    margin:0 0 18px;
+    position:relative;
+    padding-bottom:18px;
+
+}
+
+.qualification-intro h2::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:0;
+
+    width:180px;
+
+    height:2px;
+
+    background:#a32135;
+
+}
+
+.qualification-intro p{
+    max-width:900px;
+    font-size:18px;
+    line-height:1.8;
+    color:#555;
+    margin:0;
 }
 
 
