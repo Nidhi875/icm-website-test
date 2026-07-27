@@ -53,7 +53,7 @@ header{
     max-width:1700px;
     width:100%;
     margin:0 auto;
-    padding:0 1px;
+    padding:0 30px;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -67,7 +67,7 @@ header{
     align-items:center;
 
     flex-shrink:0;
-     margin-left:-70px;
+     margin-left:-10px;
 
 }
 
@@ -192,7 +192,7 @@ padding:60px 20px;
 }
 
 .logo img{
-height:100px;
+height:120px;
 width:auto;
  display:block;
 
