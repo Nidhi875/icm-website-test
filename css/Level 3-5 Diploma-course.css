@@ -486,6 +486,64 @@ PROFESSIONAL QUALIFICATIONS
     margin:0;
 }
 
+/*=========================================
+SPECIALISM HEADING
+=========================================*/
+
+.specialism-section{
+
+    margin-top:90px;
+    margin-bottom:40px;
+
+}
+
+
+.specialism-title{
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+    font-size:42px;
+
+    font-weight:300;
+
+    color:#333;
+
+    line-height:1.2;
+
+    margin:0;
+
+}
+
+.specialism-divider{
+
+    width:170px;
+
+    height:3px;
+
+    background:#a32135;
+
+    margin-top:16px;
+
+    margin-bottom:28px;
+
+}
+
+.specialism-description{
+
+    max-width:900px;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#555;
+
+    margin-top:0;
+
+    margin-bottom:45px;
+
+}
+
 
 /*==================================================
 PROFESSIONAL QUALIFICATIONS RESPONSIVE
