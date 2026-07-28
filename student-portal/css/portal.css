@@ -46,10 +46,10 @@ body{
 
 }
 
-.portal-logo {
-    width: 480px;
-    height: 55px;
-    object-fit: contain;
+.portal-logo{
+    width:320px;
+    height:auto;
+    display:block;
 }
 
 .hero img {
@@ -105,15 +105,20 @@ body{
 
 /* HEADER */
 
+
 .portal-header{
-    background:white;
-    box-shadow:0 2px 20px rgba(0,0,0,.08);
-    padding:20px 0;
+    background:#001f4d;   /* Use the exact same colour as the main website */
+    box-shadow:0 2px 20px rgba(0,0,0,.12);
+    padding:1px 0;
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 
 .header-container{
-    width:min(1300px,92%);
-    margin:auto;
+    max-width:none;
+    width:100%;
+    padding:0 5px;
 
     display:flex;
     justify-content:space-between;
@@ -126,9 +131,14 @@ body{
 }
 
 .portal-nav a{
+    color:#ffffff;
     text-decoration:none;
-    color:#222;
     font-weight:600;
+    transition:.3s;
+}
+
+.portal-nav a:hover{
+    color:#d4af37;
 }
 
 .header-actions{
@@ -157,7 +167,7 @@ body{
 
 .hero{
     position:relative;
-    height:700px;
+    height:800px;
     overflow:hidden;
 }
 
@@ -177,7 +187,7 @@ body{
 
     position:absolute;
 
-    top:50%;
+    top:70%;
     left:50%;
 
     transform:
@@ -198,7 +208,7 @@ body{
 .hero-content p{
     font-size:22px;
     line-height:1.8;
-    margin-bottom:35px;
+    margin-bottom:20px;
 }
 
 .hero-content a{
@@ -210,6 +220,7 @@ body{
     text-decoration:none;
 
     border-radius:6px;
+    margin-top: -50px;
 }
 
 /* COURSES */
@@ -313,7 +324,7 @@ body{
 
 .portal-footer{
 
-    background:#244c69;
+    background:#001f4d;;
 
     color:white;
 
@@ -388,6 +399,7 @@ body{
     justify-content:center;
     gap:20px;
     flex-wrap:wrap;
+    margin-top: 80px;
 }
 
 .primary-btn,
@@ -398,6 +410,7 @@ body{
     text-decoration:none;
 
     border-radius:8px;
+    margin-top: 40px;
 }
 
 .primary-btn{
@@ -414,7 +427,7 @@ body{
 
 .portal-stats{
 
-    background:#244c69;
+    background:#001f4d;;
 
     color:white;
 
