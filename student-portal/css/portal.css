@@ -47,9 +47,10 @@ body{
 }
 
 .portal-logo{
-    width:320px;
+    width:350px;
     height:auto;
     display:block;
+    margin-bottom: 20px;
 }
 
 .hero img {
@@ -107,23 +108,26 @@ body{
 
 
 .portal-header{
-    background:#001f4d;   /* Use the exact same colour as the main website */
+    background:#001f4d;
     box-shadow:0 2px 20px rgba(0,0,0,.12);
-    padding:1px 0;
     position:sticky;
     top:0;
     z-index:1000;
+    padding:0;
 }
 
 .header-container{
     max-width:none;
     width:100%;
-    padding:0 5px;
-
+    padding:0 15px;
+    height:110px;      /* Reduce this to 100px if needed */
     display:flex;
     justify-content:space-between;
     align-items:center;
+    overflow:hidden;
 }
+
+
 
 .portal-nav{
     display:flex;
@@ -135,7 +139,10 @@ body{
     text-decoration:none;
     font-weight:600;
     transition:.3s;
+    padding: 8px, 0;
+    line-height: 1;
 }
+
 
 .portal-nav a:hover{
     color:#d4af37;
