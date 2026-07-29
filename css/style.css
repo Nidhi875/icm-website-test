@@ -1656,3 +1656,23 @@ nav > a{
 
 }
 }
+
+@media (max-width:768px){
+
+    .links-grid{
+        width:100%;
+        padding:0 18px;
+        gap:22px;
+    }
+
+    .link-card{
+        width:100%;
+        max-width:430px;
+        height:160px;
+        margin:0 auto;
+    }
+
+    .link-card h3{
+        font-size:18px;
+    }
+}
