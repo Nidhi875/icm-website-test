@@ -33,14 +33,127 @@ h1{
     color:#8c2332;
 }
 
+/* =======================================
+FRAMEWORK INTRO
+======================================= */
+
+.framework-intro{
+
+    max-width:1400px;
+    width: 100%;
+
+    margin:0 auto 50px;
+
+    text-align:center;
+
+}
+
+.section-label{
+
+    display:inline-block;
+
+    background:#001f4d;
+
+    color:#fff;
+
+    padding:10px 22px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    letter-spacing:2px;
+
+    margin-bottom:22px;
+
+    font-weight:600;
+
+}
+
+.framework-intro h1{
+
+    font-size:58px;
+
+    color:#001f4d;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+.intro-text{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    color:#555;
+
+    margin-bottom:40px;
+
+}
+
+.info-box{
+
+    background:#ffffff;
+
+    border-left:6px solid #d4af37;
+
+    border-radius:16px;
+
+    padding:28px;
+
+    display:flex;
+
+    gap:22px;
+
+    text-align:left;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+.info-icon{
+
+    font-size:34px;
+
+    color:#001f4d;
+
+}
+
+.desktop-note{
+
+    background:#eef5ff;
+
+    border-radius:14px;
+
+    padding:18px 24px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:15px;
+
+    color:#001f4d;
+
+    font-size:17px;
+    margin-bottom: 120px;
+
+}
+
 /* TOP BUTTONS */
 
 .top-buttons{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:20px;
-    
+    justify-content:flex-start;   /* Center buttons */
+    align-items:center;
+    gap:12px;
+    margin:35px auto 25px;
 }
 
 .action-btn{
@@ -84,12 +197,29 @@ h1{
 }
 
 .country-btn{
-    padding:12px 18px;
+    width:auto;
+    height:44px;
+    padding:0 10px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
     background:#fff;
-    border:1px solid #ddd;
-    border-radius:5px;
-    cursor:pointer;
-    transition:all .25s ease;
+
+    border:2px solid #9ac7f7;
+
+    border-radius:28px;
+
+    font-size:12px;
+    font-weight:600;
+    line-height:1.1;
+
+    color:#000;
+
+    text-align:center;
+
+    transition:.25s;
 }
 
 .country-btn:hover{
@@ -262,6 +392,21 @@ h1{
     border-radius: 10px;
 }
 
+@keyframes swipeArrow{
+    0%{
+        transform:translateX(0);
+        opacity:.6;
+    }
+    50%{
+        transform:translateX(8px);
+        opacity:1;
+    }
+    100%{
+        transform:translateX(0);
+        opacity:.6;
+    }
+}
+
 
 
 .country-level,
@@ -294,6 +439,10 @@ h1{
 
 /* MOBILE */
 
+.mobile-scroll-hint{
+    display:none;
+}
+
 @media (max-width:768px){
 
     h1{
@@ -319,10 +468,36 @@ h1{
 #countryButtons{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    width:100%;
+    gap:12px;
+    align-items:flex-start;
 }
 
+.framework-intro h1{
+
+    font-size:38px;
+
+}
+
+.intro-text{
+
+    font-size:17px;
+
+}
+
+.info-box{
+
+    flex-direction:column;
+
+}
+
+.desktop-note{
+
+    flex-direction:column;
+
+    align-items:flex-start
+    
+
+}
 
 @media (max-width: 768px) {
 
@@ -345,13 +520,64 @@ h1{
     }
 
     .filter-wrapper{
-        padding:15px;
+        padding:10px;
     }
 
-    .country-btn{
-        width:100%;
-        text-align:left;
-    }
+   #countryButtons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    column-gap:6px;
+    row-gap:8px;
+}
+
+.country-btn{
+    width:100%;
+    height:46px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:4px 8px;
+
+    background:#fff;
+
+    border:2px solid #8fc3f5;
+
+    border-radius:24px;
+
+    font-size:11px;
+    font-weight:700;
+
+    color:#111;
+
+    line-height:1.1;
+
+    text-align:center;
+
+    white-space:normal;
+
+    overflow-wrap:break-word;
+
+    transition:.25s;
+}
+
+
+.mobile-scroll-hint{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+    margin:12px 0;
+    font-size:18px;
+    font-weight:500;
+    color:#333;
+}
+
+.mobile-scroll-hint span{
+    font-size:28px;
+    animation:swipeArrow 1.2s infinite;
+}
 
     #countrySearch{
         font-size:16px;
@@ -375,6 +601,11 @@ h1{
         padding:12px;
         font-size:13px;
     }
+
+   #countryButtons .country-btn:nth-child(-n+2){
+    grid-column:1 / -1;
+    height:48px;
+}
 
     #countryContent td.level{
         width:60px;
@@ -403,7 +634,61 @@ h1{
 
 <div class="container">
 
-    <h1>Framework Alignment Tool</h1>
+    <div class="framework-intro">
+
+        <span class="section-label">
+            INTERNATIONAL QUALIFICATIONS
+        </span>
+
+        <h1>Framework Alignment Tool</h1>
+
+        <p class="intro-text">
+
+            Compare international qualifications against Gouldings Global Academy
+            Professional Qualifications. This tool provides an indicative comparison
+            of qualification levels from a range of countries and education systems,
+            helping students, institutions and employers understand equivalent
+            qualification pathways.
+
+        </p>
+
+        <div class="info-box">
+
+            <div class="info-icon">
+                <i class="fas fa-circle-info"></i>
+            </div>
+
+            <div>
+
+                <h3>Important Information</h3>
+
+                <p>
+
+                    These comparisons are provided as guidance only and should not be
+                    considered as formal recognition of qualifications. If you require
+                    official admissions advice, please contact Gouldings Global Academy.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="desktop-note">
+
+            <i class="fas fa-desktop"></i>
+
+            <span>
+
+                For the best experience, we recommend viewing the Framework Alignment
+                Tool on a desktop or laptop. On mobile devices the comparison table
+                can be viewed by scrolling horizontally.
+
+            </span>
+
+        </div>
+
+    </div>
 
     <div class="top-buttons">
 
@@ -444,6 +729,11 @@ h1{
         <div id="countryButtons"></div>
 
     </div>
+
+    <div class="mobile-scroll-hint">
+    Swipe for more
+    <span>→</span>
+</div>
 
     <div class="table-wrapper">
 
