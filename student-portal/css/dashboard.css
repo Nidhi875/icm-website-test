@@ -18,7 +18,7 @@ body{
 
     display:grid;
 
-    grid-template-columns:260px 1fr;
+    grid-template-columns:320px 1fr;
 
 }
 
@@ -44,13 +44,12 @@ SIDEBAR
 }
 
 .sidebar-logo{
-
-    width:90px;
-
+    width:240px;
+    max-width:100%;
+    height:auto;
     display:block;
-
-    margin:0 auto 25px;
-
+    margin:0 auto 35px;
+    margin-top:-50px;
 }
 
 .sidebar h2{
@@ -100,14 +99,13 @@ SIDEBAR
 
     background:#f2f5fa;
 
-    color:#294f67;
+    color:#001f4d;
 
 }
 
 .sidebar nav a.active{
 
-    background:#294f67;
-
+     background:#001f4d;
     color:#fff;
 
 }
@@ -199,9 +197,11 @@ STAT CARDS
 
 .profile-card{
 
-    background:#fff;
+    background:#001f4d;     /* Navy blue */
 
-    border-radius:20px;
+    color:#ffffff;
+
+    border-radius:0px;
 
     padding:15px 18px;
 
@@ -214,16 +214,14 @@ STAT CARDS
     align-items:center;
 
     box-shadow:
-    0 10px 30px rgba(0,0,0,.05);
-
+    0 10px 30px rgba(0,0,0,.15);
 
     position:sticky;
     top:0;
 
     z-index:100;
-
-
 }
+
 
 .profile-left{
 
@@ -242,9 +240,8 @@ STAT CARDS
 
     border-radius:50%;
 
-    background:#294f67;
-
-    color:#fff;
+            background:#fff;
+        color:#001f4d;
 
     display:flex;
 
@@ -417,7 +414,7 @@ STAT CARDS
 
     height:100%;
 
-    background:#2d5672;
+    background:#001f4d;
 
     border-radius:30px;
 
@@ -495,7 +492,7 @@ STAT CARDS
 
     border-radius:14px;
 
-    background:#2d5672;
+    background:#001f4d;
 
      text-decoration:none;
 
@@ -519,7 +516,7 @@ STAT CARDS
 
 .submit-btn:hover{
 
-    background:#1f435d;
+    background:#001f4d;
 
     transform:translateY(-2px);
 
@@ -704,7 +701,7 @@ STAT CARDS
 
 
 .portal-footer{
-    background:#244c69;
+    background:#001f4d;
     color:#fff;
     text-align:center;
     padding:28px 20px;
@@ -712,7 +709,7 @@ STAT CARDS
 }
 
 .footer-logo{
-    width:75px;
+    width:375px;
     margin-bottom:15px;
 }
 
