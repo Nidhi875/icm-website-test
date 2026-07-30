@@ -1,62 +1,127 @@
-<!-- ABOUT BANNER -->
+<!DOCTYPE html>
+<html lang="en">
 
-<section class="about-banner">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Gouldings Global Academy</title>
 
-    <img src="images/about-banner.jpg" alt="About Gouldings Global Academy">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/qualifications.css">
+    <link rel="stylesheet" href="css/about.css">
+</head>
 
-</section>
+<body>
 
-<section class="about-intro">
+    <!-- TOP BAR & HEADER -->
+    <header>
+        <div id="navbar"></div>
+    </header>
 
-    <div class="container">
+    <!-- HERO SECTION -->
+    <section class="about-hero">
+        <img src="images/about-banner.jpg" alt="About Gouldings Global Academy">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">ABOUT GOULDINGS GLOBAL ACADEMY</span>
+                <h1>About Us</h1>
+                <p class="hero-subtext">Empowering learners globally through academic excellence and recognised qualifications.</p>
+            </div>
+        </div>
+    </section>
 
-        <span>ABOUT US</span>
+    <!-- BREADCRUMBS -->
+    <section class="breadcrumbs">
+        <div class="container">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <strong>About Us</strong>
+        </div>
+    </section>
 
-        <h1>
-            Gouldings Global Academy
-        </h1>
+    <!-- MAIN CONTENT AREA -->
+    <section class="about-main-section">
+        <div class="container intro-grid">
 
-        <p>
-            Gouldings Global Academy is an international awarding organisation dedicated to delivering high-quality qualifications, supporting lifelong learning, and building trusted educational partnerships around the world.
-        </p>
+            <!-- LEFT SIDEBAR -->
+            <aside class="qualification-sidebar">
+                <div class="sidebar-menu">
+                    <a href="index.html" class="menu-item">Home</a>
+                    <a href="about.html" class="menu-item active">About Us</a>
+                    <a href="centres.html" class="menu-item">Centres</a>
+                    <a href="learners.html" class="menu-item">Learners</a>
 
-    </div>
+                    <div class="menu-item has-submenu">
+                        <span>Qualifications</span>
+                        <i class="fas fa-chevron-down sidebar-arrow"></i>
+                    </div>
 
-</section>
+                    <div class="submenu">
+                        <a href="qualifications.html" class="submenu-item">About Our Qualifications</a>
+                        <a href="framework-tool.html" class="submenu-item">Framework Alignment Tool</a>
+                        <a href="professional-qualifications.html" class="submenu-item">Professional Qualifications</a>
+                        <a href="relative-equivalencies.html" class="submenu-item">Relative Equivalencies</a>
+                    </div>
 
-<!-- ==========================
-ABOUT INTRO
-========================== -->
+                    <a href="news.html" class="menu-item">News & Events</a>
+                    <a href="contact.html" class="menu-item">Contact</a>
+                </div>
+            </aside>
 
-<section class="about-intro">
+            <!-- RIGHT MAIN CONTENT AREA -->
+            <main class="qualification-content">
 
-    <div class="container">
+                <!-- 1. INTRODUCTION BLOCK -->
+                <div class="about-intro-block">
+                    <span class="section-tag">ABOUT GOULDINGS GLOBAL ACADEMY</span>
+                    <h2>Delivering Internationally Recognised Qualifications For Future Leaders</h2>
+                    <div class="red-divider"></div>
 
-        <span class="section-tag">
-            ABOUT GOULDINGS GLOBAL ACADEMY
-        </span>
+                    <p>
+                        Gouldings Global Academy is committed to providing high-quality, internationally recognised qualifications that empower individuals to achieve their academic and professional ambitions.
+                    </p>
+                    <p>
+                        Through academic excellence, innovative learning approaches, and strategic international partnerships, we offer flexible pathways designed to meet the demands of modern global industries.
+                    </p>
+                </div>
 
-        <h2>
+                <!-- 2. OUR STORY BLOCK -->
+                <div class="about-story">
+                    <div class="story-grid">
+                        <div class="story-image">
+                            <img src="images/about-story.jpg" alt="Our Story">
+                        </div>
+                        <div class="story-text">
+                            <span class="section-tag">OUR STORY</span>
+                            <h2>Building Global Educational Excellence</h2>
+                            <div class="red-divider"></div>
 
-            An International Awarding Organisation
-            Committed to Educational Excellence
+                            <p>
+                                Gouldings Global Academy was established with a clear vision: making high-standard, recognised qualifications accessible to learners worldwide regardless of their geographical location.
+                            </p>
+                            <p>
+                                Through innovation, academic rigour, and strong partnerships with accredited centres, we continue to bridge the gap between education and employment.
+                            </p>
+                            <p>
+                                Today, our qualifications support thousands of learners, offering direct progression routes into higher education and rewarding professional careers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-        </h2>
+            </main>
 
-        <div class="red-line"></div>
+        </div>
+    </section>
 
-        <p>
+    <!-- FOOTER -->
+    <div id="footer"></div>
 
-            Gouldings Global Academy is dedicated to delivering internationally recognised qualifications that empower learners, strengthen educational institutions, and support professional development worldwide.
+    <script src="js/include.js"></script>
+    <script src="js/script.js"></script>
 
-        </p>
-
-        <p>
-
-            Through innovation, quality assurance, and global collaboration, we create learning opportunities that prepare individuals for academic success, career progression, and lifelong achievement.
-
-        </p>
-
-    </div>
-
-</section>
+</body>
+</html>

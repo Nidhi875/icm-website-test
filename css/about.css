@@ -1,92 +1,190 @@
-/*==========================
-ABOUT BANNER
-===========================*/
-
-.about-banner{
-
-    width:100%;
-    height:600px;
-    overflow:hidden;
-
+/* ==========================================
+HERO STYLES
+========================================== */
+.about-hero {
+    position: relative;
+    height: 380px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
-.about-banner img{
-
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-
+.about-hero img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/*==========================
-ABOUT INTRO
-==========================*/
-
-.about-intro{
-
-padding:120px 0;
-
-background:white;
-
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 29, 56, 0.65);
 }
 
-.about-intro .container{
-
-max-width:900px;
-
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    max-width: 800px;
 }
 
-.section-tag{
-
-display:inline-block;
-
-font-size:14px;
-
-font-weight:700;
-
-letter-spacing:3px;
-
-color:#981b1e;
-
-margin-bottom:20px;
-
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.about-intro h2{
-
-font-size:64px;
-
-font-weight:300;
-
-line-height:1.15;
-
-color:#081d38;
-
-margin-bottom:30px;
-
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
 }
 
-.about-intro p{
-
-font-size:22px;
-
-line-height:1.9;
-
-color:#555;
-
-margin-bottom:25px;
-
+.hero-subtext {
+    font-size: 18px;
+    opacity: 0.9;
+    line-height: 1.5;
 }
 
-.red-line{
+/* ==========================================
+LAYOUT & FLEXGRID
+========================================== */
+.about-main-section {
+    padding: 60px 0 100px;
+    background: #ffffff;
+}
 
-width:90px;
+.intro-grid {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-height:4px;
+.qualification-sidebar {
+    width: 260px;
+    min-width: 260px;
+    position: sticky;
+    top: 20px;
+    flex-shrink: 0;
+    margin-left: -120px;
+     align-self:start;
+}
 
-background:#981b1e;
 
-margin:25px 0 35px;
 
+
+/* Right Content Wrapper */
+.qualification-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    min-width: 0;
+}
+
+/* ==========================================
+TYPOGRAPHY & CONTENT
+========================================== */
+.section-tag {
+    display: inline-block;
+    color: #981b1e;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.about-intro-block h2,
+.story-text h2 {
+    font-size: 44px;
+    line-height: 1.2;
+    color: #081d38;
+    font-weight: 300;
+    margin-top: 10px;
+}
+
+.red-divider {
+    width: 75px;
+    height: 3px;
+    background: #981b1e;
+    margin: 22px 0 28px;
+}
+
+/* Paragraph font sizes increased for readability */
+.qualification-content p,
+.story-text p {
+    font-size: 19px;
+    line-height: 1.8;
+    color: #444444;
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+OUR STORY GRID
+========================================== */
+.about-story {
+    padding-top: 50px;
+    border-top: 1px solid #e5e5e5;
+    width: 100%;
+}
+
+.story-grid {
+    display: block;
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+    align-items: center;
+}
+
+.story-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    display: block;
+}
+
+/* ==========================================
+RESPONSIVE DESIGN
+========================================== */
+@media (max-width: 992px) {
+    .intro-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .story-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .qualification-sidebar {
+        width: 100%;
+        min-width: 100%;
+        position: static;
+    }
+
+    .about-intro-block h2,
+    .story-text h2 {
+        font-size: 34px;
+    }
+
+    .qualification-content p,
+    .story-text p {
+        font-size: 17px;
+    }
 }
