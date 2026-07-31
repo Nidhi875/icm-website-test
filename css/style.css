@@ -1699,7 +1699,7 @@ nav > a{
     height:80px !important;
     max-height:none;
 
-    transform:translateY(-8px) scale(1.4);
+    transform:translateY(-2px) scale(1.4);
     transform-origin:left center;
 
     margin-left:-20px;
