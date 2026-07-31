@@ -1,62 +1,3 @@
-/* ==========================================
-HERO STYLES
-========================================== */
-.about-hero {
-    position: relative;
-    height: 380px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-
-.about-hero img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(8, 29, 56, 0.65);
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    color: #fff;
-    max-width: 800px;
-}
-
-.hero-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.hero-content h1 {
-    font-size: 48px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #ffffff;
-}
-
-.hero-subtext {
-    font-size: 18px;
-    opacity: 0.9;
-    line-height: 1.5;
-}
 
 /* ==========================================
 LAYOUT & FLEXGRID
@@ -81,7 +22,7 @@ LAYOUT & FLEXGRID
     position: sticky;
     top: 20px;
     flex-shrink: 0;
-    margin-left: -120px;
+    margin-left: -140px;
      align-self:start;
 }
 
@@ -91,7 +32,7 @@ LAYOUT & FLEXGRID
 /* Right Content Wrapper */
 .qualification-content {
     flex: 1;
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 70px;
     min-width: 0;
@@ -159,32 +100,96 @@ OUR STORY GRID
 }
 
 /* ==========================================
-RESPONSIVE DESIGN
+/* ==========================================
+   RESPONSIVE DESIGN
 ========================================== */
-@media (max-width: 992px) {
-    .intro-grid {
-        flex-direction: column;
-        gap: 40px;
+
+@media (max-width:992px){
+
+    /* Main Layout */
+    .intro-grid{
+        display:block;
+        width:100%;
+        max-width:100%;
+        padding:0 20px;
+        margin: 0;
     }
 
-    .story-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
+    /* Content */
+    .qualification-content{
+        width:100%;
+        max-width:100%;
+        display:block;
+        padding: 0;
     }
 
-    .qualification-sidebar {
-        width: 100%;
-        min-width: 100%;
-        position: static;
+    .about-intro-block,
+    .about-story,
+    .story-text{
+        width:100%;
+        max-width:100%;
     }
 
-    .about-intro-block h2,
-    .story-text h2 {
-        font-size: 34px;
-    }
+    /* Typography */
+   .about-intro-block h2,
+.story-text h2{
+    font-size:32px;
+    line-height:1.25;
+    letter-spacing:0;
+    margin:10px 0 20px;
+    max-width:100%;
+    word-break:normal;
+}
+
 
     .qualification-content p,
-    .story-text p {
-        font-size: 17px;
+    .story-text p{
+        font-size:18px;
+        line-height:1.8;
     }
+
+    .story-grid{
+        display:block;
+    }
+
+    .story-image{
+        margin-bottom:30px;
+    }
+
+}
+
+/* ==========================================
+   ABOUT PAGE BANNER (Desktop Only)
+========================================== */
+
+/* About page banner image - Desktop only */
+@media (min-width:769px){
+
+    .qualifications-banner img{
+        object-position: center 50%;
+    }
+
+}
+
+
+/* About page sidebar fix */
+.qualification-sidebar{
+    position: sticky;
+    top: 20px;
+    z-index: 999;
+}
+
+.sidebar-menu{
+    position: relative;
+    z-index: 999;
+}
+
+.submenu{
+    position: relative;
+    z-index: 1000;
+}
+
+.qualification-content{
+    position: relative;
+    z-index: 1;
 }
