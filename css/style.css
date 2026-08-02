@@ -1309,12 +1309,14 @@ FOOTER MOBILE ONLY
     color:white;
 }
 
+/* Desktop */
 .social-icons{
     display:flex;
     justify-content:center;
     gap:50px;
     margin-bottom:35px;
 }
+
 
 .social-icons a{
     color:white;
@@ -1704,5 +1706,21 @@ nav > a{
 
     margin-left:-20px;
 }
+
+}
+
+/* Mobile only */
+@media (max-width:768px){
+
+    .social-icons{
+        justify-content:space-evenly;
+        gap:10px;
+        width:100%;
+        padding:0 15px;
+    }
+
+      .social-icons a{
+        font-size:32px;   /* Change to 30px, 32px or 34px if you prefer */
+    }
 
 }

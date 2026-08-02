@@ -20,6 +20,9 @@
           rel="stylesheet">
 
     <link rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet"
           href="./css/portal.css">
 
 </head>
@@ -30,16 +33,25 @@
 
     <div class="header-container">
 
-        <a href="../index.html">
+      <a href="../index.html" class="portal-brand">
 
-            <img
-                src="./images/logo.png"
-                class="portal-logo"
-                alt="Logo">
+    <!-- Desktop Logo -->
+    <img src="./images/logo.png"
+         class="portal-logo desktop-logo"
+         alt="Logo">
 
-        </a>
+    <!-- Mobile Logo -->
+    <img src="./images/logo-mobile.png"
+         class="portal-logo mobile-logo"
+         alt="Logo">
 
-        <nav class="portal-nav">
+</a>
+
+<button class="mobile-toggle" id="menuToggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+      <nav class="portal-nav">
 
             <a href="#">Home</a>
             <a href="#">Courses</a>
@@ -64,6 +76,29 @@
     </div>
 
 </header>
+
+<div class="mobile-menu" id="mobileMenu">
+
+    <div class="mobile-menu-header">
+
+      
+
+        <button id="closeMenu">
+            <i class="fas fa-times"></i>
+        </button>
+
+    </div>
+
+    <a href="#">Home</a>
+    <a href="#">Courses</a>
+    <a href="#">Support</a>
+    <a href="#">Contact</a>
+
+    <hr>
+
+    <a href="#" class="mobile-login">Login</a>
+
+</div>
 
 <section class="hero">
 
@@ -349,11 +384,41 @@
             class="footer-logo"
             alt="Gouldings Logo">
 
+
+        <div class="portal-social-icons">
+
+    <a href="https://www.facebook.com/profile.php?id=61590920033236" target="_blank">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+    <a href="https://www.linkedin.com/company/gouldings-education-group-gouldings-global-academy/" target="_blank">
+        <i class="fab fa-linkedin-in"></i>
+    </a>
+
+    <a href="https://x.com/gouldingsglobal?s=11" target="_blank">
+        <i class="fab fa-x-twitter"></i>
+    </a>
+
+    <a href="https://www.instagram.com/gouldingsglobalacademy2026/" target="_blank">
+        <i class="fab fa-instagram"></i>
+    </a>
+
+    <a href="https://www.youtube.com/@gouldingsglobalacademy2026" target="_blank">
+        <i class="fab fa-youtube"></i>
+    </a>
+
+    <a href="https://www.threads.com/@gouldingsglobalacademy2026" target="_blank">
+        <i class="fab fa-threads"></i>
+    </a>
+
+</div>
+
         <p>
 
             Gouldings Global Academy provides internationally recognised qualifications and learner support worldwide.
 
         </p>
+        
 
         <div class="footer-links">
 
@@ -377,6 +442,9 @@
     </div>
 
 </footer>
+
+
+<script src="js/mobile-menu.js"></script>
 
 </body>
 </html>

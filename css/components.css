@@ -506,3 +506,23 @@ FOOTER
     font-size:18px;
     line-height:1.8;
 }
+
+
+/*==========================================
+FOOTER MOBILE
+==========================================*/
+
+@media (max-width:768px){
+
+    .social-icons{
+        justify-content:space-evenly;
+        gap:10px;
+        width:100%;
+        padding:0 15px;
+    }
+
+    .social-icons a{
+        font-size:32px;
+    }
+
+}

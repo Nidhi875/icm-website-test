@@ -739,3 +739,31 @@ STAT CARDS
     font-size:13px;
     opacity:.8;
 }
+
+.portal-social-icons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    margin:35px 0;
+
+}
+
+.portal-social-icons a{
+
+    color:#fff;
+
+    font-size:30px;
+
+    transition:.3s;
+
+}
+
+.portal-social-icons a:hover{
+
+    color:#d4af37;
+
+}
