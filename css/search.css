@@ -1,0 +1,290 @@
+/*==================================================
+GOULDINGS GLOBAL ACADEMY
+SEARCH PAGE
+==================================================*/
+
+:root{
+
+    --primary:#21486a;
+    --primary-hover:#18364f;
+
+    --accent:#a92d28;
+    --accent-hover:#891f1b;
+
+    --border:#e4e7eb;
+
+    --text:#444;
+
+    --light:#f8f9fb;
+
+}
+
+/*==================================================
+PAGE
+==================================================*/
+
+.search-page{
+
+    padding:70px 0 100px;
+
+    background:#ffffff;
+
+}
+
+.container{
+
+    width:100%;
+
+    max-width:1180px;
+
+    margin:auto;
+
+    padding:0 20px;
+
+}
+
+/*==================================================
+TITLE
+==================================================*/
+
+.search-page h1{
+
+    font-size:46px;
+
+    color:#173750;
+
+    margin-bottom:18px;
+
+    font-family:"Plus Jakarta Sans",sans-serif;
+
+}
+
+.search-divider{
+
+    width:100%;
+
+    height:2px;
+
+    background:#a92d28;
+
+    margin-bottom:40px;
+
+}
+
+/*==================================================
+SEARCH FORM
+==================================================*/
+
+.search-form{
+
+    display:flex;
+
+    width:100%;
+
+    margin-bottom:50px;
+
+}
+
+.search-form input{
+
+    flex:1;
+
+    height:58px;
+
+    padding:0 20px;
+
+    border:1px solid var(--border);
+
+    border-right:none;
+
+    border-radius:3px 0 0 3px;
+
+    font-size:17px;
+
+    outline:none;
+
+}
+
+.search-form input:focus{
+
+    border-color:var(--primary);
+
+}
+
+.search-form button{
+
+    width:180px;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    cursor:pointer;
+
+    border-radius:0 3px 3px 0;
+
+    transition:.25s;
+
+}
+
+.search-form button:hover{
+
+    background:var(--primary-hover);
+
+}
+
+/*==================================================
+RESULTS
+==================================================*/
+
+.results-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+
+}
+
+.result-card{
+
+    border-bottom:1px solid #ececec;
+
+    padding-bottom:25px;
+
+}
+
+.result-card:last-child{
+
+    border-bottom:none;
+
+}
+
+.result-title{
+
+    font-size:30px;
+
+    color:#173750;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    display:inline-block;
+
+    margin-bottom:8px;
+
+}
+
+.result-title:hover{
+
+    color:#a92d28;
+
+}
+
+.result-url{
+
+    color:#888;
+
+    font-size:14px;
+
+    margin-bottom:12px;
+
+}
+
+.result-description{
+
+    font-size:17px;
+
+    color:#555;
+
+    line-height:1.8;
+
+}
+
+/*==================================================
+NO RESULTS
+==================================================*/
+
+.no-results{
+
+    background:#fafafa;
+
+    border:1px solid var(--border);
+
+    padding:40px;
+
+    border-radius:6px;
+
+}
+
+.no-results h2{
+
+    color:#173750;
+
+    margin-bottom:15px;
+
+}
+
+.no-results p{
+
+    color:#666;
+
+}
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:768px){
+
+.search-page{
+
+    padding:50px 0 70px;
+
+}
+
+.search-page h1{
+
+    font-size:34px;
+
+}
+
+.search-form{
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.search-form input{
+
+    border-radius:3px;
+
+    border-right:1px solid var(--border);
+
+}
+
+.search-form button{
+
+    width:100%;
+
+    border-radius:3px;
+
+}
+
+.result-title{
+
+    font-size:24px;
+
+}
+
+}

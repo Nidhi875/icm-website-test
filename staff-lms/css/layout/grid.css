@@ -1,0 +1,168 @@
+/*==================================================
+APPLICATION LAYOUT
+==================================================*/
+
+.app{
+
+    min-height:100vh;
+
+    background:var(--background);
+
+}
+
+
+/*==================================================
+MAIN CONTENT
+==================================================*/
+
+.main-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-height:100vh;
+
+}
+
+
+/*==================================================
+PAGE WRAPPER
+==================================================*/
+
+.page-wrapper{
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+
+/*==================================================
+DASHBOARD GRID
+==================================================*/
+
+.dashboard-grid{
+
+    display:grid;
+
+    gap:25px;
+
+}
+
+
+/*==================================================
+STATISTICS GRID
+==================================================*/
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+
+/*==================================================
+TWO COLUMN
+==================================================*/
+
+.two-column{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:25px;
+
+}
+
+/*==================================================
+THREE COLUMN
+==================================================*/
+
+.three-column{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+/*==================================================
+FOUR COLUMN
+==================================================*/
+
+.four-column{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+
+/*==================================================
+AUTO GRID
+==================================================*/
+
+.auto-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+}
+
+/*==================================================
+SECTION
+==================================================*/
+
+.section{
+
+    margin-bottom:35px;
+
+}
+
+
+/*==================================================
+FLEX
+==================================================*/
+
+.flex-between{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.flex-center{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.flex-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+}

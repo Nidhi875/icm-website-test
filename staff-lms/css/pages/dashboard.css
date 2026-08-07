@@ -1,0 +1,597 @@
+/*==========================================
+WELCOME BANNER
+==========================================*/
+
+.welcome-banner{
+
+    display:grid;
+
+    grid-template-columns:1.8fr 0.9fr;
+
+    gap:50px;
+
+    padding:55px;
+
+    border-radius:30px;
+
+    background:linear-gradient(135deg,#081D38,#143C73);
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:0 20px 45px rgba(8,29,56,.18);
+
+}
+
+.welcome-banner::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+
+    height:420px;
+
+    right:-120px;
+
+    bottom:-160px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+}
+
+.welcome-banner::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:230px;
+
+    height:230px;
+
+    left:58%;
+
+    top:-90px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+}
+
+.welcome-banner h1{
+
+    font-size:64px;
+
+    line-height:1.1;
+
+    font-weight:800;
+
+    color:#fff;
+
+    margin:24px 0;
+
+}
+
+.welcome-banner p{
+
+    font-size:22px;
+
+    color:rgba(255,255,255,.85);
+
+    max-width:650px;
+
+    line-height:1.7;
+
+}
+
+
+.welcome-tag{
+
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.12);
+
+}
+
+
+.welcome-actions{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+.hero-card{
+
+    background:rgba(255,255,255,.10);
+
+    backdrop-filter:blur(25px);
+
+    padding:35px;
+
+    border-radius:22px;
+
+    height:100%;
+
+}
+
+
+.hero-card h3{
+
+    color:#fff;
+
+    font-size:30px;
+
+    margin-bottom:28px;
+
+}
+
+
+.hero-card ul{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+.hero-card li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    font-size:21px;
+
+    color:#fff;
+
+}
+
+
+.hero-circle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.hero-circle-one{
+
+    width:250px;
+
+    height:250px;
+
+    top:-120px;
+
+    right:-80px;
+
+}
+
+.hero-circle-two{
+
+    width:180px;
+
+    height:180px;
+
+    bottom:-80px;
+
+    left:55%;
+
+}
+
+
+.welcome-banner::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:340px;
+
+    height:340px;
+
+    right:190px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:url("../images/logo/gouldings-watermark.png") center/contain no-repeat;
+
+    opacity:.05;
+
+    pointer-events:none;
+
+}
+
+/*==================================================
+SCHEDULE WIDGET
+==================================================*/
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,2fr) minmax(360px,1fr);
+
+    gap:32px;
+
+    margin-top:35px;
+
+    align-items:start;
+
+}
+
+.dashboard-left,
+.dashboard-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+}
+
+.dashboard-left > *,
+.dashboard-right > *{
+
+    width:100%;
+
+}
+
+.schedule-widget{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+.widget-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.widget-header h2{
+
+    font-size:26px;
+
+    font-weight:700;
+
+    color:#081D38;
+
+}
+
+.widget-header p{
+
+    color:#7b8794;
+
+    margin-top:5px;
+
+}
+
+.view-all{
+
+    color:#CDA349;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.schedule-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.schedule-item{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:18px 20px;
+
+    border:1px solid #edf1f5;
+
+    border-radius:16px;
+
+    transition:.3s;
+
+}
+
+.schedule-item:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.schedule-time{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#081D38;
+
+    width:90px;
+
+}
+
+.schedule-info{
+
+    flex:1;
+
+    margin-left:25px;
+
+}
+
+.schedule-info h4{
+
+    color:#081D38;
+
+    margin-bottom:6px;
+
+}
+
+.schedule-info p{
+
+    color:#7b8794;
+
+}
+
+/*=========================
+MEETING WIDGET
+=========================*/
+
+/*=========================
+MEETING WIDGET
+=========================*/
+
+.meeting-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:#fff;
+    border:1px solid #eef2f7;
+    border-radius:18px;
+
+    padding:24px;
+    margin-bottom:18px;
+
+    transition:.3s;
+}
+
+.meeting-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 35px rgba(0,0,0,.08);
+}
+
+.meeting-left{
+    display:flex;
+    align-items:center;
+    gap:24px;
+    flex:1;
+}
+
+.meeting-video-icon{
+    width:72px;
+    height:72px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#081D38,#123D74);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    flex-shrink:0;
+}
+
+.meeting-video-icon svg{
+    width:34px;
+    height:34px;
+    stroke:#D4AF37;
+    stroke-width:2.3;
+}
+
+.meeting-content{
+    flex:1;
+}
+
+.meeting-content h3{
+    margin:0;
+    font-size:22px;
+    color:#081D38;
+}
+
+
+.meeting-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+    gap:20px;
+}
+
+.meeting-tutor{
+    margin:8px 0;
+    color:#666;
+    font-size:16px;
+}
+
+.meeting-meta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    color:#7b8794;
+    font-size:15px;
+}
+
+.meeting-status{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.meeting-status.live{
+
+    background:#FEE2E2;
+
+    color:#DC2626;
+
+}
+
+.meeting-status.upcoming{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+.meeting-status.completed{
+
+    background:#E5E7EB;
+
+    color:#6B7280;
+
+}
+.meeting-platform{
+    padding:6px 14px;
+    border-radius:20px;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+}
+
+.zoom{
+    background:#2D8CFF;
+}
+
+.teams{
+    background:#635BCE;
+}
+
+.meet{
+    background:#00A884;
+}
+
+.meeting-right{
+    margin-left:24px;
+}
+
+.join-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    background:#081D38;
+    color:#fff;
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.join-btn:hover{
+    background:#D4AF37;
+    color:#081D38;
+}
+
+.join-btn svg{
+    width:18px;
+    height:18px;
+}
+
+@media(max-width:900px){
+
+.meeting-card{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.meeting-left{
+    width:100%;
+}
+
+.meeting-right{
+    width:100%;
+    margin-left:0;
+    margin-top:20px;
+}
+
+.join-btn{
+    width:100%;
+    justify-content:center;
+}
+
+.meeting-top{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+}
+
+}
+
+

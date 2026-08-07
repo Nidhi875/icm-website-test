@@ -1,0 +1,141 @@
+/*==========================================
+TODAY'S SCHEDULE
+==========================================*/
+
+.schedule-widget{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.widget-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.widget-header h2{
+
+    font-size:24px;
+
+    color:#081D38;
+
+}
+
+.widget-header p{
+
+    color:#777;
+
+    margin-top:5px;
+
+}
+
+.view-all{
+
+    color:#0D5EF4;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.schedule-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.schedule-item:last-child{
+
+    border:none;
+
+}
+
+.schedule-time{
+
+    width:90px;
+
+    font-weight:700;
+
+    color:#081D38;
+
+}
+
+.schedule-course{
+
+    flex:1;
+
+}
+
+.schedule-course h4{
+
+    margin-bottom:6px;
+
+    color:#081D38;
+
+}
+
+.schedule-course p{
+
+    color:#777;
+
+    font-size:14px;
+
+}
+
+.schedule-status{
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.live{
+
+    background:#DDF8E8;
+
+    color:#138A36;
+
+}
+
+.upcoming{
+
+    background:#FFF6D8;
+
+    color:#B8860B;
+
+}
+
+.completed{
+
+    background:#ECECEC;
+
+    color:#666;
+
+}

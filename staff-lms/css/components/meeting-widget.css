@@ -1,0 +1,39 @@
+/*==================================================
+MEETINGS WIDGET
+==================================================*/
+
+.meetings-widget{
+    background:#fff;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+.widget-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.widget-header h2{
+    font-size:26px;
+    color:#081D38;
+    margin:0;
+}
+
+.widget-header p{
+    color:#7b8794;
+    margin-top:5px;
+}
+
+.view-all{
+    text-decoration:none;
+    color:#CDA349;
+    font-weight:600;
+}
+
+/*==================================================
+MEETING CARD
+==================================================*/
+

@@ -1,0 +1,305 @@
+/*==================================================
+GOOGLE FONTS
+==================================================*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/*==================================================
+LAYOUT
+==================================================*/
+@import url('layout/grid.css');
+@import url('layout/header.css');
+@import url('layout/sidebar.css');
+
+/*==================================================
+COMPONENTS
+==================================================*/
+@import url('components/buttons.css');
+@import url('components/cards.css');
+@import url('components/forms.css');
+@import url('components/modal.css');
+@import url('components/tables.css');
+
+/*==================================================
+PAGES
+==================================================*/
+@import url('pages/login.css');
+@import url('pages/dashboard.css');
+@import url('pages/students.css');
+@import url('pages/meetings.css');
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+@import url('responsive.css');
+
+
+/*==================================================
+ROOT VARIABLES
+==================================================*/
+
+:root{
+
+    /* Brand Colours */
+    --primary:#081D38;
+    --secondary:#C9A34A;
+
+    /* Background */
+    --background:#F5F7FA;
+    --card:#FFFFFF;
+
+    /* Text */
+    --text:#1F2937;
+    --text-light:#6B7280;
+
+    /* Borders */
+    --border:#E5E7EB;
+
+    /* Status Colours */
+    --success:#10B981;
+    --warning:#F59E0B;
+    --danger:#EF4444;
+    --info:#3B82F6;
+
+    /* Radius */
+    --radius-sm:8px;
+    --radius:16px;
+    --radius-lg:24px;
+
+    /* Shadows */
+    --shadow-sm:0 4px 12px rgba(0,0,0,.05);
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+
+    /* Transition */
+    --transition:.3s ease;
+
+    /* Sidebar */
+    --sidebar-width:280px;
+
+    /* Header */
+    --header-height:80px;
+
+    /* Layout */
+    --container:1400px;
+
+}
+
+
+/*==================================================
+RESET
+==================================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+    -webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+
+}
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+button{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+}
+
+input,
+textarea,
+select{
+
+    outline:none;
+
+    border:none;
+
+    font-family:inherit;
+
+}
+
+
+/*==================================================
+TYPOGRAPHY
+==================================================*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+    font-family:'Poppins',sans-serif;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+p{
+
+    line-height:1.8;
+
+    color:var(--text-light);
+
+}
+
+ul{
+
+    list-style:none;
+
+}
+
+
+/*==================================================
+SCROLLBAR
+==================================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#eef2f7;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--secondary);
+
+    border-radius:50px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#b98d2d;
+
+}
+
+
+/*==================================================
+TEXT SELECTION
+==================================================*/
+
+::selection{
+
+    background:var(--secondary);
+
+    color:#fff;
+
+}
+
+
+/*==================================================
+UTILITIES
+==================================================*/
+
+.container{
+
+    width:min(100% - 40px,var(--container));
+
+    margin:auto;
+
+}
+
+.shadow{
+
+    box-shadow:var(--shadow);
+
+}
+
+.radius{
+
+    border-radius:var(--radius);
+
+}
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+.flex{
+
+    display:flex;
+
+}
+
+.grid{
+
+    display:grid;
+
+}
+
+
+button,
+a,
+input,
+textarea,
+select{
+
+    transition:var(--transition);
+
+}
+
+
+:focus-visible{
+
+    outline:3px solid rgba(201,163,74,.35);
+
+    outline-offset:3px;
+
+}

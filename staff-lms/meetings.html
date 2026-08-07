@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Meetings | Gouldings Staff LMS</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages/dashboard.css">
+<link rel="stylesheet" href="css/pages/meetings.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <div id="sidebar"></div>
+
+    <div class="main-content">
+
+        <div id="header"></div>
+
+        <div class="page-wrapper">
+
+            <!--==================================
+            PAGE HEADER
+            ===================================-->
+
+            <section class="page-header">
+
+                <div>
+
+                    <h1>
+
+                        Meetings Management
+
+                    </h1>
+
+                    <p>
+
+                        Schedule, manage and join online meetings.
+
+                    </p>
+
+                </div>
+
+                <button
+                class="primary-btn"
+                id="newMeetingBtn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    New Meeting
+
+                </button>
+
+            </section>
+
+
+
+            <!--==================================
+            STATISTICS
+            ===================================-->
+
+            <section class="meeting-stats">
+
+                <div class="stat-card">
+
+                    <div>
+
+                        <span>Total Meetings</span>
+
+                        <h2 id="totalMeetings">
+
+                            12
+
+                        </h2>
+
+                    </div>
+
+                    <i
+                    class="fa-solid fa-calendar-days stat-icon"></i>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div>
+
+                        <span>Live Now</span>
+
+                        <h2 id="liveMeetings">
+
+                            2
+
+                        </h2>
+
+                    </div>
+
+                    <i
+                    class="fa-solid fa-video stat-icon"></i>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div>
+
+                        <span>Upcoming</span>
+
+                        <h2 id="upcomingMeetings">
+
+                            7
+
+                        </h2>
+
+                    </div>
+
+                    <i
+                    class="fa-solid fa-clock stat-icon"></i>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div>
+
+                        <span>Completed</span>
+
+                        <h2 id="completedMeetings">
+
+                            18
+
+                        </h2>
+
+                    </div>
+
+                    <i
+                    class="fa-solid fa-circle-check stat-icon"></i>
+
+                </div>
+
+            </section>
+
+
+
+            <!--==================================
+            FILTER BAR
+            ===================================-->
+
+            <section class="meeting-toolbar">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                    type="text"
+                    id="meetingSearch"
+                    placeholder="Search meetings...">
+
+                </div>
+
+                <div class="toolbar-right">
+
+                    <select id="providerFilter">
+
+                        <option value="all">
+
+                            All Providers
+
+                        </option>
+
+                        <option value="zoom">
+
+                            Zoom
+
+                        </option>
+
+                        <option value="jitsi">
+
+                            Jitsi Meet
+
+                        </option>
+
+                        <option value="teams">
+
+                            Microsoft Teams
+
+                        </option>
+
+                        <option value="meet">
+
+                            Google Meet
+
+                        </option>
+
+                    </select>
+
+                    <select id="statusFilter">
+
+                        <option value="all">
+
+                            All Status
+
+                        </option>
+
+                        <option value="live">
+
+                            Live
+
+                        </option>
+
+                        <option value="today">
+
+                            Today
+
+                        </option>
+
+                        <option value="tomorrow">
+
+                            Tomorrow
+
+                        </option>
+
+                        <option value="completed">
+
+                            Completed
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+
+            <!--==================================
+            MEETING LIST
+            ===================================-->
+
+            <div id="meetingsList"></div>
+
+                <!--==================================
+            QUICK FILTERS
+            ===================================-->
+
+            <section class="meeting-filters">
+
+                <button class="filter-btn active" data-filter="all">
+
+                    All Meetings
+
+                </button>
+
+                <button class="filter-btn" data-filter="today">
+
+                    Today
+
+                </button>
+
+                <button class="filter-btn" data-filter="tomorrow">
+
+                    Tomorrow
+
+                </button>
+
+                <button class="filter-btn" data-filter="live">
+
+                    Live
+
+                </button>
+
+                <button class="filter-btn" data-filter="completed">
+
+                    Completed
+
+                </button>
+
+            </section>
+
+
+
+            <!--==================================
+            SAMPLE MEETING CARD
+            ===================================-->
+
+           
+
+
+            <!--==================================
+            DYNAMIC MEETINGS
+            ===================================-->
+
+
+
+            <!--==================================
+            CREATE MEETING MODAL
+            ===================================-->
+
+            <div
+            class="modal-overlay"
+
+            id="meetingModal">
+
+                <div class="meeting-modal">
+
+
+                            Create New Meeting
+
+                        </h2>
+
+                        <button
+                        id="closeMeetingModal">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                    <form id="meetingForm">
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Meeting Title
+
+                                </label>
+
+                                <input
+                                type="text"
+                                id="meetingTitle">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Tutor
+
+                                </label>
+
+                                <input
+                                type="text"
+                                id="meetingTutor">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Date
+
+                                </label>
+
+                                <input
+                                type="date"
+                                id="meetingDate">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Time
+
+                                </label>
+
+                                <input
+                                type="time"
+                                id="meetingTime">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Duration
+
+                                </label>
+
+                               <input
+                               type="number"
+                               id="meetingDuration"
+                               value="60">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Meeting Provider
+
+                                </label>
+
+                                <select id="meetingProvider">
+
+                                    <option value="zoom">
+
+                                        Zoom
+
+                                    </option>
+
+                                    <option value="jitsi">
+
+                                        Jitsi
+
+                                    </option>
+
+                                    <option value="teams">
+
+                                        Microsoft Teams
+
+                                    </option>
+
+                                    <option value="meet">
+
+                                        Google Meet
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Description
+
+                            </label>
+
+                            <textarea
+                            rows="5"></textarea>
+
+                        </div>
+
+                        <div class="modal-actions">
+
+                            <button
+                            type="button"
+                            class="secondary-btn">
+
+                                Cancel
+
+                            </button>
+
+                            <button
+                            class="primary-btn">
+
+                                Save Meeting
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--==================================
+JAVASCRIPT
+===================================-->
+
+<script src="js/common/app.js"></script>
+
+<script src="js/data/meeting-data.js"></script>
+<script src="js/data/meeting-storage.js"></script>
+
+
+<script src="js/providers/zoom.js"></script>
+<script src="js/providers/jitsi.js"></script>
+<script src="js/providers/teams.js"></script>
+<script src="js/providers/meet.js"></script>
+
+<script src="js/meetings/create-meeting.js"></script>
+
+<script src="js/meetings/meetings.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    if(window.lucide){
+
+        lucide.createIcons();
+
+    }
+
+    const modal=document.getElementById("meetingModal");
+
+    const openBtn=document.getElementById("newMeetingBtn");
+
+    const closeBtn=document.getElementById("closeMeetingModal");
+
+    if(openBtn){
+
+        openBtn.onclick=()=>{
+
+            modal.classList.add("show");
+
+        };
+
+    }
+
+    if(closeBtn){
+
+        closeBtn.onclick=()=>{
+
+            modal.classList.remove("show");
+
+        };
+
+    }
+
+    window.onclick=(e)=>{
+
+        if(e.target===modal){
+
+            modal.classList.remove("show");
+
+        }
+
+    };
+
+});
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Meeting Room | Gouldings Staff LMS</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/pages/meeting-room.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="meeting-room-page">
+
+    <!--==============================
+    HEADER
+    ==============================-->
+
+    <header class="meeting-header">
+
+        <div class="meeting-title">
+
+            <a href="dashboard.html" class="back-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </a>
+
+            <div>
+
+                <h1>Business Management Lecture</h1>
+
+                <p>
+                    Dr. Adair Ford
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="meeting-status-area">
+
+            <span class="live-badge">
+
+                LIVE
+
+            </span>
+
+            <span class="meeting-timer">
+
+                00:18:25
+
+            </span>
+
+            <button class="leave-btn">
+
+                Leave Meeting
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!--==============================
+    BODY
+    ==============================-->
+
+    <div class="meeting-layout">
+
+
+
+
+        <!--==============================
+        LEFT SIDE
+        ==============================-->
+
+        <div class="meeting-main">
+
+
+
+            <!--==========================
+            VIDEO AREA
+            ==========================-->
+
+            <section class="video-area">
+
+               <div class="main-video">
+
+              <div id="jitsi-container"></div>
+
+                 </div>
+
+
+
+                <!--======================
+                VIDEO CONTROLS
+                ======================-->
+
+                <div class="video-controls">
+
+                    <button>
+
+                        <i class="fa-solid fa-microphone"></i>
+
+                    </button>
+
+                    <button>
+
+                        <i class="fa-solid fa-video"></i>
+
+                    </button>
+
+                    <button>
+
+                        <i class="fa-solid fa-desktop"></i>
+
+                    </button>
+
+                    <button>
+
+                        <i class="fa-solid fa-comments"></i>
+
+                    </button>
+
+                    <button>
+
+                        <i class="fa-solid fa-hand"></i>
+
+                    </button>
+
+                    <button class="danger">
+
+                        <i class="fa-solid fa-phone-slash"></i>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!--=========================
+            TAB MENU
+            =========================-->
+
+            <div class="meeting-tabs">
+
+                <button class="active">
+
+                    Overview
+
+                </button>
+
+                <button>
+
+                    Chat
+
+                </button>
+
+                <button>
+
+                    Resources
+
+                </button>
+
+                <button>
+
+                    Attendance
+
+                </button>
+
+                <button>
+
+                    Notes
+
+                </button>
+
+            </div>
+
+
+
+            <!--=========================================
+            TAB CONTENT
+            =========================================-->
+
+            <div class="meeting-content-area">
+
+                <section class="meeting-panel">
+
+                    <h3>Today's Lecture</h3>
+
+                    <p>
+
+                        Welcome to today's Business Management lecture.
+
+                        During this session we will discuss strategic
+                        planning, organisational leadership and business
+                        growth techniques.
+
+                    </p>
+
+                </section>
+
+                <section class="meeting-panel">
+
+                    <h3>Course Resources</h3>
+
+                    <ul class="resource-list">
+
+                        <li>
+
+                            <i class="fa-solid fa-file-pdf"></i>
+
+                            Business Management Handbook.pdf
+
+                        </li>
+
+                        <li>
+
+                            <i class="fa-solid fa-file-powerpoint"></i>
+
+                            Lecture Slides.pptx
+
+                        </li>
+
+                        <li>
+
+                            <i class="fa-solid fa-file-word"></i>
+
+                            Assignment 01.docx
+
+                        </li>
+
+                    </ul>
+
+                </section>
+
+            </div>
+
+        </div>
+
+
+
+        <!--=====================================
+        RIGHT SIDEBAR
+        =====================================-->
+
+        <aside class="meeting-sidebar">
+
+            <div class="sidebar-card">
+
+                <h3>
+
+                    Participants
+
+                </h3>
+
+                <ul class="participants-list">
+
+                    <li>
+
+                        <span class="online"></span>
+
+                        Dr. Adair Ford
+
+                    </li>
+
+                    <li>
+
+                        <span class="online"></span>
+
+                        Sarah Wilson
+
+                    </li>
+
+                    <li>
+
+                        <span class="online"></span>
+
+                        Emma Brown
+
+                    </li>
+
+                    <li>
+
+                        <span class="online"></span>
+
+                        John Smith
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+
+            <div class="sidebar-card">
+
+                <h3>
+
+                    Live Chat
+
+                </h3>
+
+                <div class="chat-box">
+
+                    <div class="chat-message">
+
+                        <strong>
+
+                            Dr. Adair Ford
+
+                        </strong>
+
+                        <p>
+
+                            Good morning everyone.
+
+                        </p>
+
+                    </div>
+
+                    <div class="chat-message">
+
+                        <strong>
+
+                            Sarah Wilson
+
+                        </strong>
+
+                        <p>
+
+                            Ready for today's lecture.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <input
+                type="text"
+                placeholder="Type a message...">
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+
+<script src="https://meet.jit.si/external_api.js"></script>
+
+<script src="js/data/meeting-data.js"></script>
+<script src="js/data/meeting-storage.js"></script>
+    
+
+<script src="js/providers/zoom.js"></script>
+
+<script src="js/providers/jitsi.js"></script>
+
+<script src="js/providers/teams.js"></script>
+
+<!-- <script src="js/providers/meet.js"></script> -->
+
+<script src="js/meeting-room.js"></script>
+
+
+</body>
+
+</html>

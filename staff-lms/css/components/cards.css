@@ -1,0 +1,276 @@
+/*==================================================
+CARD SYSTEM
+==================================================*/
+
+.card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow-sm);
+
+    padding:24px;
+
+    transition:var(--transition);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:var(--shadow);
+
+}
+
+/*==================================================
+STAT CARD
+==================================================*/
+
+.stat-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+}
+
+.stat-card-info h3{
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:var(--text-light);
+
+    margin-bottom:8px;
+
+}
+
+.stat-card-info h2{
+
+    font-size:34px;
+
+    color:var(--primary);
+
+}
+
+.stat-card-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    background:rgba(8,29,56,.08);
+
+    color:var(--primary);
+
+}
+
+
+/*==================================================
+CARD HEADER
+==================================================*/
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.card-title{
+
+    font-size:22px;
+
+    color:var(--primary);
+
+}
+
+.card-subtitle{
+
+    color:var(--text-light);
+
+    font-size:14px;
+
+}
+
+
+/*==================================================
+MEETING CARD
+==================================================*/
+
+
+/*==================================================
+ACTIVITY CARD
+==================================================*/
+
+.activity-item{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:flex-start;
+
+    margin-bottom:20px;
+
+}
+
+.activity-icon{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(201,163,74,.15);
+
+}
+
+
+/*==================================================
+PROFILE CARD
+==================================================*/
+
+.profile-card{
+
+    text-align:center;
+
+}
+
+.profile-avatar{
+
+    width:110px;
+
+    height:110px;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    margin-bottom:20px;
+
+    object-fit:cover;
+
+}
+
+.profile-name{
+
+    font-size:24px;
+
+    color:var(--primary);
+
+}
+
+.profile-role{
+
+    color:var(--secondary);
+
+    margin-top:8px;
+
+}
+
+
+/*==================================================
+ANALYTICS CARD
+==================================================*/
+
+.analytics-card{
+
+    min-height:360px;
+
+}
+
+
+/*==================================================
+GLASS CARD
+==================================================*/
+
+.glass-card{
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,.7);
+
+    border:1px solid rgba(255,255,255,.3);
+
+}
+
+
+/*==================================================
+STATUS BADGE
+==================================================*/
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.badge-success{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+.badge-warning{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+}
+
+.badge-danger{
+
+    background:#FEE2E2;
+
+    color:#B91C1C;
+
+}
