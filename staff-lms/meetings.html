@@ -319,186 +319,143 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             CREATE MEETING MODAL
             ===================================-->
 
-            <div
-            class="modal-overlay"
+          <!-- ==========================================
+CREATE MEETING MODAL
+========================================== -->
 
-            id="meetingModal">
+<div class="modal-overlay" id="meetingModal">
 
-                <div class="meeting-modal">
+    <div class="meeting-modal">
 
+        <div class="modal-header">
 
-                            Create New Meeting
+            <h2>Create New Meeting</h2>
 
-                        </h2>
+            <button
+                type="button"
+                id="closeMeetingModal"
+                class="close-modal">
 
-                        <button
-                        id="closeMeetingModal">
+                <i class="fa-solid fa-xmark"></i>
 
-                            <i class="fa-solid fa-xmark"></i>
+            </button>
 
-                        </button>
+        </div>
 
-                    </div>
+        <form id="meetingForm">
 
-                    <form id="meetingForm">
+            <div class="form-grid">
 
-                        <div class="form-grid">
+                <div class="form-group">
 
-                            <div class="form-group">
+                    <label>Meeting Title</label>
 
-                                <label>
+                    <input
+                        type="text"
+                        id="meetingTitle"
+                        placeholder="Business Management Lecture">
 
-                                    Meeting Title
+                </div>
 
-                                </label>
+                <div class="form-group">
 
-                                <input
-                                type="text"
-                                id="meetingTitle">
+                    <label>Tutor</label>
 
-                            </div>
+                    <input
+                        type="text"
+                        id="meetingTutor"
+                        placeholder="Dr. Adair Ford">
 
-                            <div class="form-group">
+                </div>
 
-                                <label>
+                <div class="form-group">
 
-                                    Tutor
+                    <label>Date</label>
 
-                                </label>
+                    <input
+                        type="date"
+                        id="meetingDate">
 
-                                <input
-                                type="text"
-                                id="meetingTutor">
+                </div>
 
-                            </div>
+                <div class="form-group">
 
-                            <div class="form-group">
+                    <label>Time</label>
 
-                                <label>
+                    <input
+                        type="time"
+                        id="meetingTime">
 
-                                    Date
+                </div>
 
-                                </label>
+                <div class="form-group">
 
-                                <input
-                                type="date"
-                                id="meetingDate">
+                    <label>Duration (minutes)</label>
 
-                            </div>
+                    <input
+                        type="number"
+                        id="meetingDuration"
+                        value="60">
 
-                            <div class="form-group">
+                </div>
 
-                                <label>
+                <div class="form-group">
 
-                                    Time
+                    <label>Meeting Provider</label>
 
-                                </label>
+                    <select id="meetingProvider">
 
-                                <input
-                                type="time"
-                                id="meetingTime">
+                        <option value="zoom">Zoom</option>
 
-                            </div>
+                        <option value="meet">Google Meet</option>
 
-                            <div class="form-group">
+                        <option value="teams">Microsoft Teams</option>
 
-                                <label>
+                        <option value="jitsi">Jitsi Meet</option>
 
-                                    Duration
-
-                                </label>
-
-                               <input
-                               type="number"
-                               id="meetingDuration"
-                               value="60">
-                            </div>
-
-                            <div class="form-group">
-
-                                <label>
-
-                                    Meeting Provider
-
-                                </label>
-
-                                <select id="meetingProvider">
-
-                                    <option value="zoom">
-
-                                        Zoom
-
-                                    </option>
-
-                                    <option value="jitsi">
-
-                                        Jitsi
-
-                                    </option>
-
-                                    <option value="teams">
-
-                                        Microsoft Teams
-
-                                    </option>
-
-                                    <option value="meet">
-
-                                        Google Meet
-
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>
-
-                                Description
-
-                            </label>
-
-                            <textarea
-                            rows="5"></textarea>
-
-                        </div>
-
-                        <div class="modal-actions">
-
-                            <button
-                            type="button"
-                            class="secondary-btn">
-
-                                Cancel
-
-                            </button>
-
-                            <button
-                            class="primary-btn">
-
-                                Save Meeting
-
-                            </button>
-
-                        </div>
-
-                    </form>
+                    </select>
 
                 </div>
 
             </div>
 
+            <div class="form-group">
 
-        </div>
+                <label>Description</label>
+
+                <textarea
+                    rows="5"
+                    id="meetingDescription"
+                    placeholder="Meeting description..."></textarea>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelMeeting">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Meeting
+
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
 </div>
-
 <!--==================================
 JAVASCRIPT
 ===================================-->

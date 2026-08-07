@@ -102,3 +102,7 @@ saveMeetings(meetings);
     });
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    initialiseCreateMeeting();
+});

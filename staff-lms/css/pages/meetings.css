@@ -860,3 +860,301 @@ RESPONSIVE
 }
 
 }
+
+
+
+/*==================================================
+CREATE MEETING MODAL
+==================================================*/
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.55);
+
+    backdrop-filter:blur(4px);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    z-index:9999;
+
+}
+
+.modal-overlay.show{
+
+    display:flex;
+
+}
+
+.meeting-modal{
+
+    width:100%;
+
+    max-width:900px;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 35px 80px rgba(0,0,0,.28);
+
+    animation:modalIn .25s ease;
+
+}
+
+@keyframes modalIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px) scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:26px 32px;
+
+    border-bottom:1px solid #eceff5;
+
+}
+
+.modal-header h2{
+
+    margin:0;
+
+    font-size:30px;
+
+    color:#0d2342;
+
+    font-weight:700;
+
+}
+
+.close-modal{
+
+    width:44px;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#f5f6f8;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.close-modal:hover{
+
+    background:#0d2342;
+
+    color:#fff;
+
+}
+
+#meetingForm{
+
+    padding:30px 32px 32px;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:22px;
+
+    margin-bottom:24px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    margin-bottom:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#0d2342;
+
+}
+
+.form-group input,
+
+.form-group select,
+
+.form-group textarea{
+
+    width:100%;
+
+    border:1px solid #d9dee8;
+
+    border-radius:10px;
+
+    padding:14px 16px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+    background:#fff;
+
+}
+
+.form-group textarea{
+
+    resize:vertical;
+
+    min-height:130px;
+
+}
+
+.form-group input:focus,
+
+.form-group select:focus,
+
+.form-group textarea:focus{
+
+    outline:none;
+
+    border-color:#d4af37;
+
+    box-shadow:0 0 0 3px rgba(212,175,55,.18);
+
+}
+
+.modal-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:14px;
+
+    margin-top:28px;
+
+}
+
+.modal-actions .secondary-btn{
+
+    padding:13px 26px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#eef2f7;
+
+    color:#0d2342;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.modal-actions .secondary-btn:hover{
+
+    background:#dfe6ee;
+
+}
+
+.modal-actions .primary-btn{
+
+    padding:13px 30px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0d2342;
+
+    color:#fff;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.modal-actions .primary-btn:hover{
+
+    background:#d4af37;
+
+    color:#0d2342;
+
+}
+
+@media(max-width:768px){
+
+    .meeting-modal{
+
+        max-width:100%;
+
+    }
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .modal-header{
+
+        padding:20px;
+
+    }
+
+    #meetingForm{
+
+        padding:20px;
+
+    }
+
+}
