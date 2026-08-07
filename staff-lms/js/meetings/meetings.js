@@ -36,6 +36,105 @@ function refreshMeetings(){
 
 }
 
+/*==================================================
+MEETING CARD TEMPLATE
+==================================================*/
+
+function createMeetingCard(meeting){
+
+    return `
+
+    <div class="meeting-card"
+         onclick="joinMeeting(${meeting.id})"
+         style="cursor:pointer;">
+
+        <div class="meeting-left">
+
+            <div class="meeting-icon">
+
+                <i class="fa-solid fa-video"></i>
+
+            </div>
+
+            <div class="meeting-content">
+
+                <div class="meeting-top">
+
+                    <span class="meeting-status ${String(meeting.status || "").toLowerCase()}">
+
+                        ${meeting.status || "UPCOMING"}
+
+                    </span>
+
+                    <span class="meeting-platform ${meeting.badge}">
+
+                        ${meeting.platform}
+
+                    </span>
+
+                </div>
+
+                <h3>${meeting.title}</h3>
+
+                <p>${meeting.tutor}</p>
+
+                <div class="meeting-meta">
+
+                    <span>${meeting.date}</span>
+
+                    <span>•</span>
+
+                    <span>${meeting.time}</span>
+
+                    <span>•</span>
+
+                    <span>${meeting.duration} mins</span>
+
+                    <span>•</span>
+
+                    <span>${meeting.attendees} Participants</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="meeting-actions">
+
+            <button
+                class="join-btn"
+                onclick="event.stopPropagation(); joinMeeting(${meeting.id})">
+
+                <i class="fa-solid fa-video"></i>
+
+                Join
+
+            </button>
+
+            <button
+                class="icon-btn"
+                onclick="event.stopPropagation(); editMeeting(${meeting.id})">
+
+                <i class="fa-solid fa-pen"></i>
+
+            </button>
+
+            <button
+                class="icon-btn"
+                onclick="event.stopPropagation(); deleteMeeting(${meeting.id})">
+
+                <i class="fa-solid fa-trash"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
 
 /*==================================================
 RENDER
@@ -74,97 +173,9 @@ console.log("Number of meetings:", filteredMeetings.length);
 
     }
 
-    container.innerHTML = filteredMeetings.map(meeting=>`
-
-       
-        <div class="meeting-card">
-
-            <div class="meeting-left">
-
-                <div class="meeting-icon">
-
-                    <i class="fa-solid fa-video"></i>
-
-                </div>
-
-                <div class="meeting-content">
-
-                    <div class="meeting-top">
-
-                        <span class="meeting-status ${String(meeting.status || '').toLowerCase()}">
-
-                            ${meeting.status || "UPCOMING"}
-
-                        </span>
-
-                        <span class="meeting-platform ${meeting.badge}">
-
-                            ${meeting.platform}
-
-                        </span>
-
-                    </div>
-
-                    <h3>${meeting.title}</h3>
-
-                    <p>${meeting.tutor}</p>
-
-                    <div class="meeting-meta">
-
-                        <span>${meeting.date}</span>
-
-                        <span>•</span>
-
-                        <span>${meeting.time}</span>
-
-                        <span>•</span>
-
-                        <span>${meeting.duration} mins</span>
-
-                        <span>•</span>
-
-                        <span>${meeting.attendees} Participants</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="meeting-actions">
-
-                <button
-                    class="join-btn"
-                    onclick="joinMeeting(${meeting.id})">
-
-                    <i class="fa-solid fa-video"></i>
-
-                    Join
-
-                </button>
-
-                <button
-                    class="icon-btn"
-                    onclick="editMeeting(${meeting.id})">
-
-                    <i class="fa-solid fa-pen"></i>
-
-                </button>
-
-                <button
-                    class="icon-btn"
-                    onclick="deleteMeeting(${meeting.id})">
-
-                    <i class="fa-solid fa-trash"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
+   container.innerHTML = filteredMeetings
+    .map(createMeetingCard)
+    .join("");
 
     console.log("Cards rendered:", container.children.length);
 
@@ -291,103 +302,43 @@ function filterMeetings(){
 RENDER FILTERED
 ==================================================*/
 
-function renderFilteredMeetings(){
+/*==================================================
+RENDER FILTERED
+==================================================*/
 
-    const original = filteredMeetings;
+function renderFilteredMeetings(){
 
     const container =
         document.getElementById("meetingsList");
 
     if(!container) return;
 
-    container.innerHTML="";
+    if(filteredMeetings.length===0){
 
-    original.forEach(meeting=>{
+        container.innerHTML = `
 
-        container.innerHTML += `
+            <div class="empty-state">
 
-<div class="meeting-card">
+                <h3>No meetings found</h3>
 
-<div class="meeting-left">
+                <p>No meetings match your search.</p>
 
-<div class="meeting-icon">
+            </div>
 
-<i class="fa-solid fa-video"></i>
+        `;
 
-</div>
+        return;
 
-<div class="meeting-content">
+    }
 
-<div class="meeting-top">
+    container.innerHTML = filteredMeetings
+    .map(createMeetingCard)
+    .join("");
+}
 
-<span class="meeting-status ${String(meeting.status || '').toLowerCase()}">
 
-${meeting.status || "UPCOMING"}
+function joinMeeting(id){
 
-</span>
-
-<span class="meeting-platform ${meeting.badge}">
-
-${meeting.platform}
-
-</span>
-
-</div>
-
-<h3>${meeting.title}</h3>
-
-<p>${meeting.tutor}</p>
-
-<div class="meeting-meta">
-
-<span>${meeting.date}</span>
-
-<span>•</span>
-
-<span>${meeting.time}</span>
-
-<span>•</span>
-
-<span>${meeting.duration} mins</span>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="meeting-actions">
-
-<button class="join-btn"
-
-onclick="joinMeeting(${meeting.id})">
-
-Join
-
-</button>
-
-<button class="icon-btn"
-
-onclick="editMeeting(${meeting.id})">
-
-<i class="fa-solid fa-pen"></i>
-
-</button>
-
-<button class="icon-btn"
-
-onclick="deleteMeeting(${meeting.id})">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-</div>
-
-</div>
-
-`;
-
-    });
+    window.location.href = `meeting-room.html?id=${id}`;
 
 }
