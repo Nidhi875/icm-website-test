@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar | Gouldings Staff LMS</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/calendar.css">
+</head>
+<body>
+  <div class="app">
+    <div id="sidebar"></div>
+
+    <div class="main-content">
+      <div id="header"></div>
+
+      <div class="page-wrapper">
+
+        <!-- Page Header -->
+        <section class="page-header">
+          <div class="header-left">
+            <h1 class="page-title">Calendar</h1>
+            <p class="page-subtitle">Manage meetings, university events, assessments and holidays.</p>
+          </div>
+
+          <div class="header-actions">
+            <button id="addEventHeaderBtn" class="primary-btn small">
+              <i class="fa-solid fa-plus"></i>
+              Add Event
+            </button>
+          </div>
+        </section>
+
+        <!-- CALENDAR LAYOUT -->
+        <section class="calendar-layout"><!-- renamed from calendar-dashboard -->
+          <!-- LEFT SIDEBAR -->
+          <aside class="calendar-sidebar">
+            <div class="glass-card mini-calendar">
+              <div class="calendar-header">
+                <div class="calendar-title-area">
+                  <h2 id="monthYear">March 2026</h2>
+                  <div class="calendar-view-switch">
+                    <button class="view-btn active">Month</button>
+                    <button class="view-btn">Week</button>
+                    <button class="view-btn">Day</button>
+                  </div>
+                </div>
+
+                <div class="calendar-actions">
+                  <button id="prevMonth" class="circle-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                  <button id="todayBtn" class="today-chip">Today</button>
+                  <button id="nextMonth" class="circle-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
+
+              <div class="calendar-board">
+                <div class="calendar-weekdays">
+                  <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+              </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="glass-card">
+              <div class="card-title">
+                <h3>Upcoming Events</h3>
+                <button class="link-btn">View All</button>
+              </div>
+              <div id="upcomingEvents"></div>
+            </div>
+          </aside>
+
+          <!-- CENTER CONTENT -->
+          <section class="calendar-main">
+            <div class="toolbar">
+              <select><option>All Campuses</option></select>
+              <select><option>All Calendars</option></select>
+              <select><option>All Status</option></select>
+
+              <div class="toolbar-right">
+                <button class="view-btn">Day</button>
+                <button class="view-btn">Week</button>
+                <button class="view-btn active">Month</button>
+                <button id="addEventBtn" class="primary-btn">
+                  <i class="fa-solid fa-plus"></i>
+                  Add Event
+                </button>
+              </div>
+            </div>
+
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <button>Day <i class="fa-solid fa-chevron-down"></i></button>
+                <div class="timeline-date"><i class="fa-regular fa-calendar"></i> Today</div>
+              </div>
+              <div id="dayTimeline" class="timeline"></div>
+            </div>
+          </section>
+
+          <!-- RIGHT SIDEBAR -->
+          <aside class="calendar-right">
+            <div class="glass-card">
+              <div class="card-title">
+                <h3>Today's Schedule</h3>
+                <button class="link-btn">View All</button>
+              </div>
+              <div id="todaySchedule"></div>
+            </div>
+
+            <div class="glass-card">
+              <div class="card-title"><h3>Quick Statistics</h3></div>
+              <div class="stats-grid">
+                <div class="stat-box"><span id="meetingCount">0</span><small>Meetings</small></div>
+                <div class="stat-box"><span id="classCount">0</span><small>Classes</small></div>
+                <div class="stat-box"><span id="assignmentCount">0</span><small>Assessments</small></div>
+                <div class="stat-box"><span id="holidayCount">0</span><small>Holidays</small></div>
+              </div>
+            </div>
+          </aside>
+        </section> <!-- .calendar-layout -->
+
+       <!-- Event modal -->
+<div class="event-modal" id="eventModal">
+  <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <h2 id="modalTitle">Add Event</h2>
+      <button id="closeModal" class="icon-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="eventTitle">Title</label>
+        <input id="eventTitle" type="text" placeholder="Event title" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="eventDate">Date</label>
+          <input id="eventDate" type="date" />
+        </div>
+
+        <div class="form-group">
+          <label for="eventTime">Time</label>
+          <input id="eventTime" type="time" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="eventType">Category</label>
+          <select id="eventType">
+            <option value="meeting">Meeting</option>
+            <option value="class">Class</option>
+            <option value="assignment">Assessment</option>
+            <option value="holiday">Holiday</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="eventLocation">Location</label>
+          <input id="eventLocation" type="text" placeholder="Conference Room" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="eventDescription">Description</label>
+        <textarea id="eventDescription" rows="3" placeholder="Short description (optional)"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button id="cancelEvent" class="secondary-btn">Cancel</button>
+      <button id="deleteEventBtn" class="secondary-btn" style="display:none;background:transparent;border:1px solid rgba(255,80,80,.12);color:#ff7b7b;">Delete</button>
+      <button id="saveEvent" class="primary-btn small">Save Event</button>
+    </div>
+  </div>
+</div>
+
+      </div> <!-- .page-wrapper -->
+
+      <!-- Main Calendar JavaScript -->
+      <script src="js/common/app.js"></script>
+      <script src="js/dashboard/calendar.js"></script>
+    </div> <!-- .main-content -->
+  </div> <!-- .app -->
+</body>
+</html>
