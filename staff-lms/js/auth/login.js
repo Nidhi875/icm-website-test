@@ -3,7 +3,11 @@ GOULDINGS STAFF LMS
 LOGIN
 ==================================================*/
 
-const STAFF_EMAIL = "derrick.mason@gouldings.education";
+const STAFF_EMAILS = [
+    "derrick.mason@gouldings.education",
+    "claire@gouldings.education"
+];
+
 const STAFF_PASSWORD = "DistanceAdmin2026@Gouldings";
 /*==================================================
 SHOW / HIDE PASSWORD
@@ -61,7 +65,7 @@ document
     .toLowerCase();
 
 
-    
+
     const password =
         document
         .getElementById("password")
@@ -75,13 +79,20 @@ document
 
 
     if (
-    email === STAFF_EMAIL &&
+    STAFF_EMAILS.includes(email) &&
     password === STAFF_PASSWORD
-   ) {
+    ) {
+
 
         localStorage.setItem("staffLoggedIn","true");
 
-        localStorage.setItem("staffName","Administrator");
+        if (email === "derrick.mason@gouldings.education") {
+         localStorage.setItem("staffName", "Derrick Mason");
+        } else if (email === "claire@gouldings.education") {
+        localStorage.setItem("staffName", "Claire");
+        }
+
+      localStorage.setItem("staffEmail", email);
 
         localStorage.setItem("staffEmail",email);
 
