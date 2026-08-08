@@ -1079,6 +1079,8 @@ STATISTICS
     text-align:center;
 
     transition:.25s;
+    padding-top: 33px;
+    
 
 }
 
@@ -1589,4 +1591,9 @@ FINAL PREMIUM POLISH
 /* Mobile / responsive adjustments keep golden accents */
 @media (max-width: 480px) {
   .view-btn.active { box-shadow: 0 10px 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.28) !important; }
+}
+
+/* Add gap only between the bottom-most card and the one above it in the right sidebar */
+.calendar-right > .glass-card:last-child {
+  margin-top: 20px; /* adjust value to increase/decrease gap */
 }
