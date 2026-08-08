@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Gouldings Staff LMS</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/pages/profile.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"></aside>
+
+    <div class="main-content">
+
+        <!-- Header -->
+        <header id="header"></header>
+
+        <main class="page-wrapper">
+
+            <!-- Page Heading -->
+
+            <div class="page-title">
+
+                <div>
+
+                    <h1>My Profile</h1>
+
+                    <p>
+                        Manage your personal information and account settings.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Profile Grid -->
+
+            <div class="profile-grid">
+
+                <!-- LEFT CARD -->
+
+                <div class="profile-card">
+
+                    <div class="profile-photo-wrapper">
+
+                        <img
+                            id="profileImage"
+                            src="images/avatars/default.png"
+                            alt="Profile">
+
+                        <label
+                            for="photoUpload"
+                            class="upload-btn">
+
+                            <i class="fa-solid fa-camera"></i>
+
+                        </label>
+
+                        <input
+                            type="file"
+                            id="photoUpload"
+                            accept="image/*">
+
+                    </div>
+
+                    <h2 id="profileName">
+
+                        Administrator
+
+                    </h2>
+
+                    <p id="profileRole">
+
+                        Administrator
+
+                    </p>
+
+                   <button id="updateProfile" class="btn btn-primary btn-lg">
+                      <i data-lucide="save"></i>
+                    Update Profile
+                    </button>
+                </div>
+
+
+
+                <!-- RIGHT -->
+
+                <div class="profile-details">
+
+                    <div class="card">
+
+                        <h3>
+
+                            Personal Information
+
+                        </h3>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>Full Name</label>
+
+                                <input
+                                    id="staffName"
+                                    type="text">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Email</label>
+
+                                <input
+                                    id="staffEmail"
+                                    type="email">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Phone Number</label>
+
+                                <input
+                                    id="staffPhone"
+                                    type="text">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Department</label>
+
+                                <input
+                                    id="staffDepartment"
+                                    type="text">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Role</label>
+
+                                <select id="staffRole">
+
+                                    <option>Administrator</option>
+
+                                    <option>Tutor</option>
+
+                                    <option>Course Manager</option>
+
+                                    <option>HR</option>
+
+                                    <option>Marketing</option>
+
+                                    <option>Finance</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="card">
+
+                        <h3>
+
+                            Biography
+
+                        </h3>
+
+                        <textarea
+                            id="staffBio"
+                            rows="6"
+                            placeholder="Write something about yourself..."></textarea>
+
+                    </div>
+
+
+
+                    <div class="card">
+
+                        <h3>
+
+                            Change Password
+
+                        </h3>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>Current Password</label>
+
+                                <input
+                                    type="password"
+                                    id="currentPassword">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>New Password</label>
+
+                                <input
+                                    type="password"
+                                    id="newPassword">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Confirm Password</label>
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="save-area">
+
+
+                          <button class="btn btn-primary btn-lg" id="saveProfile">
+                         <i class="fa-solid fa-floppy-disk"></i>
+                         Save Changes
+                      </button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script src="js/common/app.js"></script>
+
+<script src="js/profile/profile.js"></script>
+
+
+
+
+</body>
+</html>

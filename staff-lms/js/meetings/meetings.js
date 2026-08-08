@@ -100,36 +100,52 @@ function createMeetingCard(meeting){
 
         </div>
 
-        <div class="meeting-actions">
+      <div class="meeting-actions">
+
+    <button
+        class="join-btn"
+        onclick="event.stopPropagation(); joinMeeting(${meeting.id})">
+
+        <i class="fa-solid fa-video"></i>
+        Join
+
+    </button>
+
+    <div class="meeting-menu">
+
+        <button
+            class="menu-btn"
+            onclick="event.stopPropagation(); toggleMeetingMenu(${meeting.id})">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+        <div
+            class="meeting-dropdown"
+            id="meeting-menu-${meeting.id}">
 
             <button
-                class="join-btn"
-                onclick="event.stopPropagation(); joinMeeting(${meeting.id})">
-
-                <i class="fa-solid fa-video"></i>
-
-                Join
-
-            </button>
-
-            <button
-                class="icon-btn"
                 onclick="event.stopPropagation(); editMeeting(${meeting.id})">
 
                 <i class="fa-solid fa-pen"></i>
+                Edit Meeting
 
             </button>
 
             <button
-                class="icon-btn"
                 onclick="event.stopPropagation(); deleteMeeting(${meeting.id})">
 
                 <i class="fa-solid fa-trash"></i>
+                Delete Meeting
 
             </button>
 
         </div>
 
+    </div>
+
+</div>
     </div>
 
     `;
@@ -342,3 +358,32 @@ function joinMeeting(id){
     window.location.href = `meeting-room.html?id=${id}`;
 
 }
+
+
+function toggleMeetingMenu(id){
+
+    document
+        .querySelectorAll(".meeting-dropdown")
+        .forEach(menu=>{
+
+            if(menu.id !== `meeting-menu-${id}`){
+
+                menu.classList.remove("show");
+
+            }
+
+        });
+
+    document
+        .getElementById(`meeting-menu-${id}`)
+        .classList.toggle("show");
+
+}
+
+document.addEventListener("click",()=>{
+
+    document
+        .querySelectorAll(".meeting-dropdown")
+        .forEach(menu=>menu.classList.remove("show"));
+
+});

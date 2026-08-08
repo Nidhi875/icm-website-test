@@ -26,6 +26,7 @@ PAGES
 @import url('pages/dashboard.css');
 @import url('pages/students.css');
 @import url('pages/meetings.css');
+@import url('pages/profile.css');
 
 /*==================================================
 RESPONSIVE

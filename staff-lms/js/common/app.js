@@ -1,3 +1,7 @@
+if (localStorage.getItem("staffLoggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+
 /*==========================================
 COMPONENT LOADER
 ==========================================*/
@@ -71,66 +75,19 @@ loadComponent("components/meeting-widget.html", "#meetingsWidget")
     /* Highlight Active Menu */
     setActiveLink();
 
-    /* Profile Photo Upload */
+  
+
+   if (typeof initProfilePhotoUpload === "function") {
     initProfilePhotoUpload();
+}
 
 
     /* Load Logged-in Staff */
     loadStaffInfo();
+
+
+    initLogout();
     
-}
-
-
-
-
-
-
-/*==========================================
-PROFILE PHOTO UPLOAD
-==========================================*/
-
-const PROFILE_PHOTO_KEY = "staffProfilePhoto";
-
-function initProfilePhotoUpload() {
-
-    const img = document.getElementById("sidebarProfilePic");
-    const input = document.getElementById("profilePicUpload");
-
-    if (!img || !input) return;
-
-    /* Show a previously saved photo, if any */
-    const savedPhoto = localStorage.getItem(PROFILE_PHOTO_KEY);
-    if (savedPhoto) {
-        img.src = savedPhoto;
-    }
-
-    /* Handle a new upload */
-    input.addEventListener("change", (event) => {
-
-        const file = event.target.files[0];
-        if (!file) return;
-
-        if (!file.type.startsWith("image/")) {
-            alert("Please choose an image file.");
-            return;
-        }
-
-        if (file.size > 3 * 1024 * 1024) {
-            alert("Please choose an image smaller than 3MB.");
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            img.src = reader.result;
-            localStorage.setItem(PROFILE_PHOTO_KEY, reader.result);
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
 }
 
 
@@ -164,9 +121,14 @@ function setActiveLink() {
 INITIALIZE
 ==========================================*/
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
     loadLayout();
+
+    // Restore page scrolling
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
 
 });
 
@@ -345,6 +307,38 @@ function formatMeetingDate(meeting){
         month:"short",
 
         year:"numeric"
+
+    });
+
+}
+
+
+/*==========================================
+LOGOUT
+==========================================*/
+
+function initLogout() {
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (!logoutBtn) return;
+
+    logoutBtn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        if (!confirm("Are you sure you want to logout?")) {
+            return;
+        }
+
+        // Remove login session
+        localStorage.removeItem("staffLoggedIn");
+        localStorage.removeItem("staffName");
+        localStorage.removeItem("staffEmail");
+        localStorage.removeItem("staffRole");
+
+        // Redirect to login page
+        window.location.href = "login.html";
 
     });
 
