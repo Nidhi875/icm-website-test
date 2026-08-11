@@ -11,7 +11,11 @@
   <!-- Global CSS -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/calendar.css">
+  <link rel="stylesheet" href="css/components/calendar.css">
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+  
 </head>
 <body>
   <div class="app">
@@ -38,36 +42,156 @@
         </section>
 
         <!-- CALENDAR LAYOUT -->
-        <section class="calendar-layout"><!-- renamed from calendar-dashboard -->
-          <!-- LEFT SIDEBAR -->
-          <aside class="calendar-sidebar">
-            <div class="glass-card mini-calendar">
-              <div class="calendar-header">
-                <div class="calendar-title-area">
-                  <h2 id="monthYear">March 2026</h2>
-                  <div class="calendar-view-switch">
-                    <button class="view-btn active">Month</button>
-                    <button class="view-btn">Week</button>
-                    <button class="view-btn">Day</button>
-                  </div>
-                </div>
 
-                <div class="calendar-actions">
-                  <button id="prevMonth" class="circle-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                  <button id="todayBtn" class="today-chip">Today</button>
-                  <button id="nextMonth" class="circle-btn"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-              </div>
+        <div class="calendar">
 
-              <div class="calendar-board">
-                <div class="calendar-weekdays">
-                  <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
-                </div>
-                <div id="calendarGrid" class="calendar-grid"></div>
-              </div>
-            </div>
+<div class="calendar-header">
 
-            <!-- Upcoming Events -->
+<div class="header-left">
+
+<h1>Staff Calendar</h1>
+
+<p>Universal Calendar for Gouldings Staff LMS</p>
+
+</div>
+
+<div class="header-right">
+
+<button class="calendar-btn" id="prevMonth">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+</button>
+
+<div id="monthYear" class="month-title"></div>
+
+<button class="calendar-btn" id="nextMonth">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+<button class="calendar-btn" id="todayBtn">
+
+Today
+
+</button>
+
+</div>
+
+</div>
+
+<div class="weekdays">
+
+<div>Monday</div>
+
+<div>Tuesday</div>
+
+<div>Wednesday</div>
+
+<div>Thursday</div>
+
+<div>Friday</div>
+
+<div>Saturday</div>
+
+<div>Sunday</div>
+
+</div>
+
+<div id="calendarGrid" class="calendar-grid">
+
+</div>
+
+</div>
+
+<div class="modal" id="eventModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>Event</h2>
+
+<button id="closeModal">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<input
+type="text"
+id="eventTitle"
+placeholder="Event Title">
+
+<input
+type="date"
+id="eventDate">
+
+<input
+type="time"
+id="eventTime">
+
+<input
+type="text"
+id="eventLocation"
+placeholder="Location">
+
+<select id="eventColour">
+
+<option value="gold">Gold</option>
+
+<option value="blue">Blue</option>
+
+<option value="green">Green</option>
+
+<option value="red">Red</option>
+
+<option value="orange">Orange</option>
+
+<option value="purple">Purple</option>
+
+</select>
+
+<textarea
+id="eventDescription"
+placeholder="Description"></textarea>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="delete-btn"
+id="deleteEvent">
+
+Delete
+
+</button>
+
+<button
+class="save-btn"
+id="saveEvent">
+
+Save Event
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+     
+     
+        <!-- Upcoming Events -->
             <div class="glass-card">
               <div class="card-title">
                 <h3>Upcoming Events</h3>
@@ -181,7 +305,7 @@
 
       <!-- Main Calendar JavaScript -->
       <script src="js/common/app.js"></script>
-      <script src="js/dashboard/calendar.js"></script>
+      <script src="js/components/calendar.js"></script>
     </div> <!-- .main-content -->
   </div> <!-- .app -->
 </body>

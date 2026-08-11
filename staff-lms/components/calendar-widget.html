@@ -28,6 +28,15 @@
         <select id="yearSelect">
         </select>
 
+        <select id="calendarUserFilter" aria-label="Filter calendar by user">
+            <option value="all">All users</option>
+            <option value="derrick">Derrick (Admin)</option>
+            <option value="joy">Joy Banerjee</option>
+            <option value="dp">DP</option>
+            <option value="prathistha">PRATHISTHA</option>
+            <option value="nidhi">NIDHI</option>
+        </select>
+
     </div>
 
 
@@ -37,8 +46,8 @@
 
 </div>
 
-    <div class="calendar-days">
-
+    
+    <div class="calendar-widget-days">
         <span>Sun</span>
         <span>Mon</span>
         <span>Tue</span>
@@ -49,16 +58,12 @@
 
     </div>
 
-    <div
-        class="calendar-grid"
-        id="calendarGrid">
-    </div>
+
+    <div class="calendar-widget-grid" id="calendarGrid"></div>
 
 
     <div class="calendar-footer">
-    <button id="todayBtn" class="today-btn">
-        📅 Go to Today
-    </button>
+    <button id="todayBtn" class="today-btn">Go to Today</button>
 </div>
 
 </section>

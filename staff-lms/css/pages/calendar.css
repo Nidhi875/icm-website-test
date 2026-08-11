@@ -247,9 +247,9 @@ PREMIUM MINI CALENDAR
 
     color:#9eabc0;
 
-    padding:9px 38px;
+    padding:9px 8px;
 
-    border-radius:1px;
+    border-radius:84px;
 
     cursor:pointer;
 
@@ -283,15 +283,15 @@ PREMIUM MINI CALENDAR
 
 }
 
-.circle-btn{
+.square-btn{
 
-    width:42px;
+    width:12px;
 
     height:42px;
 
     border:none;
 
-    border-radius:50%;
+    border-radius:20%;
 
     background:#202d43;
 
@@ -303,7 +303,7 @@ PREMIUM MINI CALENDAR
 
 }
 
-.circle-btn:hover{
+.square-btn:hover{
 
     background:var(--primary);
 
@@ -1541,7 +1541,7 @@ FINAL PREMIUM POLISH
 .day.today {
   border-color: var(--primary) !important;
   box-shadow:
-    0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.35) !important,
+    0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.35),
     0 20px 35px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.18) !important;
 }
 
@@ -1597,3 +1597,5 @@ FINAL PREMIUM POLISH
 .calendar-right > .glass-card:last-child {
   margin-top: 20px; /* adjust value to increase/decrease gap */
 }
+
+

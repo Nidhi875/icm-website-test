@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service & Operations | Gouldings Staff LMS</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/dashboard.css">
+  <link rel="stylesheet" href="css/pages/operations.css">
+  <link rel="stylesheet" href="css/components/calendar-widget.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <div id="sidebar"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div id="header"></div>
+
+
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Service & Operations</h1>
+      <p class="page-subtitle">Manage schedules, notices, and team updates</p>
+    </div>
+    <div class="header-actions">
+      <button data-open-notice class="primary-btn">New Notice</button>
+      <button data-open-upload class="primary-btn">Upload PDF</button>
+    </div>
+  </div>
+
+  <section class="ops-layout">
+
+    <!-- Calendar widget component -->
+    <div id="calendarWidget" class="operations-calendar-widget"></div>
+
+    <!-- Other Sections stacked below in 3 columns -->
+    <div class="ops-sections">
+
+      <!-- Left Column -->
+      <aside class="ops-left">
+        <div class="glass-card">
+          <div class="card-title">
+            <h3>Upcoming Events</h3>
+            <button class="link-btn">View All</button>
+          </div>
+
+
+          <div class="card-title">
+
+    <h3>Notice Board</h3>
+
+    <div>
+
+        <button
+            class="link-btn"
+            data-open-notice>
+
+            New Notice
+
+        </button>
+
+        <button class="link-btn">
+
+            View All
+
+        </button>
+
+    </div>
+
+</div>   
+
+
+          <div id="upcomingEvents"></div>
+        </div>
+      </aside>
+
+      <!-- Center Column -->
+      <main class="ops-center">
+        <div class="glass-card">
+          <div class="card-title"><h3>Notice Board</h3><div class="notice-board-actions"><button type="button" class="notice-action-btn" data-open-briefing><i class="fa-solid fa-pen"></i> Write Briefing</button><button type="button" class="notice-action-btn notice-view-all" data-view-all>View All</button></div></div>
+          <div id="noticeBoard" class="notice-list"></div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-title"><h3>Sales Targets & Goals</h3></div>
+          <div class="goal-card"><div class="goal-header"><span>September Admissions</span><strong>68%</strong></div><div class="progress"><div class="progress-bar" style="width:68%;"></div></div></div>
+          <div class="goal-card"><div class="goal-header"><span>Student Applications</span><strong>42%</strong></div><div class="progress"><div class="progress-bar" style="width:42%;"></div></div></div>
+          <div class="goal-card"><div class="goal-header"><span>Enrolment Completion</span><strong>81%</strong></div><div class="progress"><div class="progress-bar" style="width:81%;"></div></div></div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-title"><h3>Team Performance</h3></div>
+          <div class="stats-grid">
+            <div class="stat-box" data-metric="applications"><span>124</span><small>Applications</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
+            <div class="stat-box" data-metric="admissions"><span>48</span><small>Admissions</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
+            <div class="stat-box" data-metric="revenue"><span>&pound;42K</span><small>Revenue</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
+            <div class="stat-box" data-metric="response"><span>96%</span><small>Response Rate</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Column -->
+      <aside class="ops-right">
+        <div class="glass-card">
+          <div class="card-title"><h3>Important News</h3><button class="link-btn">View All</button></div>
+          <div class="news-list" id="newsList"></div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-title"><h3>Team Messages</h3></div>
+          <div class="message-list"></div>
+          <div class="message-compose">
+            <input type="text" placeholder="Write a team message...">
+            <button class="primary-btn">Send</button>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-title"><h3>Policy Documents</h3>
+            
+            <button
+        class="link-btn"
+          data-open-upload>
+
+          Upload
+
+</button>
+
+</div>
+          <div class="document-list"></div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-title"><h3>Training Videos</h3></div>
+          <div class="video-placeholder"><i class="fa-solid fa-circle-play"></i><p>Training videos will appear here.</p></div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+  <!-- Operations dialogs -->
+  <div class="event-modal" id="messageModal" aria-hidden="true">
+    <div class="event-modal-box message-modal-box" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle">
+      <div class="modal-header"><h2 id="messageModalTitle">Edit message</h2><button type="button" id="closeMessageModal" aria-label="Close">&times;</button></div>
+      <div class="modal-body"><label>Message<textarea id="editMessageText" placeholder="Write a team message"></textarea></label></div>
+      <div class="modal-footer"><button type="button" class="link-btn" id="cancelMessageEdit">Cancel</button><button type="button" class="primary-btn" id="saveMessageEdit">Save changes</button></div>
+    </div>
+  </div>  <div class="event-modal" id="eventModal" aria-hidden="true">
+    <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+      <div class="modal-header"><h2 id="eventModalTitle">Schedule meeting</h2><button type="button" id="cancelEvent" aria-label="Close">&times;</button></div>
+      <div class="modal-body">
+        <label>Meeting title<input id="eventTitle" type="text" placeholder="Team meeting"></label>
+        <label>For user<select id="eventStaff"><option value="derrick">Derrick (Admin)</option><option value="joy">Joy Banerjee</option><option value="dp">DP</option><option value="prathistha">PRATHISTHA</option><option value="nidhi">NIDHI</option></select></label><label>Time<input id="eventTime" type="time"></label>
+        <label>Location<input id="eventLocation" type="text" placeholder="Office or video call"></label>
+        <label>Details<textarea id="eventDescription" placeholder="Optional meeting details"></textarea></label>
+      </div>
+      <div class="modal-footer"><button type="button" class="link-btn" id="deleteEvent">Delete</button><button type="button" class="primary-btn" id="saveEvent">Save meeting</button></div>
+    </div>
+  </div>  <div class="event-modal" id="noticeModal" aria-hidden="true">
+    <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="noticeModalTitle">
+      <div class="modal-header"><h2 id="noticeModalTitle">Create notice</h2><button type="button" id="closeNoticeModal" aria-label="Close">&times;</button></div>
+      <div class="modal-body">
+        <label>Title<input id="noticeTitle" type="text" placeholder="Notice title"></label>
+        <label>Priority<select id="noticePriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label>
+        <label>Message<textarea id="noticeDescription" placeholder="Write the notice for your team"></textarea></label>
+      </div>
+      <div class="modal-footer"><button type="button" class="link-btn" id="cancelNoticeBtn">Cancel</button><button type="button" class="primary-btn" id="saveNoticeBtn">Publish notice</button></div>
+    </div>
+  </div>
+  <div class="event-modal" id="uploadModal" aria-hidden="true">
+    <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+      <div class="modal-header"><h2 id="uploadModalTitle">Upload policy document</h2><button type="button" id="closeUploadModal" aria-label="Close">&times;</button></div>
+      <div class="modal-body"><label>Select PDF<input id="pdfFile" type="file" accept="application/pdf,.pdf"></label><p class="modal-help">The document name will be added to the policy library.</p></div>
+      <div class="modal-footer"><button type="button" class="link-btn" id="cancelUploadBtn">Cancel</button><button type="button" class="primary-btn" id="uploadDocumentBtn">Upload document</button></div>
+    </div>
+  </div>
+  <div class="event-modal" id="listModal" aria-hidden="true">
+    <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="listModalTitle">
+      <div class="modal-header"><h2 id="listModalTitle">All items</h2><button type="button" id="closeListModal" aria-label="Close">&times;</button></div>
+      <div class="modal-body"><div id="listModalContent" class="list-modal-content"></div></div>
+    </div>
+  </div>
+
+</div> <!-- end page-wrapper -->
+</div> <!-- end main-content -->
+</div> <!-- end app -->
+
+<!-- =====================================================
+JAVASCRIPT
+====================================================== -->
+<script src="js/components/calendar-widget.js"></script>
+<script src="js/common/app.js"></script>
+<script src="js/dashboard/operations.js"></script>
+
+
+</body>
+</html>

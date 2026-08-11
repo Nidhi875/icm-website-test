@@ -110,27 +110,27 @@ div.classList.add("today");
 
 }
 
-let html = `<div class='date-number'>${day}</div>`;
+let html="<div class='date-number'>"+day+"</div>";
 
-html += `<div class='events'>`;
+html+="<div class='events'>";
 
 events.forEach((ev,index)=>{
 
 if(ev.date===fullDate){
 
-html += `<div class='event ${ev.colour}' data-index='${index}'>`;
+html+="<div class='event "+ev.colour+"' data-index='"+index+"'>";
 
-html += ev.time ? `${ev.time} ` : "";
+html+=ev.time?ev.time+" ":"";
 
-html += ev.title.replace(/>/g, "&gt;").replace(/</g, "&lt;");
+html+=ev.title;
 
-html += `</div>`;
+html+="</div>";
 
 }
 
 });
 
-html += `</div>`;
+html+="</div>";
 
 div.innerHTML=html;
 
@@ -317,4 +317,3 @@ renderCalendar();
 };
 
 renderCalendar();
-

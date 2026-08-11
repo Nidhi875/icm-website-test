@@ -12,9 +12,12 @@ COMPONENT LOADER
 
 async function loadComponent(url, selector) {
 
+    console.log("Loading:", url);
+
     const element = document.querySelector(selector);
 
     if (!element) {
+        console.log("Missing selector:", selector);
         return;
     }
 
@@ -22,27 +25,19 @@ async function loadComponent(url, selector) {
 
         const response = await fetch(url);
 
-        if (!response.ok) {
-            throw new Error(`Unable to load ${url}`);
-        }
+        console.log(url, response.status);
 
         const html = await response.text();
 
         element.innerHTML = html;
 
-    } catch (error) {
+    } catch(err) {
 
-        console.error(error);
+        console.error(err);
 
-        element.innerHTML = `
-            <div style="padding:20px;color:red;">
-                Failed to load ${url}
-            </div>
-        `;
     }
 
 }
-
 /*==========================================
 LOAD ALL COMPONENTS
 ==========================================*/
@@ -50,6 +45,9 @@ LOAD ALL COMPONENTS
 async function loadLayout() {
 
     await Promise.all([
+
+
+        
 
 
         loadComponent("layouts/sidebar.html", "#sidebar"),
@@ -60,6 +58,11 @@ loadComponent("components/calendar-widget.html", "#calendarWidget"),
 loadComponent("components/meeting-widget.html", "#meetingsWidget")
 
     ]);
+
+
+if (typeof initCalendarWidget === "function") {
+    initCalendarWidget();
+}
    
 
     if (typeof renderMeetings === "function") {
