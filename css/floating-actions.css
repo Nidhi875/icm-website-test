@@ -212,69 +212,80 @@ RIGHT APPLY PANEL + DESKTOP ANIMATIONS
 
 /* RIGHT PANEL */
 
+/* ======================================
+RIGHT VERTICAL APPLY TAB
+====================================== */
+
 .apply-tab{
 
     position:fixed;
 
-    right:-165px;
-
     top:50%;
+
+    right:0;
 
     transform:translateY(-50%);
 
-    width:220px;
+    width:55px;
 
-    height:58px;
+    height:180px;
 
-    background:#001F54;
+    background:#0A2E63;
 
     color:#fff;
 
     text-decoration:none;
 
+    border-radius:12px 0 0 12px;
+
     display:flex;
+
+    flex-direction:column;
 
     align-items:center;
 
-    justify-content:space-between;
+    justify-content:center;
 
-    padding:0 20px;
+    gap:14px;
 
-    border-radius:8px 0 0 8px;
+    z-index:99999;
 
-    font-size:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
 
-    font-weight:700;
-
-    box-shadow:0 12px 25px rgba(0,0,0,.25);
-
-    transition:.35s ease;
-
-    z-index:999998;
+    transition:.3s;
 
 }
 
 .apply-tab:hover{
 
-    right:0;
+    width:65px;
 
-    background:#003d82;
+    background:#123E7A;
 
 }
 
 .apply-tab span{
 
-    white-space:nowrap;
+    writing-mode:vertical-rl;
+
+    transform:rotate(180deg);
+
+    letter-spacing:2px;
+
+    font-size:18px;
+
+    font-weight:700;
 
 }
 
 .apply-tab i{
 
-    font-size:22px;
+    font-size:24px;
 
     color:#D4AF37;
 
 }
+
 
 /* =====================================
 PHONE TAB ANIMATION
