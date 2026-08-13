@@ -306,3 +306,117 @@ select{
     outline-offset:3px;
 
 }
+
+
+
+
+
+
+/* ==========================================
+   Floating WhatsApp Button
+========================================== */
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 35px rgba(37,211,102,0.45);
+}
+
+.whatsapp-float svg {
+    width: 32px;
+    height: 32px;
+    fill: #fff;
+}
+
+/* Tooltip */
+
+.whatsapp-tooltip {
+    position: absolute;
+    right: 80px;
+    background: #001F54;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 25px;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Pulse Animation */
+
+.whatsapp-float::after {
+    content: "";
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid rgba(37,211,102,0.5);
+    animation: whatsappPulse 2s infinite;
+}
+
+@keyframes whatsappPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    70% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .whatsapp-float {
+        width: 58px;
+        height: 58px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .whatsapp-float::after {
+        width: 58px;
+        height: 58px;
+    }
+
+    .whatsapp-tooltip {
+        display: none;
+    }
+
+    .whatsapp-float svg {
+        width: 28px;
+        height: 28px;
+    }
+}

@@ -1,0 +1,393 @@
+/*=========================================================
+GOULDINGS GLOBAL ACADEMY
+PREMIUM FLOATING CONTACT PANEL
+PART 1
+=========================================================*/
+
+:root{
+
+    --gga-blue:#002B5B;
+    --gga-green:#0A2E63;
+    --gga-gold:#d4af37;
+    --gga-pink:#D4AF37;
+    --gga-white:#ffffff;
+
+}
+
+.admissions-panel{
+
+    position:fixed;
+
+    left:-275px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:325px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    z-index:999999;
+
+    transition:.35s ease;
+
+}
+
+/* Open State */
+
+.admissions-panel.active,
+.admissions-panel.show{
+    left:0;
+}
+
+
+/* PHONE TAB */
+
+.phone-trigger{
+
+    width: 42px;
+
+    height:42px;
+
+    background:var(--gga-pink);
+
+    border:none;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+    border-radius:0 6px 6px 0;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+    flex-shrink:0;
+
+}
+
+.phone-trigger:hover{
+
+    background:#c60069;
+
+}
+
+/* GREEN BOX */
+
+.admissions-content{
+
+    width:275px;
+
+    background:var(--gga-green);
+
+    color:#fff;
+
+    position:relative;
+
+    padding:18px;
+
+    box-shadow:0 12px 28px rgba(0,0,0,.28);
+
+}
+
+.admissions-content h3{
+
+    margin:0;
+
+    margin-bottom:18px;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+/* ITEMS */
+
+.admission-item{
+
+    margin-bottom:16px;
+
+}
+
+.admission-item span{
+
+    display:block;
+
+    font-size:14px;
+
+    font-weight:200;
+
+    margin-bottom:4px;
+
+}
+
+.admission-item a{
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font: size 10px;
+
+    font-weight:400;
+
+    word-break:break-word;
+
+}
+
+.admission-item a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* EMAIL */
+
+.admission-item:last-of-type a{
+
+      font-size:12px;
+
+    line-height:1.4;
+
+    word-break:break-all;
+
+}
+
+/* WHATSAPP */
+
+.whatsapp-circle{
+
+    position:absolute;
+
+    right:12px;
+
+    bottom:12px;
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    background:#25D366;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:22px;
+
+    transition:.3s;
+
+}
+
+.whatsapp-circle:hover{
+
+    transform:scale(1.08);
+
+}
+
+
+/*=========================================================
+PART 2
+RIGHT APPLY PANEL + DESKTOP ANIMATIONS
+=========================================================*/
+
+/* RIGHT PANEL */
+
+.apply-tab{
+
+    position:fixed;
+
+    right:-165px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:220px;
+
+    height:58px;
+
+    background:#001F54;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    border-radius:8px 0 0 8px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.25);
+
+    transition:.35s ease;
+
+    z-index:999998;
+
+}
+
+.apply-tab:hover{
+
+    right:0;
+
+    background:#003d82;
+
+}
+
+.apply-tab span{
+
+    white-space:nowrap;
+
+}
+
+.apply-tab i{
+
+    font-size:22px;
+
+    color:#D4AF37;
+
+}
+
+/* =====================================
+PHONE TAB ANIMATION
+===================================== */
+
+.phone-trigger{
+
+    transition:.3s;
+
+}
+
+.phone-trigger:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* =====================================
+GREEN PANEL
+===================================== */
+
+.admissions-content{
+
+    border-radius:0 8px 8px 0;
+
+}
+
+.admission-item{
+
+    border-bottom:1px solid rgba(255,255,255,.20);
+
+    padding-bottom:10px;
+
+}
+
+.admission-item:last-of-type{
+
+    border-bottom:none;
+
+    margin-bottom:40px;
+
+}
+
+/* =====================================
+HOVER EFFECTS
+===================================== */
+
+.admission-item a{
+
+    transition:.25s;
+
+}
+
+.admission-item a:hover{
+
+    padding-left:4px;
+
+}
+
+/* =====================================
+AUTO OPEN
+===================================== */
+
+.admissions-panel.show{
+
+    left:0;
+
+}
+
+/* =====================================
+PULSE
+===================================== */
+
+@keyframes applyPulse{
+
+    0%{
+
+        transform:translateY(-50%) scale(1);
+
+    }
+
+    50%{
+
+        transform:translateY(-50%) scale(1.05);
+
+    }
+
+    100%{
+
+        transform:translateY(-50%) scale(1);
+
+    }
+
+}
+
+.apply-tab.pulse{
+
+    animation:applyPulse .8s ease;
+
+}
+
+/* =====================================
+WHATSAPP
+===================================== */
+
+.whatsapp-circle{
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+}
+
+.whatsapp-circle:hover{
+
+    background:#20b858;
+
+}
