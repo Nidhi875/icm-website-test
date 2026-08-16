@@ -402,3 +402,328 @@ WHATSAPP
     background:#20b858;
 
 }
+
+
+/* =====================================
+MOBILE RESPONSIVE
+===================================== */
+
+@media (max-width:768px){
+
+    /* Apply Now */
+
+    .apply-tab{
+
+        width:42px;
+        height:220px;
+        border-radius:10px 0 0 10px;
+
+    }
+
+    .apply-tab:hover{
+
+        width:42px;
+
+    }
+
+    .apply-tab span{
+
+        font-size:12px;
+        letter-spacing:1px;
+
+    }
+
+    .apply-tab i{
+
+        font-size:18px;
+
+    }
+
+    /* Admissions */
+
+    .admissions-panel{
+
+        left:-240px;
+
+    }
+
+    .admissions-content{
+
+        width:240px;
+        padding:14px;
+
+    }
+
+    .phone-trigger{
+
+        width:36px;
+        height:36px;
+        font-size:16px;
+
+    }
+
+    .admissions-content h3{
+
+        font-size:18px;
+
+    }
+
+    .admission-item a{
+
+        font-size:13px;
+
+    }
+
+    /* WhatsApp */
+
+    .whatsapp-circle{
+
+        width:32px;
+        height:32px;
+        font-size:18px;
+
+        
+
+    }
+
+}
+
+
+@media (max-width:768px){
+
+    /* Hide left admissions panel */
+    .admissions-panel{
+        display:none;
+    }
+
+    /* Smaller Apply Now tab */
+    .apply-tab{
+        width:44px;
+        height:280px;
+        top:40%;
+    }
+
+    .apply-tab:hover{
+        width:44px;
+    }
+
+    .apply-tab span{
+        font-size:12px;
+        letter-spacing:1px;
+    }
+
+    .apply-tab i{
+        font-size:18px;
+    }
+
+    /* WhatsApp button below Apply tab */
+    .whatsapp-tab{
+
+         background:#25D366 !important;
+    color:#ffffff !important;
+        position:fixed;
+
+          display:none !important;
+
+        
+
+        right:0;
+
+    
+
+        top:calc(40% + 170px);
+
+        width:44px;
+        height:44px;
+
+        border-radius:10px 0 0 10px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        z-index:100001;
+
+    }
+
+    .whatsapp-tab span{
+        display:none;
+
+        
+    }
+
+    .whatsapp-tab i{
+        font-size:22px;
+
+        
+
+         color:#ffffff !important;
+    font-size:24px;
+    }
+
+    /* Smaller popup on mobile */
+    .whatsapp-popup{
+
+        width:90%;
+        max-width:300px;
+
+        right:10px;
+
+        top:50%;
+
+    }
+
+}
+
+
+
+ /* ==========================================
+MOBILE WHATSAPP ONLY
+========================================== */
+
+.mobile-whatsapp{
+    display:none;
+
+    
+}
+
+@media (max-width:768px){
+
+.mobile-whatsapp{
+
+    display:block;
+
+    position:fixed;
+
+    right:0;
+
+    top:calc(45% + 150px);
+
+    z-index:999999;
+
+}
+
+.mobile-whatsapp-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    background:#25D366;
+
+    color:#fff;
+
+    border-radius:10px 0 0 10px;
+
+    cursor:pointer;
+
+    font-size:24px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.mobile-whatsapp-tray{
+
+    position:absolute;
+
+    right:50px;
+
+    top:0;
+
+    width:200px;
+
+    background:#fff;
+
+    color:#222;
+
+    border-radius:10px;
+
+    padding:12px 15px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateX(10px);
+
+    transition:.3s;
+
+}
+
+.mobile-whatsapp-tray.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateX(0);
+
+}
+
+.mobile-whatsapp-tray span{
+
+    display:block;
+
+    font-size:13px;
+
+    color:#777;
+
+}
+
+.mobile-whatsapp-tray strong{
+
+    display:block;
+
+    margin-top:5px;
+
+    font-size:18px;
+
+    color:#0A2E63;
+
+}
+
+}
+
+.desktop-whatsapp{
+    position:fixed;
+    margin-top: 180PX;
+    right:0;
+    top:58%;
+    z-index:100001;
+}
+
+.desktop-whatsapp-btn{
+    width:46px;
+    height:46px;
+    border:none;
+    background:#25D366;
+    color:#fff;
+    border-radius:10px 0 0 10px;
+    cursor:pointer;
+    font-size:24px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.desktop-whatsapp-tray{
+    position:absolute;
+    right:60px;
+    top:0;
+    width:220px;
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+}
+
+.desktop-whatsapp-tray.show{
+    opacity:1;
+    visibility:visible;
+}

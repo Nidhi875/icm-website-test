@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/qualifications.css">
     <link rel="stylesheet" href="css/about.css">
+
+    <link rel="stylesheet" href="css/floating-actions.css">
 </head>
 
 <body>
@@ -50,7 +52,22 @@
             <aside class="qualification-sidebar">
                 <div class="sidebar-menu">
                     <a href="index.html" class="menu-item">Home</a>
-                    <a href="about.html" class="menu-item active">About Us</a>
+            
+
+                    <div class="menu-item has-submenu active">
+                         <span>About Us</span>
+                    <i class="fas fa-chevron-down sidebar-arrow"></i>
+                        </div>
+
+<div class="submenu show">
+    <a href="gouldings-mission.html" class="submenu-item">The Gouldings Mission</a>
+    <a href="ceo-principal.html" class="submenu-item">From the CEO & Principal</a>
+    <a href="awarding-organisation-icm.html" class="submenu-item">From our Awarding Organisation ICM</a>
+    <a href="staff-profiles.html" class="submenu-item">Staff Profiles</a>
+    <a href="international-team.html" class="submenu-item">Staff Profiles International Team</a>
+</div>
+
+
                     <a href="centres.html" class="menu-item">Centres</a>
                     <a href="learners.html" class="menu-item">Learners</a>
 
@@ -120,8 +137,135 @@
     <!-- FOOTER -->
     <div id="footer"></div>
 
+
+    <!-- ===========================================================
+GOULDINGS GLOBAL ACADEMY
+FLOATING ADMISSIONS PANEL
+=========================================================== -->
+
+
+<!-- RIGHT PANEL -->
+
+<a href="contact.html" class="apply-tab">
+
+    <span>Apply Now For Sep 2026 Intake</span>
+
+    <i class="fa-solid fa-user-graduate"></i>
+
+</a>
+
+
+<a href="#" class="whatsapp-tab" id="whatsappButton">
+
+    <i class="fa-brands fa-whatsapp"></i>
+
+    <span>WhatsApp</span>
+
+</a>
+
+<div class="whatsapp-popup" id="whatsappPopup">
+
+    <button class="popup-close" id="popupClose">
+
+        &times;
+
+    </button>
+
+    <h3>Admissions</h3>
+
+    <div class="popup-item">
+
+        <strong>🇬🇧 UK</strong>
+
+        <a href="tel:+447864681566">
+
+            +44 7864 681566
+
+        </a>
+
+    </div>
+
+    <div class="popup-item">
+
+        <strong>🌍 International</strong>
+
+        <a href="tel:+447864681566">
+
+            +44 7864 681566
+
+        </a>
+
+    </div>
+
+    <div class="popup-item">
+
+        <strong>Email</strong>
+
+        <a href="mailto:future.graduates@gouldings.education">
+
+            future.graduates@gouldings.education
+
+        </a>
+
+    </div>
+
+    <a
+        class="popup-chat"
+        target="_blank"
+        href="#">
+
+        <i class="fa-brands fa-whatsapp"></i>
+
+        Chat on WhatsApp
+
+    </a>
+
+</div>
+
+
+<div class="desktop-whatsapp">
+
+    <button class="desktop-whatsapp-btn" id="desktopWhatsappBtn">
+        <i class="fa-brands fa-whatsapp"></i>
+    </button>
+
+    <div class="desktop-whatsapp-tray" id="desktopWhatsappTray">
+        <span>WhatsApp Admissions</span>
+        <strong>+44 7864 681566</strong>
+    </div>
+
+</div>
+
+<!-- Mobile WhatsApp -->
+<div class="mobile-whatsapp">
+
+    <button class="mobile-whatsapp-btn" id="mobileWhatsappBtn">
+        <i class="fa-brands fa-whatsapp"></i>
+    </button>
+
+    <div class="mobile-whatsapp-tray" id="mobileWhatsappTray">
+
+        <span>WhatsApp Admissions</span>
+
+        <strong>+44 7864 681566</strong>
+
+    </div>
+
+    @media (min-width:769px){
+
+    .mobile-whatsapp{
+        display:none;
+    }
+
+}
+
+</div>
+
+
     <script src="js/include.js"></script>
     <script src="js/script.js"></script>
+
+    <script src="js/floating-actions.js"></script>
 
 </body>
 </html>

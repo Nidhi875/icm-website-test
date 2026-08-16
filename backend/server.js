@@ -10,6 +10,12 @@ require("./config/db");
 const authRoutes =
 require("./routes/authRoutes");
 
+
+const staffAuthRoutes =
+require("./routes/staffAuthRoutes");
+
+
+
 const app = express();
 app.use(helmet());
 app.set("trust proxy", 1);
@@ -44,6 +50,11 @@ app.use(express.json());
 app.use(
   "/api/auth",
   authRoutes
+);
+
+app.use(
+"/api/staff",
+staffAuthRoutes
 );
 
 app.get("/", (req, res) => {

@@ -3,7 +3,9 @@ GOULDINGS GLOBAL ACADEMY
 FLOATING ADMISSIONS PANEL
 =========================================================*/
 
+
 document.addEventListener("DOMContentLoaded", () => {
+
 
     const panel = document.getElementById("admissionsPanel");
     const trigger = document.getElementById("phoneTrigger");
@@ -59,3 +61,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (window.innerWidth > 768) return;
+
+    const btn = document.getElementById("mobileWhatsappBtn");
+    const tray = document.getElementById("mobileWhatsappTray");
+
+    if (!btn || !tray) return;
+
+    btn.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        tray.classList.toggle("show");
+
+    });
+
+    document.addEventListener("click", function () {
+
+        tray.classList.remove("show");
+
+    });
+
+});
+
+
+const whatsappCircle = document.querySelector(".whatsapp-circle");
+
+if (whatsappCircle) {
+    whatsappCircle.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const panel = document.getElementById("admissionsPanel");
+
+        if (panel) {
+            panel.classList.add("show");
+        }
+    });
+}
+
+
+const desktopBtn = document.getElementById("desktopWhatsappBtn");
+const desktopTray = document.getElementById("desktopWhatsappTray");
+
+if (desktopBtn && desktopTray) {
+
+    desktopBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        desktopTray.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function () {
+        desktopTray.classList.remove("show");
+    });
+
+    desktopTray.addEventListener("click", function (e) {
+        e.stopPropagation();
+    });
+
+}

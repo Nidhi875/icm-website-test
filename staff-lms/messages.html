@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Messages | Gouldings Staff LMS</title>
+
+    <!-- ===================================================
+         GOOGLE FONTS
+    ==================================================== -->
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- ===================================================
+         FONT AWESOME
+    ==================================================== -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- ===================================================
+         GLOBAL CSS
+    ==================================================== -->
+
+    <link rel="stylesheet"
+        href="css/layout/sidebar.css">
+
+    <link rel="stylesheet"
+        href="css/layout/header.css">
+
+    <link rel="stylesheet"
+        href="css/layout/grid.css">
+
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- ===================================================
+         PAGE CSS
+    ==================================================== -->
+
+    <link rel="stylesheet"
+        href="css/pages/messages.css">
+
+    <!-- ===================================================
+         LUCIDE ICONS
+    ==================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ============================
+         SIDEBAR
+    ============================= -->
+
+    <div id="sidebar"></div>
+
+    <!-- ============================
+         MAIN CONTENT
+    ============================= -->
+
+    <div class="main-content">
+
+        <!-- Header -->
+
+        <div id="header"></div>
+
+        <!-- Page -->
+
+        <div class="page-wrapper">
+
+            <div class="messages-page">
+
+                <!-- ===================================
+                     HERO SECTION STARTS HERE
+                ==================================== -->
+
+
+    <!-- ==========================================================
+     HERO SECTION
+========================================================== -->
+
+<section class="messages-hero">
+
+    <div class="hero-content">
+
+        <div class="hero-left">
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-comments"></i>
+                Staff Communication Hub
+            </span>
+
+            <h1>
+                Communication Center
+            </h1>
+
+            <p>
+                Connect every department, tutor, admissions officer and
+                operations staff from one secure platform.
+            </p>
+
+            <div class="hero-actions">
+
+                <button class="hero-btn primary">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    New Message
+
+                </button>
+
+                <button class="hero-btn secondary">
+
+                    <i class="fa-solid fa-bullhorn"></i>
+
+                    Announcement
+
+                </button>
+
+                <button class="hero-btn secondary">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Create Group
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="hero-right">
+
+            <div class="inbox-card">
+
+                <div class="card-top">
+
+                    <h3>Today's Inbox</h3>
+
+                    <span>Live</span>
+
+                </div>
+
+                <div class="inbox-grid">
+
+                    <div class="inbox-item">
+
+                        <h2>286</h2>
+
+                        <p>Messages</p>
+
+                    </div>
+
+                    <div class="inbox-item">
+
+                        <h2>24</h2>
+
+                        <p>Unread</p>
+
+                    </div>
+
+                    <div class="inbox-item">
+
+                        <h2>8</h2>
+
+                        <p>Departments</p>
+
+                    </div>
+
+                    <div class="inbox-item">
+
+                        <h2>28</h2>
+
+                        <p>Online Staff</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     KPI CARDS
+========================================================== -->
+
+<section class="messages-kpis">
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon blue">
+
+            <i class="fa-regular fa-envelope"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Unread Messages</span>
+
+            <h2>24</h2>
+
+            <small>+5 today</small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon green">
+
+            <i class="fa-solid fa-user-group"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Online Staff</span>
+
+            <h2>28</h2>
+
+            <small>Currently Active</small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon orange">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Announcements</span>
+
+            <h2>6</h2>
+
+            <small>This Week</small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon purple">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Meetings Today</span>
+
+            <h2>4</h2>
+
+            <small>Scheduled</small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon red">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Files Shared</span>
+
+            <h2>58</h2>
+
+            <small>Today</small>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon navy">
+
+            <i class="fa-solid fa-building"></i>
+
+        </div>
+
+        <div class="kpi-content">
+
+            <span>Departments</span>
+
+            <h2>8</h2>
+
+            <small>Connected</small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     MAIN MESSAGING SECTION
+========================================================== -->
+
+<section class="messages-layout">
+
+
+    <!-- ==========================================================
+     LEFT CONVERSATIONS PANEL
+========================================================== -->
+
+<aside class="conversation-panel">
+
+    <div class="panel-header">
+
+        <h2>Conversations</h2>
+
+        <button class="new-chat-btn">
+
+            <i class="fa-solid fa-plus"></i>
+
+        </button>
+
+    </div>
+
+    <div class="conversation-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            placeholder="Search staff or department">
+
+    </div>
+
+    <div class="department-tabs">
+
+        <button class="active">All</button>
+
+        <button>Unread</button>
+
+        <button>Pinned</button>
+
+    </div>
+
+    <div class="conversation-list">
+
+        <!-- Operations -->
+
+        <div class="conversation-item active">
+
+         
+            <div class="avatar initials-avatar">
+            <span>OP</span>
+           <div class="status online"></div>
+            </div>
+
+            <div class="conversation-info">
+
+                <h4>Operations Team</h4>
+
+                <p>Sarah uploaded the latest timetable...</p>
+
+            </div>
+
+            <div class="conversation-meta">
+
+                <span>10:45</span>
+
+                <div class="unread-count">3</div>
+
+            </div>
+
+        </div>
+
+        <!-- Admissions -->
+
+        <div class="conversation-item">
+
+            <div class="avatar">
+
+                <img src="images/avatar2.jpg" alt="Admissions">
+
+                <span class="status online"></span>
+
+            </div>
+
+            <div class="conversation-info">
+
+                <h4>Admissions</h4>
+
+                <p>12 new applications received.</p>
+
+            </div>
+
+            <div class="conversation-meta">
+
+                <span>09:30</span>
+
+                <div class="unread-count">5</div>
+
+            </div>
+
+        </div>
+
+        <!-- Finance -->
+
+        <div class="conversation-item">
+
+            <div class="avatar">
+
+                <img src="images/avatar3.jpg" alt="Finance">
+
+                <span class="status away"></span>
+
+            </div>
+
+            <div class="conversation-info">
+
+                <h4>Finance</h4>
+
+                <p>Fee report has been shared.</p>
+
+            </div>
+
+            <div class="conversation-meta">
+
+                <span>Yesterday</span>
+
+            </div>
+
+        </div>
+
+        <!-- Marketing -->
+
+        <div class="conversation-item">
+
+            <div class="avatar">
+
+                <img src="images/avatar4.jpg" alt="Marketing">
+
+                <span class="status online"></span>
+
+            </div>
+
+            <div class="conversation-info">
+
+                <h4>Marketing</h4>
+
+                <p>Campaign approved.</p>
+
+            </div>
+
+            <div class="conversation-meta">
+
+                <span>Yesterday</span>
+
+            </div>
+
+        </div>
+
+        <!-- HR -->
+
+        <div class="conversation-item">
+
+            <div class="avatar">
+
+                <img src="images/avatar5.jpg" alt="HR">
+
+                <span class="status offline"></span>
+
+            </div>
+
+            <div class="conversation-info">
+
+                <h4>Human Resources</h4>
+
+                <p>Leave approvals updated.</p>
+
+            </div>
+
+            <div class="conversation-meta">
+
+                <span>Mon</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ==========================================================
+     CHAT WINDOW
+========================================================== -->
+
+<section class="chat-panel">
+
+    <div class="chat-header">
+
+        <div class="chat-user">
+
+            <img src="images/avatar1.jpg" alt="">
+
+            <div>
+
+                <h3>Operations Team</h3>
+
+                <span>
+
+                    <i class="fa-solid fa-circle"></i>
+
+                    8 Members • 5 Online
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="chat-icons">
+
+            <button><i class="fa-solid fa-phone"></i></button>
+
+            <button><i class="fa-solid fa-video"></i></button>
+
+            <button><i class="fa-solid fa-calendar"></i></button>
+
+            <button><i class="fa-solid fa-ellipsis"></i></button>
+
+        </div>
+
+    </div>
+
+    <div class="chat-messages">
+
+
+<!-- ==================== MESSAGE 1 ==================== -->
+
+<div class="message-row received">
+
+    <div class="message-avatar initials-avatar">
+    SJ
+</div>
+
+    <div class="message-content">
+
+        <div class="message-name">
+            Sarah Johnson
+            <span>Operations Manager</span>
+        </div>
+
+        <div class="message-bubble">
+
+            Good morning team 👋
+
+            Please upload today's attendance reports before
+            <strong>11:30 AM.</strong>
+
+        </div>
+
+        <div class="message-time">
+
+            10:14 AM
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== MESSAGE 2 ==================== -->
+
+<div class="message-row sent">
+
+    <div class="message-content">
+
+        <div class="message-bubble own">
+
+            Attendance report uploaded successfully.
+
+        </div>
+
+        <div class="message-time">
+
+            10:16 AM
+
+            ✓✓
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== MESSAGE 3 ==================== -->
+
+<div class="message-row received">
+
+    <img src="images/avatar3.jpg" class="message-avatar">
+
+    <div class="message-content">
+
+        <div class="message-name">
+
+            Alex Brown
+
+            <span>Admissions</span>
+
+        </div>
+
+        <div class="message-bubble">
+
+            I've also shared the updated admissions list.
+
+        </div>
+
+        <div class="message-time">
+
+            10:19 AM
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== FILE ==================== -->
+
+<div class="message-row received">
+
+    <img src="images/avatar4.jpg" class="message-avatar">
+
+    <div class="message-content">
+
+        <div class="message-name">
+
+            Claire Evans
+
+            <span>Administration</span>
+
+        </div>
+
+        <div class="file-message">
+
+            <div class="file-icon">
+
+                <i class="fa-solid fa-file-pdf"></i>
+
+            </div>
+
+            <div class="file-details">
+
+                <h4>Orientation Schedule.pdf</h4>
+
+                <small>2.8 MB</small>
+
+            </div>
+
+            <button class="download-btn">
+
+                <i class="fa-solid fa-download"></i>
+
+            </button>
+
+        </div>
+
+        <div class="message-time">
+
+            10:24 AM
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== MESSAGE ==================== -->
+
+<div class="message-row received">
+
+    <img src="images/avatar5.jpg" class="message-avatar">
+
+    <div class="message-content">
+
+        <div class="message-name">
+
+            James Wilson
+
+            <span>Marketing</span>
+
+        </div>
+
+        <div class="message-bubble">
+
+            Great 👍
+
+            Marketing team has informed all students.
+
+        </div>
+
+        <div class="message-time">
+
+            10:30 AM
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+
+<!-- ==================== CHAT INPUT ==================== -->
+
+<div class="chat-input">
+
+    <button>
+
+        <i class="fa-solid fa-paperclip"></i>
+
+    </button>
+
+    <button>
+
+        <i class="fa-regular fa-face-smile"></i>
+
+    </button>
+
+    <button>
+
+        <i class="fa-solid fa-image"></i>
+
+    </button>
+
+    <input
+        type="text"
+        placeholder="Type your message...">
+
+    <button class="send-message">
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+    </button>
+
+</div>
+
+</section>
+
+<!-- ==========================================================
+     RIGHT SIDEBAR
+========================================================== -->
+
+<aside class="right-panel">
+
+    <!-- ================= TEAM CARD ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Operations Team</h3>
+
+            <button>
+
+                <i class="fa-solid fa-gear"></i>
+
+            </button>
+
+        </div>
+
+        <div class="team-summary">
+
+            <div class="team-avatar-stack">
+
+                <img src="images/avatar1.jpg" alt="">
+                <img src="images/avatar2.jpg" alt="">
+                <img src="images/avatar3.jpg" alt="">
+                <img src="images/avatar4.jpg" alt="">
+                <img src="images/avatar5.jpg" alt="">
+
+            </div>
+
+            <p>
+
+                <strong>8 Members</strong>
+
+                <br>
+
+                5 Currently Online
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= TODAY'S TASKS ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Today's Tasks</h3>
+
+        </div>
+
+        <ul class="task-list">
+
+            <li>
+
+                <input type="checkbox" checked>
+
+                Upload Timetable
+
+            </li>
+
+            <li>
+
+                <input type="checkbox">
+
+                Verify Attendance
+
+            </li>
+
+            <li>
+
+                <input type="checkbox">
+
+                Admissions Review
+
+            </li>
+
+            <li>
+
+                <input type="checkbox">
+
+                Publish Announcement
+
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+    <!-- ================= UPCOMING MEETINGS ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Upcoming Meetings</h3>
+
+        </div>
+
+        <div class="meeting-box">
+
+            <h4>Operations Meeting</h4>
+
+            <span>
+
+                Today • 11:30 AM
+
+            </span>
+
+            <button>
+
+                Join
+
+            </button>
+
+        </div>
+
+        <div class="meeting-box">
+
+            <h4>Academic Briefing</h4>
+
+            <span>
+
+                3:00 PM
+
+            </span>
+
+            <button>
+
+                View
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= SHARED FILES ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Shared Files</h3>
+
+        </div>
+
+        <div class="shared-file">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+            <div>
+
+                <h5>Orientation.pdf</h5>
+
+                <small>2.8 MB</small>
+
+            </div>
+
+        </div>
+
+        <div class="shared-file">
+
+            <i class="fa-solid fa-file-excel"></i>
+
+            <div>
+
+                <h5>Admissions.xlsx</h5>
+
+                <small>1.3 MB</small>
+
+            </div>
+
+        </div>
+
+        <div class="shared-file">
+
+            <i class="fa-solid fa-file-word"></i>
+
+            <div>
+
+                <h5>Staff Notice.docx</h5>
+
+                <small>850 KB</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= DEPARTMENT ACTIVITY ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Department Activity</h3>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Operations</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:95%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Admissions</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:82%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Finance</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:70%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Marketing</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:88%"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</section>
+
+
+<!-- ==========================================================
+     RECENT ANNOUNCEMENTS
+========================================================== -->
+
+<section class="announcements-section">
+
+    <div class="section-header">
+
+        <h2>Recent Announcements</h2>
+
+        <a href="#">View All</a>
+
+    </div>
+
+    <div class="announcements-grid">
+
+        <div class="announcement-card">
+
+            <div class="announcement-icon blue">
+
+                <i class="fa-solid fa-bullhorn"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Semester Orientation</h4>
+
+                <p>
+                    Orientation starts Monday at 9:00 AM.
+                    All departments should ensure attendance.
+                </p>
+
+                <span>Today • Administration</span>
+
+            </div>
+
+        </div>
+
+        <div class="announcement-card">
+
+            <div class="announcement-icon green">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Holiday Notice</h4>
+
+                <p>
+                    University will remain closed next Friday.
+                </p>
+
+                <span>Yesterday • HR</span>
+
+            </div>
+
+        </div>
+
+        <div class="announcement-card">
+
+            <div class="announcement-icon orange">
+
+                <i class="fa-solid fa-file-circle-check"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Exam Schedule Published</h4>
+
+                <p>
+                    Final examination timetable is now available.
+                </p>
+
+                <span>2 Days Ago</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     QUICK ACTIONS
+========================================================== -->
+
+<section class="quick-actions">
+
+    <div class="section-header">
+
+        <h2>Quick Actions</h2>
+
+    </div>
+
+    <div class="quick-actions-grid">
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <span>New Message</span>
+
+        </button>
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-users"></i>
+
+            <span>Create Group</span>
+
+        </button>
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+            <span>Announcement</span>
+
+        </button>
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-calendar-plus"></i>
+
+            <span>Meeting</span>
+
+        </button>
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            <span>Upload File</span>
+
+        </button>
+
+        <button class="action-card">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>Reports</span>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     MESSAGE ANALYTICS
+========================================================== -->
+
+<section class="analytics-section">
+
+    <div class="section-header">
+
+        <h2>Communication Analytics</h2>
+
+    </div>
+
+    <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+            <h5>Messages Today</h5>
+
+            <h2>286</h2>
+
+            <small>▲ 14% from yesterday</small>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h5>Average Response</h5>
+
+            <h2>4 min</h2>
+
+            <small>Excellent Performance</small>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h5>Files Shared</h5>
+
+            <h2>58</h2>
+
+            <small>Today</small>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <h5>Department Activity</h5>
+
+            <h2>92%</h2>
+
+            <small>Operations Leading</small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     RECENT ACTIVITY
+========================================================== -->
+
+<section class="activity-section">
+
+    <div class="section-header">
+
+        <h2>Recent Activity</h2>
+
+    </div>
+
+    <div class="activity-feed">
+
+        <div class="activity-item">
+
+            <i class="fa-solid fa-file-arrow-up"></i>
+
+            <div>
+
+                <strong>Sarah Johnson</strong>
+
+                uploaded <strong>Orientation.pdf</strong>
+
+                <span>2 mins ago</span>
+
+            </div>
+
+        </div>
+
+        <div class="activity-item">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <div>
+
+                <strong>Operations Team</strong>
+
+                scheduled a meeting
+
+                <span>12 mins ago</span>
+
+            </div>
+
+        </div>
+
+        <div class="activity-item">
+
+            <i class="fa-solid fa-envelope-circle-check"></i>
+
+            <div>
+
+                <strong>Admissions</strong>
+
+                replied to 15 student enquiries
+
+                <span>25 mins ago</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================================
+     FLOATING ACTION BUTTON
+========================================================== -->
+
+<button class="floating-message-btn">
+
+    <i class="fa-solid fa-plus"></i>
+
+</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================================
+     JAVASCRIPT
+========================================================== -->
+
+
+
+<script src="js/common/app.js"></script>
+<script src="js/dashboard/messages.js"></script>
+
+<script>
+window.addEventListener("load", function () {
+
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+
+    if(window.lucide){
+        lucide.createIcons();
+    }
+
+});
+</script>
+
+</body>
+</html>

@@ -34,7 +34,8 @@ body{
 
     min-height:100vh;
 
-    overflow:hidden;
+     overflow-x:hidden;
+    overflow-y:auto;
 
 }
 
@@ -534,4 +535,24 @@ RESPONSIVE
 
 }
 
+}
+
+
+.register-link {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.register-btn {
+    color: #d4af37;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.register-btn:hover {
+    text-decoration: underline;
 }

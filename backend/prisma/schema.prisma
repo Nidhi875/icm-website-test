@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id            String   @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String   @unique
+  password      String
+
+  profileImage  String?
+  phone         String?
+  isOnline      Boolean  @default(false)
+  lastSeen      DateTime?
+
+  role          Role     @default(STAFF)
+
+  departmentId  String?
+  department    Department? @relation(fields: [departmentId], references: [id])
+
+  sentMessages  Message[] @relation("MessageSender")
+
+  conversations ConversationMember[]
+
+  notifications Notification[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String   @unique
+
+  users     User[]
+
+  createdAt DateTime @default(now())
+}
+
+enum ConversationType {
+  DIRECT
+  GROUP
+  DEPARTMENT
+}
+
+enum NotificationType {
+  MESSAGE
+  ANNOUNCEMENT
+  MEETING
+  FILE
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  OPERATIONS
+  ADMISSIONS
+  TUTOR
+  FINANCE
+  HR
+  MARKETING
+  STAFF
+}
+
+
+
+model Conversation {
+  id          String   @id @default(cuid())
+
+  name        String?
+  image       String?
+
+  type        ConversationType
+
+  members     ConversationMember[]
+  messages    Message[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ConversationMember {
+  id             String @id @default(cuid())
+
+  conversationId String
+  userId         String
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  joinedAt       DateTime @default(now())
+
+  @@unique([conversationId, userId])
+}
+
+
+model Message {
+  id             String   @id @default(cuid())
+
+  text           String?
+
+  senderId       String
+  sender         User @relation("MessageSender", fields: [senderId], references: [id])
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  attachments    Attachment[]
+
+  edited         Boolean @default(false)
+  deleted        Boolean @default(false)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+
+model Attachment {
+  id            String   @id @default(cuid())
+
+  messageId      String
+  message        Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  fileName       String
+  originalName   String
+
+  fileType       String
+  fileSize       Int
+
+  fileUrl        String
+
+  uploadedAt     DateTime @default(now())
+}
+
+
+model Announcement {
+  id          String   @id @default(cuid())
+
+  title       String
+  content     String
+
+  createdBy   String
+
+  createdAt   DateTime @default(now())
+}
+
+
+model Notification {
+  id          String   @id @default(cuid())
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title       String
+  message     String
+
+  type        NotificationType
+
+  isRead      Boolean @default(false)
+
+  createdAt   DateTime @default(now())
+}
+
+
+model Meeting {
+  id           String   @id @default(cuid())
+
+  title        String
+  description  String?
+
+  location     String?
+  meetingUrl   String?
+
+  startTime    DateTime
+  endTime      DateTime
+
+  createdBy    String
+
+  createdAt    DateTime @default(now())
+}
