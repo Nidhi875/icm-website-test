@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloudinary Upload Test</title>
+</head>
+<body>
+
+<h2>Upload a File</h2>
+
+<form id="uploadForm">
+    <input type="file" id="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<pre id="result"></pre>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = document.getElementById("file").files[0];
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").textContent =
+        JSON.stringify(data, null, 2);
+});
+</script>
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+const uploadRoutes = require("./routes/uploadRoutes");
+
 require("dotenv").config();
 
 const express = require("express");
@@ -56,6 +58,9 @@ app.use(
 "/api/staff",
 staffAuthRoutes
 );
+
+
+app.use("/api/upload", uploadRoutes);
 
 app.get("/", (req, res) => {
   res.send(
