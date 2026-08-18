@@ -1,4 +1,5 @@
 const uploadRoutes = require("./routes/uploadRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 require("dotenv").config();
 
@@ -24,7 +25,7 @@ app.set("trust proxy", 1);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 10000,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -61,6 +62,9 @@ staffAuthRoutes
 
 
 app.use("/api/upload", uploadRoutes);
+
+app.use("/api/notifications", notificationRoutes);
+
 
 app.get("/", (req, res) => {
   res.send(

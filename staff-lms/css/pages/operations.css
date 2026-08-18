@@ -656,3 +656,33 @@ RESPONSIVE
 .link-btn { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:8px 13px; border:1px solid #d4af37; border-radius:9px; background:#fffaf0; color:#0a2148; font-size:13px; font-weight:700; line-height:1; cursor:pointer; transition:background .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease; }
 .link-btn:hover { background:#d4af37; color:#0a2148; transform:translateY(-1px); box-shadow:0 6px 14px rgba(212,175,55,.2); }
 .link-btn:focus-visible, .notice-action-btn:focus-visible { outline:3px solid rgba(212,175,55,.35); outline-offset:2px; }
+
+
+.notice-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:16px;
+}
+
+.notice-actions button{
+    background:#E2B52F;
+    color:#112B57;
+    border:none;
+    border-radius:16px;
+    padding:12px 28px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.notice-actions button:hover{
+    background:#d4a726;
+    transform:translateY(-1px);
+}
+
+.notice-actions button:active{
+    transform:scale(.98);
+}
+
+

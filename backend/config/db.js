@@ -14,3 +14,8 @@ pool.connect()
   });
 
 module.exports = pool;
+
+pool.query("SELECT current_database()")
+.then(res => {
+    console.log("Connected database:", res.rows[0].current_database);
+});

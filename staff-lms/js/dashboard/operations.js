@@ -54,6 +54,15 @@ DEFAULT STAFF
 const defaultStaff=[
 
 {
+id:"Derrick",
+name:"Derrick Mason",
+colour:"#3b82f6"
+},
+
+
+
+
+{
 id:"joy",
 name:"Joy Banerjee",
 colour:"#3b82f6"
@@ -170,6 +179,8 @@ renderUpcoming();
 /*==========================================================
 DATE FORMAT
 ==========================================================*/
+
+
 
 function pad(n){
 
@@ -686,7 +697,48 @@ priority:"medium",
 description:"Friday 4 PM with CEO.",
 author:"Sales",
 date:new Date().toLocaleDateString()
-}
+},
+{
+id:"N3",
+title:"Admissions Campaign Starts Monday",
+priority:"high",
+description:"All counsellors must begin contacting prospective students.",
+author:"Administration",
+date:new Date().toLocaleDateString()
+},
+
+{
+id:"N4",
+title:"Admissions Campaign Starts Monday",
+priority:"high",
+description:"All counsellors must begin contacting prospective students.",
+author:"Administration",
+date:new Date().toLocaleDateString()
+},
+
+{
+id:"N5",
+title:"Admissions Campaign Starts Monday",
+priority:"high",
+description:"All counsellors must begin contacting prospective students.",
+author:"Administration",
+date:new Date().toLocaleDateString()
+},
+
+{
+id:"N6",
+title:"Admissions Campaign Starts Monday",
+priority:"high",
+description:"All counsellors must begin contacting prospective students.",
+author:"Administration",
+date:new Date().toLocaleDateString()
+},
+
+
+
+
+
+
 ]);
 
 save(STORAGE.NOTICES,notices);
@@ -713,7 +765,7 @@ const card=document.createElement("div");
 
 card.className=`notice-card ${n.priority}`;
 
-card.innerHTML=`
+card.innerHTML = `
 
 <div class="notice-badge">${n.priority.toUpperCase()}</div>
 
@@ -721,7 +773,13 @@ card.innerHTML=`
 
 <p>${n.description}</p>
 
-<small>${n.author} \u2022 ${n.date}</small>
+<small>${n.author} • ${n.date}</small>
+
+<div class="notice-actions">
+    <button type="button" data-delete-notice="${n.id}">
+        Delete
+    </button>
+</div>
 
 `;
 
@@ -733,6 +791,31 @@ noticeBoard.appendChild(card);
 
 renderNotices();
 
+noticeBoard?.addEventListener("click", (event) => {
+
+    console.log("Clicked:", event.target);
+
+    const button = event.target.closest("[data-delete-notice]");
+
+    console.log("Button:", button);
+
+    if (!button) return;
+
+    console.log("Notice ID:", button.dataset.deleteNotice);
+
+    if (!confirm("Delete this notice?")) return;
+
+    const id = button.dataset.deleteNotice;
+
+    notices = notices.filter(n => String(n.id) !== String(id));
+
+    console.log("Remaining notices:", notices);
+
+    save(STORAGE.NOTICES, notices);
+
+    renderNotices();
+
+});
 /*==========================================================
 TEAM MESSAGES
 ==========================================================*/
@@ -1037,31 +1120,52 @@ return;
 
 }
 
-notices.unshift({
+fetch("http://localhost:5000/api/notifications", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        title,
+        message: description,
+        type: "general"
+    })
+})
+.then(res => {
+    if (!res.ok) {
+        throw new Error("Failed to save notification.");
+    }
+    return res.json();
+})
+.then(() => {
 
-id:Date.now(),
+    notices.unshift({
+        id: "N_" + Date.now(),
+        title,
+        priority,
+        description,
+        author: "You",
+        date: new Date().toLocaleDateString()
+    });
 
-title,
+    save(STORAGE.NOTICES, notices);
 
-priority,
+    renderNotices();
 
-description,
+    if (typeof loadNotifications === "function") {
+        loadNotifications();
+    }
 
-author:"You",
+    document.getElementById("noticeModal").classList.remove("show");
 
-date:new Date().toLocaleDateString()
+    document.getElementById("noticeTitle").value = "";
+    document.getElementById("noticeDescription").value = "";
 
+})
+.catch(error => {
+    console.error(error);
+    alert("Unable to save the notice. Please try again.");
 });
-
-save(STORAGE.NOTICES,notices);
-
-renderNotices();
-
-document.getElementById("noticeModal").classList.remove("show");
-
-document.getElementById("noticeTitle").value="";
-
-document.getElementById("noticeDescription").value="";
 
 });
 
@@ -1278,12 +1382,7 @@ INITIAL STARTUP
 
 document.addEventListener("DOMContentLoaded",()=>{
 
-    loadStaffDropdown();
-
-    renderCalendar();
-
-    renderUpcoming();
-
+   
     renderNotices();
 
     renderMessages();
@@ -1298,9 +1397,5 @@ document.addEventListener("DOMContentLoaded",()=>{
 FINAL CLOSE
 ==========================================================*/
 
-
-
 })();
-
-
 
