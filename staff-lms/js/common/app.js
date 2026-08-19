@@ -54,10 +54,37 @@ async function loadLayout() {
 loadComponent("layouts/header.html", "#header"),
 loadComponent("components/welcome-banner.html", "#welcomeBanner"),
 loadComponent("components/schedule-widget.html", "#scheduleWidget"),
-loadComponent("components/calendar-widget.html", "#calendarWidget"),
-loadComponent("components/meeting-widget.html", "#meetingsWidget")
-
+loadComponent("components/calendar-widget.html", "#calendarWidget")
     ]);
+
+    /* ==========================
+   MOBILE SIDEBAR
+========================== */
+
+/* ==========================
+   MOBILE SIDEBAR
+========================== */
+
+const menuBtn = document.getElementById("mobileMenuBtn");
+const sidebar = document.querySelector(".sidebar");
+
+if (menuBtn && sidebar) {
+
+    menuBtn.addEventListener("click", function () {
+
+        sidebar.classList.toggle("open");
+        document.body.classList.toggle("sidebar-open");
+
+    });
+
+}
+
+if (document.querySelector("#meetingsWidget")) {
+    loadComponent(
+        "components/meeting-widget.html",
+        "#meetingsWidget"
+    );
+}
 
 
 if (typeof initCalendarWidget === "function") {

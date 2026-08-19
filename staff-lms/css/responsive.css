@@ -1,0 +1,201 @@
+/*==================================================
+GOULDINGS STAFF LMS
+RESPONSIVE STYLESHEET
+Desktop CSS MUST NEVER be edited.
+Only media queries belong here.
+==================================================*/
+
+
+/*==================================================
+TABLETS
+==================================================*/
+
+@media screen and (max-width:1024px){
+
+}
+
+
+
+/*==================================================
+MOBILE
+==================================================*/
+
+@media screen and (max-width:768px){
+
+    /*==================================================
+MAIN LAYOUT
+==================================================*/
+
+.main-content{
+    margin-left:0;
+    width:100%;
+    padding:16px;
+}
+
+.page-content{
+    padding:16px;
+}
+
+.content-wrapper{
+    width:100%;
+}
+
+/*==================================================
+HEADER
+==================================================*/
+
+.header{
+
+    padding:14px 18px;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.header-right{
+
+    width:100%;
+
+    justify-content:flex-end;
+
+}
+
+.search-box{
+
+    display:none;
+
+}
+
+.header-profile{
+
+    display:none;
+
+}
+
+
+/*==================================================
+STAT CARDS
+==================================================*/
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:16px;
+
+}
+
+.glass-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+
+}
+
+}
+
+
+
+/*==================================================
+SMALL PHONES
+==================================================*/
+
+@media screen and (max-width:480px){
+
+}
+
+
+/* ==========================================
+   MOBILE SIDEBAR
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+    .app{
+        display:block;
+    }
+
+    .sidebar{
+        position:fixed;
+        top:0;
+        left:-280px;
+        width:280px;
+        height:100vh;
+        z-index:9999;
+
+        overflow-y:auto;
+
+        transition:left .3s ease;
+    }
+
+    .sidebar.open{
+        left:0;
+    }
+
+    .main-content{
+        width:100%;
+        margin-left:0;
+    }
+
+    body.sidebar-open{
+        overflow:hidden;
+    }
+
+}
+
+/* =========================================
+   MOBILE SIDEBAR
+========================================= */
+
+@media screen and (max-width:768px){
+
+    /* Remove desktop spacing */
+    .main-content{
+        margin-left:0 !important;
+        width:100%;
+    }
+
+    /* Hide sidebar off-screen */
+    .sidebar{
+        left:-290px !important;
+        transition:left .3s ease;
+        z-index:2000;
+    }
+
+    /* Show when opened */
+    .sidebar.open{
+        left:0 !important;
+    }
+
+    /* Prevent page scrolling while menu is open */
+    body.sidebar-open{
+        overflow:hidden;
+    }
+
+    /* Make header fit mobile */
+    .header{
+        padding:0 16px;
+    }
+
+    .header-brand{
+        border-right:none;
+        padding-right:0;
+    }
+
+    .header-page,
+    .search-box,
+    .header-profile{
+        display:none;
+    }
+
+    .header-right{
+        margin-left:auto;
+    }
+}

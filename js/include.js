@@ -36,17 +36,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        const qualificationItem = document.querySelector(".nav-item--has-submenu");
-        const qualificationToggle = qualificationItem?.querySelector(".nav-title");
+      // MOBILE DROPDOWN MENUS
 
-        if (qualificationItem && qualificationToggle) {
-            qualificationToggle.addEventListener("click", () => {
-                if (window.innerWidth > 768) return;
+const submenuItems = document.querySelectorAll(".nav-item--has-submenu");
 
-                const isOpen = qualificationItem.classList.toggle("open");
-                qualificationToggle.setAttribute("aria-expanded", String(isOpen));
-            });
-        }
+submenuItems.forEach(item => {
+
+    const button = item.querySelector(".nav-title");
+
+    if (!button) return;
+
+    button.addEventListener("click", () => {
+
+        if (window.innerWidth > 768) return;
+
+        // Close any other open submenu
+        submenuItems.forEach(other => {
+            if (other !== item) {
+                other.classList.remove("open");
+                other.querySelector(".nav-title")
+                     ?.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        const isOpen = item.classList.toggle("open");
+        button.setAttribute("aria-expanded", isOpen);
+
+    });
+
+});
 
     });
 
