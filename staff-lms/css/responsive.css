@@ -1,8 +1,8 @@
 /*==================================================
 GOULDINGS STAFF LMS
 RESPONSIVE STYLESHEET
-Desktop CSS MUST NEVER be edited.
-Only media queries belong here.
+Desktop CSS is untouched.
+Only responsive overrides belong here.
 ==================================================*/
 
 
@@ -12,9 +12,29 @@ TABLETS
 
 @media screen and (max-width:1024px){
 
+.main-content{
+    margin-left:0;
+    width:100%;
+    padding:20px;
 }
 
+.statistics-grid,
+.stats-grid{
+    grid-template-columns:repeat(2,1fr);
+}
 
+.dashboard-grid{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.dashboard-left,
+.dashboard-right{
+    width:100%;
+}
+
+}
 
 /*==================================================
 MOBILE
@@ -22,86 +42,476 @@ MOBILE
 
 @media screen and (max-width:768px){
 
-    /*==================================================
+/*==================================
 MAIN LAYOUT
-==================================================*/
+==================================*/
 
-.main-content{
+.main-content,
+.content-wrapper,
+.page-content,
+.page-wrapper{
+
+    width:100%;
     margin-left:0;
-    width:100%;
     padding:16px;
+
 }
 
-.page-content{
-    padding:16px;
-}
 
-.content-wrapper{
-    width:100%;
-}
-
-/*==================================================
+/*==================================
 HEADER
-==================================================*/
+==================================*/
 
 .header{
 
-    padding:14px 18px;
+    position:relative;
 
-    gap:12px;
+    display:flex;
 
-    flex-wrap:wrap;
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:14px 16px;
+
+}
+
+.header-left{
+
+    display:flex;
+
+    align-items:center;
+
+    flex:1;
+
+}
+
+.header-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    border:none;
+
+    padding:0;
+
+}
+
+.header-logo{
+
+    width:46px;
+    height:46px;
+
+}
+
+.header-brand h2{
+
+    font-size:18px;
+
+}
+
+.header-brand span{
+
+    font-size:12px;
 
 }
 
 .header-right{
 
-    width:100%;
+    display:flex;
+
+    align-items:center;
 
     justify-content:flex-end;
 
+    margin-left:auto;
+
+    gap:0;
+
 }
 
-.search-box{
+
+/* Hide desktop header controls */
+
+.search-box,
+
+.header-profile,
+
+.header-page,
+
+.header-right > .action-btn{
 
     display:none;
 
 }
 
-.header-profile{
 
-    display:none;
+/* Mobile hamburger */
 
-}
+.menu-toggle{
 
-
-/*==================================================
-STAT CARDS
-==================================================*/
-
-.stats-grid{
-
-    display:grid;
-
-    grid-template-columns:1fr;
-
-    gap:16px;
+    display:flex;
 
 }
 
-.glass-grid{
 
-    display:grid;
+/*==================================
+SIDEBAR
+==================================*/
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:-280px;
+
+    width:280px;
+
+    height:100vh;
+
+    overflow-y:auto;
+
+    transition:left .3s ease;
+
+    z-index:2000;
+
+}
+
+.sidebar.open{
+
+    left:0;
+
+}
+
+body.sidebar-open{
+
+    overflow:hidden;
+
+}
+
+body.sidebar-open::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:1500;
+
+}
+
+/*==================================
+WELCOME BANNER
+==================================*/
+
+.welcome-banner{
 
     grid-template-columns:1fr;
 
     gap:20px;
 
-}
+    padding:24px;
+
+    border-radius:20px;
 
 }
 
+.welcome-banner h1{
 
+    font-size:2rem;
+
+    line-height:1.2;
+
+}
+
+.welcome-banner p{
+
+    max-width:100%;
+
+    line-height:1.6;
+
+}
+
+.welcome-actions{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.welcome-actions .btn,
+.welcome-actions a,
+.welcome-actions button{
+
+    width:100%;
+
+    justify-content:center;
+
+}
+
+
+/*==================================
+STATISTICS
+==================================*/
+
+.statistics-grid,
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:16px;
+
+}
+
+.stat-card{
+
+    width:100%;
+
+    min-width:0;
+
+}
+
+
+/*==================================
+DASHBOARD
+==================================*/
+
+.dashboard-grid{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.dashboard-left,
+.dashboard-right{
+
+    width:100%;
+
+}
+
+
+/*==================================
+SCHEDULE
+==================================*/
+
+.schedule-widget{
+
+    width:100%;
+
+}
+
+.schedule-card{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.schedule-header{
+
+    flex-wrap:wrap;
+
+}
+
+/*==================================
+CALENDAR
+==================================*/
+
+.calendar-widget{
+
+    width:100%;
+
+    overflow:hidden;
+
+}
+
+.calendar-header{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.calendar-controls{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.calendar-grid{
+
+    width:100%;
+
+}
+
+.calendar-days{
+
+    font-size:13px;
+
+}
+
+
+/*==================================
+MEETINGS
+==================================*/
+
+.meeting-widget{
+
+    width:100%;
+
+}
+
+.meeting-card{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+.meeting-left,
+.meeting-right{
+
+    width:100%;
+
+    margin:0;
+
+}
+
+.meeting-top{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.join-btn{
+
+    width:100%;
+
+    justify-content:center;
+
+}
+
+
+/*==================================
+MOBILE HEADER DROPDOWN
+==================================*/
+
+.mobile-header-menu{
+
+    position:absolute;
+
+    top:72px;
+
+    right:16px;
+
+    width:220px;
+
+    display:none;
+
+    flex-direction:column;
+
+    background:#071D3A;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+    z-index:2500;
+
+}
+
+.mobile-header-menu.show{
+
+    display:flex;
+
+}
+
+.mobile-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px 18px;
+
+    background:none;
+
+    border:none;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    text-align:left;
+
+}
+
+.mobile-item:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+
+/*==================================
+IMAGES
+==================================*/
+
+img,
+svg,
+video{
+
+    max-width:100%;
+
+    height:auto;
+
+}
+
+}
 
 /*==================================================
 SMALL PHONES
@@ -109,93 +519,88 @@ SMALL PHONES
 
 @media screen and (max-width:480px){
 
-}
+/* Header */
 
+.header{
 
-/* ==========================================
-   MOBILE SIDEBAR
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-    .app{
-        display:block;
-    }
-
-    .sidebar{
-        position:fixed;
-        top:0;
-        left:-280px;
-        width:280px;
-        height:100vh;
-        z-index:9999;
-
-        overflow-y:auto;
-
-        transition:left .3s ease;
-    }
-
-    .sidebar.open{
-        left:0;
-    }
-
-    .main-content{
-        width:100%;
-        margin-left:0;
-    }
-
-    body.sidebar-open{
-        overflow:hidden;
-    }
+    padding:12px;
 
 }
 
-/* =========================================
-   MOBILE SIDEBAR
-========================================= */
+.header-logo{
 
-@media screen and (max-width:768px){
+    width:40px;
+    height:40px;
 
-    /* Remove desktop spacing */
-    .main-content{
-        margin-left:0 !important;
-        width:100%;
-    }
+}
 
-    /* Hide sidebar off-screen */
-    .sidebar{
-        left:-290px !important;
-        transition:left .3s ease;
-        z-index:2000;
-    }
+.header-brand h2{
 
-    /* Show when opened */
-    .sidebar.open{
-        left:0 !important;
-    }
+    font-size:16px;
 
-    /* Prevent page scrolling while menu is open */
-    body.sidebar-open{
-        overflow:hidden;
-    }
+}
 
-    /* Make header fit mobile */
-    .header{
-        padding:0 16px;
-    }
+.header-brand span{
 
-    .header-brand{
-        border-right:none;
-        padding-right:0;
-    }
+    font-size:11px;
 
-    .header-page,
-    .search-box,
-    .header-profile{
-        display:none;
-    }
+}
 
-    .header-right{
-        margin-left:auto;
-    }
+.menu-toggle{
+
+    width:40px;
+    height:40px;
+
+}
+
+
+/* Welcome */
+
+.welcome-banner{
+
+    padding:20px;
+
+}
+
+.welcome-banner h1{
+
+    font-size:1.7rem;
+
+}
+
+.welcome-actions{
+
+    gap:10px;
+
+}
+
+
+/* Statistics */
+
+.statistics-grid,
+.stats-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+/* Mobile dropdown */
+
+.mobile-header-menu{
+
+    width:200px;
+
+    right:12px;
+
+}
+
+.mobile-item{
+
+    padding:14px 16px;
+
+    font-size:14px;
+
+}
+
 }

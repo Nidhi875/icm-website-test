@@ -38,25 +38,25 @@ LEFT
 
     align-items:center;
 
-    gap:28px;
+    gap:16px;
 
 }
 
 .menu-toggle{
 
-    width:52px;
+    display:none;
 
-    height:52px;
+    width:42px;
 
-    border-radius:50%;
+    height:42px;
 
-    background:rgba(255,255,255,.08);
+    border:none;
 
-    border:1px solid rgba(255,255,255,.15);
+    border-radius:10px;
+
+    background:#0d2346;
 
     color:#fff;
-
-    display:none;
 
     align-items:center;
 
@@ -64,14 +64,34 @@ LEFT
 
     cursor:pointer;
 
+    position:relative;
+
+    z-index:1001;
+
+    transition:.3s;
+
+}
+
+.menu-toggle:hover{
+
+    background:#12315d;
+
 }
 
 @media (max-width:768px){
 
     .menu-toggle{
-
         display:flex;
+    }
 
+    .header-brand h2,
+    .header-brand span{
+        display:none;
+    }
+
+    .header-brand{
+        border:none;
+        padding-right:0;
     }
 
 }
@@ -352,6 +372,7 @@ RIGHT
     display:none;
 
 }
+
 
 
 

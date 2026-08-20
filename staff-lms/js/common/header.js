@@ -40,3 +40,17 @@ if (notify) {
     }
 
 }
+
+function initMobileMenu() {
+
+    const menuBtn = document.getElementById("mobileMenuBtn");
+    const sidebar = document.getElementById("sidebar");
+
+    if (!menuBtn || !sidebar) return;
+
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        document.body.classList.toggle("sidebar-open");
+    });
+
+}
