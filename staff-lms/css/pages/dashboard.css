@@ -1,4 +1,31 @@
 /*==========================================
+GLOBAL SAFETY NET
+Prevents any single fixed-width child from
+forcing the whole page to scroll horizontally.
+This is almost always the cause of content being
+"sliced off" on the right edge on mobile.
+==========================================*/
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    max-width:100%;
+    overflow-x:hidden;
+}
+
+img,
+svg{
+    max-width:100%;
+    height:auto;
+}
+
+
+/*==========================================
 WELCOME BANNER
 ==========================================*/
 
@@ -200,29 +227,6 @@ WELCOME BANNER
 }
 
 
-.welcome-banner::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:340px;
-
-    height:340px;
-
-    right:190px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    background:url("../images/logo/gouldings-watermark.png") center/contain no-repeat;
-
-    opacity:.05;
-
-    pointer-events:none;
-
-}
 
 /*==================================================
 SCHEDULE WIDGET
@@ -232,7 +236,7 @@ SCHEDULE WIDGET
 
     display:grid;
 
-    grid-template-columns:minmax(0,2fr) minmax(360px,1fr);
+    grid-template-columns:minmax(0,2fr) minmax(0,1fr);
 
     gap:32px;
 
@@ -251,12 +255,16 @@ SCHEDULE WIDGET
 
     gap:30px;
 
+    min-width:0;
+
 }
 
 .dashboard-left > *,
 .dashboard-right > *{
 
     width:100%;
+
+    min-width:0;
 
 }
 
@@ -358,11 +366,15 @@ SCHEDULE WIDGET
 
     width:90px;
 
+    flex-shrink:0;
+
 }
 
 .schedule-info{
 
     flex:1;
+
+    min-width:0;
 
     margin-left:25px;
 
@@ -381,10 +393,6 @@ SCHEDULE WIDGET
     color:#7b8794;
 
 }
-
-/*=========================
-MEETING WIDGET
-=========================*/
 
 /*=========================
 MEETING WIDGET
@@ -415,6 +423,7 @@ MEETING WIDGET
     align-items:center;
     gap:24px;
     flex:1;
+    min-width:0;
 }
 
 .meeting-video-icon{
@@ -439,6 +448,7 @@ MEETING WIDGET
 
 .meeting-content{
     flex:1;
+    min-width:0;
 }
 
 .meeting-content h3{
@@ -564,34 +574,307 @@ MEETING WIDGET
     height:18px;
 }
 
-@media(max-width:900px){
 
-.meeting-card{
-    flex-direction:column;
-    align-items:flex-start;
+/* ==========================================
+   RESPONSIVE — single consolidated set.
+   Previously this file defined the 1024/768/480
+   breakpoints three separate times; merged here
+   so there is exactly one place to edit each rule.
+========================================== */
+
+/* ---------- Tablet (<=1024px) ---------- */
+@media (max-width:1024px){
+
+    .main-content{
+        padding:30px;
+    }
+
+    .welcome-banner{
+        grid-template-columns:1fr;
+        gap:24px;
+        padding:36px;
+    }
+
+    .welcome-banner h1{
+        font-size:42px;
+    }
+
+    .welcome-banner p{
+        font-size:18px;
+        max-width:100%;
+    }
+
+    .welcome-banner::before,
+    .welcome-banner::after{
+        display:none;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
+
+    .hero-card{
+        margin-top:10px;
+    }
+
+    .page-grid{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
 }
 
-.meeting-left{
-    width:100%;
+/* ---------- Mobile (<=768px) ---------- */
+@media (max-width:768px){
+
+    .main-content{
+        padding:20px 16px;
+    }
+
+    /* Statistics cards row (id used for specificity —
+       .stat-card is also defined in statistics.css,
+       cards.css, and meetings.css, so a plain class
+       selector here can lose the cascade depending on
+       file load order). Stacks the 4 cards vertically
+       instead of letting the grid overflow sideways. */
+    #statistics.statistics-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+
+    #statistics .stat-card{
+        width:100%;
+        min-width:0;
+    }
+
+    /* Calendar widget (id used for specificity — .calendar-header
+       is defined in both calendar-widget.css and calendar.css with
+       conflicting layouts). The header row was fixed at
+       grid-template-columns: 42px 1fr 42px, which only accounts for
+       3 columns even though the back-arrow + 3 dropdowns need more
+       room than that — so it overflowed instead of wrapping. */
+    #calendarWidget .calendar-widget{
+        max-width:100%;
+        overflow:hidden;
+    }
+
+    #calendarWidget .calendar-header{
+        display:flex;
+        flex-wrap:wrap;
+        grid-template-columns:unset;
+        gap:10px;
+        align-items:center;
+        padding:16px;
+    }
+
+    /* First/last child are the prev/next nav buttons (matches the
+       original "42px 1fr 42px" grid columns) — keep them fixed-size
+       circles instead of letting flex-grow stretch them into ovals. */
+    #calendarWidget .calendar-header > :first-child,
+    #calendarWidget .calendar-header > :last-child{
+        flex:0 0 42px;
+        width:42px;
+        height:42px;
+        border-radius:50%;
+    }
+
+    /* Middle child is the dropdown-filter group — this is the one
+       that actually needs to wrap onto its own line. */
+    #calendarWidget .calendar-header > :nth-child(2){
+        flex:1 1 100%;
+        order:3;
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        min-width:0;
+    }
+
+    #calendarWidget .calendar-widget-days,
+    #calendarWidget .calendar-widget-grid{
+        grid-template-columns:repeat(7,minmax(0,1fr));
+        gap:4px;
+    }
+
+    #calendarWidget .calendar-widget-days > *,
+    #calendarWidget .calendar-widget-grid > *{
+        min-width:0;
+        font-size:13px;
+        padding:0;
+    }
+
+    .welcome-banner{
+        grid-template-columns:1fr;
+        padding:20px;
+        border-radius:18px;
+        gap:20px;
+    }
+
+    .welcome-banner h1{
+        font-size:28px;
+        line-height:1.2;
+        margin:12px 0;
+    }
+
+    .welcome-banner p{
+        font-size:15px;
+        line-height:1.6;
+    }
+
+    .welcome-actions{
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .welcome-actions .btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .hero-card{
+        padding:18px;
+    }
+
+    .hero-card h3{
+        font-size:20px;
+        margin-bottom:14px;
+    }
+
+    .hero-card li{
+        font-size:15px;
+    }
+
+    .schedule-widget{
+        padding:18px;
+    }
+
+    .widget-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .widget-header h2{
+        font-size:18px;
+    }
+
+    .schedule-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .schedule-time{
+        font-size:15px;
+        width:auto;
+    }
+
+    .schedule-info{
+        margin-left:0;
+    }
+
+    .meeting-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+        padding:16px;
+    }
+
+    .meeting-left{
+        width:100%;
+        gap:14px;
+    }
+
+    .meeting-right{
+        width:100%;
+        margin:16px 0 0;
+    }
+
+    .join-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .meeting-top{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .page-grid,
+    .widget-grid{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .card,
+    .widget{
+        padding:16px;
+        border-radius:14px;
+    }
 }
 
-.meeting-right{
-    width:100%;
-    margin-left:0;
-    margin-top:20px;
+/* ---------- Small phones (<=480px) ---------- */
+@media (max-width:480px){
+
+    .main-content{
+        padding:14px;
+    }
+
+    .welcome-banner{
+        padding:16px;
+        border-radius:14px;
+    }
+
+    .welcome-banner h1{
+        font-size:22px;
+    }
+
+    .welcome-banner p{
+        font-size:14px;
+    }
+
+    .welcome-tag{
+        font-size:13px;
+    }
+
+    .hero-card{
+        padding:16px;
+    }
+
+    .hero-card h3{
+        font-size:18px;
+    }
+
+    .hero-card li{
+        font-size:14px;
+    }
+
+    .widget-header h2{
+        font-size:18px;
+    }
+
+    .schedule-time{
+        width:auto;
+        font-size:15px;
+    }
+
+    .meeting-video-icon{
+        width:56px;
+        height:56px;
+    }
+
+    .meeting-video-icon svg{
+        width:26px;
+        height:26px;
+    }
+
+    .btn{
+        font-size:14px;
+    }
 }
-
-.join-btn{
-    width:100%;
-    justify-content:center;
-}
-
-.meeting-top{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-}
-
-}
-
-

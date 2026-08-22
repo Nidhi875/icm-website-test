@@ -374,6 +374,16 @@ RIGHT
 }
 
 
+@media (max-width:768px){
+
+    .header-right > .action-btn,
+    .header-right > .header-profile{
+        display:none;
+    }
+
+}
+
+
 
 
 

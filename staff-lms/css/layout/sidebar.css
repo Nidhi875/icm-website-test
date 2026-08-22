@@ -28,6 +28,8 @@ SIDEBAR
 
     z-index:999;
 
+    transition:left .3s ease;
+
 }
 
 /*==================================================
@@ -55,6 +57,8 @@ PROFILE
     width:66px;
 
     height:66px;
+
+    flex-shrink:0;
 
 }
 
@@ -122,6 +126,8 @@ PROFILE
 
     flex:1;
 
+    min-width:0;
+
 }
 
 .profile-info h3{
@@ -133,7 +139,12 @@ PROFILE
     font-weight:700;
 
     margin:0 0 6px;
-        white-space:nowrap;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 
 }
 
@@ -144,6 +155,12 @@ PROFILE
     font-size:15px;
 
     margin:0;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 
 }
 
@@ -193,7 +210,7 @@ MENU
 
     border-radius:14px;
 
-    transition:.25s;
+    transition:background .25s, color .25s;
 
     font-size:20px;
 
@@ -207,11 +224,15 @@ MENU
 
     height:22px;
 
+    flex-shrink:0;
+
 }
 
 .sidebar-menu a:hover{
 
-    background:rgba(255,255,255,.06);
+    background:rgba(255,255,255,.08);
+
+    color:#fff;
 
 }
 
@@ -222,6 +243,8 @@ MENU
     color:#fff;
 
     box-shadow:0 8px 20px rgba(212,175,55,.35);
+
+    font-weight:600;
 
 }
 
@@ -275,6 +298,143 @@ MAIN CONTENT
 
     background:#F6F8FC;
 
+    transition:margin-left .3s ease;
+
+}
+
+/*==================================================
+MOBILE HAMBURGER TOGGLE
+Add this button in the markup on mobile, e.g.:
+<button class="sidebar-toggle" aria-label="Open menu">☰</button>
+==================================================*/
+
+.sidebar-toggle{
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:44px;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#071D3A;
+
+    color:#fff;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:1001;
+
+}
+
+/*==================================================
+MOBILE BACKDROP
+Add an element in the markup, e.g. <div class="sidebar-backdrop"></div>,
+and toggle a `.visible` class on it alongside `.sidebar.open`.
+Without this, tapping the page behind an open sidebar on mobile
+does nothing and users can get stuck.
+==================================================*/
+
+.sidebar-backdrop{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(7,29,58,.5);
+
+    z-index:998;
+
+}
+
+.sidebar-backdrop.visible{
+
+    display:block;
+
 }
 
 
+/* ==========================================
+   RESPONSIVE SIDEBAR
+========================================== */
+@media (max-width:768px){
+
+    .sidebar{
+        left:-290px; /* hidden off-screen by default */
+        z-index:1000;
+    }
+
+    .sidebar.open{
+        left:0; /* slide in when hamburger clicked */
+    }
+
+    .main-content{
+        margin-left:0; /* full width on mobile */
+        padding:16px;
+    }
+
+    .sidebar-toggle{
+        display:flex;
+    }
+
+    .sidebar-profile{
+        padding:20px 18px;
+    }
+
+    .sidebar-menu a{
+        font-size:17px;
+        padding:14px 16px;
+    }
+
+    .sidebar-bottom a{
+        font-size:16px;
+    }
+}
+
+@media (max-width:480px){
+
+    .sidebar{
+        width:260px;
+        left:-260px;
+    }
+
+    .profile-avatar-wrap,
+    .sidebar-profile img{
+        width:56px;
+        height:56px;
+    }
+
+    .sidebar-menu a{
+        font-size:16px;
+        gap:12px;
+    }
+}
+
+
+.sidebar-header-actions{
+    display:none;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:0 22px 20px;
+}
+
+.sidebar-header-actions:not(:empty){
+    display:flex;
+}
+
+@media (min-width:769px){
+    .sidebar-header-actions{
+        display:none !important;
+    }
+}

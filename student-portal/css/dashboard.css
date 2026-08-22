@@ -116,7 +116,7 @@ MAIN CONTENT
 
 .main-content{
 
-    padding:45px;
+    padding:10px;
 
 }
 
@@ -299,7 +299,7 @@ STAT CARDS
 
     border:1px solid #edf0f4;
 
-    padding:35px;
+    padding:10px;
 
     min-height:280px;
 
@@ -322,7 +322,7 @@ STAT CARDS
 
     color:#1d1d1d;
 
-    margin-bottom:25px;
+    margin-bottom:5px;
 }
 
 .dashboard-panel ul{

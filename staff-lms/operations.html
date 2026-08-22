@@ -17,12 +17,23 @@
   gtag('config', 'G-YGWT9CHVFV');
 </script>
 
-  <!-- Styles -->
+   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Layout -->
+  <link rel="stylesheet" href="css/layout/grid.css">
+  <link rel="stylesheet" href="css/layout/sidebar.css">
+  <link rel="stylesheet" href="css/layout/header.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/statistics.css">
+  <link rel="stylesheet" href="css/components/calendar-widget.css">
+
+  <!-- Page-specific -->
   <link rel="stylesheet" href="css/pages/dashboard.css">
   <link rel="stylesheet" href="css/pages/operations.css">
-  <link rel="stylesheet" href="css/components/calendar-widget.css">
 
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -33,11 +44,14 @@
 <div class="app">
 
   <!-- Sidebar -->
-  <div id="sidebar"></div>
+
+   <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <div id="header"></div>
+
+   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 
 <div class="page-wrapper">
@@ -219,6 +233,17 @@ JAVASCRIPT
 <script src="js/dashboard/operations.js"></script>
 
 <script src="js/common/notifications.js"></script>
+
+
+<script>
+window.addEventListener("load", function () {
+
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+
+});
+</script>
+
 
 
 

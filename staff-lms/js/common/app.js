@@ -46,55 +46,66 @@ async function loadLayout() {
 
     await Promise.all([
 
-
-        
-
-
         loadComponent("layouts/sidebar.html", "#sidebar"),
-loadComponent("layouts/header.html", "#header"),
-loadComponent("components/welcome-banner.html", "#welcomeBanner"),
-loadComponent("components/schedule-widget.html", "#scheduleWidget"),
-loadComponent("components/calendar-widget.html", "#calendarWidget")
+        loadComponent("layouts/header.html", "#header"),
+        loadComponent("components/welcome-banner.html", "#welcomeBanner"),
+        loadComponent("components/schedule-widget.html", "#scheduleWidget"),
+        loadComponent("components/calendar-widget.html", "#calendarWidget")
     ]);
 
     /* ==========================
-   MOBILE SIDEBAR
-========================== */
+       MOBILE SIDEBAR TOGGLE
+       (must run after header/sidebar are loaded,
+       since #mobileMenuBtn only exists once
+       layouts/header.html has finished injecting)
+    ========================== */
+    const sidebar   = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('mobileMenuBtn');
+    const backdrop  = document.getElementById('sidebarBackdrop');
 
-/* ==========================
-   MOBILE SIDEBAR
-========================== */
+    if (sidebar && toggleBtn && backdrop) {
 
-const menuBtn = document.getElementById("mobileMenuBtn");
-const sidebar = document.querySelector(".sidebar");
+        function openSidebar(){
+            sidebar.classList.add('open');
+            backdrop.classList.add('visible');
+        }
 
-if (menuBtn && sidebar) {
+        function closeSidebar(){
+            sidebar.classList.remove('open');
+            backdrop.classList.remove('visible');
+        }
 
-    menuBtn.addEventListener("click", function () {
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
 
-        sidebar.classList.toggle("open");
-        document.body.classList.toggle("sidebar-open");
+        backdrop.addEventListener('click', closeSidebar);
 
-    });
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.sidebar-menu a')) closeSidebar();
+        });
 
-}
-
-if (document.querySelector("#meetingsWidget")) {
-    loadComponent(
-        "components/meeting-widget.html",
-        "#meetingsWidget"
-    );
-}
+    } else {
+        console.warn("Mobile sidebar toggle: missing element(s)", { sidebar, toggleBtn, backdrop });
+    }
 
 
-if (typeof initCalendarWidget === "function") {
-    initCalendarWidget();
-}
-   
+    if (document.querySelector("#meetingsWidget")) {
+        loadComponent(
+            "components/meeting-widget.html",
+            "#meetingsWidget"
+        );
+    }
+
+
+    if (typeof initCalendarWidget === "function") {
+        initCalendarWidget();
+    }
+
 
     if (typeof renderMeetings === "function") {
-    renderMeetings();
-}
+        renderMeetings();
+    }
 
 
     /* Render Lucide Icons */
@@ -105,11 +116,10 @@ if (typeof initCalendarWidget === "function") {
     /* Highlight Active Menu */
     setActiveLink();
 
-  
 
-   if (typeof initProfilePhotoUpload === "function") {
-    initProfilePhotoUpload();
-}
+    if (typeof initProfilePhotoUpload === "function") {
+        initProfilePhotoUpload();
+    }
 
 
     /* Load Logged-in Staff */
@@ -117,7 +127,7 @@ if (typeof initCalendarWidget === "function") {
 
 
     initLogout();
-    
+
 }
 
 
@@ -146,6 +156,8 @@ function setActiveLink() {
     });
 
 }
+
+
 
 /*==========================================
 INITIALIZE
