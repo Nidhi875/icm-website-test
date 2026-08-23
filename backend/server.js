@@ -1,5 +1,6 @@
 const uploadRoutes = require("./routes/uploadRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 
 require("dotenv").config();
 
@@ -65,11 +66,10 @@ app.use("/api/upload", uploadRoutes);
 
 app.use("/api/notifications", notificationRoutes);
 
+app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => {
-  res.send(
-    "Student Portal Backend Running"
-  );
+ res.send("Gouldings LMS Backend Running");
 });
 
 const PORT =

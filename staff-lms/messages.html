@@ -82,7 +82,7 @@
 
         <div id="header"></div>
 
-     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
 
         <!-- Page -->
 
@@ -119,33 +119,25 @@
                 operations staff from one secure platform.
             </p>
 
-            <div class="hero-actions">
+           
+  <div class="hero-actions">
 
-                <button class="hero-btn primary">
+    <button type="button" class="hero-btn primary" id="newMessageBtn">
+        <i class="fa-solid fa-plus"></i>
+        New Message
+    </button>
 
-                    <i class="fa-solid fa-plus"></i>
+    <button type="button" class="hero-btn secondary" id="announcementBtn">
+        <i class="fa-solid fa-bullhorn"></i>
+        Announcement
+    </button>
 
-                    New Message
+    <button type="button" class="hero-btn secondary" id="createGroupBtn">
+        <i class="fa-solid fa-users"></i>
+        Create Group
+    </button>
 
-                </button>
-
-                <button class="hero-btn secondary">
-
-                    <i class="fa-solid fa-bullhorn"></i>
-
-                    Announcement
-
-                </button>
-
-                <button class="hero-btn secondary">
-
-                    <i class="fa-solid fa-users"></i>
-
-                    Create Group
-
-                </button>
-
-            </div>
+</div>
 
         </div>
 
@@ -777,38 +769,39 @@
 
 <!-- ==================== CHAT INPUT ==================== -->
 
-<div class="chat-input">
+<div class="chat-messages"></div>
 
-    <button>
 
+<form class="chat-input" id="messageForm">
+
+    <button type="button">
         <i class="fa-solid fa-paperclip"></i>
-
     </button>
 
-    <button>
-
+    <button type="button">
         <i class="fa-regular fa-face-smile"></i>
-
     </button>
 
-    <button>
-
+    <button type="button">
         <i class="fa-solid fa-image"></i>
-
     </button>
 
     <input
+        id="messageInput"
         type="text"
-        placeholder="Type your message...">
+        placeholder="Type your message..."
+        autocomplete="off">
 
-    <button class="send-message">
+    <button
+        type="submit"
+        class="send-message"
+        id="sendMessageButton">
 
         <i class="fa-solid fa-paper-plane"></i>
 
     </button>
 
-</div>
-
+</form>
 </section>
 
 <!-- ==========================================================
