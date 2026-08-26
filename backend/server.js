@@ -1,6 +1,9 @@
 const uploadRoutes = require("./routes/uploadRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const goalsRoutes = require("./routes/goalsRoutes");
+const studentsRoutes = require("./routes/studentsRoutes");
+const teamPerformanceRoutes = require("./routes/teamPerformanceRoutes");
 
 require("dotenv").config();
 
@@ -11,14 +14,8 @@ const rateLimit = require("express-rate-limit");
 
 require("./config/db");
 
-const authRoutes =
-require("./routes/authRoutes");
-
-
-const staffAuthRoutes =
-require("./routes/staffAuthRoutes");
-
-
+const authRoutes = require("./routes/authRoutes");
+const staffAuthRoutes = require("./routes/staffAuthRoutes");
 
 const app = express();
 app.use(helmet());
@@ -30,8 +27,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: {
-    message:
-      "Too many requests. Please try again later."
+    message: "Too many requests. Please try again later."
   }
 });
 
@@ -48,35 +44,23 @@ app.use(cors({
   credentials: true
 }));
 
-
 app.use(express.json());
 
-app.use(
-  "/api/auth",
-  authRoutes
-);
-
-app.use(
-"/api/staff",
-staffAuthRoutes
-);
-
-
+app.use("/api/auth", authRoutes);
+app.use("/api/staff", staffAuthRoutes);
 app.use("/api/upload", uploadRoutes);
-
 app.use("/api/notifications", notificationRoutes);
-
 app.use("/api/messages", messageRoutes);
+app.use("/api/goals", goalsRoutes);
+app.use("/api/students", studentsRoutes);
+app.use("/api/team-performance", teamPerformanceRoutes);
 
 app.get("/", (req, res) => {
  res.send("Gouldings LMS Backend Running");
 });
 
-const PORT =
-process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(
-    `Server running on port ${PORT}`
-  );
+  console.log(`Server running on port ${PORT}`);
 });

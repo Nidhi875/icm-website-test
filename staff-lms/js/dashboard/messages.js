@@ -1,154 +1,489 @@
-const API_URL = "http://localhost:5000/api/messages";
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    console.log("MESSAGES JS STARTED");
-
-    const form = document.getElementById("messageForm");
-    const input = document.getElementById("messageInput");
-
-    if (!form) {
-        console.error("MESSAGE FORM NOT FOUND");
-        return;
-    }
-
-    if (!input) {
-        console.error("MESSAGE INPUT NOT FOUND");
-        return;
-    }
-
-    // Load existing database messages
-    loadMessages();
-
-    // Send when form is submitted
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        await sendMessage();
-    });
-
-});
-
-
 /* ==========================================================
-   LOAD MESSAGES
-   ========================================================== */
+   STAFF LMS - MESSAGES PAGE
+   PART 1: INITIALISATION + DATABASE MESSAGES
+========================================================== */
 
-async function loadMessages() {
+(() => {
+    "use strict";
 
-    try {
+    const API_URL = "http://localhost:5000/api/messages";
 
-        const response = await fetch(API_URL);
+    let messages = [];
+    let currentConversation = "staff-general";
+    let currentFilter = "all";
 
-        const data = await response.json();
+    document.addEventListener("DOMContentLoaded", init);
 
-        console.log("GET MESSAGES:", data);
+    async function init() {
 
-        if (!response.ok || !data.success) {
-            throw new Error(
-                data.message || "Unable to load messages"
+        console.log("MESSAGES JS STARTED");
+
+        bindMessageInput();
+        bindConversationSearch();
+        bindConversationTabs();
+
+        bindConversationItems();
+        bindNewChatButton();
+        bindHeroButtons();
+        bindQuickActions();
+        bindChatControls();
+    
+        bindTasks();
+
+        await loadMessages();
+
+        renderUpcomingMeetings();
+
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    }
+
+
+    /* ==========================================================
+       LOAD MESSAGES FROM POSTGRESQL
+    ========================================================== */
+
+    async function loadMessages() {
+
+        try {
+
+            console.log("GET MESSAGES:", API_URL);
+
+            const response =
+                await fetch(API_URL);
+
+            const data =
+                await response.json();
+
+            console.log(
+                "GET MESSAGES RESPONSE:",
+                data
             );
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+            messages =
+                Array.isArray(data.messages)
+                    ? data.messages
+                    : [];
+
+            renderMessages(messages);
+
+            updateCounters();
+
+        } catch (error) {
+
+            console.error(
+                "LOAD MESSAGES ERROR:",
+                error
+            );
+
+            renderMessages([]);
+
         }
 
-        renderMessages(data.messages || []);
+    }
 
-    } catch (error) {
 
-        console.error("LOAD MESSAGES ERROR:", error);
+    /* ==========================================================
+       SEND MESSAGE TO POSTGRESQL
+    ========================================================== */
+
+    async function sendMessage(
+        text,
+        type = "text"
+    ) {
+
+        const value =
+            String(text || "").trim();
+
+        if (!value) {
+            return false;
+        }
+
+        try {
+
+            console.log(
+                "SENDING MESSAGE:",
+                value
+            );
+
+            const response =
+                await fetch(API_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        senderId: null,
+
+                        senderName:
+                            "Claire",
+
+                        senderRole:
+                            "Administrator",
+
+                        recipientId: null,
+
+                        conversationId:
+                            currentConversation,
+
+                        messageText:
+                            value,
+
+                        messageType:
+                            type
+
+                    })
+
+                });
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "POST MESSAGES RESPONSE:",
+                data
+            );
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+
+            const input =
+                document.querySelector(
+                    ".chat-input input"
+                );
+
+            if (input) {
+                input.value = "";
+            }
+
+
+            await loadMessages();
+
+            return true;
+
+
+        } catch (error) {
+
+            console.error(
+                "SEND MESSAGE ERROR:",
+                error
+            );
+
+            showToast(
+                "Unable to send message: " +
+                error.message,
+                "error"
+            );
+
+            return false;
+
+        }
 
     }
 
-}
+
+    /* ==========================================================
+       RENDER DATABASE MESSAGES
+    ========================================================== */
+
+    function renderMessages(list) {
+
+        const container =
+            document.querySelector(
+                ".chat-panel .chat-messages"
+            );
 
 
-/* ==========================================================
-   SEND MESSAGE
-   ========================================================== */
+        if (!container) {
 
-async function sendMessage() {
+            console.error(
+                "CHAT MESSAGES CONTAINER NOT FOUND"
+            );
 
-    const input = document.getElementById("messageInput");
-    const button = document.getElementById("sendMessageButton");
+            return;
 
-    if (!input) {
-        console.error("Message input not found.");
-        return;
-    }
+        }
 
-    const text = input.value.trim();
 
-    if (!text) {
-        return;
-    }
+        container.innerHTML = "";
 
-    if (button) {
-        button.disabled = true;
-    }
 
-    console.log("SENDING MESSAGE:", text);
+        if (!list.length) {
 
-    try {
+            container.innerHTML = `
 
-        const response = await fetch(API_URL, {
+                <div
+                    class="no-messages"
+                    style="
+                        text-align:center;
+                        padding:40px;
+                        color:#888;
+                    "
+                >
 
-            method: "POST",
+                    No messages yet.
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                </div>
 
-            body: JSON.stringify({
+            `;
 
-                senderId: null,
+            return;
 
-                senderName: "Claire",
+        }
 
-                senderRole: "Administrator",
 
-                recipientId: null,
+        /*
+            Database returns newest first.
+            Reverse so oldest appears first.
+        */
 
-                conversationId: "staff-general",
+        [
+            ...list
+        ]
+        .reverse()
+        .forEach(message => {
 
-                messageText: text,
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-                messageType: "text"
 
-            })
+            const own =
+                message.sender_name ===
+                "Claire";
+
+
+            row.className =
+                `message-row ${
+                    own
+                        ? "sent"
+                        : "received"
+                }`;
+
+
+            const avatar =
+                own
+                    ? ""
+                    : `
+
+                        <div
+                            class="
+                                message-avatar
+                                initials-avatar
+                            "
+                        >
+                            ${
+                                escapeHtml(
+                                    getInitials(
+                                        message.sender_name
+                                    )
+                                )
+                            }
+                        </div>
+
+                    `;
+
+
+            row.innerHTML = `
+
+                ${avatar}
+
+
+                <div
+                    class="message-content"
+                >
+
+                    ${
+                        own
+                            ? ""
+                            : `
+
+                                <div
+                                    class="message-name"
+                                >
+
+                                    ${
+                                        escapeHtml(
+                                            message.sender_name ||
+                                            "Unknown"
+                                        )
+                                    }
+
+                                    <span>
+
+                                        ${
+                                            escapeHtml(
+                                                message.sender_role ||
+                                                ""
+                                            )
+                                        }
+
+                                    </span>
+
+                                </div>
+
+                            `
+                    }
+
+
+                    <div
+                        class="
+                            message-bubble
+                            ${
+                                message.message_type ===
+                                "announcement"
+                                    ? "announcement-bubble"
+                                    : ""
+                            }
+                        "
+                    >
+
+                        ${
+                            message.message_type ===
+                            "announcement"
+
+                                ? `
+                                    <strong>
+                                        📢 Announcement
+                                    </strong>
+                                    <br>
+                                  `
+
+                                : ""
+                        }
+
+
+                        ${
+                            escapeHtml(
+                                message.message_text ||
+                                ""
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="message-time"
+                    >
+
+                        ${
+                            formatTime(
+                                message.created_at
+                            )
+                        }
+
+                        ${
+                            own
+                                ? " ✓✓"
+                                : ""
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(row);
 
         });
 
-        const data = await response.json();
 
-        console.log("POST MESSAGES RESPONSE:", data);
+        container.scrollTop =
+            container.scrollHeight;
 
-        if (!response.ok || !data.success) {
+    }
 
-            throw new Error(
-                data.message || "Failed to send message"
-            );
 
-        }
+/* ==========================================================
+   PART 2: CHAT INPUT + CONVERSATION CONTROLS
+========================================================== */
 
-        // Clear input
-        input.value = "";
 
-        // Reload directly from PostgreSQL
-        await loadMessages();
+/* ==========================================================
+   CHAT INPUT
+========================================================== */
 
-    } catch (error) {
+function bindMessageInput() {
 
-        console.error("SEND MESSAGE ERROR:", error);
-
-        alert(
-            "Message could not be sent.\n\n" +
-            error.message
+    const input =
+        document.querySelector(
+            ".chat-input input"
         );
 
-    } finally {
+    const send =
+        document.querySelector(
+            ".chat-input .send-message"
+        );
 
-        if (button) {
-            button.disabled = false;
-        }
+
+    if (send) {
+
+        send.addEventListener(
+            "click",
+            async event => {
+
+                event.preventDefault();
+
+                await sendMessage(
+                    input?.value
+                );
+
+            }
+        );
+
+    }
+
+
+    if (input) {
+
+        input.addEventListener(
+            "keydown",
+            async event => {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    await sendMessage(
+                        input.value
+                    );
+
+                }
+
+            }
+        );
 
     }
 
@@ -156,104 +491,2670 @@ async function sendMessage() {
 
 
 /* ==========================================================
-   RENDER DATABASE MESSAGES
-   ========================================================== */
+   CONVERSATION SEARCH
+========================================================== */
 
-function renderMessages(messages) {
+function bindConversationSearch() {
 
-    const container =
-        document.querySelector(".chat-messages");
+    const input =
+        document.querySelector(
+            ".conversation-search input"
+        );
 
-    if (!container) {
 
-        console.error(
-            "CHAT MESSAGES CONTAINER NOT FOUND"
+    if (!input) {
+        return;
+    }
+
+
+    input.addEventListener(
+        "input",
+        () => {
+
+            const query =
+                input.value
+                    .toLowerCase()
+                    .trim();
+
+
+            document
+                .querySelectorAll(
+                    ".conversation-item"
+                )
+                .forEach(item => {
+
+                    const content =
+                        item.textContent
+                            .toLowerCase();
+
+
+                    item.style.display =
+                        !query ||
+                        content.includes(query)
+                            ? ""
+                            : "none";
+
+                });
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   ALL / UNREAD / PINNED
+========================================================== */
+
+function bindConversationTabs() {
+
+    document
+        .querySelectorAll(
+            ".department-tabs button"
+        )
+        .forEach(tab => {
+
+            tab.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".department-tabs button"
+                        )
+                        .forEach(button => {
+
+                            button.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    tab.classList.add(
+                        "active"
+                    );
+
+
+                    currentFilter =
+                        tab.textContent
+                            .trim()
+                            .toLowerCase();
+
+
+                    filterConversations();
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ==========================================================
+   FILTER CONVERSATIONS
+========================================================== */
+
+function filterConversations() {
+
+    document
+        .querySelectorAll(
+            ".conversation-item"
+        )
+        .forEach(item => {
+
+            let visible = true;
+
+
+            if (
+                currentFilter ===
+                "unread"
+            ) {
+
+                visible =
+                    !!item.querySelector(
+                        ".unread-count"
+                    );
+
+            }
+
+
+            if (
+                currentFilter ===
+                "pinned"
+            ) {
+
+                visible =
+                    item.classList.contains(
+                        "pinned"
+                    );
+
+            }
+
+
+            item.style.display =
+                visible
+                    ? ""
+                    : "none";
+
+        });
+
+}
+
+
+/* ==========================================================
+   CONVERSATION SELECTION
+========================================================== */
+
+function bindConversationItems() {
+
+    document
+        .querySelectorAll(
+            ".conversation-item"
+        )
+        .forEach(item => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".conversation-item"
+                        )
+                        .forEach(
+                            conversation => {
+
+                                conversation
+                                    .classList
+                                    .remove(
+                                        "active"
+                                    );
+
+                            }
+                        );
+
+
+                    item.classList.add(
+                        "active"
+                    );
+
+
+                    const name =
+                        item
+                            .querySelector("h4")
+                            ?.textContent
+                            .trim();
+
+
+                    if (name) {
+
+                        const heading =
+                            document.querySelector(
+                                ".chat-user h3"
+                            );
+
+
+                        if (heading) {
+
+                            heading.textContent =
+                                name;
+
+                        }
+
+                    }
+
+
+                    /*
+                       Remove unread badge after
+                       opening the conversation.
+                    */
+
+                    const unread =
+                        item.querySelector(
+                            ".unread-count"
+                        );
+
+
+                    if (unread) {
+                        unread.remove();
+                    }
+
+
+                    const input =
+                        document.querySelector(
+                            ".chat-input input"
+                        );
+
+
+                    if (input) {
+                        input.focus();
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ==========================================================
+   NEW CHAT BUTTON
+========================================================== */
+
+function bindNewChatButton() {
+
+    const button =
+        document.querySelector(
+            ".new-chat-btn"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            openMessageComposer();
+
+        }
+    );
+
+}
+
+/* ==========================================================
+   PART 3: HERO BUTTONS + QUICK ACTIONS
+========================================================== */
+
+
+/* ==========================================================
+   HERO BUTTONS
+========================================================== */
+
+function bindHeroButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".hero-actions .hero-btn"
+        );
+
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const text =
+                    button.textContent
+                        .trim()
+                        .replace(/\s+/g, " ");
+
+
+                if (
+                    text.includes(
+                        "New Message"
+                    )
+                ) {
+
+                    openMessageComposer();
+
+                    return;
+
+                }
+
+
+                if (
+                    text.includes(
+                        "Announcement"
+                    )
+                ) {
+
+                    openAnnouncementComposer();
+
+                    return;
+
+                }
+
+
+                if (
+                    text.includes(
+                        "Create Group"
+                    )
+                ) {
+
+                    openGroupComposer();
+
+                    return;
+
+                }
+
+            }
+        );
+
+    });
+
+}
+
+
+/* ==========================================================
+   QUICK ACTIONS
+========================================================== */
+
+function bindQuickActions() {
+
+    document
+        .querySelectorAll(
+            ".action-card"
+        )
+        .forEach(card => {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    const text =
+                        card.textContent
+                            .trim()
+                            .replace(/\s+/g, " ");
+
+
+                    if (
+                        text.includes(
+                            "New Message"
+                        )
+                    ) {
+
+                        openMessageComposer();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        text.includes(
+                            "Create Group"
+                        )
+                    ) {
+
+                        openGroupComposer();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        text.includes(
+                            "Announcement"
+                        )
+                    ) {
+
+                        openAnnouncementComposer();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        text.includes(
+                            "Meeting"
+                        )
+                    ) {
+
+                        openMeetingComposer();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        text.includes(
+                            "Upload File"
+                        )
+                    ) {
+
+                        chooseFile();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        text.includes(
+                            "Reports"
+                        )
+                    ) {
+
+                        showReports();
+
+                        return;
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ==========================================================
+   NEW MESSAGE COMPOSER
+========================================================== */
+
+function openMessageComposer() {
+
+    openModal(
+        "New Message",
+
+        `
+
+        <textarea
+            id="newMessageText"
+            placeholder="Type your message..."
+            style="
+                width:100%;
+                min-height:140px;
+                padding:12px;
+                box-sizing:border-box;
+                border:1px solid #ddd;
+                border-radius:10px;
+                resize:vertical;
+                font-family:inherit;
+            "
+        ></textarea>
+
+        `,
+
+        async modal => {
+
+            const textarea =
+                modal.querySelector(
+                    "#newMessageText"
+                );
+
+
+            const text =
+                textarea?.value.trim();
+
+
+            if (!text) {
+
+                showToast(
+                    "Please enter a message.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const success =
+                await sendMessage(
+                    text,
+                    "text"
+                );
+
+
+            if (success) {
+
+                modal.close();
+
+            }
+
+        },
+
+        "Send Message"
+
+    );
+
+}
+
+
+/* ==========================================================
+   ANNOUNCEMENT COMPOSER
+========================================================== */
+
+function openAnnouncementComposer() {
+
+    openModal(
+        "New Announcement",
+
+        `
+
+        <textarea
+            id="announcementText"
+            placeholder="Write your announcement..."
+            style="
+                width:100%;
+                min-height:160px;
+                padding:12px;
+                box-sizing:border-box;
+                border:1px solid #ddd;
+                border-radius:10px;
+                resize:vertical;
+                font-family:inherit;
+            "
+        ></textarea>
+
+        `,
+
+        async modal => {
+
+            const textarea =
+                modal.querySelector(
+                    "#announcementText"
+                );
+
+
+            const text =
+                textarea?.value.trim();
+
+
+            if (!text) {
+
+                showToast(
+                    "Please enter an announcement.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const success =
+                await sendMessage(
+                    text,
+                    "announcement"
+                );
+
+
+            if (success) {
+
+                modal.close();
+
+                showToast(
+                    "Announcement published."
+                );
+
+            }
+
+        },
+
+        "Publish"
+
+    );
+
+}
+
+
+/* ==========================================================
+   CREATE GROUP
+========================================================== */
+
+function openGroupComposer() {
+
+    openModal(
+        "Create Group",
+
+        `
+
+        <input
+            id="groupName"
+            type="text"
+            placeholder="Group name"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                margin-bottom:12px;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+
+        <input
+            id="groupMembers"
+            type="text"
+            placeholder="Members, separated by commas"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+
+        `,
+
+        modal => {
+
+            const name =
+                modal.querySelector(
+                    "#groupName"
+                )?.value.trim();
+
+
+            const members =
+                modal.querySelector(
+                    "#groupMembers"
+                )?.value.trim();
+
+
+            if (!name) {
+
+                showToast(
+                    "Please enter a group name.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const groups =
+                JSON.parse(
+                    localStorage.getItem(
+                        "staff-lms-groups"
+                    ) || "[]"
+                );
+
+
+            groups.unshift({
+
+                id: Date.now(),
+
+                name: name,
+
+                members:
+                    members
+                        ? members
+                            .split(",")
+                            .map(
+                                member =>
+                                    member.trim()
+                            )
+                            .filter(Boolean)
+                        : [],
+
+                createdAt:
+                    new Date().toISOString()
+
+            });
+
+
+            localStorage.setItem(
+                "staff-lms-groups",
+                JSON.stringify(groups)
+            );
+
+
+            modal.close();
+
+
+            showToast(
+                `Group "${name}" created successfully.`
+            );
+
+        },
+
+        "Create Group"
+
+    );
+
+}
+
+/* ==========================================================
+   PART 4: CHAT HEADER + ATTACHMENTS + EMOJI
+========================================================== */
+
+
+/* ==========================================================
+   CHAT HEADER BUTTONS
+========================================================== */
+
+function bindChatControls() {
+
+    const chatButtons =
+        document.querySelectorAll(".chat-icons button");
+
+    console.log(
+        "CHAT HEADER BUTTONS FOUND:",
+        chatButtons.length
+    );
+
+    if (chatButtons.length >= 1) {
+
+        chatButtons[0].addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            console.log("AUDIO BUTTON CLICKED");
+
+            startCall("voice");
+
+        });
+
+    }
+
+
+    if (chatButtons.length >= 2) {
+
+        chatButtons[1].addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            console.log("VIDEO BUTTON CLICKED");
+
+            startCall("video");
+
+        });
+
+    }
+
+
+    if (chatButtons.length >= 3) {
+
+        chatButtons[2].addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            console.log("CALENDAR BUTTON CLICKED");
+
+            openMeetingComposer();
+
+        });
+
+    }
+
+
+    if (chatButtons.length >= 4) {
+
+        chatButtons[3].addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            console.log("MENU BUTTON CLICKED");
+
+            openConversationMenu(chatButtons[3]);
+
+        });
+
+    }
+
+
+    /* CHAT INPUT BUTTONS */
+
+    const chatInput =
+        document.querySelector(".chat-input");
+
+    if (!chatInput) return;
+
+    const buttons =
+        chatInput.querySelectorAll("button");
+
+
+    if (buttons[0]) {
+
+        buttons[0].addEventListener("click", function(event) {
+
+            event.preventDefault();
+
+            chooseFile();
+
+        });
+
+    }
+
+
+    if (buttons[1]) {
+
+        buttons[1].addEventListener("click", function(event) {
+
+            event.preventDefault();
+
+            insertEmoji();
+
+        });
+
+    }
+
+
+    if (buttons[2]) {
+
+        buttons[2].addEventListener("click", function(event) {
+
+            event.preventDefault();
+
+            chooseImage();
+
+        });
+
+    }
+
+}
+
+window.startCall = function(type) {
+
+    const callType =
+        type === "video"
+            ? "Video Call"
+            : "Audio Call";
+
+    const member =
+        document.querySelector(".chat-user h3")?.textContent?.trim()
+        || "Current member";
+
+
+    const today = new Date();
+
+    const defaultDate =
+        today.toISOString().slice(0, 10);
+
+
+    const modalHtml = `
+        <div style="padding:10px">
+
+            <p style="margin-top:0">
+                Schedule a
+                <strong>${callType}</strong>
+                with
+                <strong>${escapeHtml(member)}</strong>
+            </p>
+
+            <label>
+                Date
+            </label>
+
+            <input
+                id="callDate"
+                type="date"
+                value="${defaultDate}"
+                style="
+                    width:100%;
+                    padding:10px;
+                    margin:6px 0 15px;
+                    box-sizing:border-box;
+                "
+            >
+
+            <label>
+                Time
+            </label>
+
+            <input
+                id="callTime"
+                type="time"
+                style="
+                    width:100%;
+                    padding:10px;
+                    margin:6px 0;
+                    box-sizing:border-box;
+                "
+            >
+
+        </div>
+    `;
+
+
+    if (typeof openModal !== "function") {
+
+        alert(
+            `${callType} with ${member}\n\n` +
+            "The call scheduler is not available."
         );
 
         return;
     }
 
-    container.innerHTML = "";
 
-    if (!messages.length) {
+    openModal(
+        `Schedule ${callType}`,
+        modalHtml,
+
+        function(modal) {
+
+           const selectedDate =
+    document.querySelector("#callDate")?.value;
+
+const selectedTime =
+    document.querySelector("#callTime")?.value;
+
+
+            if (!selectedDate || !selectedTime) {
+
+                alert(
+                    "Please select a date and time."
+                );
+
+                return;
+            }
+
+
+            const storageKey =
+                "staff-lms-scheduled-calls";
+
+
+            let calls = [];
+
+            try {
+
+                calls =
+                    JSON.parse(
+                        localStorage.getItem(storageKey)
+                        || "[]"
+                    );
+
+            } catch (error) {
+
+                calls = [];
+
+            }
+
+
+            const call = {
+
+                id: Date.now(),
+
+                type:
+                    type === "video"
+                        ? "video"
+                        : "voice",
+
+                callType:
+
+                    callType,
+
+                member:
+
+                    member,
+
+                conversationId:
+
+                    typeof currentConversation !== "undefined"
+                        ? currentConversation
+                        : "staff-general",
+
+                date:
+
+                    selectedDate,
+
+                time:
+
+                    selectedTime,
+
+                status:
+
+                    "scheduled",
+
+                createdAt:
+
+                    new Date().toISOString()
+
+            };
+
+
+            calls.unshift(call);
+
+
+            localStorage.setItem(
+                storageKey,
+                JSON.stringify(calls)
+            );
+
+
+            if (
+                modal &&
+                typeof modal.close === "function"
+            ) {
+
+                modal.close();
+
+            }
+
+
+            alert(
+                `${callType} scheduled successfully!\n\n` +
+                `Member: ${member}\n` +
+                `Date: ${selectedDate}\n` +
+                `Time: ${selectedTime}`
+            );
+
+
+            console.log(
+                "CALL SCHEDULED:",
+                call
+            );
+
+        },
+
+        "Schedule Call"
+    );
+
+};
+
+    // IMAGE
+    if (buttons[2]) {
+        buttons[2].addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (typeof chooseImage === "function") {
+                chooseImage();
+            }
+        });
+    }
+
+
+
+
+/* ==========================================================
+   FILE ATTACHMENT
+========================================================== */
+
+function chooseFile() {
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+
+    input.type =
+        "file";
+
+
+    input.onchange = () => {
+
+        const file =
+            (input.files && input.files[0]);
+
+
+        if (!file) {
+            return;
+        }
+
+
+        showToast(
+            `Selected file: ${file.name}`
+        );
+
+
+        console.log(
+            "Selected file:",
+            file
+        );
+
+    };
+
+
+    input.click();
+
+}
+
+
+/* ==========================================================
+   IMAGE ATTACHMENT
+========================================================== */
+
+function chooseImage() {
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+
+    input.type =
+        "file";
+
+
+    input.accept =
+        "image/*";
+
+
+    input.onchange = () => {
+
+        const file =
+            input.files?.[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        showToast(
+            `Selected image: ${file.name}`
+        );
+
+
+        console.log(
+            "Selected image:",
+            file
+        );
+
+    };
+
+
+    input.click();
+
+}
+
+
+/* ==========================================================
+   EMOJI
+========================================================== */
+
+function insertEmoji() {
+
+    const input =
+        document.querySelector(
+            ".chat-input input"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const emoji =
+        prompt(
+            "Enter an emoji:\n\n" +
+            "😀 😂 😍 👍 ❤️ 👏 🎉 🔥 " +
+            "✅ 😊 📢 📅"
+        );
+
+
+    if (!emoji) {
+        return;
+    }
+
+
+    input.value +=
+        emoji;
+
+
+
+}
+
+
+/* ==========================================================
+   CONVERSATION THREE-DOT MENU
+========================================================== */
+
+function openConversationMenu(button) {
+
+    /*
+       Remove an existing menu first.
+    */
+
+    const existing =
+        document.getElementById(
+            "conversationActionMenu"
+        );
+
+
+    if (existing) {
+        existing.remove();
+    }
+
+
+    const menu =
+        document.createElement(
+            "div"
+        );
+
+
+    menu.id =
+        "conversationActionMenu";
+
+
+    menu.style.cssText = `
+
+        position:fixed;
+
+        z-index:99999;
+
+        background:#ffffff;
+
+        border:1px solid #ddd;
+
+        border-radius:10px;
+
+        box-shadow:
+            0 10px 30px
+            rgba(0,0,0,.18);
+
+        padding:6px;
+
+        min-width:200px;
+
+    `;
+
+
+    const rect =
+        button.getBoundingClientRect();
+
+
+    menu.style.top =
+        `${rect.bottom + 6}px`;
+
+
+    menu.style.left =
+        `${Math.max(
+            10,
+            rect.left - 160
+        )}px`;
+
+
+    const options = [
+
+        "Mute conversation",
+
+        "Mark as unread",
+
+        "Pin conversation",
+
+        "Refresh messages"
+
+    ];
+
+
+    options.forEach(
+        optionText => {
+
+            const option =
+                document.createElement(
+                    "button"
+                );
+
+
+            option.type =
+                "button";
+
+
+            option.textContent =
+                optionText;
+
+
+            option.style.cssText = `
+
+                display:block;
+
+                width:100%;
+
+                padding:10px 12px;
+
+                border:none;
+
+                background:#fff;
+
+                text-align:left;
+
+                cursor:pointer;
+
+                border-radius:6px;
+
+            `;
+
+
+            option.addEventListener(
+                "mouseenter",
+                () => {
+
+                    option.style.background =
+                        "#f3f5f8";
+
+                }
+            );
+
+
+            option.addEventListener(
+                "mouseleave",
+                () => {
+
+                    option.style.background =
+                        "#fff";
+
+                }
+            );
+
+
+            option.addEventListener(
+                "click",
+                async () => {
+
+                    if (
+                        optionText ===
+                        "Refresh messages"
+                    ) {
+
+                        await loadMessages();
+
+                    }
+
+                    else if (
+                        optionText ===
+                        "Mute conversation"
+                    ) {
+
+                        localStorage.setItem(
+                            "staff-lms-muted",
+                            "true"
+                        );
+
+                        showToast(
+                            "Conversation muted."
+                        );
+
+                    }
+
+                    else if (
+                        optionText ===
+                        "Mark as unread"
+                    ) {
+
+                        showToast(
+                            "Conversation marked as unread."
+                        );
+
+                    }
+
+                    else if (
+                        optionText ===
+                        "Pin conversation"
+                    ) {
+
+                        const active =
+                            document.querySelector(
+                                ".conversation-item.active"
+                            );
+
+
+                        if (active) {
+
+                            active.classList.toggle(
+                                "pinned"
+                            );
+
+                        }
+
+                        showToast(
+                            "Conversation pin updated."
+                        );
+
+                    }
+
+
+                    menu.remove();
+
+                }
+            );
+
+
+            menu.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    document.body.appendChild(
+        menu
+    );
+
+
+    /*
+       Close menu when clicking outside.
+    */
+
+    setTimeout(
+        () => {
+
+            function closeMenu(event) {
+
+                if (
+                    !menu.contains(
+                        event.target
+                    ) &&
+                    event.target !== button
+                ) {
+
+                    menu.remove();
+
+                    document.removeEventListener(
+                        "click",
+                        closeMenu
+                    );
+
+                }
+
+            }
+
+
+            document.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        },
+        0
+    );
+
+}
+
+/* ==========================================================
+   PART 5: RIGHT PANEL + MODALS + HELPERS
+========================================================== */
+
+
+/* ==========================================================
+   RIGHT PANEL
+========================================================== */
+
+function bindTasks() {
+
+    document
+        .querySelectorAll(
+            ".task-list input[type='checkbox']"
+        )
+        .forEach(
+            (checkbox, index) => {
+
+                const key =
+                    `staff-lms-task-${index}`;
+
+
+                const saved =
+                    localStorage.getItem(
+                        key
+                    );
+
+
+                if (saved !== null) {
+
+                    checkbox.checked =
+                        saved === "true";
+
+                }
+
+
+                checkbox.addEventListener(
+                    "change",
+                    () => {
+
+                        localStorage.setItem(
+                            key,
+                            String(
+                                checkbox.checked
+                            )
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+/* ==========================================================
+   TEAM SETTINGS
+========================================================== */
+
+function openTeamSettings() {
+
+    openModal(
+
+        "Operations Team Settings",
+
+        `
+
+        <label
+            style="
+                display:block;
+                margin:14px 0;
+            "
+        >
+
+            <input
+                id="settingNotifications"
+                type="checkbox"
+                checked
+            >
+
+            Notifications enabled
+
+        </label>
+
+
+        <label
+            style="
+                display:block;
+                margin:14px 0;
+            "
+        >
+
+            <input
+                id="settingOnline"
+                type="checkbox"
+                checked
+            >
+
+            Show online status
+
+        </label>
+
+
+        <label
+            style="
+                display:block;
+                margin:14px 0;
+            "
+        >
+
+            <input
+                id="settingMute"
+                type="checkbox"
+            >
+
+            Mute conversation
+
+        </label>
+
+        `,
+
+        modal => {
+
+            const settings = {
+
+                notifications:
+                    modal.querySelector(
+                        "#settingNotifications"
+                    )?.checked || false,
+
+                online:
+                    modal.querySelector(
+                        "#settingOnline"
+                    )?.checked || false,
+
+                mute:
+                    modal.querySelector(
+                        "#settingMute"
+                    )?.checked || false
+
+            };
+
+
+            localStorage.setItem(
+
+                "staff-lms-team-settings",
+
+                JSON.stringify(
+                    settings
+                )
+
+            );
+
+
+            modal.close();
+
+
+            showToast(
+                "Team settings saved."
+            );
+
+        },
+
+        "Save Settings"
+
+    );
+
+}
+
+
+/* ==========================================================
+   UPCOMING MEETINGS - MESSAGES PAGE
+========================================================== */
+
+function renderUpcomingMeetings() {
+
+    const container =
+        document.getElementById(
+            "upcomingMeetingsList"
+        );
+
+    if (!container) {
+        console.warn(
+            "Upcoming meetings container not found."
+        );
+        return;
+    }
+
+    let meetings = [];
+
+    try {
+
+        meetings = JSON.parse(
+            localStorage.getItem(
+                "staff-lms-meetings"
+            ) || "[]"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read meetings:",
+            error
+        );
+
+        meetings = [];
+    }
+
+    if (!Array.isArray(meetings)) {
+        meetings = [];
+    }
+
+
+    /* ------------------------------------------
+       REMOVE COMPLETED MEETINGS
+    ------------------------------------------ */
+
+    const now = new Date();
+
+    meetings = meetings.filter(meeting => {
+
+        if (!meeting.date || !meeting.time) {
+            return false;
+        }
+
+        const meetingDateTime =
+            new Date(
+                `${meeting.date}T${meeting.time}`
+            );
+
+        return meetingDateTime >= now;
+    });
+
+
+    /* ------------------------------------------
+       SORT EARLIEST FIRST
+    ------------------------------------------ */
+
+    meetings.sort((a, b) => {
+
+        const dateA =
+            new Date(
+                `${a.date}T${a.time}`
+            );
+
+        const dateB =
+            new Date(
+                `${b.date}T${b.time}`
+            );
+
+        return dateA - dateB;
+    });
+
+
+    /* ------------------------------------------
+       NO MEETINGS
+    ------------------------------------------ */
+
+    if (!meetings.length) {
 
         container.innerHTML = `
-            <div class="no-messages">
-                No messages yet.
+            <div class="meeting-box">
+
+                <h4>No upcoming meetings</h4>
+
+                <span>
+                    Schedule a meeting to see it here.
+                </span>
+
             </div>
         `;
 
         return;
     }
 
-    // API gives newest first.
-    // Show oldest first.
-    const orderedMessages =
-        [...messages].reverse();
 
-    orderedMessages.forEach(message => {
+    /* ------------------------------------------
+       DISPLAY MEETINGS
+    ------------------------------------------ */
 
-        const row =
-            document.createElement("div");
+    container.innerHTML = meetings
+        .map(meeting => {
 
-        row.className =
-            "message-row received";
+            const meetingDate =
+                new Date(
+                    `${meeting.date}T${meeting.time}`
+                );
 
-        row.innerHTML = `
+            const today =
+                new Date();
 
-            <div class="message-avatar initials-avatar">
-                ${getInitials(message.sender_name)}
-            </div>
+            const tomorrow =
+                new Date();
 
-            <div class="message-content">
+            tomorrow.setDate(
+                today.getDate() + 1
+            );
 
-                <div class="message-name">
 
-                    ${escapeHtml(
-                        message.sender_name || "Unknown"
-                    )}
+            let dateLabel;
+
+            if (
+                meetingDate.toDateString() ===
+                today.toDateString()
+            ) {
+
+                dateLabel = "Today";
+
+            } else if (
+                meetingDate.toDateString() ===
+                tomorrow.toDateString()
+            ) {
+
+                dateLabel = "Tomorrow";
+
+            } else {
+
+                dateLabel =
+                    meetingDate.toLocaleDateString(
+                        "en-GB",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+            }
+
+
+            const formattedTime =
+                meetingDate.toLocaleTimeString(
+                    [],
+                    {
+                        hour: "numeric",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            return `
+                <div
+                    class="meeting-box"
+                    data-meeting-id="${meeting.id}"
+                >
+
+                    <h4>
+                        ${escapeHtml(
+                            meeting.title ||
+                            "Untitled Meeting"
+                        )}
+                    </h4>
 
                     <span>
-                        ${escapeHtml(
-                            message.sender_role || ""
-                        )}
+                        ${dateLabel}
+                        •
+                        ${formattedTime}
                     </span>
 
-                </div>
-
-                <div class="message-bubble">
-
-                    ${escapeHtml(
-                        message.message_text || ""
-                    )}
-
-                </div>
-
-                <div class="message-time">
-
-                    ${formatMessageTime(
-                        message.created_at
-                    )}
+                    <button
+                        type="button"
+                        onclick="
+                            window.location.href =
+                            'meeting-room.html?id=${meeting.id}'
+                        "
+                    >
+                        Join
+                    </button>
 
                 </div>
+            `;
 
-            </div>
+        })
+        .join("");
 
-        `;
 
-        container.appendChild(row);
+    console.log(
+        "UPCOMING MEETINGS RENDERED:",
+        meetings
+    );
+}
 
-    });
 
-    container.scrollTop =
-        container.scrollHeight;
+/* ==========================================================
+   MEETING
+========================================================== */
+
+function openMeetingComposer() {
+
+    openModal(
+        "Schedule Meeting",
+        `
+        <input
+            id="meetingTitle"
+            type="text"
+            placeholder="Meeting title"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                margin-bottom:12px;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+
+        <input
+            id="meetingDate"
+            type="date"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                margin-bottom:12px;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+
+        <input
+            id="meetingTime"
+            type="time"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+        `,
+        modal => {
+
+           const title =
+    document.querySelector("#meetingTitle")?.value.trim();
+
+const date =
+    document.querySelector("#meetingDate")?.value;
+
+const time =
+    document.querySelector("#meetingTime")?.value;
+
+            if (
+                !title ||
+                !date ||
+                !time
+            ) {
+                showToast(
+                    "Complete all meeting fields.",
+                    "error"
+                );
+                return;
+            }
+
+            const meetings =
+                JSON.parse(
+                    localStorage.getItem(
+                        "staff-lms-meetings"
+                    ) || "[]"
+                );
+
+            const meeting = {
+
+                id:
+                    Date.now(),
+
+                title:
+                    title,
+
+                tutor:
+                    "Claire",
+
+                date:
+                    date,
+
+                time:
+                    time,
+
+                duration:
+                    60,
+
+                provider:
+                    "meet",
+
+                platform:
+                    "Google Meet",
+
+                badge:
+                    "meet",
+
+                status:
+                    "UPCOMING",
+
+                attendees:
+                    0,
+
+                meetingId:
+                    "",
+
+                meetingPassword:
+                    "",
+
+                join:
+                    "#",
+
+                description:
+                    "",
+
+                createdAt:
+                    new Date()
+                        .toISOString()
+            };
+
+            meetings.unshift(meeting);
+
+            localStorage.setItem(
+                "staff-lms-meetings",
+                JSON.stringify(meetings)
+            );
+
+            document.querySelector(".modal-overlay")?.remove();
+document.querySelector("dialog[open]")?.close();
+
+            showToast(
+                `Meeting "${title}" scheduled.`
+            );
+
+            renderUpcomingMeetings();
+
+            // Refresh the page so the meeting
+            // appears immediately in the dashboard.
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+
+        },
+        "Schedule"
+    );
+}
+/* ==========================================================
+   REPORTS
+========================================================== */
+
+function showReports() {
+
+    const total =
+        messages.length;
+
+
+    const announcements =
+        messages.filter(
+            message =>
+                message.message_type ===
+                "announcement"
+        ).length;
+
+
+    const sent =
+        messages.filter(
+            message =>
+                message.sender_name ===
+                "Claire"
+        ).length;
+
+
+    openModal(
+
+        "Communication Reports",
+
+        `
+
+        <div
+            style="
+                line-height:2;
+                font-size:16px;
+            "
+        >
+
+            <strong>
+                Total messages:
+            </strong>
+
+            ${total}
+
+            <br>
+
+
+            <strong>
+                Announcements:
+            </strong>
+
+            ${announcements}
+
+            <br>
+
+
+            <strong>
+                Messages sent by you:
+            </strong>
+
+            ${sent}
+
+            <br>
+
+
+            <strong>
+                Current conversation:
+            </strong>
+
+            ${escapeHtml(
+                currentConversation
+            )}
+
+        </div>
+
+        `,
+
+        modal => {
+
+            modal.close();
+
+        },
+
+        "Close"
+
+    );
+
+}
+
+
+/* ==========================================================
+   ANNOUNCEMENTS
+========================================================== */
+
+function showAnnouncements() {
+
+    const announcements =
+        messages.filter(
+            message =>
+                message.message_type ===
+                "announcement"
+        );
+
+
+    let html = "";
+
+
+    if (!announcements.length) {
+
+        html =
+            `<p>
+                No database announcements yet.
+            </p>`;
+
+    }
+
+    else {
+
+        announcements.forEach(
+            announcement => {
+
+                html += `
+
+                    <div
+                        style="
+                            padding:14px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            margin-bottom:12px;
+                        "
+                    >
+
+                        <strong>
+
+                            ${
+                                escapeHtml(
+                                    announcement.sender_name ||
+                                    "Unknown"
+                                )
+                            }
+
+                        </strong>
+
+
+                        <div
+                            style="
+                                margin-top:7px;
+                            "
+                        >
+
+                            ${
+                                escapeHtml(
+                                    announcement.message_text ||
+                                    ""
+                                )
+                            }
+
+                        </div>
+
+
+                        <small>
+
+                            ${
+                                formatTime(
+                                    announcement.created_at
+                                )
+                            }
+
+                        </small>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    openModal(
+
+        "Recent Announcements",
+
+        html,
+
+        modal => {
+
+            modal.close();
+
+        },
+
+        "Close"
+
+    );
+
+}
+
+
+/* ==========================================================
+   FILE SIZE
+========================================================== */
+
+function formatFileSize(bytes) {
+
+    if (!bytes) {
+        return "0 B";
+    }
+
+
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+
+        (
+            bytes /
+            Math.pow(
+                1024,
+                index
+            )
+        ).toFixed(1)
+
+        +
+
+        " "
+
+        +
+
+        units[index]
+
+    );
+
+}
+
+
+/* ==========================================================
+   MODAL SYSTEM
+========================================================== */
+
+function openModal(
+    title,
+    bodyHTML,
+    onConfirm,
+    confirmText
+) {
+
+    const existing =
+        document.getElementById(
+            "staffLmsModal"
+        );
+
+
+    if (existing) {
+        existing.remove();
+    }
+
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.id =
+        "staffLmsModal";
+
+
+    overlay.style.cssText = `
+
+        position:fixed;
+
+        inset:0;
+
+        z-index:100000;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        padding:20px;
+
+        background:
+            rgba(0,0,0,.45);
+
+    `;
+
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.style.cssText = `
+
+        width:min(
+            560px,
+            100%
+        );
+
+        max-height:90vh;
+
+        overflow:auto;
+
+        background:#fff;
+
+        border-radius:16px;
+
+        padding:24px;
+
+        box-sizing:border-box;
+
+        box-shadow:
+            0 20px 60px
+            rgba(0,0,0,.3);
+
+    `;
+
+
+    box.innerHTML = `
+
+        <h2
+            style="
+                margin-top:0;
+            "
+        >
+
+            ${escapeHtml(
+                title
+            )}
+
+        </h2>
+
+
+        <div
+            class="staff-lms-modal-body"
+        >
+
+            ${bodyHTML}
+
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                justify-content:flex-end;
+                gap:10px;
+                margin-top:20px;
+            "
+        >
+
+            <button
+                type="button"
+                class="modal-cancel"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-confirm"
+            >
+
+                ${escapeHtml(
+                    confirmText
+                )}
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    overlay.appendChild(
+        box
+    );
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    const modal = {
+
+        element:
+            overlay,
+
+        query:
+            selector =>
+                box.querySelector(
+                    selector
+                ),
+
+        close:
+            () =>
+                overlay.remove()
+
+    };
+
+
+    box
+        .querySelector(
+            ".modal-cancel"
+        )
+        .addEventListener(
+            "click",
+            modal.close
+        );
+
+
+    box
+        .querySelector(
+            ".modal-confirm"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                await onConfirm(
+                    modal
+                );
+
+            }
+        );
+
+
+    overlay.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                overlay
+            ) {
+
+                modal.close();
+
+            }
+
+        }
+    );
+
+
+    setTimeout(
+        () => {
+
+            const firstInput =
+                box.querySelector(
+                    "input, textarea"
+                );
+
+
+            if (firstInput) {
+
+                firstInput.focus();
+
+            }
+
+        },
+        50
+    );
+
+
+    return modal;
+
+}
+
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+function showToast(
+    message,
+    type = "success"
+) {
+
+    const existing =
+        document.getElementById(
+            "staffLmsToast"
+        );
+
+
+    if (existing) {
+        existing.remove();
+    }
+
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+
+    toast.id =
+        "staffLmsToast";
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.cssText = `
+
+        position:fixed;
+
+        right:20px;
+
+        bottom:20px;
+
+        z-index:110000;
+
+        max-width:420px;
+
+        padding:13px 18px;
+
+        border-radius:10px;
+
+        color:#fff;
+
+        background:
+            ${
+                type === "error"
+                    ? "#c0392b"
+                    : "#173f73"
+            };
+
+        box-shadow:
+            0 8px 25px
+            rgba(0,0,0,.2);
+
+        font-size:14px;
+
+    `;
+
+
+    document.body.appendChild(
+        toast
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.remove();
+
+        },
+        3000
+    );
+
+}
+
+
+/* ==========================================================
+   COUNTERS
+========================================================== */
+
+function updateCounters() {
+
+    const unread =
+        messages.filter(
+            message =>
+                !message.is_read
+        ).length;
+
+
+    const announcements =
+        messages.filter(
+            message =>
+                message.message_type ===
+                "announcement"
+        ).length;
+
+
+    const cards =
+        document.querySelectorAll(
+            ".messages-kpis .kpi-card"
+        );
+
+
+    /*
+       Unread messages
+    */
+
+    if (cards[0]) {
+
+        const number =
+            cards[0].querySelector(
+                "h2"
+            );
+
+
+        if (number) {
+
+            number.textContent =
+                unread;
+
+        }
+
+    }
+
+
+    /*
+       Announcements
+    */
+
+    if (cards[2]) {
+
+        const number =
+            cards[2].querySelector(
+                "h2"
+            );
+
+
+        if (number) {
+
+            number.textContent =
+                announcements;
+
+        }
+
+    }
 
 }
 
 
 /* ==========================================================
    HELPERS
-   ========================================================== */
+========================================================== */
 
 function getInitials(name) {
 
@@ -261,165 +3162,105 @@ function getInitials(name) {
         return "?";
     }
 
-    return name
+
+    return String(name)
+
         .trim()
-        .split(/\s+/)
-        .map(word => word.charAt(0))
+
+        .split(
+            /\s+/
+        )
+
+        .map(
+            word =>
+                word.charAt(0)
+        )
+
         .join("")
-        .substring(0, 2)
+
+        .substring(
+            0,
+            2
+        )
+
         .toUpperCase();
 
 }
 
 
-function formatMessageTime(dateString) {
+function formatTime(
+    dateString
+) {
 
     if (!dateString) {
         return "";
     }
 
+
     const date =
-        new Date(dateString);
-
-    if (isNaN(date.getTime())) {
-        return "";
-    }
-
-    return date.toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit"
-    });
-
-}
-
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* ==========================================================
-   MESSAGES PAGE ACTION BUTTONS
-========================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // NEW MESSAGE
-    const newMessageBtn = document.getElementById("newMessageBtn");
-
-    if (newMessageBtn) {
-        newMessageBtn.addEventListener("click", () => {
-
-            const input = document.getElementById("messageInput");
-
-            if (input) {
-                input.focus();
-
-                // Scroll the chat area into view
-                input.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-            }
-        });
-    }
-
-
-    // ANNOUNCEMENT
-    const announcementBtn = document.getElementById("announcementBtn");
-
-    if (announcementBtn) {
-        announcementBtn.addEventListener("click", () => {
-
-            const announcement = prompt(
-                "Enter your announcement:"
-            );
-
-            if (!announcement || !announcement.trim()) {
-                return;
-            }
-
-            sendAnnouncement(announcement.trim());
-        });
-    }
-
-
-    // CREATE GROUP
-    const createGroupBtn = document.getElementById("createGroupBtn");
-
-    if (createGroupBtn) {
-        createGroupBtn.addEventListener("click", () => {
-
-            const groupName = prompt(
-                "Enter the name of the new group:"
-            );
-
-            if (!groupName || !groupName.trim()) {
-                return;
-            }
-
-            alert(
-                `Group "${groupName.trim()}" is ready to be created.`
-            );
-        });
-    }
-
-});
-
-
-/* ==========================================================
-   SEND ANNOUNCEMENT
-========================================================== */
-
-async function sendAnnouncement(text) {
-
-    try {
-
-        const response = await fetch(API_URL, {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                senderId: null,
-                senderName: "Claire",
-                senderRole: "Administrator",
-                recipientId: null,
-                conversationId: "staff-general",
-                messageText: text,
-                messageType: "announcement"
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-            throw new Error(
-                data.message || "Failed to send announcement"
-            );
-        }
-
-        await loadMessages();
-
-        alert("Announcement sent successfully.");
-
-    } catch (error) {
-
-        console.error(
-            "SEND ANNOUNCEMENT ERROR:",
-            error
+        new Date(
+            dateString
         );
 
-        alert("Unable to send announcement.");
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
     }
+
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour:
+                "numeric",
+
+            minute:
+                "2-digit"
+        }
+    );
+
 }
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+})();

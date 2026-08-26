@@ -12,7 +12,7 @@ CALENDAR WIDGET
 
     box-shadow:0 18px 45px rgba(0,0,0,.08);
 
-    display:grid;
+    display:flex;
 
     flex-direction:column;
 
@@ -34,6 +34,15 @@ CALENDAR WIDGET
     gap:16px;
 
 }
+
+
+#calendarWidget .calendar-header{
+    display:grid;
+  grid-template-columns:42px minmax(0,1fr) 42px;
+    align-items:center;
+    gap:16px;
+}
+
 
 .calendar-header h3{
 
@@ -150,6 +159,10 @@ CALENDAR CONTROLS
 
 }
 
+.calendar-controls{
+ min-width:0;
+}
+
 .calendar-controls select{
 
     padding:10px 16px;
@@ -169,6 +182,14 @@ CALENDAR CONTROLS
     outline:none;
 
 }
+
+ .calendar-controls select{
+    min-width:0;
+     flex:1 1 0;
+     padding:8px 10px;
+     font-size:13px;
+
+    }
 
 .calendar-controls select:focus{
 
@@ -262,7 +283,15 @@ CALENDAR FOOTER
 .operations-calendar-widget .calendar-header { grid-template-columns:44px minmax(0,1fr) 44px; }
 .operations-calendar-widget .calendar-widget-grid { grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; }
 .operations-calendar-widget .calendar-widget-day,
-.operations-calendar-widget .day { aspect-ratio:auto; min-height:76px; padding:12px; align-items:flex-start; justify-content:flex-start; border:1px solid #edf1f6; background:#fff; }
+.operations-calendar-widget .day {
+  aspect-ratio:1;
+  min-height:0;
+  padding:0;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  background:transparent;
+}
 .operations-calendar-widget .calendar-widget-day.inactive,
 .operations-calendar-widget .day.inactive { background:#f8fafc; }
 .operations-calendar-widget .calendar-widget-days { padding:0 4px; }
@@ -283,7 +312,7 @@ CALENDAR FOOTER
   .operations-calendar-widget .calendar-widget-days { font-size:11px; }
   .operations-calendar-widget .calendar-widget-grid { gap:4px; }
   .operations-calendar-widget .calendar-widget-day,
-  .operations-calendar-widget .day { min-height:48px; padding:7px; font-size:13px; }
+  .operations-calendar-widget .day { min-height:0; padding:0; font-size:13px; }
   .ops-sections { grid-template-columns:1fr; }
   .ops-center { grid-column:auto; }
   .page-header .primary-btn { width:auto; }

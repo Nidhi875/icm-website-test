@@ -877,4 +877,37 @@ MEETING WIDGET
     .btn{
         font-size:14px;
     }
+}/* Keep the compact dashboard calendar inside its column. */
+.dashboard-right #calendarWidget,
+.dashboard-right #calendarWidget .calendar-widget {
+    width:100%;
+    min-width:0;
+    max-width:100%;
 }
+
+.dashboard-right #calendarWidget .calendar-header {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+}
+
+.dashboard-right #calendarWidget .calendar-controls {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    flex:1 1 auto;
+    min-width:0;
+    gap:8px;
+}
+
+.dashboard-right #calendarWidget .calendar-controls select {
+    width:100%;
+    min-width:0;
+    padding:8px 6px;
+    font-size:12px;
+}
+
+.dashboard-right #calendarWidget .calendar-widget-days,
+.dashboard-right #calendarWidget .calendar-widget-grid {
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    min-width:0;

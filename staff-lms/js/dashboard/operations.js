@@ -1014,7 +1014,7 @@ documentList?.addEventListener("click",event=>{
 
 const metricState=load("ops_metrics",{});
 function applyMetricState(){ document.querySelectorAll(".stat-box[data-metric]").forEach(card=>{ const id=card.dataset.metric; const state=metricState[id]; if(state?.deleted){card.hidden=true; return;} if(state?.value) card.querySelector("span").textContent=state.value; }); }
-document.querySelector(".stats-grid")?.addEventListener("click",event=>{ const card=event.target.closest(".stat-box"); if(!card) return; const id=card.dataset.metric; if(event.target.closest("[data-edit-metric]")){ const value=prompt("Metric value",card.querySelector("span").textContent); if(value?.trim()){metricState[id]={value:value.trim()}; save("ops_metrics",metricState); applyMetricState();} } if(event.target.closest("[data-delete-metric]") && confirm("Remove this metric?")){metricState[id]={deleted:true}; save("ops_metrics",metricState); applyMetricState();} });
+
 applyMetricState();
 /*==========================================================
 PDF UPLOAD
@@ -1178,27 +1178,26 @@ PART 4 WILL COMPLETE THE ENTIRE FILE
 STATISTICS
 ==========================================================*/
 
-function updateStatistics(){
+async function updateStatistics(){
 
-    const totalApplications=document.querySelector(".stat-box:nth-child(1) span");
-    const totalAdmissions=document.querySelector(".stat-box:nth-child(2) span");
-    const totalRevenue=document.querySelector(".stat-box:nth-child(3) span");
-    const responseRate=document.querySelector(".stat-box:nth-child(4) span");
+    try{
+        const res = await fetch("http://localhost:5000/api/team-performance");
+        const data = await res.json();
 
-    if(totalApplications){
-        totalApplications.textContent=120+events.length;
-    }
+        if(!data.success) throw new Error(data.message || "Failed to load");
 
-    if(totalAdmissions){
-        totalAdmissions.textContent=Math.floor(events.length*0.6)+48;
-    }
+        const totalApplications=document.querySelector('.stat-box[data-metric="applications"] span');
+        const totalAdmissions=document.querySelector('.stat-box[data-metric="admissions"] span');
+        const totalRevenue=document.querySelector('.stat-box[data-metric="revenue"] span');
+        const responseRate=document.querySelector('.stat-box[data-metric="response"] span');
 
-    if(totalRevenue){
-        totalRevenue.textContent="\u00A3"+((events.length*350)+42000).toLocaleString();
-    }
+        if(totalApplications) totalApplications.textContent=data.applications;
+        if(totalAdmissions) totalAdmissions.textContent=data.admissions;
+        if(totalRevenue) totalRevenue.textContent="\u00A3"+Number(data.revenue).toLocaleString();
+        if(responseRate) responseRate.textContent=data.responseRate+"%";
 
-    if(responseRate){
-        responseRate.textContent="96%";
+    }catch(error){
+        console.error("Failed to load team performance:", error);
     }
 
 }

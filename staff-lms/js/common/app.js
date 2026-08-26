@@ -90,6 +90,28 @@ async function loadLayout() {
     }
 
 
+        /* ==========================
+       WELCOME BANNER ACTIONS
+    ========================== */
+    const viewCalendarBtn   = document.getElementById('viewCalendarBtn');
+    const scheduleMeetingBtn = document.getElementById('scheduleMeetingBtn');
+
+    if (viewCalendarBtn) {
+        viewCalendarBtn.addEventListener('click', () => {
+            const calendarSection = document.getElementById('calendarWidget');
+            if (calendarSection) {
+                calendarSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+
+    if (scheduleMeetingBtn) {
+        scheduleMeetingBtn.addEventListener('click', () => {
+            window.location.href = 'meetings.html';
+        });
+    }
+
+
     if (document.querySelector("#meetingsWidget")) {
         loadComponent(
             "components/meeting-widget.html",

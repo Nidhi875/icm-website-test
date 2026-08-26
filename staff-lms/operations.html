@@ -121,20 +121,38 @@
           <div id="noticeBoard" class="notice-list"></div>
         </div>
 
-        <div class="glass-card">
-          <div class="card-title"><h3>Sales Targets & Goals</h3></div>
-          <div class="goal-card"><div class="goal-header"><span>September Admissions</span><strong>68%</strong></div><div class="progress"><div class="progress-bar" style="width:68%;"></div></div></div>
-          <div class="goal-card"><div class="goal-header"><span>Student Applications</span><strong>42%</strong></div><div class="progress"><div class="progress-bar" style="width:42%;"></div></div></div>
-          <div class="goal-card"><div class="goal-header"><span>Enrolment Completion</span><strong>81%</strong></div><div class="progress"><div class="progress-bar" style="width:81%;"></div></div></div>
-        </div>
+      
+<!-- REPLACES the existing hardcoded block in operations.html:
+
+<div class="glass-card">
+  <div class="card-title"><h3>Sales Targets & Goals</h3></div>
+  <div class="goal-card">...68%...</div>
+  <div class="goal-card">...42%...</div>
+  <div class="goal-card">...81%...</div>
+</div>
+
+with this: -->
+
+<div class="glass-card">
+  <div class="card-title">
+    <h3>Sales Targets & Goals</h3>
+    <button type="button" id="goalsEditBtn" class="link-btn" hidden>Edit</button>
+  </div>
+  <div id="goalsContainer">
+    <p class="goals-loading">Loading goals…</p>
+  </div>
+</div>
+
+
+
 
         <div class="glass-card">
           <div class="card-title"><h3>Team Performance</h3></div>
           <div class="stats-grid">
-            <div class="stat-box" data-metric="applications"><span>124</span><small>Applications</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
-            <div class="stat-box" data-metric="admissions"><span>48</span><small>Admissions</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
-            <div class="stat-box" data-metric="revenue"><span>&pound;42K</span><small>Revenue</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
-            <div class="stat-box" data-metric="response"><span>96%</span><small>Response Rate</small><div class="metric-actions"><button type="button" data-edit-metric>Edit</button><button type="button" data-delete-metric>Delete</button></div></div>
+          <div class="stat-box" data-metric="applications"><span>124</span><small>Applications</small></div>
+          <div class="stat-box" data-metric="admissions"><span>48</span><small>Admissions</small></div>
+          <div class="stat-box" data-metric="revenue"><span>&pound;42K</span><small>Revenue</small></div>
+          s<div class="stat-box" data-metric="response"><span>96%</span><small>Response Rate</small></div>
           </div>
         </div>
       </main>
@@ -231,6 +249,8 @@ JAVASCRIPT
 <script src="js/components/calendar-widget.js"></script>
 <script src="js/common/app.js"></script>
 <script src="js/dashboard/operations.js"></script>
+
+<script src="js/dashboard/goals.js"></script>
 
 <script src="js/common/notifications.js"></script>
 

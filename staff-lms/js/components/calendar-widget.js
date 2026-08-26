@@ -34,7 +34,14 @@ function initCalendarWidget() {
     function getMeetings(date) {
         try {
             const selectedUser = calendarUserFilter?.value || "all";
-            return JSON.parse(localStorage.getItem("ops_events") || "[]").filter(event => event.date === date && (selectedUser === "all" || event.staff === selectedUser));
+            const events = JSON.parse(localStorage.getItem("ops_events") || "[]");
+            const cleanedEvents = events.filter(event => event.title?.trim().toLowerCase() !== "test");
+
+            if (cleanedEvents.length !== events.length) {
+                localStorage.setItem("ops_events", JSON.stringify(cleanedEvents));
+            }
+
+            return cleanedEvents.filter(event => event.date === date && (selectedUser === "all" || event.staff === selectedUser));
         } catch {
             return [];
         }
