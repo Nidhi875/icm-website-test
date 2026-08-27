@@ -147,6 +147,9 @@ async function loadLayout() {
     /* Load Logged-in Staff */
     loadStaffInfo();
 
+    /* Load Staff Presence */
+    loadStaffPresence();
+
 
     initLogout();
 
@@ -185,10 +188,10 @@ function setActiveLink() {
 INITIALIZE
 ==========================================*/
 
-
 document.addEventListener("DOMContentLoaded", () => {
 
     loadLayout();
+
 
     // Restore page scrolling
     document.body.style.overflow = "auto";
@@ -459,4 +462,49 @@ START PRESENCE HEARTBEAT
 updateStaffPresence();
 
 // Update every 60 seconds
-setInterval(updateStaffPresence, 60000);
+setInterval(updateStaffPresence, 30000);
+
+/*==========================================
+STAFF PRESENCE
+==========================================*/
+
+async function loadStaffPresence() {
+
+    const onlineElement = document.getElementById("teamOnlineCount");
+    const memberElement = document.getElementById("teamMemberCount");
+
+    if (!onlineElement) return;
+
+    try {
+
+        const response = await fetch(
+            "https://icm-website-test-production.up.railway.app/api/staff/presence"
+        );
+
+        if (!response.ok) {
+            throw new Error(`Presence request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("STAFF PRESENCE RESPONSE:", data);
+
+        if (data.success) {
+
+            onlineElement.textContent =
+                `${data.online} Currently Online`;
+
+        } else {
+
+            onlineElement.textContent = "Unable to check";
+
+        }
+
+    } catch (error) {
+
+        console.error("Failed to load staff presence:", error);
+
+        onlineElement.textContent = "Unable to check";
+
+    }
+}

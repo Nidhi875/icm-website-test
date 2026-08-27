@@ -32,6 +32,8 @@
 
         await loadMessages();
 
+        loadSharedFiles();
+
         renderUpcomingMeetings();
 
         if (window.lucide) {
@@ -91,6 +93,163 @@
         }
 
     }
+
+    /* ==========================================================
+   LOAD SHARED FILES
+========================================================== */
+
+async function loadSharedFiles() {
+
+    const container =
+        document.getElementById("sharedFilesList");
+
+    if (!container) {
+        console.warn("Shared files container not found.");
+        return;
+    }
+
+    try {
+
+        console.log("GET SHARED FILES");
+
+        const response = await fetch(
+            "https://icm-website-test-production.up.railway.app/api/upload"
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "GET SHARED FILES RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message ||
+                `HTTP ${response.status}`
+            );
+        }
+
+        const files =
+            Array.isArray(data.files)
+                ? data.files
+                : [];
+
+        if (!files.length) {
+
+            container.innerHTML = `
+                <div class="shared-files-empty">
+                    No shared files yet.
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = files
+            .slice(0, 3)
+            .map(file => {
+
+                const fileName =
+                    file.name ||
+                    "Unnamed file";
+
+                const extension =
+                    fileName
+                        .split(".")
+                        .pop()
+                        .toLowerCase();
+
+                let icon =
+                    "fa-file";
+
+                if (extension === "pdf") {
+
+                    icon =
+                        "fa-file-pdf";
+
+                } else if (
+                    ["xlsx", "xls", "csv"]
+                        .includes(extension)
+                ) {
+
+                    icon =
+                        "fa-file-excel";
+
+                } else if (
+                    ["doc", "docx"]
+                        .includes(extension)
+                ) {
+
+                    icon =
+                        "fa-file-word";
+
+                } else if (
+                    ["ppt", "pptx"]
+                        .includes(extension)
+                ) {
+
+                    icon =
+                        "fa-file-powerpoint";
+
+                } else if (
+                    ["jpg", "jpeg", "png", "gif", "webp"]
+                        .includes(extension)
+                ) {
+
+                    icon =
+                        "fa-file-image";
+
+                }
+
+                return `
+
+                    <a
+                        href="${file.url}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="shared-file"
+                    >
+
+                        <i
+                            class="fa-solid ${icon}"
+                        ></i>
+
+                        <div>
+
+                            <h5>
+                                ${escapeHtml(fileName)}
+                            </h5>
+
+                            <small>
+                                ${formatFileSize(file.size)}
+                            </small>
+
+                        </div>
+
+                    </a>
+
+                `;
+
+            })
+            .join("");
+
+    } catch (error) {
+
+        console.error(
+            "LOAD SHARED FILES ERROR:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="shared-files-empty">
+                Unable to load files.
+            </div>
+        `;
+
+    }
+
+}
 
 
     /* ==========================================================
