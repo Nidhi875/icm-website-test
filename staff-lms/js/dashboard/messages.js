@@ -30,9 +30,13 @@
     
         bindTasks();
 
+        ensureSharedFileUploadUI();
+
         await loadMessages();
 
-        loadSharedFiles();
+        await loadSharedFiles();
+
+        await updateCommunicationAnalytics();
 
         renderUpcomingMeetings();
 
@@ -94,6 +98,508 @@
 
     }
 
+
+    /* ==========================================================
+   COMMUNICATION ANALYTICS
+========================================================== */
+
+/* ==========================================================
+   COMMUNICATION ANALYTICS
+========================================================== */
+
+async function updateCommunicationAnalytics() {
+
+    try {
+
+        const response = await fetch(
+            "https://icm-website-test-production.up.railway.app/api/messages/analytics"
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to load analytics"
+            );
+
+        }
+
+
+        const analytics =
+            data.analytics;
+
+
+        /* ======================================================
+           MESSAGES TODAY
+        ====================================================== */
+
+        const messagesToday =
+            document.getElementById(
+                "analyticsMessagesToday"
+            );
+
+        if (messagesToday) {
+
+            messagesToday.textContent =
+                analytics.messagesToday;
+
+        }
+
+
+        /* ======================================================
+           MESSAGE CHANGE
+        ====================================================== */
+
+        const messagesChange =
+            document.getElementById(
+                "analyticsMessagesChange"
+            );
+
+        if (messagesChange) {
+
+            const change =
+                analytics.messageChange;
+
+            if (change > 0) {
+
+                messagesChange.textContent =
+                    `▲ ${change}% from yesterday`;
+
+            } else if (change < 0) {
+
+                messagesChange.textContent =
+                    `▼ ${Math.abs(change)}% from yesterday`;
+
+            } else {
+
+                messagesChange.textContent =
+                    "Same as yesterday";
+
+            }
+
+        }
+
+
+        /* ======================================================
+           AVERAGE RESPONSE
+        ====================================================== */
+
+        const responseElement =
+            document.getElementById(
+                "analyticsAverageResponse"
+            );
+
+        const responseStatus =
+            document.getElementById(
+                "analyticsResponseStatus"
+            );
+
+
+        if (
+            analytics.averageResponseMinutes !== null
+        ) {
+
+            const minutes =
+                analytics.averageResponseMinutes;
+
+
+            if (responseElement) {
+
+                if (minutes < 1) {
+
+                    responseElement.textContent =
+                        "<1 min";
+
+                } else {
+
+                    responseElement.textContent =
+                        `${minutes} min`;
+
+                }
+
+            }
+
+
+            if (responseStatus) {
+
+                responseStatus.textContent =
+                    analytics.responseStatus;
+
+            }
+
+        } else {
+
+            if (responseElement) {
+
+                responseElement.textContent =
+                    "—";
+
+            }
+
+            if (responseStatus) {
+
+                responseStatus.textContent =
+                    "No response data";
+
+            }
+
+        }
+
+
+        /* ======================================================
+           DEPARTMENT ACTIVITY
+        ====================================================== */
+
+        const departmentElement =
+            document.getElementById(
+                "analyticsDepartmentActivity"
+            );
+
+        const departmentStatus =
+            document.getElementById(
+                "analyticsDepartmentStatus"
+            );
+
+
+        if (
+            analytics.departmentActivity !== null
+        ) {
+
+            departmentElement.textContent =
+                `${analytics.departmentActivity}%`;
+
+            departmentStatus.textContent =
+                `${analytics.leadingDepartment} Leading`;
+
+        } else {
+
+            if (departmentElement) {
+
+                departmentElement.textContent =
+                    "—";
+
+            }
+
+            if (departmentStatus) {
+
+                departmentStatus.textContent =
+                    "Department data unavailable";
+
+            }
+
+        }
+
+
+        console.log(
+            "COMMUNICATION ANALYTICS:",
+            analytics
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "COMMUNICATION ANALYTICS ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+       SHARED FILE UI + UPLOAD
+    ========================================================== */
+
+    function ensureSharedFileUploadUI() {
+
+        const container =
+            document.getElementById("sharedFilesList");
+
+        if (!container) {
+            return;
+        }
+
+        let controls =
+            document.getElementById("sharedFilesControls");
+
+        if (!controls) {
+
+            controls =
+                document.createElement("div");
+
+            controls.id =
+                "sharedFilesControls";
+
+            controls.style.cssText = `
+                display:flex;
+                justify-content:flex-end;
+                align-items:center;
+                gap:10px;
+                margin-bottom:14px;
+            `;
+
+            const uploadButton =
+                document.createElement("button");
+
+            uploadButton.type = "button";
+            uploadButton.id = "uploadSharedFileBtn";
+            uploadButton.className = "shared-file-upload";
+            uploadButton.title = "Upload shared file";
+            uploadButton.innerHTML = `
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload</span>
+            `;
+
+            const fileInput =
+                document.createElement("input");
+
+            fileInput.type = "file";
+            fileInput.id = "sharedFileInput";
+            fileInput.style.display = "none";
+
+            controls.appendChild(uploadButton);
+            controls.appendChild(fileInput);
+
+            container.parentNode?.insertBefore(
+                controls,
+                container
+            );
+        }
+
+        if (!document.getElementById("sharedFileActionStyles")) {
+
+            const style =
+                document.createElement("style");
+
+            style.id =
+                "sharedFileActionStyles";
+
+            style.textContent = `
+                .shared-file-actions {
+                    display:flex;
+                    align-items:center;
+                    gap:8px;
+                    margin-left:10px;
+                    flex-shrink:0;
+                }
+
+                .shared-file-actions button {
+                    width:40px;
+                    height:40px;
+                    min-width:40px;
+                    min-height:40px;
+                    padding:0;
+                    border:0;
+                    border-radius:10px;
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    cursor:pointer;
+                    font-size:15px;
+                    background:#eaf2ff;
+                    color:#123f7a;
+                    transition:
+                        transform .15s ease,
+                        background-color .15s ease,
+                        box-shadow .15s ease;
+                }
+
+                .shared-file-actions button:hover {
+                    background:#dceaff;
+                    transform:translateY(-1px);
+                    box-shadow:0 3px 8px rgba(18,63,122,.12);
+                }
+
+                .shared-file-actions button:active {
+                    transform:translateY(0);
+                }
+
+                .shared-file-upload {
+                    min-height:40px;
+                    padding:0 16px;
+                    border:0;
+                    border-radius:10px;
+                    background:#123f7a;
+                    color:#fff;
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    gap:8px;
+                    cursor:pointer;
+                    font-size:14px;
+                    font-weight:600;
+                    line-height:1;
+                    box-shadow:0 3px 8px rgba(18,63,122,.15);
+                    transition:
+                        transform .15s ease,
+                        background-color .15s ease,
+                        box-shadow .15s ease;
+                }
+
+                .shared-file-upload:hover {
+                    background:#0d315f;
+                    transform:translateY(-1px);
+                    box-shadow:0 5px 12px rgba(18,63,122,.2);
+                }
+
+                .shared-file-upload:disabled {
+                    opacity:.65;
+                    cursor:not-allowed;
+                    transform:none;
+                }
+
+                .shared-file {
+                    display:flex;
+                    align-items:center;
+                    width:100%;
+                    box-sizing:border-box;
+                }
+
+                .shared-file-link {
+                    display:flex;
+                    align-items:center;
+                    flex:1;
+                    min-width:0;
+                }
+
+                @media (max-width:600px) {
+                    .shared-file-actions button {
+                        width:38px;
+                        height:38px;
+                        min-width:38px;
+                        min-height:38px;
+                    }
+
+                    .shared-file-upload {
+                        min-height:38px;
+                        padding:0 13px;
+                    }
+                }
+            `;
+
+            document.head.appendChild(style);
+        }
+
+        bindSharedFileUpload();
+    }
+
+
+    function bindSharedFileUpload() {
+
+        const uploadButton =
+            document.getElementById("uploadSharedFileBtn");
+
+        const fileInput =
+            document.getElementById("sharedFileInput");
+
+        if (!uploadButton || !fileInput) {
+            return;
+        }
+
+        if (uploadButton.dataset.bound === "true") {
+            return;
+        }
+
+        uploadButton.dataset.bound = "true";
+
+        uploadButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                fileInput.click();
+            }
+        );
+
+        fileInput.addEventListener(
+            "change",
+            async function () {
+
+                const file =
+                    this.files?.[0];
+
+                if (!file) {
+                    return;
+                }
+
+                try {
+
+                    uploadButton.disabled = true;
+
+                    uploadButton.innerHTML = `
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <span>Uploading...</span>
+                    `;
+
+                    const formData =
+                        new FormData();
+
+                    formData.append(
+                        "file",
+                        file
+                    );
+
+                    const response =
+                        await fetch(
+                            "https://icm-website-test-production.up.railway.app/api/upload",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+                    const data =
+                        await response.json();
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+                        throw new Error(
+                            data.message ||
+                            data.error ||
+                            "Upload failed"
+                        );
+                    }
+
+                    showToast(
+                        "File uploaded successfully."
+                    );
+
+                    this.value = "";
+
+                    await loadSharedFiles();
+
+                } catch (error) {
+
+                    console.error(
+                        "UPLOAD FILE ERROR:",
+                        error
+                    );
+
+                    showToast(
+                        "Unable to upload file: " +
+                        error.message,
+                        "error"
+                    );
+
+                } finally {
+
+                    uploadButton.disabled = false;
+
+                    uploadButton.innerHTML = `
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Upload</span>
+                    `;
+                }
+            }
+        );
+    }
+
+
     /* ==========================================================
    LOAD SHARED FILES
 ========================================================== */
@@ -107,6 +613,8 @@ async function loadSharedFiles() {
         console.warn("Shared files container not found.");
         return;
     }
+
+    ensureSharedFileUploadUI();
 
     try {
 
@@ -232,6 +740,7 @@ async function loadSharedFiles() {
                             <button
                                 type="button"
                                 class="shared-file-edit"
+                                aria-label="Edit file name"
                                 data-public-id="${escapeHtml(file.public_id)}"
                                 data-resource-type="${escapeHtml(file.resource_type || "image")}"
                                 data-file-name="${escapeHtml(fileName)}"
@@ -244,6 +753,7 @@ async function loadSharedFiles() {
                             <button
                                 type="button"
                                 class="shared-file-delete"
+                                aria-label="Delete file"
                                 data-public-id="${escapeHtml(file.public_id)}"
                                 data-resource-type="${escapeHtml(file.resource_type || "image")}"
                                 title="Delete file"
@@ -442,423 +952,7 @@ async function loadSharedFiles() {
 }
 
 
-/* ==========================================================
-   UPLOAD SHARED FILE
-========================================================== */
 
-const uploadSharedFileBtn =
-    document.getElementById(
-        "uploadSharedFileBtn"
-    );
-
-const sharedFileInput =
-    document.getElementById(
-        "sharedFileInput"
-    );
-
-
-if (
-    uploadSharedFileBtn &&
-    sharedFileInput
-) {
-
-    uploadSharedFileBtn.addEventListener(
-        "click",
-        () => {
-
-            sharedFileInput.click();
-
-        }
-    );
-
-
-    sharedFileInput.addEventListener(
-        "change",
-        async function () {
-
-            const file =
-                this.files[0];
-
-            if (!file) {
-                return;
-            }
-
-            try {
-
-                uploadSharedFileBtn.disabled =
-                    true;
-
-                uploadSharedFileBtn.innerHTML = `
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    Uploading...
-                `;
-
-
-                const formData =
-                    new FormData();
-
-                formData.append(
-                    "file",
-                    file
-                );
-
-
-                const response =
-                    await fetch(
-                        "https://icm-website-test-production.up.railway.app/api/upload",
-                        {
-                            method: "POST",
-                            body: formData
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-
-                    throw new Error(
-                        data.message ||
-                        "Upload failed"
-                    );
-
-                }
-
-
-                alert(
-                    "File uploaded successfully."
-                );
-
-
-                this.value = "";
-
-
-                await loadSharedFiles();
-
-
-            } catch (error) {
-
-                console.error(
-                    "UPLOAD FILE ERROR:",
-                    error
-                );
-
-                alert(
-                    error.message ||
-                    "Unable to upload file."
-                );
-
-            } finally {
-
-                uploadSharedFileBtn.disabled =
-                    false;
-
-                uploadSharedFileBtn.innerHTML = `
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    Upload
-                `;
-
-            }
-
-        }
-    );
-
-}
-
-/* ==========================================================
-   SHARED FILE ACTIONS
-========================================================== */
-
-function bindSharedFileActions() {
-
-
-    document
-        .querySelectorAll(".shared-file-edit")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-
-                    editSharedFile(
-                        button.dataset.publicId,
-                        button.dataset.resourceType,
-                        button.dataset.fileName
-                    );
-
-                }
-            );
-
-        });
-
-
-    document
-        .querySelectorAll(".shared-file-delete")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-
-                    deleteSharedFile(
-                        button.dataset.publicId,
-                        button.dataset.resourceType,
-                        button.dataset.fileName
-                    );
-
-                }
-            );
-
-        });
-
-}
-
-
-/* ==========================================================
-   EDIT / RENAME SHARED FILE
-========================================================== */
-
-function editSharedFile(
-    publicId,
-    resourceType,
-    currentName
-) {
-
-    openModal(
-
-        "Rename Shared File",
-
-        `
-
-        <label
-            style="
-                display:block;
-                margin-bottom:8px;
-                font-weight:600;
-            "
-        >
-            File name
-        </label>
-
-
-        <input
-            id="editSharedFileName"
-            type="text"
-            value="${escapeHtml(currentName)}"
-            style="
-                width:100%;
-                padding:12px;
-                box-sizing:border-box;
-                border:1px solid #ddd;
-                border-radius:10px;
-            "
-        >
-
-        `,
-
-        async modal => {
-
-            const input =
-                modal.querySelector(
-                    "#editSharedFileName"
-                );
-
-
-            const newName =
-                input?.value.trim();
-
-
-            if (!newName) {
-
-                showToast(
-                    "Please enter a file name.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-
-                        `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}`,
-
-                        {
-                            method: "PUT",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    name:
-                                        newName,
-
-                                    resource_type:
-                                        resourceType
-
-                                })
-
-                        }
-
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-
-                    throw new Error(
-                        data.message ||
-                        "Rename failed"
-                    );
-
-                }
-
-
-                modal.close();
-
-
-                showToast(
-                    "File renamed successfully."
-                );
-
-
-                await loadSharedFiles();
-
-
-            } catch (error) {
-
-                console.error(
-                    "RENAME FILE ERROR:",
-                    error
-                );
-
-
-                showToast(
-                    "Unable to rename file: " +
-                    error.message,
-                    "error"
-                );
-
-            }
-
-        },
-
-        "Rename"
-
-    );
-
-}
-
-
-/* ==========================================================
-   DELETE SHARED FILE
-========================================================== */
-
-async function deleteSharedFile(
-    publicId,
-    resourceType,
-    fileName
-) {
-
-    const confirmed =
-        confirm(
-            `Delete "${fileName}"?\n\nThis cannot be undone.`
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        showToast(
-            "Deleting file..."
-        );
-
-
-        const response =
-            await fetch(
-
-                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}?resource_type=${encodeURIComponent(resourceType)}`,
-
-                {
-                    method: "DELETE"
-                }
-
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Delete failed"
-            );
-
-        }
-
-
-        showToast(
-            "File deleted successfully."
-        );
-
-
-        await loadSharedFiles();
-
-
-    } catch (error) {
-
-        console.error(
-            "DELETE FILE ERROR:",
-            error
-        );
-
-
-        showToast(
-            "Unable to delete file: " +
-            error.message,
-            "error"
-        );
-
-    }
-
-}
 
 
     /* ==========================================================

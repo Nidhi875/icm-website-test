@@ -55,7 +55,7 @@ router.get("/", async (req, res) => {
         const result = await cloudinary.api.resources({
             type: "upload",
             prefix: "staff-messages/",
-            max_results: 100
+            max_results: 500
         });
 
         const files = result.resources.map(file => ({
