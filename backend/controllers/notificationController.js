@@ -21,10 +21,9 @@ exports.getNotifications = async (req, res) => {
 };
 
 // CREATE notification
+
 exports.createNotification = async (req, res) => {
-
     try {
-
         const {
             title,
             message,
@@ -49,14 +48,24 @@ exports.createNotification = async (req, res) => {
 
     } catch (error) {
 
+        console.error("CREATE NOTIFICATION ERROR:");
+        console.error("message:", error.message);
+        console.error("code:", error.code);
+        console.error("detail:", error.detail);
+        console.error("constraint:", error.constraint);
+        console.error("table:", error.table);
+        console.error("column:", error.column);
         console.error(error);
 
         res.status(500).json({
             success: false,
-            message: "Failed to create notification"
+            message: "Failed to create notification",
+            error: error.message,
+            detail: error.detail || null
         });
     }
 };
+
 
 // MARK AS READ
 exports.markAsRead = async (req, res) => {

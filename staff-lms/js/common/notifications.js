@@ -1,6 +1,6 @@
 console.log("notifications.js loaded");
 
-const API_URL = "http://localhost:5000/api/notifications";
+const API_URL = "https://icm-website-test-production.up.railway.app/api/notifications";
 
 async function loadNotifications() {
     console.log("Loading notifications...");

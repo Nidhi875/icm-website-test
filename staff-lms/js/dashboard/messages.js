@@ -6,7 +6,7 @@
 (() => {
     "use strict";
 
-    const API_URL = "http://localhost:5000/api/messages";
+    const API_URL = "https://icm-website-test-production.up.railway.app/api/messages";
 
     let messages = [];
     let currentConversation = "staff-general";
@@ -134,7 +134,8 @@
                             "Claire",
 
                         senderRole:
-                            "Administrator",
+                            "staff",
+                            
 
                         recipientId: null,
 
@@ -1554,15 +1555,13 @@ const selectedTime =
 };
 
     // IMAGE
-    if (buttons[2]) {
-        buttons[2].addEventListener("click", function (event) {
-            event.preventDefault();
+  const buttons = document.querySelectorAll(".chat-header-actions button");
 
-            if (typeof chooseImage === "function") {
-                chooseImage();
-            }
-        });
-    }
+if (buttons.length >= 3) {
+    buttons[2].addEventListener("click", () => {
+        console.log("More menu clicked");
+    });
+}
 
 
 
@@ -2908,22 +2907,28 @@ function openModal(
     );
 
 
-    const modal = {
+   const modal = {
 
-        element:
-            overlay,
+    element:
+        overlay,
 
-        query:
-            selector =>
-                box.querySelector(
-                    selector
-                ),
+    query:
+        selector =>
+            box.querySelector(
+                selector
+            ),
 
-        close:
-            () =>
-                overlay.remove()
+    querySelector:
+        selector =>
+            box.querySelector(
+                selector
+            ),
 
-    };
+    close:
+        () =>
+            overlay.remove()
+
+};
 
 
     box

@@ -1120,7 +1120,8 @@ return;
 
 }
 
-fetch("http://localhost:5000/api/notifications", {
+
+fetch("https://icm-website-test-production.up.railway.app/api/notifications", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -1181,7 +1182,7 @@ STATISTICS
 async function updateStatistics(){
 
     try{
-        const res = await fetch("http://localhost:5000/api/team-performance");
+        const res = await fetch("https://icm-website-test-production.up.railway.app/api/team-performance");
         const data = await res.json();
 
         if(!data.success) throw new Error(data.message || "Failed to load");

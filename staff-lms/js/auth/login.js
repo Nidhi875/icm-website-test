@@ -3,120 +3,184 @@ GOULDINGS STAFF LMS
 LOGIN
 ==================================================*/
 
-const STAFF_EMAILS = [
-    "derrick.mason@gouldings.education",
-    "claire@gouldings.education"
-];
-
-const STAFF_PASSWORD = "DistanceAdmin2026@Gouldings";
 /*==================================================
 SHOW / HIDE PASSWORD
 ==================================================*/
 
 const toggleBtn = document.getElementById("togglePassword");
 
-if(toggleBtn){
+if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
 
-    toggleBtn.addEventListener("click",()=>{
+        const password = document.getElementById("password");
+        const icon = toggleBtn.querySelector("i");
 
-        const password =
-            document.getElementById("password");
+        if (password.type === "password") {
+            password.type = "text";
 
-        const icon =
-            toggleBtn.querySelector("i");
+            if (icon) {
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
 
-        if(password.type==="password"){
+        } else {
+            password.type = "password";
 
-            password.type="text";
-
-            icon.classList.remove("fa-eye");
-
-            icon.classList.add("fa-eye-slash");
-
-        }else{
-
-            password.type="password";
-
-            icon.classList.remove("fa-eye-slash");
-
-            icon.classList.add("fa-eye");
-
+            if (icon) {
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         }
-
     });
-
 }
+
 
 /*==================================================
 LOGIN
 ==================================================*/
 
-document
-.getElementById("loginForm")
-.addEventListener("submit",function(e){
+const loginForm = document.getElementById("loginForm");
 
-    e.preventDefault();
+if (loginForm) {
 
-   const email =
-    document
-    .getElementById("email")
-    .value
-    .trim()
-    .toLowerCase();
+    loginForm.addEventListener("submit", async function (e) {
 
+        e.preventDefault();
 
+        const email = document
+            .getElementById("email")
+            .value
+            .trim()
+            .toLowerCase();
 
-    const password =
-        document
-        .getElementById("password")
-        .value;
+        const password = document
+            .getElementById("password")
+            .value;
 
-    const message =
-        document
-        .getElementById("loginMessage");
+        const message = document
+            .getElementById("loginMessage");
 
-    message.textContent="";
+        message.textContent = "";
+        message.style.color = "";
 
 
-    if (
-    STAFF_EMAILS.includes(email) &&
-    password === STAFF_PASSWORD
-    ) {
+        /*==================================================
+        SEND LOGIN TO BACKEND
+        ==================================================*/
+
+        try {
+
+            const response = await fetch(
+                "https://icm-website-test-production.up.railway.app/api/staff/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
+            );
 
 
-        localStorage.setItem("staffLoggedIn","true");
+            const data = await response.json();
 
-        if (email === "derrick.mason@gouldings.education") {
-         localStorage.setItem("staffName", "Derrick Mason");
-        } else if (email === "claire@gouldings.education") {
-        localStorage.setItem("staffName", "Claire");
+
+            /*==================================================
+            LOGIN FAILED
+            ==================================================*/
+
+            if (!response.ok || !data.success) {
+
+                message.style.color = "#dc2626";
+
+                message.textContent =
+                    data.message || "Invalid email or password.";
+
+                return;
+            }
+
+
+            /*==================================================
+            LOGIN SUCCESSFUL
+            ==================================================*/
+
+            const staff = data.user;
+
+
+            /*==================================================
+            SAVE LOGGED-IN STAFF
+            ==================================================*/
+
+            localStorage.setItem(
+                "staffLoggedIn",
+                "true"
+            );
+
+            localStorage.setItem(
+                "staffId",
+                staff.id
+            );
+
+            localStorage.setItem(
+                "staffName",
+                staff.name
+            );
+
+            localStorage.setItem(
+                "staffEmail",
+                staff.email
+            );
+
+            localStorage.setItem(
+                "staffRole",
+                staff.role
+            );
+
+
+            /*==================================================
+            SUCCESS MESSAGE
+            ==================================================*/
+
+            message.style.color = "#16a34a";
+
+            message.textContent =
+                "Login successful...";
+
+
+            /*==================================================
+            GO TO DASHBOARD
+            ==================================================*/
+
+            setTimeout(() => {
+
+                document.body.style.overflow = "auto";
+                document.documentElement.style.overflow = "auto";
+
+                window.location.href = "dashboard.html";
+
+            }, 700);
+
         }
 
-      localStorage.setItem("staffEmail", email);
 
-        localStorage.setItem("staffEmail",email);
+        /*==================================================
+        SERVER / NETWORK ERROR
+        ==================================================*/
 
-        message.style.color="#16a34a";
+        catch (error) {
 
-        message.textContent="Login successful...";
+            console.error("LOGIN ERROR:", error);
 
-        setTimeout(()=>{
+            message.style.color = "#dc2626";
 
-            document.body.style.overflow = "auto";
-           document.documentElement.style.overflow = "auto";
+            message.textContent =
+                "Unable to connect to the server. Please try again.";
+        }
 
-            window.location.href="dashboard.html";
-
-        },700);
-
-    }
-
-    else{
-
-        message.style.color="#dc2626";
-
-        message.textContent="Invalid email or password.";
-
-    }
-
-});
+    });
+}

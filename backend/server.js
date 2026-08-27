@@ -4,6 +4,7 @@ const messageRoutes = require("./routes/messageRoutes");
 const goalsRoutes = require("./routes/goalsRoutes");
 const studentsRoutes = require("./routes/studentsRoutes");
 const teamPerformanceRoutes = require("./routes/teamPerformanceRoutes");
+const staffPresenceRoutes = require("./routes/staffPresenceRoutes");
 
 require("dotenv").config();
 
@@ -48,6 +49,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/staff", staffAuthRoutes);
+app.use("/api/staff/presence", staffPresenceRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/messages", messageRoutes);
