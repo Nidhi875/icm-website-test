@@ -147,7 +147,7 @@ async function loadSharedFiles() {
         }
 
         container.innerHTML = files
-            .slice(0, 3)
+    
             .map(file => {
 
                 const fileName =
@@ -246,6 +246,296 @@ async function loadSharedFiles() {
                 Unable to load files.
             </div>
         `;
+
+    }
+
+}
+
+/* ==========================================================
+   SHARED FILE ACTIONS
+========================================================== */
+
+function bindSharedFileActions() {
+
+
+    document
+        .querySelectorAll(".shared-file-edit")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    editSharedFile(
+                        button.dataset.publicId,
+                        button.dataset.resourceType,
+                        button.dataset.fileName
+                    );
+
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(".shared-file-delete")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    deleteSharedFile(
+                        button.dataset.publicId,
+                        button.dataset.resourceType,
+                        button.dataset.fileName
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ==========================================================
+   EDIT / RENAME SHARED FILE
+========================================================== */
+
+function editSharedFile(
+    publicId,
+    resourceType,
+    currentName
+) {
+
+    openModal(
+
+        "Rename Shared File",
+
+        `
+
+        <label
+            style="
+                display:block;
+                margin-bottom:8px;
+                font-weight:600;
+            "
+        >
+            File name
+        </label>
+
+
+        <input
+            id="editSharedFileName"
+            type="text"
+            value="${escapeHtml(currentName)}"
+            style="
+                width:100%;
+                padding:12px;
+                box-sizing:border-box;
+                border:1px solid #ddd;
+                border-radius:10px;
+            "
+        >
+
+        `,
+
+        async modal => {
+
+            const input =
+                modal.querySelector(
+                    "#editSharedFileName"
+                );
+
+
+            const newName =
+                input?.value.trim();
+
+
+            if (!newName) {
+
+                showToast(
+                    "Please enter a file name.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+
+                        `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}`,
+
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    name:
+                                        newName,
+
+                                    resource_type:
+                                        resourceType
+
+                                })
+
+                        }
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Rename failed"
+                    );
+
+                }
+
+
+                modal.close();
+
+
+                showToast(
+                    "File renamed successfully."
+                );
+
+
+                await loadSharedFiles();
+
+
+            } catch (error) {
+
+                console.error(
+                    "RENAME FILE ERROR:",
+                    error
+                );
+
+
+                showToast(
+                    "Unable to rename file: " +
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        },
+
+        "Rename"
+
+    );
+
+}
+
+
+/* ==========================================================
+   DELETE SHARED FILE
+========================================================== */
+
+async function deleteSharedFile(
+    publicId,
+    resourceType,
+    fileName
+) {
+
+    const confirmed =
+        confirm(
+            `Delete "${fileName}"?\n\nThis cannot be undone.`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        showToast(
+            "Deleting file..."
+        );
+
+
+        const response =
+            await fetch(
+
+                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}?resource_type=${encodeURIComponent(resourceType)}`,
+
+                {
+                    method: "DELETE"
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Delete failed"
+            );
+
+        }
+
+
+        showToast(
+            "File deleted successfully."
+        );
+
+
+        await loadSharedFiles();
+
+
+    } catch (error) {
+
+        console.error(
+            "DELETE FILE ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Unable to delete file: " +
+            error.message,
+            "error"
+        );
 
     }
 
@@ -1729,38 +2019,101 @@ if (buttons.length >= 3) {
    FILE ATTACHMENT
 ========================================================== */
 
-function chooseFile() {
+/* ==========================================================
+   FILE UPLOAD
+========================================================== */
+
+async function chooseFile() {
 
     const input =
-        document.createElement(
-            "input"
-        );
+        document.createElement("input");
+
+    input.type = "file";
 
 
-    input.type =
-        "file";
-
-
-    input.onchange = () => {
+    input.onchange = async () => {
 
         const file =
-            (input.files && input.files[0]);
-
+            input.files?.[0];
 
         if (!file) {
             return;
         }
 
 
-        showToast(
-            `Selected file: ${file.name}`
-        );
+        const formData =
+            new FormData();
 
-
-        console.log(
-            "Selected file:",
+        formData.append(
+            "file",
             file
         );
+
+
+        showToast(
+            `Uploading ${file.name}...`
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://icm-website-test-production.up.railway.app/api/upload",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "UPLOAD RESPONSE:",
+                data
+            );
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    "Upload failed"
+                );
+
+            }
+
+
+            showToast(
+                "File uploaded successfully."
+            );
+
+
+            await loadSharedFiles();
+
+
+        } catch (error) {
+
+            console.error(
+                "UPLOAD FILE ERROR:",
+                error
+            );
+
+
+            showToast(
+                "Upload failed: " +
+                error.message,
+                "error"
+            );
+
+        }
 
     };
 

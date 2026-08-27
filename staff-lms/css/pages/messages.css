@@ -1264,6 +1264,8 @@ FILES
     padding:14px 0;
 
     border-bottom:1px solid #edf2fa;
+     justify-content: space-between;
+    gap: 10px;
 
 }
 
@@ -1285,6 +1287,53 @@ FILES
 
     color:#6b7280;
 
+}
+
+.shared-file-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+}
+
+.shared-file-link h5 {
+    margin: 0;
+}
+
+.shared-file-link small {
+    display: block;
+    margin-top: 4px;
+}
+
+.shared-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shared-file-actions button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shared-file-edit {
+    background: #eef3f9;
+}
+
+.shared-file-delete {
+    background: #fff0f0;
+}
+
+.shared-file-actions button:hover {
+    transform: translateY(-1px);
 }
 
 /*==============================================================

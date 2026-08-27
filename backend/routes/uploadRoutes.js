@@ -17,27 +17,35 @@ router.post("/", (req, res) => {
 
         if (err) {
 
-            console.error(err);
+            console.error("UPLOAD ERROR:", err);
 
             return res.status(500).json({
                 success: false,
-                error: err.message
+                message: err.message
             });
         }
 
-        console.log("req.file =", req.file);
+        console.log("Uploaded file:", req.file);
 
         if (!req.file) {
 
             return res.status(400).json({
                 success: false,
-                error: "No file uploaded"
+                message: "No file uploaded"
             });
         }
 
         res.json({
             success: true,
-            url: req.file.path
+            message: "File uploaded successfully",
+            file: {
+                name: req.file.originalname,
+                url: req.file.path,
+                public_id: req.file.public_id,
+                resource_type: req.file.resource_type,
+                format: req.file.format,
+                size: req.file.bytes
+            }
         });
 
     });
@@ -53,30 +61,42 @@ router.get("/", async (req, res) => {
 
     try {
 
-        const result = await cloudinary.api.resources({
-            type: "upload",
-            prefix: "staff-messages/",
-            max_results: 20
-        });
+        const result =
+            await cloudinary.api.resources({
+                type: "upload",
+                prefix: "staff-messages/",
+                max_results: 100
+            });
+
 
         const files = result.resources.map(file => ({
 
-            name: file.original_filename
-                ? `${file.original_filename}${file.format ? "." + file.format : ""}`
-                : file.public_id.split("/").pop(),
+            public_id:
+                file.public_id,
 
-            url: file.secure_url,
+            name:
+                file.original_filename
+                    ? `${file.original_filename}${file.format ? "." + file.format : ""}`
+                    : file.public_id.split("/").pop(),
 
-            size: file.bytes,
+            url:
+                file.secure_url,
 
-            format: file.format,
+            size:
+                file.bytes,
 
-            created_at: file.created_at
+            format:
+                file.format,
+
+            resource_type:
+                file.resource_type,
+
+            created_at:
+                file.created_at
 
         }));
 
 
-        // Newest files first
         files.sort(
             (a, b) =>
                 new Date(b.created_at) -
@@ -88,9 +108,10 @@ router.get("/", async (req, res) => {
 
             success: true,
 
-            files: files.slice(0, 3)
+            files
 
         });
+
 
     } catch (error) {
 
@@ -103,7 +124,223 @@ router.get("/", async (req, res) => {
 
             success: false,
 
-            message: "Failed to load shared files"
+            message:
+                error.message ||
+                "Failed to load shared files"
+
+        });
+
+    }
+
+});
+
+
+/* ==========================================================
+   RENAME / EDIT FILE
+========================================================== */
+
+router.put("/:publicId(*)", async (req, res) => {
+
+    try {
+
+        const oldPublicId =
+            req.params.publicId;
+
+        const newName =
+            String(req.body.name || "")
+                .trim();
+
+
+        if (!newName) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "New file name is required"
+
+            });
+
+        }
+
+
+        /*
+           Keep the file extension.
+        */
+
+        const oldFileName =
+            oldPublicId.split("/").pop();
+
+        const oldExtension =
+            oldFileName.includes(".")
+                ? oldFileName.substring(
+                    oldFileName.lastIndexOf(".")
+                )
+                : "";
+
+
+        let finalName =
+            newName;
+
+
+        if (
+            oldExtension &&
+            !finalName
+                .toLowerCase()
+                .endsWith(
+                    oldExtension.toLowerCase()
+                )
+        ) {
+
+            finalName += oldExtension;
+
+        }
+
+
+        /*
+           Prevent unsafe Cloudinary path names.
+        */
+
+        finalName =
+            finalName
+                .replace(/[\/\\:*?"<>|]/g, "-")
+                .trim();
+
+
+        const folder =
+            "staff-messages";
+
+
+        const newPublicId =
+            `${folder}/${finalName}`;
+
+
+        const result =
+            await cloudinary.uploader.rename(
+                oldPublicId,
+                newPublicId,
+                {
+                    resource_type:
+                        req.body.resource_type ||
+                        "image"
+                }
+            );
+
+
+        res.json({
+
+            success: true,
+
+            message:
+                "File renamed successfully",
+
+            file: {
+
+                public_id:
+                    result.public_id,
+
+                url:
+                    result.secure_url
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "RENAME FILE ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                error.message ||
+                "Failed to rename file"
+
+        });
+
+    }
+
+});
+
+
+/* ==========================================================
+   DELETE FILE
+========================================================== */
+
+router.delete("/:publicId(*)", async (req, res) => {
+
+    try {
+
+        const publicId =
+            req.params.publicId;
+
+
+        const resourceType =
+            req.query.resource_type ||
+            "image";
+
+
+        const result =
+            await cloudinary.uploader.destroy(
+                publicId,
+                {
+                    resource_type:
+                        resourceType
+                }
+            );
+
+
+        if (
+            result.result !== "ok" &&
+            result.result !== "not found"
+        ) {
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Cloudinary could not delete the file"
+
+            });
+
+        }
+
+
+        res.json({
+
+            success: true,
+
+            message:
+                "File deleted successfully",
+
+            result:
+                result.result
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "DELETE FILE ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                error.message ||
+                "Failed to delete file"
 
         });
 
