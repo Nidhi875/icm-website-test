@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 
-const ONLINE_THRESHOLD_SECONDS = 60;
+const ONLINE_THRESHOLD_SECONDS = 120;
 
 
 // ==========================================================

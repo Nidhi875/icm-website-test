@@ -400,6 +400,7 @@ function initLogout() {
         localStorage.removeItem("staffName");
         localStorage.removeItem("staffEmail");
         localStorage.removeItem("staffRole");
+        localStorage.removeItem("staffId");
 
         // Redirect to login page
         window.location.href = "login.html";
@@ -407,3 +408,55 @@ function initLogout() {
     });
 
 }
+
+/*==========================================
+STAFF PRESENCE HEARTBEAT
+==========================================*/
+
+async function updateStaffPresence() {
+
+    const staffId = localStorage.getItem("staffId");
+
+    // No logged-in staff
+    if (!staffId) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "https://icm-website-test-production.up.railway.app/api/staff/presence/heartbeat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    staffId: Number(staffId)
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Presence request failed: ${response.status}`);
+        }
+
+        console.log("Staff presence updated:", staffId);
+
+    } catch (error) {
+
+        console.error("Staff presence heartbeat failed:", error);
+
+    }
+}
+
+
+/*==========================================
+START PRESENCE HEARTBEAT
+==========================================*/
+
+// Update immediately when page loads
+updateStaffPresence();
+
+// Update every 60 seconds
+setInterval(updateStaffPresence, 60000);
