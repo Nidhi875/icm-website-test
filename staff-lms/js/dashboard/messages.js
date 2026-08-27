@@ -147,7 +147,6 @@ async function loadSharedFiles() {
         }
 
         container.innerHTML = files
-    
             .map(file => {
 
                 const fileName =
@@ -160,79 +159,274 @@ async function loadSharedFiles() {
                         .pop()
                         .toLowerCase();
 
-                let icon =
-                    "fa-file";
+                let icon = "fa-file";
 
                 if (extension === "pdf") {
 
-                    icon =
-                        "fa-file-pdf";
+                    icon = "fa-file-pdf";
 
                 } else if (
                     ["xlsx", "xls", "csv"]
                         .includes(extension)
                 ) {
 
-                    icon =
-                        "fa-file-excel";
+                    icon = "fa-file-excel";
 
                 } else if (
                     ["doc", "docx"]
                         .includes(extension)
                 ) {
 
-                    icon =
-                        "fa-file-word";
+                    icon = "fa-file-word";
 
                 } else if (
                     ["ppt", "pptx"]
                         .includes(extension)
                 ) {
 
-                    icon =
-                        "fa-file-powerpoint";
+                    icon = "fa-file-powerpoint";
 
                 } else if (
                     ["jpg", "jpeg", "png", "gif", "webp"]
                         .includes(extension)
                 ) {
 
-                    icon =
-                        "fa-file-image";
-
+                    icon = "fa-file-image";
                 }
 
                 return `
+                    <div class="shared-file">
 
-                    <a
-                        href="${file.url}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="shared-file"
-                    >
+                        <!-- FILE INFORMATION -->
 
-                        <i
-                            class="fa-solid ${icon}"
-                        ></i>
+                        <a
+                            href="${file.url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="shared-file-link"
+                        >
 
-                        <div>
+                            <i
+                                class="fa-solid ${icon}"
+                            ></i>
 
-                            <h5>
-                                ${escapeHtml(fileName)}
-                            </h5>
+                            <div class="shared-file-info">
 
-                            <small>
-                                ${formatFileSize(file.size)}
-                            </small>
+                                <h5>
+                                    ${escapeHtml(fileName)}
+                                </h5>
+
+                                <small>
+                                    ${formatFileSize(file.size)}
+                                </small>
+
+                            </div>
+
+                        </a>
+
+
+                        <!-- FILE ACTIONS -->
+
+                        <div class="shared-file-actions">
+
+                            <button
+                                type="button"
+                                class="shared-file-edit"
+                                data-public-id="${escapeHtml(file.public_id)}"
+                                data-resource-type="${escapeHtml(file.resource_type || "image")}"
+                                data-file-name="${escapeHtml(fileName)}"
+                                title="Edit file name"
+                            >
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="shared-file-delete"
+                                data-public-id="${escapeHtml(file.public_id)}"
+                                data-resource-type="${escapeHtml(file.resource_type || "image")}"
+                                title="Delete file"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
 
                         </div>
 
-                    </a>
-
+                    </div>
                 `;
 
             })
             .join("");
+
+
+        /* ==================================================
+           EDIT FILE
+        ================================================== */
+
+        container
+            .querySelectorAll(".shared-file-edit")
+            .forEach(button => {
+
+                button.addEventListener("click", async function () {
+
+                    const publicId =
+                        this.dataset.publicId;
+
+                    const resourceType =
+                        this.dataset.resourceType ||
+                        "image";
+
+                    const currentName =
+                        this.dataset.fileName ||
+                        "";
+
+                    const newName =
+                        prompt(
+                            "Enter the new file name:",
+                            currentName
+                        );
+
+                    if (
+                        newName === null ||
+                        !newName.trim()
+                    ) {
+                        return;
+                    }
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}`,
+                                {
+                                    method: "PUT",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify({
+                                        name:
+                                            newName.trim(),
+
+                                        resource_type:
+                                            resourceType
+                                    })
+                                }
+                            );
+
+                        const data =
+                            await response.json();
+
+                        if (
+                            !response.ok ||
+                            !data.success
+                        ) {
+
+                            throw new Error(
+                                data.message ||
+                                "Failed to rename file"
+                            );
+                        }
+
+                        alert(
+                            "File renamed successfully."
+                        );
+
+                        await loadSharedFiles();
+
+                    } catch (error) {
+
+                        console.error(
+                            "EDIT FILE ERROR:",
+                            error
+                        );
+
+                        alert(
+                            error.message ||
+                            "Unable to rename file."
+                        );
+                    }
+
+                });
+
+            });
+
+
+        /* ==================================================
+           DELETE FILE
+        ================================================== */
+
+        container
+            .querySelectorAll(".shared-file-delete")
+            .forEach(button => {
+
+                button.addEventListener("click", async function () {
+
+                    const publicId =
+                        this.dataset.publicId;
+
+                    const resourceType =
+                        this.dataset.resourceType ||
+                        "image";
+
+                    const confirmed =
+                        confirm(
+                            "Are you sure you want to delete this file?"
+                        );
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}?resource_type=${encodeURIComponent(resourceType)}`,
+                                {
+                                    method: "DELETE"
+                                }
+                            );
+
+                        const data =
+                            await response.json();
+
+                        if (
+                            !response.ok ||
+                            !data.success
+                        ) {
+
+                            throw new Error(
+                                data.message ||
+                                "Failed to delete file"
+                            );
+                        }
+
+                        alert(
+                            "File deleted successfully."
+                        );
+
+                        await loadSharedFiles();
+
+                    } catch (error) {
+
+                        console.error(
+                            "DELETE FILE ERROR:",
+                            error
+                        );
+
+                        alert(
+                            error.message ||
+                            "Unable to delete file."
+                        );
+                    }
+
+                });
+
+            });
 
     } catch (error) {
 
@@ -246,10 +440,9 @@ async function loadSharedFiles() {
                 Unable to load files.
             </div>
         `;
-
     }
-
 }
+
 
 /* ==========================================================
    SHARED FILE ACTIONS

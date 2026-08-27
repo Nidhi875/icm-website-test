@@ -1883,3 +1883,76 @@ RECENT ACTIVITY
     justify-content: center;
     font-weight: 700;
 }
+
+
+/* ==========================================================
+   SHARED FILE ACTIONS
+========================================================== */
+
+.shared-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+.shared-file-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.shared-file-link > i {
+    flex-shrink: 0;
+}
+
+.shared-file-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.shared-file-info h5 {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.shared-file-info small {
+    display: block;
+    margin-top: 4px;
+}
+
+.shared-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.shared-file-actions button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+}
+
+.shared-file-edit {
+    color: #2563eb;
+}
+
+.shared-file-delete {
+    color: #dc2626;
+}
+
+.shared-file-actions button:hover {
+    background: #e2e8f0;
+}
