@@ -296,26 +296,23 @@ async function loadSharedFiles() {
 
                     try {
 
-                        const response =
-                            await fetch(
-                                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}`,
-                                {
-                                    method: "PUT",
+                           const response =
+                          await fetch(
+                            "https://icm-website-test-production.up.railway.app/api/upload",
+                             {
+                                method: "PUT",
 
-                                    headers: {
-                                        "Content-Type":
-                                            "application/json"
-                                    },
+                             headers: {
+                           "Content-Type": "application/json"
+                               },
 
-                                    body: JSON.stringify({
-                                        name:
-                                            newName.trim(),
-
-                                        resource_type:
-                                            resourceType
-                                    })
-                                }
-                            );
+                       body: JSON.stringify({
+                                 public_id: publicId,
+                           name: newName.trim(),
+                                 resource_type: resourceType
+                                })
+                                 }
+                             );
 
                         const data =
                             await response.json();
@@ -383,13 +380,14 @@ async function loadSharedFiles() {
 
                     try {
 
-                        const response =
-                            await fetch(
-                                `https://icm-website-test-production.up.railway.app/api/upload/${encodeURIComponent(publicId)}?resource_type=${encodeURIComponent(resourceType)}`,
-                                {
-                                    method: "DELETE"
-                                }
-                            );
+                          const response =
+                        await fetch(
+                           `https://icm-website-test-production.up.railway.app/api/upload?public_id=${encodeURIComponent(publicId)}&resource_type=${encodeURIComponent(resourceType)}`,
+       
+                        {
+                            method: "DELETE"
+                           }
+                         );
 
                         const data =
                             await response.json();
@@ -443,6 +441,134 @@ async function loadSharedFiles() {
     }
 }
 
+
+/* ==========================================================
+   UPLOAD SHARED FILE
+========================================================== */
+
+const uploadSharedFileBtn =
+    document.getElementById(
+        "uploadSharedFileBtn"
+    );
+
+const sharedFileInput =
+    document.getElementById(
+        "sharedFileInput"
+    );
+
+
+if (
+    uploadSharedFileBtn &&
+    sharedFileInput
+) {
+
+    uploadSharedFileBtn.addEventListener(
+        "click",
+        () => {
+
+            sharedFileInput.click();
+
+        }
+    );
+
+
+    sharedFileInput.addEventListener(
+        "change",
+        async function () {
+
+            const file =
+                this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            try {
+
+                uploadSharedFileBtn.disabled =
+                    true;
+
+                uploadSharedFileBtn.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Uploading...
+                `;
+
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "file",
+                    file
+                );
+
+
+                const response =
+                    await fetch(
+                        "https://icm-website-test-production.up.railway.app/api/upload",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Upload failed"
+                    );
+
+                }
+
+
+                alert(
+                    "File uploaded successfully."
+                );
+
+
+                this.value = "";
+
+
+                await loadSharedFiles();
+
+
+            } catch (error) {
+
+                console.error(
+                    "UPLOAD FILE ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to upload file."
+                );
+
+            } finally {
+
+                uploadSharedFileBtn.disabled =
+                    false;
+
+                uploadSharedFileBtn.innerHTML = `
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    Upload
+                `;
+
+            }
+
+        }
+    );
+
+}
 
 /* ==========================================================
    SHARED FILE ACTIONS

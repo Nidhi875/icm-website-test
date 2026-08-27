@@ -1956,3 +1956,123 @@ RECENT ACTIVITY
 .shared-file-actions button:hover {
     background: #e2e8f0;
 }
+
+
+/* ==========================================================
+   SHARED FILES HEADER
+========================================================== */
+
+.side-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+
+/* ==========================================================
+   UPLOAD BUTTON
+========================================================== */
+
+.shared-file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 38px;
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease,
+        background 0.15s ease;
+}
+
+.shared-file-upload-btn:hover {
+    opacity: 0.9;
+}
+
+.shared-file-upload-btn:active {
+    transform: scale(0.97);
+}
+
+.shared-file-upload-btn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+
+/* ==========================================================
+   FILE ACTION BUTTONS
+========================================================== */
+
+.shared-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.shared-file-actions button {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease,
+        background 0.15s ease;
+}
+
+
+/* EDIT */
+
+.shared-file-edit {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.shared-file-edit:hover {
+    opacity: 0.9;
+}
+
+
+/* DELETE */
+
+.shared-file-delete {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.shared-file-delete:hover {
+    opacity: 0.9;
+}
+
+
+/* CLICK */
+
+.shared-file-actions button:active {
+    transform: scale(0.94);
+}

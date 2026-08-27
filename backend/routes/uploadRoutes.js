@@ -224,36 +224,53 @@ router.put("/", async (req, res) => {
    DELETE FILE
 ========================================================== */
 
+/* ==========================================================
+   DELETE FILE
+========================================================== */
+
 router.delete("/", async (req, res) => {
+
     try {
+
         const publicId =
-            String(req.query.publicId || "").trim();
+            String(req.query.public_id || "").trim();
 
         const resourceType =
-            req.query.resource_type ||
-            "raw";
+            String(req.query.resource_type || "image").trim();
 
         if (!publicId) {
+
             return res.status(400).json({
                 success: false,
-                message:
-                    "publicId is required"
+                message: "File public_id is required"
             });
+
         }
+
+        console.log(
+            "DELETE FILE:",
+            publicId,
+            resourceType
+        );
 
         const result =
             await cloudinary.uploader.destroy(
                 publicId,
                 {
-                    resource_type:
-                        resourceType
+                    resource_type: resourceType
                 }
             );
+
+        console.log(
+            "DELETE FILE RESPONSE:",
+            result
+        );
 
         if (
             result.result !== "ok" &&
             result.result !== "not found"
         ) {
+
             return res.status(500).json({
                 success: false,
                 message:
@@ -261,28 +278,30 @@ router.delete("/", async (req, res) => {
             });
         }
 
-        res.json({
+        return res.json({
             success: true,
             message:
                 "File deleted successfully",
-            result:
-                result.result
+            result: result.result
         });
 
     } catch (error) {
+
         console.error(
             "DELETE FILE ERROR:",
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message:
                 error.message ||
                 "Failed to delete file"
         });
     }
+
 });
+
 
 
 module.exports = router;
