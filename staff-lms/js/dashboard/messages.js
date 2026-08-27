@@ -34,11 +34,418 @@
 
         await loadMessages();
 
+            /* ==========================================================
+   RECENT ACTIVITY
+   Dynamic activity feed
+========================================================== */
+
+window.renderRecentActivity = async function renderRecentActivity() {
+
+    const container =
+        document.getElementById("recentActivityFeed");
+
+    if (!container) {
+        return;
+    }
+
+    try {
+
+        const activities = [];
+
+
+        /* ======================================================
+           1. UPLOADED FILES
+        ====================================================== */
+
+        try {
+
+            const response = await fetch(
+                "https://icm-website-test-production.up.railway.app/api/upload"
+            );
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+
+                const files =
+                    Array.isArray(data.files)
+                        ? data.files
+                        : [];
+
+                files.forEach(file => {
+
+                    if (!file.created_at) {
+                        return;
+                    }
+
+                    activities.push({
+
+                        type: "upload",
+
+                        timestamp:
+                            new Date(file.created_at)
+                                .getTime(),
+
+                        actor: "Staff",
+
+                        text:
+                            `uploaded ${file.name || "a file"}`,
+
+                        icon:
+                            "fa-solid fa-file-arrow-up"
+
+                    });
+
+                });
+            }
+
+        } catch (error) {
+
+            console.error(
+                "RECENT ACTIVITY FILE ERROR:",
+                error
+            );
+
+        }
+
+
+        /* ======================================================
+           2. SCHEDULED MEETINGS
+        ====================================================== */
+
+        try {
+
+            const storedMeetings =
+                typeof getMeetings === "function"
+                    ? getMeetings()
+                    : JSON.parse(
+                        localStorage.getItem(
+                            "staff-lms-meetings"
+                        ) || "[]"
+                    );
+
+            if (Array.isArray(storedMeetings)) {
+
+                storedMeetings.forEach(meeting => {
+
+                    const createdAt =
+                        meeting.createdAt ||
+                        meeting.created_at;
+
+                    if (!createdAt) {
+                        return;
+                    }
+
+                    activities.push({
+
+                        type: "meeting",
+
+                        timestamp:
+                            new Date(createdAt)
+                                .getTime(),
+
+                        actor:
+                            "Operations Team",
+
+                        text:
+                            `scheduled "${meeting.title || "a meeting"}"`,
+
+                        icon:
+                            "fa-solid fa-calendar-check"
+
+                    });
+
+                });
+            }
+
+        } catch (error) {
+
+            console.error(
+                "RECENT ACTIVITY MEETING ERROR:",
+                error
+            );
+
+        }
+
+
+        /* ======================================================
+           3. DATABASE MESSAGES
+        ====================================================== */
+
+        if (Array.isArray(messages)) {
+
+            messages.forEach(message => {
+
+                if (!message.created_at) {
+                    return;
+                }
+
+                const sender =
+                    message.sender_name ||
+                    "Staff";
+
+                const messageText =
+                    String(
+                        message.message_text || ""
+                    ).trim();
+
+                activities.push({
+
+                    type: "message",
+
+                    timestamp:
+                        new Date(
+                            message.created_at
+                        ).getTime(),
+
+                    actor: sender,
+
+                    text:
+                        messageText
+                            ? `sent a message`
+                            : "sent a message",
+
+                    icon:
+                        "fa-solid fa-envelope-circle-check"
+
+                });
+
+            });
+
+        }
+
+
+        /* ======================================================
+           SORT NEWEST FIRST
+        ====================================================== */
+
+        activities.sort(
+            (a, b) =>
+                b.timestamp -
+                a.timestamp
+        );
+
+
+        /* ======================================================
+           LIMIT TO 5
+        ====================================================== */
+
+        const latest =
+            activities.slice(0, 5);
+
+
+        /* ======================================================
+           EMPTY STATE
+        ====================================================== */
+
+        if (!latest.length) {
+
+            container.innerHTML = `
+
+                <div class="activity-item">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <div>
+
+                        <strong>No recent activity</strong>
+
+                        <span>
+                            Activity will appear here automatically.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /* ======================================================
+           RENDER
+        ====================================================== */
+
+        container.innerHTML =
+            latest.map(activity => {
+
+                return `
+
+                    <div class="activity-item">
+
+                        <i class="${activity.icon}"></i>
+
+                        <div>
+
+                            <strong>
+                                ${escapeHtml(
+                                    activity.actor
+                                )}
+                            </strong>
+
+                            ${escapeHtml(
+                                activity.text
+                            )}
+
+                            <span>
+                                ${formatActivityTime(
+                                    activity.timestamp
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "RECENT ACTIVITY ERROR:",
+            error
+        );
+
+        container.innerHTML = `
+
+            <div class="activity-item">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <div>
+
+                    <strong>
+                        Unable to load activity
+                    </strong>
+
+                    <span>
+                        Please refresh the page.
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================================
+   ACTIVITY TIME FORMAT
+========================================================== */
+
+function formatActivityTime(timestamp) {
+
+    if (!timestamp) {
+        return "";
+    }
+
+    const date =
+        new Date(timestamp);
+
+    const now =
+        new Date();
+
+    const difference =
+        Math.floor(
+            (now.getTime() -
+                date.getTime()) /
+            1000
+        );
+
+
+    if (difference < 60) {
+
+        return "Just now";
+
+    }
+
+
+    const minutes =
+        Math.floor(
+            difference / 60
+        );
+
+    if (minutes < 60) {
+
+        return `${minutes} ${
+            minutes === 1
+                ? "min"
+                : "mins"
+        } ago`;
+
+    }
+
+
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
+
+    if (hours < 24) {
+
+        return `${hours} ${
+            hours === 1
+                ? "hour"
+                : "hours"
+        } ago`;
+
+    }
+
+
+    const days =
+        Math.floor(
+            hours / 24
+        );
+
+    if (days === 1) {
+
+        return "Yesterday";
+
+    }
+
+
+    if (days < 7) {
+
+        return `${days} days ago`;
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-GB",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
         await loadSharedFiles();
 
         await updateCommunicationAnalytics();
 
         renderUpcomingMeetings();
+
+        
+
+        await window.renderRecentActivity();
+
 
         if (window.lucide) {
             window.lucide.createIcons();
@@ -571,7 +978,9 @@ async function updateCommunicationAnalytics() {
 
                     this.value = "";
 
-                    await loadSharedFiles();
+
+                   await loadSharedFiles();
+                    await window.renderRecentActivity();
 
                 } catch (error) {
 
@@ -1048,7 +1457,8 @@ async function loadSharedFiles() {
             }
 
 
-            await loadMessages();
+          await loadMessages();
+          await renderRecentActivity();
 
             return true;
 

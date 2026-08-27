@@ -66,7 +66,8 @@ function syncSharedMeetings() {
 
         badge: meeting.badge || "meet",
 
-        status: meeting.status || "UPCOMING",
+
+        status: getCurrentMeetingStatus(meeting),
 
         attendees: meeting.attendees || 0,
 
@@ -92,6 +93,41 @@ function syncSharedMeetings() {
     );
 
     return sharedMeetings;
+}
+
+/*==================================================
+    CALCULATE CURRENT MEETING STATUS
+==================================================*/
+
+function getCurrentMeetingStatus(meeting) {
+
+    if (!meeting || !meeting.date || !meeting.time) {
+        return "UPCOMING";
+    }
+
+    const now = new Date();
+
+    const meetingStart = new Date(
+        `${meeting.date}T${meeting.time}:00`
+    );
+
+    const duration =
+        Number(meeting.duration) || 60;
+
+    const meetingEnd = new Date(
+        meetingStart.getTime() +
+        duration * 60000
+    );
+
+    if (now < meetingStart) {
+        return "UPCOMING";
+    }
+
+    if (now >= meetingStart && now < meetingEnd) {
+        return "LIVE";
+    }
+
+    return "COMPLETED";
 }
 
 /*==================================================
@@ -296,19 +332,28 @@ STATISTICS
 
 function updateStatistics(){
 
-    const meetings = getMeetings();
+    const meetings = getMeetings().map(meeting => ({
+        ...meeting,
+        status: getCurrentMeetingStatus(meeting)
+    }));
 
     const total =
         meetings.length;
 
     const live =
-        meetings.filter(m=>m.status==="LIVE").length;
+        meetings.filter(
+            m => m.status === "LIVE"
+        ).length;
 
     const completed =
-        meetings.filter(m=>m.status==="COMPLETED").length;
+        meetings.filter(
+            m => m.status === "COMPLETED"
+        ).length;
 
     const upcoming =
-        total-live-completed;
+        meetings.filter(
+            m => m.status === "UPCOMING"
+        ).length;
 
     document.getElementById("totalMeetings").textContent =
         total;
@@ -321,8 +366,8 @@ function updateStatistics(){
 
     document.getElementById("completedMeetings").textContent =
         completed;
-
 }
+
 
 
 /*==================================================
