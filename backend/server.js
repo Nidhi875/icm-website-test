@@ -1,3 +1,6 @@
+require("dotenv").config();
+
+
 const uploadRoutes = require("./routes/uploadRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const messageRoutes = require("./routes/messageRoutes");
@@ -6,7 +9,6 @@ const studentsRoutes = require("./routes/studentsRoutes");
 const teamPerformanceRoutes = require("./routes/teamPerformanceRoutes");
 const staffPresenceRoutes = require("./routes/staffPresenceRoutes");
 
-require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
