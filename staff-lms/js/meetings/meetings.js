@@ -116,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initialiseFilters();
 
-    initialiseCreateMeeting();
 
 });
 
@@ -447,11 +446,6 @@ function renderFilteredMeetings(){
 }
 
 
-function joinMeeting(id){
-
-    window.location.href = `meeting-room.html?id=${id}`;
-
-}
 
 /*==================================================
 EDIT MEETING
@@ -903,3 +897,112 @@ function saveMeeting(e) {
             : "Meeting updated successfully."
     );
 }
+
+
+/*==========================================
+    JOIN MEETING
+==========================================*/
+
+window.joinMeeting = function (id) {
+
+    console.log("========== JOIN MEETING ==========");
+    console.log("JOIN BUTTON ID:", id);
+
+    let meetings = [];
+
+    try {
+        meetings = getMeetings();
+
+        if (!Array.isArray(meetings)) {
+            meetings = [];
+        }
+
+    } catch (error) {
+        console.error("GET MEETINGS ERROR:", error);
+        alert("Unable to load meeting information.");
+        return;
+    }
+
+    console.log("MEETINGS AVAILABLE:", meetings);
+
+    const meeting = meetings.find(
+        m =>
+            m &&
+            m.id !== undefined &&
+            m.id !== null &&
+            String(m.id).trim() === String(id).trim()
+    );
+
+    console.log("SELECTED MEETING:", meeting);
+
+    if (!meeting) {
+        console.error("MEETING NOT FOUND:", id);
+        console.error(
+            "AVAILABLE IDS:",
+            meetings.map(m => m.id)
+        );
+
+        alert("Meeting not found.");
+        return;
+    }
+
+    const now = new Date();
+
+    const meetingStart = new Date(
+        `${meeting.date}T${meeting.time}:00`
+    );
+
+    const duration =
+        Number(meeting.duration) || 60;
+
+    const meetingEnd = new Date(
+        meetingStart.getTime() +
+        duration * 60000
+    );
+
+    /*==========================================
+        NOT STARTED
+    ==========================================*/
+
+    if (now < meetingStart) {
+
+        alert(
+            `This meeting has not started yet.\n\n` +
+            `Scheduled for ${meetingStart.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                }
+            )} at ${meetingStart.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit"
+            })}.`
+        );
+
+        return;
+    }
+
+    /*==========================================
+        ENDED
+    ==========================================*/
+
+    if (now >= meetingEnd) {
+
+        alert("This meeting has already ended.");
+
+        return;
+    }
+
+    /*==========================================
+        LIVE — OPEN MEETING ROOM
+    ==========================================*/
+
+    console.log("OPENING MEETING:", meeting.id);
+
+    window.location.href =
+        `meeting-room.html?id=${encodeURIComponent(
+            String(meeting.id)
+        )}`;
+};

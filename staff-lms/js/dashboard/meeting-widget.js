@@ -141,9 +141,3 @@ if (window.lucide) {
 /*==========================================
 JOIN MEETING
 ==========================================*/
-
-function joinMeeting(id){
-
-    window.location.href = `meeting-room.html?id=${id}`;
-
-}
