@@ -515,8 +515,11 @@ function formatActivityTime(timestamp) {
 ========================================================== */
 
 async function updateCommunicationAnalytics() {
-
     try {
+
+        /* ======================================================
+           GET MESSAGE ANALYTICS
+        ====================================================== */
 
         const response = await fetch(
             "https://icm-website-test-production.up.railway.app/api/messages/analytics"
@@ -525,17 +528,13 @@ async function updateCommunicationAnalytics() {
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-
             throw new Error(
                 data.message ||
                 "Failed to load analytics"
             );
-
         }
 
-
-        const analytics =
-            data.analytics;
+        const analytics = data.analytics;
 
 
         /* ======================================================
@@ -548,10 +547,8 @@ async function updateCommunicationAnalytics() {
             );
 
         if (messagesToday) {
-
             messagesToday.textContent =
                 analytics.messagesToday;
-
         }
 
 
@@ -583,9 +580,7 @@ async function updateCommunicationAnalytics() {
 
                 messagesChange.textContent =
                     "Same as yesterday";
-
             }
-
         }
 
 
@@ -603,14 +598,12 @@ async function updateCommunicationAnalytics() {
                 "analyticsResponseStatus"
             );
 
-
         if (
             analytics.averageResponseMinutes !== null
         ) {
 
             const minutes =
                 analytics.averageResponseMinutes;
-
 
             if (responseElement) {
 
@@ -623,17 +616,13 @@ async function updateCommunicationAnalytics() {
 
                     responseElement.textContent =
                         `${minutes} min`;
-
                 }
-
             }
-
 
             if (responseStatus) {
 
                 responseStatus.textContent =
                     analytics.responseStatus;
-
             }
 
         } else {
@@ -642,16 +631,164 @@ async function updateCommunicationAnalytics() {
 
                 responseElement.textContent =
                     "—";
-
             }
 
             if (responseStatus) {
 
                 responseStatus.textContent =
                     "No response data";
-
             }
+        }
 
+
+        /* ======================================================
+           FILES SHARED TODAY
+           
+           Uses the SAME /api/upload endpoint already
+           used by loadSharedFiles().
+        ====================================================== */
+
+        const filesSharedElement =
+            document.getElementById(
+                "analyticsFilesShared"
+            );
+
+        const filesSharedStatus =
+            document.getElementById(
+                "analyticsFilesSharedStatus"
+            );
+
+        if (filesSharedElement) {
+
+            try {
+
+                const filesResponse = await fetch(
+                    "https://icm-website-test-production.up.railway.app/api/upload"
+                );
+
+                const filesData =
+                    await filesResponse.json();
+
+                if (
+                    !filesResponse.ok ||
+                    !filesData.success
+                ) {
+
+                    throw new Error(
+                        filesData.message ||
+                        "Failed to load shared files"
+                    );
+                }
+
+                const files =
+                    Array.isArray(filesData.files)
+                        ? filesData.files
+                        : [];
+
+
+                /* ==================================================
+                   TODAY'S DATE
+                ================================================== */
+
+                const today = new Date();
+
+                const todayYear =
+                    today.getFullYear();
+
+                const todayMonth =
+                    today.getMonth();
+
+                const todayDate =
+                    today.getDate();
+
+
+                /* ==================================================
+                   COUNT FILES CREATED TODAY
+                ================================================== */
+
+                const filesToday =
+                    files.filter(file => {
+
+                        /*
+                         * Different possible timestamp field names
+                         * are supported so this does not depend on
+                         * one exact backend property name.
+                         */
+
+                        const timestamp =
+                            file.created_at ||
+                            file.createdAt ||
+                            file.uploaded_at ||
+                            file.uploadedAt ||
+                            file.timestamp ||
+                            file.created;
+
+                        if (!timestamp) {
+                            return false;
+                        }
+
+                        const fileDate =
+                            new Date(timestamp);
+
+                        if (
+                            Number.isNaN(
+                                fileDate.getTime()
+                            )
+                        ) {
+                            return false;
+                        }
+
+                        return (
+                            fileDate.getFullYear() ===
+                                todayYear &&
+
+                            fileDate.getMonth() ===
+                                todayMonth &&
+
+                            fileDate.getDate() ===
+                                todayDate
+                        );
+
+                    }).length;
+
+
+                filesSharedElement.textContent =
+                    filesToday;
+
+
+                if (filesSharedStatus) {
+
+                    filesSharedStatus.textContent =
+                        "Today";
+                }
+
+
+                console.log(
+                    "FILES SHARED TODAY:",
+                    filesToday
+                );
+
+                console.log(
+                    "ALL SHARED FILES:",
+                    files
+                );
+
+            } catch (fileError) {
+
+                console.error(
+                    "FILES SHARED ANALYTICS ERROR:",
+                    fileError
+                );
+
+                filesSharedElement.textContent =
+                    "0";
+
+                if (filesSharedStatus) {
+
+                    filesSharedStatus.textContent =
+                        "Unable to load file data";
+                }
+            }
         }
 
 
@@ -669,16 +806,21 @@ async function updateCommunicationAnalytics() {
                 "analyticsDepartmentStatus"
             );
 
-
         if (
             analytics.departmentActivity !== null
         ) {
 
-            departmentElement.textContent =
-                `${analytics.departmentActivity}%`;
+            if (departmentElement) {
 
-            departmentStatus.textContent =
-                `${analytics.leadingDepartment} Leading`;
+                departmentElement.textContent =
+                    `${analytics.departmentActivity}%`;
+            }
+
+            if (departmentStatus) {
+
+                departmentStatus.textContent =
+                    `${analytics.leadingDepartment} Leading`;
+            }
 
         } else {
 
@@ -686,24 +828,24 @@ async function updateCommunicationAnalytics() {
 
                 departmentElement.textContent =
                     "—";
-
             }
 
             if (departmentStatus) {
 
                 departmentStatus.textContent =
                     "Department data unavailable";
-
             }
-
         }
 
+
+        /* ======================================================
+           DEBUG
+        ====================================================== */
 
         console.log(
             "COMMUNICATION ANALYTICS:",
             analytics
         );
-
 
     } catch (error) {
 
@@ -711,10 +853,9 @@ async function updateCommunicationAnalytics() {
             "COMMUNICATION ANALYTICS ERROR:",
             error
         );
-
     }
-
 }
+
 
 
 /* ==========================================================

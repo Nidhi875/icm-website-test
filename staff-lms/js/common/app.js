@@ -53,6 +53,10 @@ async function loadLayout() {
         loadComponent("components/calendar-widget.html", "#calendarWidget")
     ]);
 
+    initHeaderActions();
+
+    initHeaderLiveCounts();
+
     /* ==========================
        MOBILE SIDEBAR TOGGLE
        (must run after header/sidebar are loaded,
@@ -152,6 +156,554 @@ async function loadLayout() {
 
 
     initLogout();
+
+}
+
+
+/* ==========================================================
+   HEADER ACTIONS
+   Safe - only affects header buttons that exist
+========================================================== */
+
+function initHeaderActions() {
+
+    /* ---------------------------
+       CALENDAR
+    --------------------------- */
+
+    const calendarButtons =
+        document.querySelectorAll(".header .action-btn");
+
+    if (calendarButtons.length > 0) {
+
+        /*
+         * First action button = Calendar
+         */
+        const calendarButton = calendarButtons[0];
+
+        if (
+            calendarButton &&
+            !calendarButton.dataset.headerActionBound
+        ) {
+
+            calendarButton.dataset.headerActionBound = "true";
+
+            calendarButton.addEventListener("click", () => {
+
+                /*
+                 * If a calendar widget exists on the current page,
+                 * scroll to it.
+                 */
+                const calendarWidget =
+                    document.getElementById("calendarWidget");
+
+                if (calendarWidget) {
+
+                    calendarWidget.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                    return;
+                }
+
+                /*
+                 * Otherwise open Meetings page.
+                 */
+                window.location.href = "meetings.html";
+
+            });
+
+        }
+    }
+
+
+    /* ---------------------------
+       DARK MODE / MOON
+    --------------------------- */
+
+    if (!document.getElementById("headerDarkModeStyle")) {
+
+        const style =
+            document.createElement("style");
+
+        style.id = "headerDarkModeStyle";
+
+        style.textContent = `
+            body.header-dark-mode {
+                background: #101827 !important;
+                color: #f5f7fa !important;
+            }
+
+            body.header-dark-mode .main-content,
+            body.header-dark-mode .page-wrapper {
+                background: #101827 !important;
+            }
+
+            body.header-dark-mode .header {
+                background: #071b38 !important;
+            }
+
+            body.header-dark-mode .card,
+            body.header-dark-mode .kpi-card,
+            body.header-dark-mode .activity-card,
+            body.header-dark-mode .messages-card {
+                background: #182438 !important;
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+
+    const moonButton =
+        document.querySelector(
+            '.header .action-btn [data-lucide="moon"]'
+        )?.closest(".action-btn");
+
+
+    if (
+        moonButton &&
+        !moonButton.dataset.headerActionBound
+    ) {
+
+        moonButton.dataset.headerActionBound = "true";
+
+        /*
+         * Restore saved preference
+         */
+        if (
+            localStorage.getItem(
+                "staffDarkMode"
+            ) === "true"
+        ) {
+
+            document.body.classList.add(
+                "header-dark-mode"
+            );
+
+        }
+
+
+        moonButton.addEventListener("click", () => {
+
+            const enabled =
+                document.body.classList.toggle(
+                    "header-dark-mode"
+                );
+
+            localStorage.setItem(
+                "staffDarkMode",
+                enabled ? "true" : "false"
+            );
+
+            console.log(
+                "Dark mode:",
+                enabled ? "ON" : "OFF"
+            );
+
+        });
+
+    }
+
+
+    /* ---------------------------
+       PROFILE
+    --------------------------- */
+
+    const profile =
+        document.querySelector(".header-profile");
+
+    if (
+        profile &&
+        !profile.dataset.headerActionBound
+    ) {
+
+        profile.dataset.headerActionBound = "true";
+
+        profile.style.cursor = "pointer";
+
+        profile.addEventListener("click", () => {
+
+            /*
+             * Only navigate if profile.html exists
+             * or if your project already uses that page.
+             *
+             * Change this to your actual profile page
+             * if it has a different filename.
+             */
+            window.location.href = "profile.html";
+
+        });
+
+    }
+
+}
+
+
+/* ==========================================================
+   HEADER LIVE COUNTS
+   SAFE ADD-ON
+   Does NOT modify existing page functionality
+========================================================== */
+
+function initHeaderLiveCounts() {
+
+    console.log("Header live counts initialized");
+
+
+    /* ======================================================
+       SAFE BADGE UPDATE
+    ====================================================== */
+
+    function updateBadge(id, count) {
+
+        const badge =
+            document.getElementById(id);
+
+        if (!badge) {
+            return;
+        }
+
+        const number =
+            Number(count);
+
+        if (
+            !Number.isFinite(number) ||
+            number <= 0
+        ) {
+
+            badge.textContent = "";
+            badge.classList.add("hidden");
+
+            return;
+        }
+
+        badge.textContent =
+            number > 99 ? "99+" : String(number);
+
+        badge.classList.remove("hidden");
+    }
+
+
+    /* ======================================================
+       MESSAGE COUNT
+    ====================================================== */
+
+    async function updateMessageCount() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://icm-website-test-production.up.railway.app/api/messages",
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data =
+                await response.json();
+
+            if (!data.success) {
+                return;
+            }
+
+            const messages =
+                Array.isArray(data.messages)
+                    ? data.messages
+                    : [];
+
+
+            /*
+             * Only unread messages.
+             *
+             * This uses the same is_read field
+             * already used by your messages system.
+             */
+
+            const unread =
+                messages.filter(
+                    message =>
+                        message &&
+                        (
+                            message.is_read === false ||
+                            message.is_read === 0 ||
+                            message.is_read === "false"
+                        )
+                ).length;
+
+
+            updateBadge(
+                "messageCount",
+                unread
+            );
+
+
+            console.log(
+                "HEADER UNREAD MESSAGES:",
+                unread
+            );
+
+        } catch (error) {
+
+            /*
+             * Do NOT destroy the badge or
+             * interfere with the rest of the page.
+             */
+
+            console.warn(
+                "Header message count unavailable:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       NOTIFICATION COUNT
+    ====================================================== */
+
+    async function updateNotificationCount() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://icm-website-test-production.up.railway.app/api/notifications",
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data =
+                await response.json();
+
+            const notifications =
+                Array.isArray(data.notifications)
+                    ? data.notifications
+                    : [];
+
+
+            updateBadge(
+                "notificationCount",
+                notifications.length
+            );
+
+
+            console.log(
+                "HEADER NOTIFICATIONS:",
+                notifications.length
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Header notification count unavailable:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       CALENDAR / UPCOMING MEETINGS
+    ====================================================== */
+
+  function updateCalendarCount() {
+
+    try {
+
+        const meetings = JSON.parse(
+            localStorage.getItem("staff-lms-meetings") || "[]"
+        );
+
+        if (!Array.isArray(meetings)) {
+            updateBadge("calendarCount", 0);
+            return;
+        }
+
+        const today = new Date();
+
+        const todayString =
+            today.getFullYear() +
+            "-" +
+            String(today.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(today.getDate()).padStart(2, "0");
+
+        const todayMeetings = meetings.filter(meeting => {
+
+            if (!meeting || !meeting.date) {
+                return false;
+            }
+
+            return String(meeting.date) === todayString;
+
+        });
+
+        updateBadge(
+            "calendarCount",
+            todayMeetings.length
+        );
+
+        console.log(
+            "TODAY'S MEETING COUNT:",
+            todayMeetings.length
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Header calendar count unavailable:",
+            error
+        );
+
+        updateBadge(
+            "calendarCount",
+            0
+        );
+    }
+}
+
+
+    /* ======================================================
+       REFRESH ALL COUNTS
+    ====================================================== */
+
+    async function refreshHeaderCounts() {
+
+        updateCalendarCount();
+
+        await Promise.allSettled([
+            updateMessageCount(),
+            updateNotificationCount()
+        ]);
+
+    }
+
+
+    /* ======================================================
+       FIRST LOAD
+    ====================================================== */
+
+    refreshHeaderCounts();
+
+
+    /* ======================================================
+       AUTOMATIC REFRESH
+       Every 30 seconds
+    ====================================================== */
+
+    if (
+        window.gouldingsHeaderCountTimer
+    ) {
+
+        clearInterval(
+            window.gouldingsHeaderCountTimer
+        );
+
+    }
+
+
+    window.gouldingsHeaderCountTimer =
+        setInterval(
+            refreshHeaderCounts,
+            30000
+        );
+
+
+    /* ======================================================
+       CALENDAR BUTTON
+       Only if the button exists
+    ====================================================== */
+
+    const calendarButton =
+        document.getElementById(
+            "calendarHeaderBtn"
+        );
+
+
+    if (
+        calendarButton &&
+        !calendarButton.dataset.liveCountBound
+    ) {
+
+        calendarButton.dataset.liveCountBound =
+            "true";
+
+
+        calendarButton.addEventListener(
+            "click",
+            () => {
+
+                const calendarWidget =
+                    document.getElementById(
+                        "calendarWidget"
+                    );
+
+
+                if (calendarWidget) {
+
+                    calendarWidget.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                } else {
+
+                    window.location.href =
+                        "meetings.html";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       REFRESH CALENDAR WHEN ANOTHER TAB CHANGES MEETINGS
+    ====================================================== */
+
+    if (
+        !window.gouldingsCalendarStorageListener
+    ) {
+
+        window.gouldingsCalendarStorageListener =
+            true;
+
+
+        window.addEventListener(
+            "storage",
+            event => {
+
+                if (
+                    event.key ===
+                    "staff-lms-meetings"
+                ) {
+
+                    updateCalendarCount();
+
+                }
+
+            }
+        );
+
+    }
 
 }
 
