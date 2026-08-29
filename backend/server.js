@@ -1,14 +1,17 @@
 require("dotenv").config();
 
 
+const contactRoutes = require("./routes/contactRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
-const messageRoutes = require("./routes/messageRoutes");
+const messagesRoutes = require("./routes/messageRoutes");
 const goalsRoutes = require("./routes/goalsRoutes");
 const studentsRoutes = require("./routes/studentsRoutes");
 const teamPerformanceRoutes = require("./routes/teamPerformanceRoutes");
 const staffPresenceRoutes = require("./routes/staffPresenceRoutes");
 
+const operationsAdmissionsRoutes =
+    require("./routes/operationsAdmissionsRoutes");
 
 const express = require("express");
 const cors = require("cors");
@@ -19,6 +22,7 @@ require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const staffAuthRoutes = require("./routes/staffAuthRoutes");
+
 
 const app = express();
 app.use(helmet());
@@ -54,10 +58,14 @@ app.use("/api/staff", staffAuthRoutes);
 app.use("/api/staff/presence", staffPresenceRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/notifications", notificationRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/messages", messagesRoutes);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/students", studentsRoutes);
 app.use("/api/team-performance", teamPerformanceRoutes);
+
+app.use("/api/operations", operationsAdmissionsRoutes);
+app.use("/api/contact", contactRoutes);
+
 
 app.get("/", (req, res) => {
  res.send("Gouldings LMS Backend Running");

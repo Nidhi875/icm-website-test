@@ -52,45 +52,116 @@ document.addEventListener("DOMContentLoaded", () => {
       FORM VALIDATION
     =====================================*/
 
-    const form = document.querySelector(".contact-form form");
+ /*=====================================
+  CONTACT FORM SUBMISSION
+=====================================*/
 
-    if(form){
+const form = document.querySelector(".contact-form form");
 
-        form.addEventListener("submit", function(e){
+if (form) {
 
-            e.preventDefault();
+    form.addEventListener("submit", async function (e) {
 
-            const required = form.querySelectorAll("input[required], textarea");
+        e.preventDefault();
 
-            let valid = true;
+        const required = form.querySelectorAll(
+            "input[required], textarea"
+        );
 
-            required.forEach(field=>{
+        let valid = true;
 
-                if(field.value.trim()===""){
+        required.forEach(field => {
 
-                    field.style.borderColor="#d62828";
+            if (field.value.trim() === "") {
 
-                    valid=false;
+                field.style.borderColor = "#d62828";
+                valid = false;
 
-                }else{
+            } else {
 
-                    field.style.borderColor="#d4af37";
-
-                }
-
-            });
-
-            if(valid){
-
-                alert("Thank you for contacting Gouldings Global Academy. We will respond shortly.");
-
-                form.reset();
+                field.style.borderColor = "#d4af37";
 
             }
 
         });
 
-    }
+        if (!valid) {
+            alert("Please complete all required fields.");
+            return;
+        }
+
+        const submitButton = form.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+        const originalText = submitButton
+            ? submitButton.textContent
+            : "";
+
+        try {
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Sending...";
+            }
+
+          const fields = form.querySelectorAll(
+        "input:not([type='checkbox']), select, textarea"
+                 );
+
+               const data = {
+                 email: fields[0].value.trim(),
+                 name: fields[1].value.trim(),
+                learnerNumber: fields[2].value.trim(),
+                 country: fields[3].value.trim(),
+                subject: fields[4].value.trim(),
+                 message: fields[5].value.trim()
+                  };
+            const response = await fetch(
+                  "https://icm-website-test-production.up.railway.app/api/contact",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Unable to send message."
+                );
+            }
+
+            alert(
+                "Thank you for contacting Gouldings Global Academy. We will respond shortly."
+            );
+
+            form.reset();
+
+        } catch (error) {
+
+            console.error("CONTACT FORM ERROR:", error);
+
+            alert(
+                "Unable to send your message right now. Please try again."
+            );
+
+        } finally {
+
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+
+        }
+
+    });
+
+}
 
 
 

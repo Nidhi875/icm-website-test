@@ -35,6 +35,288 @@
   <link rel="stylesheet" href="css/pages/dashboard.css">
   <link rel="stylesheet" href="css/pages/operations.css">
 
+  <style>
+    .admissions-dashboard-card{width:100%;margin-top:18px;overflow:hidden}
+    .admissions-dashboard-header{align-items:flex-start;gap:18px}
+    .admissions-dashboard-header h3{margin:0;display:flex;align-items:center;gap:9px}
+    .admissions-dashboard-subtitle{margin:6px 0 0;font-size:13px;opacity:.68}
+    .admissions-dashboard-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .admissions-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:18px 0 12px}
+    .admission-summary-box{min-width:0;padding:14px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .admission-summary-box span{display:block;font-size:24px;font-weight:800;line-height:1.1;margin-bottom:5px}
+    .admission-summary-box small{opacity:.68;font-size:12px}
+    .admissions-meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:26px;font-size:12px;opacity:.75;margin-bottom:10px}
+    #admissionsImportStatus.success{color:#16a34a;opacity:1}
+    #admissionsImportStatus.error{color:#dc2626;opacity:1}
+    .admissions-attention{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+    .admissions-attention span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px}
+    .admissions-table-wrap{width:100%;overflow-x:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+    .admissions-table{width:100%;min-width:850px;border-collapse:collapse;font-size:12px}
+    .admissions-table th,.admissions-table td{padding:11px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+    .admissions-table th{font-weight:700;opacity:.72;background:rgba(255,255,255,.035)}
+    .admissions-table tbody tr:last-child td{border-bottom:0}
+    .admissions-status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(255,255,255,.06)}
+    .admissions-empty{text-align:center!important;padding:24px!important;opacity:.6}
+    .admissions-import-box{max-width:620px}
+    .admissions-file-label{display:block;margin-top:16px;font-weight:600}
+    .admissions-file-label input{display:block;width:100%;margin-top:8px;padding:10px;box-sizing:border-box}
+    .admissions-import-columns{margin-top:12px;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.045);font-size:12px;line-height:1.5}
+    .admissions-import-columns strong{display:block;margin-bottom:4px}
+    .admissions-import-result{display:none;margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.5;background:rgba(255,255,255,.045)}
+    .admissions-import-result.show{display:block}
+    @media(max-width:900px){
+      .admissions-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .admissions-dashboard-header{flex-direction:column}
+      .admissions-dashboard-actions{justify-content:flex-start}
+    }
+    @media(max-width:560px){
+      .admissions-summary-grid{grid-template-columns:1fr 1fr}
+      .admissions-meta-row{align-items:flex-start;flex-direction:column}
+    }
+
+    .goals-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.operations-goal-card {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+.goal-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.goal-card-top strong {
+    display: block;
+    color: #102b56;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.goal-card-top span {
+    display: block;
+    color: #718096;
+    font-size: 14px;
+}
+
+.goal-percentage {
+    color: #102b56;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.goal-progress {
+    height: 8px;
+    background: #edf1f5;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 14px;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    background: #e5b522;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+    /* ==========================================================
+   OPERATIONS ADMISSIONS - CLEAN STUDENT VIEW
+   Isolated to Operations page only
+========================================================== */
+
+.ops-admissions-controls {
+    margin-top: 18px;
+    border: 1px solid rgba(15, 35, 65, 0.08);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.72);
+    overflow: hidden;
+}
+
+.ops-admissions-summary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 16px 18px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.ops-admissions-summary::-webkit-details-marker {
+    display: none;
+}
+
+.ops-admissions-summary-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ops-admissions-summary-left i {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(20, 57, 105, 0.08);
+}
+
+.ops-admissions-summary-title {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.ops-admissions-summary-subtitle {
+    margin-top: 3px;
+    font-size: 12px;
+    opacity: 0.65;
+}
+
+.ops-admissions-chevron {
+    transition: transform .2s ease;
+}
+
+.ops-admissions-controls[open] .ops-admissions-chevron {
+    transform: rotate(180deg);
+}
+
+.ops-admissions-filter-bar {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(5, 1fr);
+    gap: 9px;
+    padding: 0 18px 16px;
+}
+
+.ops-admissions-filter-bar input,
+.ops-admissions-filter-bar select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(15, 35, 65, 0.10);
+    border-radius: 10px;
+    padding: 10px 11px;
+    background: #fff;
+    color: #14233b;
+    outline: none;
+}
+
+.ops-admissions-filter-bar input:focus,
+.ops-admissions-filter-bar select:focus {
+    border-color: #d8b12e;
+}
+
+.ops-admissions-results-count {
+    padding: 0 18px 10px;
+    font-size: 12px;
+    opacity: .65;
+}
+
+.ops-admissions-scroll {
+    max-height: 430px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin: 0 18px 18px;
+    border: 1px solid rgba(15, 35, 65, 0.08);
+    border-radius: 12px;
+}
+
+.ops-admissions-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.ops-admissions-scroll::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: rgba(20, 57, 105, 0.25);
+}
+
+.ops-admissions-table {
+    width: 100%;
+    min-width: 1250px;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.ops-admissions-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f7f9fc;
+    color: #14233b;
+    font-weight: 700;
+}
+
+.ops-admissions-table th,
+.ops-admissions-table td {
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(15, 35, 65, 0.07);
+    white-space: nowrap;
+}
+
+.ops-admissions-table tbody tr:hover {
+    background: rgba(20, 57, 105, 0.035);
+}
+
+.ops-admissions-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.ops-student-name {
+    font-weight: 700;
+}
+
+.ops-student-id {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    opacity: .55;
+}
+
+.ops-course {
+    max-width: 220px;
+    white-space: normal !important;
+}
+
+.ops-revenue {
+    font-weight: 700;
+}
+
+.ops-admissions-empty {
+    text-align: center !important;
+    padding: 28px !important;
+    opacity: .6;
+}
+
+@media (max-width: 1100px) {
+    .ops-admissions-filter-bar {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .ops-admissions-filter-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .ops-admissions-summary {
+        align-items: flex-start;
+    }
+}
+  </style>
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -63,6 +345,9 @@
       <p class="page-subtitle">Manage schedules, notices, and team updates</p>
     </div>
     <div class="header-actions">
+      <button type="button" id="openAdmissionsImport" class="primary-btn">
+        <i class="fa-solid fa-file-excel"></i> Import Admissions Excel
+      </button>
       <button data-open-notice class="primary-btn">New Notice</button>
       <button data-open-upload class="primary-btn">Upload PDF</button>
     </div>
@@ -73,6 +358,10 @@
     <!-- Calendar widget component -->
     <div id="calendarWidget" class="operations-calendar-widget"></div>
 
+    <!-- ==========================================================
+         ADMISSIONS DATA / EXCEL IMPORT
+         ========================================================== -->
+  
     <!-- Other Sections stacked below in 3 columns -->
     <div class="ops-sections">
 
@@ -136,7 +425,7 @@ with this: -->
 <div class="glass-card">
   <div class="card-title">
     <h3>Sales Targets & Goals</h3>
-    <button type="button" id="goalsEditBtn" class="link-btn" hidden>Edit</button>
+    <button type="button" id="goalsEditBtn" class="link-btn">Edit</button>
   </div>
   <div id="goalsContainer">
     <p class="goals-loading">Loading goals…</p>
@@ -146,15 +435,38 @@ with this: -->
 
 
 
-        <div class="glass-card">
-          <div class="card-title"><h3>Team Performance</h3></div>
-          <div class="stats-grid">
-          <div class="stat-box" data-metric="applications"><span>124</span><small>Applications</small></div>
-          <div class="stat-box" data-metric="admissions"><span>48</span><small>Admissions</small></div>
-          <div class="stat-box" data-metric="revenue"><span>&pound;42K</span><small>Revenue</small></div>
-          s<div class="stat-box" data-metric="response"><span>96%</span><small>Response Rate</small></div>
-          </div>
+      <!-- TEAM PERFORMANCE -->
+<div class="glass-card" id="operationsTeamPerformance">
+    <div class="card-title">
+        <h3>Team Performance</h3>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-box" data-operations-metric="applications">
+            <span>0</span>
+            <small>Applications</small>
         </div>
+
+        <div class="stat-box" data-operations-metric="admissions">
+            <span>0</span>
+            <small>Admissions</small>
+        </div>
+
+        <div class="stat-box" data-operations-metric="revenue">
+            <span>£0</span>
+            <small>Revenue</small>
+        </div>
+
+      
+          <div class="stat-box" data-metric="response">
+            <span>0%</span>
+            <small>Response Rate</small>
+        </div>
+
+    </div>
+</div>
+
       </main>
 
       <!-- Right Column -->
@@ -196,6 +508,37 @@ with this: -->
 
     </div>
   </section>
+  <!-- Admissions Excel Import -->
+  <div class="event-modal" id="admissionsImportModal" aria-hidden="true">
+    <div class="event-modal-box admissions-import-box" role="dialog" aria-modal="true" aria-labelledby="admissionsImportModalTitle">
+      <div class="modal-header">
+        <h2 id="admissionsImportModalTitle"><i class="fa-solid fa-file-excel"></i> Import Admissions Excel</h2>
+        <button type="button" id="closeAdmissionsImport" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-help">
+          Upload the latest <strong>.xlsx</strong> or <strong>.xls</strong> admissions file.
+          Existing students are updated using Student ID.
+        </p>
+        <label class="admissions-file-label">
+          Excel file
+          <input id="admissionsExcelFile" type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+        </label>
+        <div class="admissions-import-columns">
+          <strong>Accepted column names</strong>
+          <span>Student ID, Student Name, Sales Agent, Destination Country, University, Gouldings Course, Application Status, Offer Status, Admission Status, Revenue</span>
+        </div>
+        <div id="admissionsImportResult" class="admissions-import-result" aria-live="polite"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="link-btn" id="cancelAdmissionsImport">Cancel</button>
+        <button type="button" class="primary-btn" id="submitAdmissionsImport">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Import Excel
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Operations dialogs -->
   <div class="event-modal" id="messageModal" aria-hidden="true">
     <div class="event-modal-box message-modal-box" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle">

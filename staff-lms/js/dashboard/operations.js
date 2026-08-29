@@ -1176,29 +1176,2816 @@ PART 4 WILL COMPLETE THE ENTIRE FILE
 ==========================================================*/
 
 /*==========================================================
+   UNIVERSITY ADMISSIONS
+   EXCEL IMPORT + LIVE OPERATIONS DASHBOARD
+==========================================================*/
+
+const OPERATIONS_ADMISSIONS_API =
+    "http://localhost:5000/api/operations";
+
+
+/*==========================================================
+   CREATE ADMISSIONS DASHBOARD
+==========================================================*/
+
+function createAdmissionsDashboard(){
+
+    /* Prevent duplicate creation */
+    if(document.getElementById("operationsAdmissionsDashboard")){
+        return;
+    }
+
+    const dashboard = document.createElement("section");
+
+    dashboard.id = "operationsAdmissionsDashboard";
+
+    dashboard.className = "glass-card";
+
+    dashboard.style.cssText = `
+        width:100%;
+        margin:20px 0;
+        padding:24px;
+        box-sizing:border-box;
+    `;
+
+
+    dashboard.innerHTML = `
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-bottom:20px;
+        ">
+
+            <div>
+
+                <h3 style="
+                    margin:0;
+                    font-size:20px;
+                ">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    University Admissions Progress
+                </h3>
+
+                <p style="
+                    margin:6px 0 0;
+                    opacity:.65;
+                    font-size:13px;
+                ">
+                    Student progression from Gouldings to university.
+                </p>
+
+            </div>
+
+
+            <div style="
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+            ">
+
+                <button
+                    type="button"
+                    id="operationsAdmissionsRefresh"
+                    class="link-btn"
+                >
+                    <i class="fa-solid fa-rotate"></i>
+                    Refresh
+                </button>
+
+
+                <button
+                    type="button"
+                    id="operationsAdmissionsImport"
+                    class="primary-btn"
+                >
+                    <i class="fa-solid fa-file-excel"></i>
+                    Import Admissions Excel
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div style="
+            display:grid;
+            grid-template-columns:
+                repeat(5,minmax(0,1fr));
+            gap:12px;
+            margin-bottom:18px;
+        " id="operationsAdmissionsSummary">
+
+
+            <div class="glass-card" style="padding:15px;">
+                <small>Total Students</small>
+                <strong
+                    id="operationsAdmissionsStudents"
+                    style="
+                        display:block;
+                        font-size:25px;
+                        margin-top:6px;
+                    "
+                >0</strong>
+            </div>
+
+
+            <div class="glass-card" style="padding:15px;">
+                <small>Applications</small>
+                <strong
+                    id="operationsAdmissionsApplications"
+                    style="
+                        display:block;
+                        font-size:25px;
+                        margin-top:6px;
+                    "
+                >0</strong>
+            </div>
+
+
+            <div class="glass-card" style="padding:15px;">
+                <small>Offers</small>
+                <strong
+                    id="operationsAdmissionsOffers"
+                    style="
+                        display:block;
+                        font-size:25px;
+                        margin-top:6px;
+                    "
+                >0</strong>
+            </div>
+
+
+            <div class="glass-card" style="padding:15px;">
+                <small>Admissions</small>
+                <strong
+                    id="operationsAdmissionsConfirmed"
+                    style="
+                        display:block;
+                        font-size:25px;
+                        margin-top:6px;
+                    "
+                >0</strong>
+            </div>
+
+
+            <div class="glass-card" style="padding:15px;">
+                <small>Revenue</small>
+                <strong
+                    id="operationsAdmissionsRevenue"
+                    style="
+                        display:block;
+                        font-size:25px;
+                        margin-top:6px;
+                    "
+                >£0</strong>
+            </div>
+
+        </div>
+
+
+        <!-- IMPORT STATUS -->
+
+        <div
+            id="operationsAdmissionsImportStatus"
+            style="
+                font-size:13px;
+                margin-bottom:15px;
+                opacity:.7;
+            "
+        >
+            No admissions Excel file imported yet.
+        </div>
+
+
+        <!-- ATTENTION -->
+
+        <div
+            id="operationsAdmissionsAttention"
+            style="
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+                margin-bottom:18px;
+            "
+        >
+
+            <span>
+                Documents pending:
+                <strong id="operationsDocumentsPending">0</strong>
+            </span>
+
+            <span>
+                Applications preparing:
+                <strong id="operationsApplicationsPreparing">0</strong>
+            </span>
+
+            <span>
+                Offers pending:
+                <strong id="operationsOffersPending">0</strong>
+            </span>
+
+            <span>
+                Admissions pending:
+                <strong id="operationsAdmissionsPending">0</strong>
+            </span>
+
+        </div>
+
+
+        <!-- STUDENT TABLE -->
+
+        <div style="
+            width:100%;
+            overflow-x:auto;
+        ">
+
+            <table
+                style="
+                    width:100%;
+                    min-width:850px;
+                    border-collapse:collapse;
+                    font-size:13px;
+                "
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th style="text-align:left;padding:10px;">
+                            Student
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            Sales Agent
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            Country
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            University
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            Application
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            Offer
+                        </th>
+
+                        <th style="text-align:left;padding:10px;">
+                            Admission
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="operationsAdmissionsStudentsTable">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            style="
+                                text-align:center;
+                                padding:25px;
+                                opacity:.6;
+                            "
+                        >
+                            Loading admissions data...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+
+    /*
+       Put the new section immediately after
+       the calendar widget when available.
+       Otherwise place it at the beginning of
+       the main Operations content.
+    */
+
+    const calendar =
+        document.querySelector(
+            "#calendarWidget"
+        );
+
+
+    if(calendar){
+
+        calendar.insertAdjacentElement(
+            "afterend",
+            dashboard
+        );
+
+    }else{
+
+        const main =
+            document.querySelector("main");
+
+        if(main){
+
+            main.prepend(dashboard);
+
+        }else{
+
+            document.body.prepend(dashboard);
+
+        }
+
+    }
+
+
+    /*
+       Make summary cards responsive.
+    */
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "operationsAdmissionsResponsiveStyle";
+
+    style.textContent = `
+
+        @media(max-width:900px){
+
+            #operationsAdmissionsSummary{
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr))
+                !important;
+            }
+
+        }
+
+
+        @media(max-width:550px){
+
+            #operationsAdmissionsSummary{
+                grid-template-columns:
+                    1fr
+                !important;
+            }
+
+        }
+
+
+        #operationsAdmissionsAttention span{
+
+            padding:7px 10px;
+
+            border-radius:999px;
+
+            background:
+                rgba(255,255,255,.06);
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            font-size:12px;
+
+        }
+
+
+        #operationsAdmissionsStudentsTable
+        td{
+
+            padding:10px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,.07);
+
+        }
+
+
+        #operationsAdmissionsStudentsTable
+        th{
+
+            padding:10px;
+
+        }
+
+    `;
+
+    document.head.appendChild(style);
+
+}
+
+
+/*==========================================================
+   ESCAPE HTML
+==========================================================*/
+
+function escapeAdmissionsValue(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/*==========================================================
+   LOAD ADMISSIONS DASHBOARD
+==========================================================*/
+
+async function loadOperationsAdmissions(){
+
+    try{
+
+        const response =
+            await fetch(
+                `${OPERATIONS_ADMISSIONS_API}/dashboard`,
+                {
+                    method:"GET",
+                    cache:"no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Unable to load admissions data."
+            );
+
+        }
+
+
+        const summary =
+            data.summary || {};
+
+
+        const attention =
+            data.attention || {};
+
+
+        const students =
+            Array.isArray(data.students)
+                ? data.students
+                : [];
+
+
+        /*
+           SUMMARY
+        */
+
+        const setValue =
+            (id,value)=>{
+
+                const element =
+                    document.getElementById(id);
+
+                if(element){
+
+                    element.textContent =
+                        value;
+
+                }
+
+            };
+
+
+        setValue(
+            "operationsAdmissionsStudents",
+            Number(
+                summary.totalStudents || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsAdmissionsApplications",
+            Number(
+                summary.applications || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsAdmissionsOffers",
+            Number(
+                summary.offers || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsAdmissionsConfirmed",
+            Number(
+                summary.admissions || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsAdmissionsRevenue",
+            "£" +
+            Number(
+                summary.revenue || 0
+            ).toLocaleString()
+        );
+
+
+        /*
+           ATTENTION
+        */
+
+        setValue(
+            "operationsDocumentsPending",
+            Number(
+                attention.documentsPending || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsApplicationsPreparing",
+            Number(
+                attention.applicationsPreparing || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsOffersPending",
+            Number(
+                attention.offersPending || 0
+            ).toLocaleString()
+        );
+
+
+        setValue(
+            "operationsAdmissionsPending",
+            Number(
+                attention.admissionsPending || 0
+            ).toLocaleString()
+        );
+
+
+        /*
+           LAST IMPORT
+        */
+
+        const importStatus =
+            document.getElementById(
+                "operationsAdmissionsImportStatus"
+            );
+
+
+        if(
+            importStatus &&
+            data.lastImport
+        ){
+
+            const lastImport =
+                data.lastImport;
+
+
+            importStatus.textContent =
+                `${lastImport.file_name || "Admissions Excel"}`
+                +
+                ` • `
+                +
+                `${Number(
+                    lastImport.records_processed || 0
+                ).toLocaleString()} records processed`
+                +
+                ` • Last imported `
+                +
+                `${new Date(
+                    lastImport.imported_at
+                ).toLocaleString("en-GB")}`;
+
+        }
+
+
+        /*
+           STUDENT TABLE
+        */
+
+    /*==========================================================
+   STUDENT LIST + FILTERS + EXPANDABLE DETAILS
+==========================================================*/
+
+const table =
+    document.getElementById(
+        "operationsAdmissionsStudentsTable"
+    );
+
+if(!table) return;
+
+
+/*----------------------------------------------------------
+   SAVE CURRENT STUDENTS
+----------------------------------------------------------*/
+
+window.operationsAdmissionsStudents = students;
+
+
+/*----------------------------------------------------------
+   CREATE FILTER BAR ONCE
+----------------------------------------------------------*/
+
+let filters =
+    document.getElementById(
+        "operationsAdmissionsFilters"
+    );
+
+if(!filters){
+
+    filters = document.createElement("div");
+
+    filters.id =
+        "operationsAdmissionsFilters";
+
+    filters.style.cssText = `
+        display:grid;
+        grid-template-columns:
+            minmax(220px,2fr)
+            repeat(3,minmax(150px,1fr));
+        gap:10px;
+        margin:0 0 18px 0;
+        padding:15px;
+        border-radius:14px;
+        background:rgba(255,255,255,.55);
+        border:1px solid rgba(15,23,42,.08);
+    `;
+
+
+    filters.innerHTML = `
+
+        <!-- SEARCH -->
+
+        <input
+            type="text"
+            id="operationsAdmissionsSearch"
+            placeholder="Search student, ID, agent..."
+            style="
+                width:100%;
+                box-sizing:border-box;
+                padding:11px 13px;
+                border-radius:10px;
+                border:1px solid #d1d5db;
+                background:white;
+                font-size:13px;
+                outline:none;
+            "
+        >
+
+
+        <!-- SALES AGENT -->
+
+        <select
+            id="operationsAdmissionsAgentFilter"
+            style="
+                width:100%;
+                padding:11px 13px;
+                border-radius:10px;
+                border:1px solid #d1d5db;
+                background:white;
+                font-size:13px;
+                outline:none;
+            "
+        >
+            <option value="">All Sales Agents</option>
+        </select>
+
+
+        <!-- COUNTRY -->
+
+        <select
+            id="operationsAdmissionsCountryFilter"
+            style="
+                width:100%;
+                padding:11px 13px;
+                border-radius:10px;
+                border:1px solid #d1d5db;
+                background:white;
+                font-size:13px;
+                outline:none;
+            "
+        >
+            <option value="">All Countries</option>
+        </select>
+
+
+        <!-- ADMISSION -->
+
+        <select
+            id="operationsAdmissionsStatusFilter"
+            style="
+                width:100%;
+                padding:11px 13px;
+                border-radius:10px;
+                border:1px solid #d1d5db;
+                background:white;
+                font-size:13px;
+                outline:none;
+            "
+        >
+            <option value="">All Admission Statuses</option>
+        </select>
+
+    `;
+
+
+    /*
+       Put filters immediately before
+       the table wrapper.
+    */
+
+    const tableWrapper =
+        table.closest("div");
+
+    if(tableWrapper){
+
+        tableWrapper.parentElement.insertBefore(
+            filters,
+            tableWrapper
+        );
+
+    }
+
+
+    /*------------------------------------------------------
+       FILTER EVENTS
+    ------------------------------------------------------*/
+
+    document
+        .getElementById(
+            "operationsAdmissionsSearch"
+        )
+        ?.addEventListener(
+            "input",
+            renderFilteredAdmissions
+        );
+
+
+    document
+        .getElementById(
+            "operationsAdmissionsAgentFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderFilteredAdmissions
+        );
+
+
+    document
+        .getElementById(
+            "operationsAdmissionsCountryFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderFilteredAdmissions
+        );
+
+
+    document
+        .getElementById(
+            "operationsAdmissionsStatusFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderFilteredAdmissions
+        );
+
+}
+
+
+/*----------------------------------------------------------
+   BUILD FILTER OPTIONS
+----------------------------------------------------------*/
+
+function uniqueValues(field){
+
+    return [
+        ...new Set(
+            students
+                .map(student =>
+                    String(
+                        student[field] ?? ""
+                    ).trim()
+                )
+                .filter(Boolean)
+        )
+    ].sort(
+        (a,b) =>
+            a.localeCompare(
+                b,
+                undefined,
+                {sensitivity:"base"}
+            )
+    );
+
+}
+
+
+/* SALES AGENTS */
+
+const agentFilter =
+    document.getElementById(
+        "operationsAdmissionsAgentFilter"
+    );
+
+if(agentFilter){
+
+    const currentAgent =
+        agentFilter.value;
+
+    agentFilter.innerHTML =
+        `<option value="">All Sales Agents</option>` +
+        uniqueValues("salesAgent")
+            .map(agent => `
+                <option value="${escapeAdmissionsValue(agent)}">
+                    ${escapeAdmissionsValue(agent)}
+                </option>
+            `)
+            .join("");
+
+    agentFilter.value =
+        currentAgent;
+
+}
+
+
+/* COUNTRIES */
+
+const countryFilter =
+    document.getElementById(
+        "operationsAdmissionsCountryFilter"
+    );
+
+if(countryFilter){
+
+    const currentCountry =
+        countryFilter.value;
+
+    countryFilter.innerHTML =
+        `<option value="">All Countries</option>` +
+        uniqueValues("country")
+            .map(country => `
+                <option value="${escapeAdmissionsValue(country)}">
+                    ${escapeAdmissionsValue(country)}
+                </option>
+            `)
+            .join("");
+
+    countryFilter.value =
+        currentCountry;
+
+}
+
+
+/* ADMISSION STATUS */
+
+const statusFilter =
+    document.getElementById(
+        "operationsAdmissionsStatusFilter"
+    );
+
+if(statusFilter){
+
+    const currentStatus =
+        statusFilter.value;
+
+    statusFilter.innerHTML =
+        `<option value="">All Admission Statuses</option>` +
+        uniqueValues("admissionStatus")
+            .map(status => `
+                <option value="${escapeAdmissionsValue(status)}">
+                    ${escapeAdmissionsValue(status)}
+                </option>
+            `)
+            .join("");
+
+    statusFilter.value =
+        currentStatus;
+
+}
+
+
+/*----------------------------------------------------------
+   RENDER FILTERED STUDENTS
+----------------------------------------------------------*/
+
+function renderFilteredAdmissions(){
+
+    const allStudents =
+        window.operationsAdmissionsStudents || [];
+
+
+    const search =
+        (
+            document.getElementById(
+                "operationsAdmissionsSearch"
+            )?.value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const selectedAgent =
+        document.getElementById(
+            "operationsAdmissionsAgentFilter"
+        )?.value || "";
+
+
+    const selectedCountry =
+        document.getElementById(
+            "operationsAdmissionsCountryFilter"
+        )?.value || "";
+
+
+    const selectedStatus =
+        document.getElementById(
+            "operationsAdmissionsStatusFilter"
+        )?.value || "";
+
+
+    const filtered =
+        allStudents.filter(student => {
+
+            const searchableText = [
+
+                student.studentName,
+                student.studentId,
+                student.salesAgent,
+                student.country,
+                student.university,
+                student.course,
+                student.gouldingsCourse,
+                student.applicationStatus,
+                student.offerStatus,
+                student.admissionStatus
+
+            ]
+            .map(value =>
+                String(value ?? "")
+                    .toLowerCase()
+            )
+            .join(" ");
+
+
+            const matchesSearch =
+                !search ||
+                searchableText.includes(search);
+
+
+            const matchesAgent =
+                !selectedAgent ||
+                String(
+                    student.salesAgent ?? ""
+                ) === selectedAgent;
+
+
+            const matchesCountry =
+                !selectedCountry ||
+                String(
+                    student.country ?? ""
+                ) === selectedCountry;
+
+
+            const matchesStatus =
+                !selectedStatus ||
+                String(
+                    student.admissionStatus ?? ""
+                ) === selectedStatus;
+
+
+            return (
+                matchesSearch &&
+                matchesAgent &&
+                matchesCountry &&
+                matchesStatus
+            );
+
+        });
+
+
+    /*------------------------------------------------------
+       NO RESULTS
+    ------------------------------------------------------*/
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        opacity:.65;
+                    "
+                >
+                    No students match the selected filters.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    /*------------------------------------------------------
+       STUDENT ROWS
+    ------------------------------------------------------*/
+
+    table.innerHTML =
+        filtered.map(
+            (student,index) => {
+
+                const rowId =
+                    `admissionStudent_${index}_${String(
+                        student.studentId ||
+                        student.studentName ||
+                        Date.now()
+                    )
+                    .replace(
+                        /[^a-zA-Z0-9_-]/g,
+                        "_"
+                    )}`;
+
+
+                const course =
+                    student.gouldingsCourse ||
+                    student.course ||
+                    student.gouldings_course ||
+                    "—";
+
+
+                const revenue =
+                    student.revenue ??
+                    student.Revenue ??
+                    0;
+
+
+                const applicationStatus =
+                    student.applicationStatus ||
+                    "—";
+
+
+                const offerStatus =
+                    student.offerStatus ||
+                    "—";
+
+
+                const admissionStatus =
+                    student.admissionStatus ||
+                    "—";
+
+
+                return `
+
+                    <!-- MAIN STUDENT ROW -->
+
+                    <tr
+                        class="operations-admission-row"
+                        data-student-row="${rowId}"
+                        style="
+                            cursor:pointer;
+                            transition:background .2s ease;
+                        "
+                    >
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="operations-admission-expand"
+                                data-target="${rowId}"
+                                style="
+                                    border:0;
+                                    background:transparent;
+                                    cursor:pointer;
+                                    font-size:14px;
+                                    margin-right:7px;
+                                    color:#0f2b52;
+                                "
+                                title="View student details"
+                            >
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                            <strong>
+                                ${escapeAdmissionsValue(
+                                    student.studentName ||
+                                    "—"
+                                )}
+                            </strong>
+
+                            <br>
+
+                            <small style="opacity:.55;">
+                                ${escapeAdmissionsValue(
+                                    student.studentId ||
+                                    ""
+                                )}
+                            </small>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeAdmissionsValue(
+                                student.salesAgent ||
+                                "Unassigned"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeAdmissionsValue(
+                                student.country ||
+                                "—"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeAdmissionsValue(
+                                student.university ||
+                                "—"
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    padding:5px 9px;
+                                    border-radius:999px;
+                                    background:#eef2ff;
+                                    font-size:12px;
+                                "
+                            >
+                                ${escapeAdmissionsValue(
+                                    applicationStatus
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    padding:5px 9px;
+                                    border-radius:999px;
+                                    background:#fef3c7;
+                                    font-size:12px;
+                                "
+                            >
+                                ${escapeAdmissionsValue(
+                                    offerStatus
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    padding:5px 9px;
+                                    border-radius:999px;
+                                    background:#dcfce7;
+                                    font-size:12px;
+                                "
+                            >
+                                ${escapeAdmissionsValue(
+                                    admissionStatus
+                                )}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- EXPANDED DETAILS -->
+
+                    <tr
+                        id="${rowId}"
+                        class="operations-admission-details"
+                        style="
+                            display:none;
+                        "
+                    >
+
+                        <td
+                            colspan="7"
+                            style="
+                                padding:0;
+                                border-top:0;
+                            "
+                        >
+
+                            <div
+                                style="
+                                    margin:0 10px 12px 10px;
+                                    padding:18px;
+                                    border-radius:12px;
+                                    background:#f8fafc;
+                                    border:1px solid #e5e7eb;
+                                    display:grid;
+                                    grid-template-columns:
+                                        repeat(4,minmax(0,1fr));
+                                    gap:15px;
+                                "
+                            >
+
+                                <!-- COURSE -->
+
+                                <div>
+
+                                    <small
+                                        style="
+                                            display:block;
+                                            color:#6b7280;
+                                            margin-bottom:4px;
+                                        "
+                                    >
+                                        Gouldings Course
+                                    </small>
+
+                                    <strong>
+                                        ${escapeAdmissionsValue(
+                                            course
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- REVENUE -->
+
+                                <div>
+
+                                    <small
+                                        style="
+                                            display:block;
+                                            color:#6b7280;
+                                            margin-bottom:4px;
+                                        "
+                                    >
+                                        Revenue
+                                    </small>
+
+                                    <strong>
+                                        £${Number(
+                                            revenue || 0
+                                        ).toLocaleString()}
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- APPLICATION -->
+
+                                <div>
+
+                                    <small
+                                        style="
+                                            display:block;
+                                            color:#6b7280;
+                                            margin-bottom:4px;
+                                        "
+                                    >
+                                        Application
+                                    </small>
+
+                                    <strong>
+                                        ${escapeAdmissionsValue(
+                                            applicationStatus
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- ADMISSION -->
+
+                                <div>
+
+                                    <small
+                                        style="
+                                            display:block;
+                                            color:#6b7280;
+                                            margin-bottom:4px;
+                                        "
+                                    >
+                                        Admission
+                                    </small>
+
+                                    <strong>
+                                        ${escapeAdmissionsValue(
+                                            admissionStatus
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
+
+    /*------------------------------------------------------
+       EXPAND / COLLAPSE
+    ------------------------------------------------------*/
+
+    table
+        .querySelectorAll(
+            ".operations-admission-expand"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+
+                    const targetId =
+                        button.dataset.target;
+
+
+                    const details =
+                        document.getElementById(
+                            targetId
+                        );
+
+
+                    if(!details) return;
+
+
+                    const isOpen =
+                        details.style.display !==
+                        "none";
+
+
+                    details.style.display =
+                        isOpen
+                            ? "none"
+                            : "table-row";
+
+
+                    const icon =
+                        button.querySelector("i");
+
+
+                    if(icon){
+
+                        icon.className =
+                            isOpen
+                                ? "fa-solid fa-chevron-right"
+                                : "fa-solid fa-chevron-down";
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    /*------------------------------------------------------
+       CLICK WHOLE ROW
+    ------------------------------------------------------*/
+
+    table
+        .querySelectorAll(
+            ".operations-admission-row"
+        )
+        .forEach(row => {
+
+            row.addEventListener(
+                "click",
+                () => {
+
+                    const button =
+                        row.querySelector(
+                            ".operations-admission-expand"
+                        );
+
+                    button?.click();
+
+                }
+            );
+
+        });
+
+}
+
+
+/*==========================================================
+   ADMISSIONS TABLE PROFESSIONAL LAYOUT
+==========================================================*/
+
+(function styleAdmissionsStudentTable(){
+
+    const admissionsTable =
+        document.getElementById(
+            "operationsAdmissionsStudentsTable"
+        );
+
+    if(!admissionsTable) return;
+
+
+    /*------------------------------------------------------
+       FIND TABLE ELEMENT
+    ------------------------------------------------------*/
+
+    const actualTable =
+        admissionsTable.tagName.toLowerCase() === "table"
+            ? admissionsTable
+            : admissionsTable.closest("table");
+
+
+    if(!actualTable) return;
+
+
+    /*------------------------------------------------------
+       FIND / CREATE SCROLL CONTAINER
+    ------------------------------------------------------*/
+
+    let scrollContainer =
+        actualTable.closest(
+            ".operations-admissions-scroll"
+        );
+
+
+    if(!scrollContainer){
+
+        scrollContainer =
+            document.createElement("div");
+
+        scrollContainer.className =
+            "operations-admissions-scroll";
+
+
+        actualTable.parentNode.insertBefore(
+            scrollContainer,
+            actualTable
+        );
+
+
+        scrollContainer.appendChild(
+            actualTable
+        );
+
+    }
+
+
+    /*------------------------------------------------------
+       SCROLL CONTAINER
+    ------------------------------------------------------*/
+
+    scrollContainer.style.cssText = `
+        width:100%;
+        max-height:560px;
+        overflow-y:auto;
+        overflow-x:auto;
+        border-radius:14px;
+        background:#ffffff;
+        border:1px solid rgba(15,23,42,.08);
+        box-sizing:border-box;
+        scrollbar-width:thin;
+    `;
+
+
+    /*------------------------------------------------------
+       TABLE
+    ------------------------------------------------------*/
+
+    actualTable.style.cssText += `
+        width:100%;
+        min-width:920px;
+        border-collapse:separate;
+        border-spacing:0;
+        table-layout:fixed;
+    `;
+
+
+    /*------------------------------------------------------
+       HEADER
+    ------------------------------------------------------*/
+
+    const header =
+        actualTable.querySelector("thead");
+
+
+    if(header){
+
+        header.style.position =
+            "sticky";
+
+        header.style.top =
+            "0";
+
+        header.style.zIndex =
+            "10";
+
+
+        header
+            .querySelectorAll("th")
+            .forEach(th => {
+
+                th.style.background =
+                    "#ffffff";
+
+                th.style.boxShadow =
+                    "0 1px 0 rgba(15,23,42,.08)";
+
+                th.style.position =
+                    "sticky";
+
+                th.style.top =
+                    "0";
+
+                th.style.zIndex =
+                    "11";
+
+                th.style.padding =
+                    "15px 12px";
+
+                th.style.whiteSpace =
+                    "nowrap";
+
+            });
+
+    }
+
+
+    /*------------------------------------------------------
+       COLUMN WIDTHS
+    ------------------------------------------------------*/
+
+    const headers =
+        actualTable.querySelectorAll(
+            "thead th"
+        );
+
+
+    if(headers.length >= 7){
+
+        headers[0].style.width = "22%";
+        headers[1].style.width = "14%";
+        headers[2].style.width = "11%";
+        headers[3].style.width = "21%";
+        headers[4].style.width = "11%";
+        headers[5].style.width = "10%";
+        headers[6].style.width = "11%";
+
+    }
+
+
+    /*------------------------------------------------------
+       ROW STYLING
+    ------------------------------------------------------*/
+
+    function styleRows(){
+
+        actualTable
+            .querySelectorAll(
+                "tbody > tr"
+            )
+            .forEach(row => {
+
+                if(
+                    row.classList.contains(
+                        "operations-admission-details"
+                    )
+                ){
+                    return;
+                }
+
+
+                row.style.transition =
+                    "background .18s ease";
+
+
+                row
+                    .querySelectorAll("td")
+                    .forEach(td => {
+
+                        td.style.padding =
+                            "15px 12px";
+
+                        td.style.verticalAlign =
+                            "middle";
+
+                        td.style.borderBottom =
+                            "1px solid rgba(15,23,42,.06)";
+
+                        td.style.overflow =
+                            "hidden";
+
+                        td.style.textOverflow =
+                            "ellipsis";
+
+                        td.style.whiteSpace =
+                            "nowrap";
+
+                    });
+
+
+                row.addEventListener(
+                    "mouseenter",
+                    () => {
+
+                        row.style.background =
+                            "#f8fafc";
+
+                    }
+                );
+
+
+                row.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        row.style.background =
+                            "";
+
+                    }
+                );
+
+            });
+
+
+        /*--------------------------------------------------
+           EXPANDED DETAILS
+        --------------------------------------------------*/
+
+        actualTable
+            .querySelectorAll(
+                ".operations-admission-details"
+            )
+            .forEach(details => {
+
+                details
+                    .querySelectorAll("td")
+                    .forEach(td => {
+
+                        td.style.whiteSpace =
+                            "normal";
+
+                        td.style.overflow =
+                            "visible";
+
+                    });
+
+            });
+
+    }
+
+
+    styleRows();
+
+
+    /*------------------------------------------------------
+       RESPONSIVE MOBILE SUPPORT
+    ------------------------------------------------------*/
+
+    if(
+        !document.getElementById(
+            "operationsAdmissionsTableResponsiveStyle"
+        )
+    ){
+
+        const style =
+            document.createElement("style");
+
+        style.id =
+            "operationsAdmissionsTableResponsiveStyle";
+
+
+        style.textContent = `
+
+            .operations-admissions-scroll::-webkit-scrollbar{
+                width:7px;
+                height:7px;
+            }
+
+            .operations-admissions-scroll::-webkit-scrollbar-thumb{
+                background:rgba(15,43,82,.25);
+                border-radius:20px;
+            }
+
+            .operations-admissions-scroll::-webkit-scrollbar-track{
+                background:transparent;
+            }
+
+
+            @media(max-width:900px){
+
+                .operations-admissions-scroll{
+                    max-height:500px !important;
+                }
+
+            }
+
+
+            @media(max-width:650px){
+
+                .operations-admissions-scroll{
+                    max-height:460px !important;
+                }
+
+            }
+
+        `;
+
+
+        document.head.appendChild(style);
+
+    }
+
+})();
+
+
+/*----------------------------------------------------------
+   EMPTY DATA
+----------------------------------------------------------*/
+
+if(students.length === 0){
+
+    table.innerHTML = `
+        <tr>
+
+            <td
+                colspan="7"
+                style="
+                    text-align:center;
+                    padding:30px;
+                    opacity:.6;
+                "
+            >
+                No admissions records yet.
+                Import the Excel file to begin.
+            </td>
+
+        </tr>
+    `;
+
+}else{
+
+    renderFilteredAdmissions();
+
+}
+
+    }catch(error){
+
+        console.error(
+            "OPERATIONS ADMISSIONS ERROR:",
+            error
+        );
+
+
+        const status =
+            document.getElementById(
+                "operationsAdmissionsImportStatus"
+            );
+
+
+        if(status){
+
+            status.textContent =
+                "Unable to load admissions data.";
+
+        }
+
+    }
+
+}
+
+
+/*==========================================================
+   CREATE DASHBOARD ON PAGE LOAD
+==========================================================*/
+
+createAdmissionsDashboard();
+
+loadOperationsAdmissions();
+
+
+/*==========================================================
+   REFRESH BUTTON
+==========================================================*/
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.closest(
+                "#operationsAdmissionsRefresh"
+            )
+        ){
+
+            loadOperationsAdmissions();
+
+        }
+
+    }
+);
+
+
+/*==========================================================
+   ADMISSIONS EXCEL IMPORT MODAL
+==========================================================*/
+
+function createAdmissionsImportModal(){
+
+    /* Prevent duplicate modal */
+
+    if(document.getElementById("operationsAdmissionsImportModal")){
+        return;
+    }
+
+
+    const modal = document.createElement("div");
+
+    modal.id = "operationsAdmissionsImportModal";
+
+
+    modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        z-index:99999;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+        background:rgba(0,0,0,.65);
+        backdrop-filter:blur(5px);
+    `;
+
+
+    modal.innerHTML = `
+
+        <div
+            style="
+                width:100%;
+                max-width:600px;
+                max-height:90vh;
+                overflow:auto;
+                background:#ffffff;
+                color:#111827;
+                border-radius:18px;
+                padding:25px;
+                box-sizing:border-box;
+                box-shadow:0 25px 80px rgba(0,0,0,.35);
+            "
+        >
+
+            <!-- HEADER -->
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:15px;
+                    margin-bottom:20px;
+                "
+            >
+
+                <div>
+
+                    <h2
+                        style="
+                            margin:0;
+                            font-size:21px;
+                        "
+                    >
+
+                        <i
+                            class="fa-solid fa-file-excel"
+                        ></i>
+
+                        Import Admissions Excel
+
+                    </h2>
+
+
+                    <p
+                        style="
+                            margin:6px 0 0;
+                            font-size:13px;
+                            color:#6b7280;
+                        "
+                    >
+
+                        Upload the latest sales/admissions
+                        Excel file.
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeOperationsAdmissionsImport"
+                    style="
+                        border:0;
+                        background:transparent;
+                        font-size:26px;
+                        cursor:pointer;
+                        color:#6b7280;
+                    "
+                >
+
+                    &times;
+
+                </button>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div
+                style="
+                    padding:14px;
+                    border-radius:12px;
+                    background:#f3f4f6;
+                    margin-bottom:18px;
+                    font-size:13px;
+                    line-height:1.6;
+                "
+            >
+
+                <strong>
+                    Excel columns required:
+                </strong>
+
+                <br>
+
+                Student ID,
+                Student Name,
+                Sales Agent,
+                Destination Country,
+                University,
+                Gouldings Course,
+                Application Status,
+                Offer Status,
+                Admission Status,
+                Revenue
+
+            </div>
+
+
+            <!-- FILE -->
+
+            <label
+                for="operationsAdmissionsExcelFile"
+                style="
+                    display:block;
+                    font-weight:600;
+                    margin-bottom:8px;
+                "
+            >
+
+                Select Excel file
+
+            </label>
+
+
+            <input
+                id="operationsAdmissionsExcelFile"
+                type="file"
+                accept=".xlsx,.xls"
+                style="
+                    display:block;
+                    width:100%;
+                    padding:12px;
+                    border:1px solid #d1d5db;
+                    border-radius:10px;
+                    box-sizing:border-box;
+                    background:#fff;
+                "
+            />
+
+
+            <!-- SELECTED FILE -->
+
+            <div
+                id="operationsAdmissionsSelectedFile"
+                style="
+                    margin-top:10px;
+                    font-size:12px;
+                    color:#6b7280;
+                "
+            >
+
+                No file selected.
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div
+                id="operationsAdmissionsImportResult"
+                style="
+                    display:none;
+                    margin-top:15px;
+                    padding:13px;
+                    border-radius:10px;
+                    font-size:13px;
+                    line-height:1.6;
+                "
+            ></div>
+
+
+            <!-- FOOTER -->
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:flex-end;
+                    gap:10px;
+                    margin-top:22px;
+                "
+            >
+
+                <button
+                    type="button"
+                    id="cancelOperationsAdmissionsImport"
+                    class="link-btn"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="submitOperationsAdmissionsImport"
+                    class="primary-btn"
+                >
+
+                    <i
+                        class="fa-solid fa-cloud-arrow-up"
+                    ></i>
+
+                    Import Excel
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(modal);
+
+
+    /*======================================================
+       REFERENCES
+    ======================================================*/
+
+    const fileInput =
+        document.getElementById(
+            "operationsAdmissionsExcelFile"
+        );
+
+
+    const selectedFile =
+        document.getElementById(
+            "operationsAdmissionsSelectedFile"
+        );
+
+
+    const result =
+        document.getElementById(
+            "operationsAdmissionsImportResult"
+        );
+
+
+    const importButton =
+        document.getElementById(
+            "submitOperationsAdmissionsImport"
+        );
+
+
+    const closeButton =
+        document.getElementById(
+            "closeOperationsAdmissionsImport"
+        );
+
+
+    const cancelButton =
+        document.getElementById(
+            "cancelOperationsAdmissionsImport"
+        );
+
+
+    /*======================================================
+       OPEN
+    ======================================================*/
+
+    function openModal(){
+
+        modal.style.display="flex";
+
+        result.style.display="none";
+
+        result.innerHTML="";
+
+        if(fileInput){
+
+            fileInput.value="";
+
+        }
+
+        if(selectedFile){
+
+            selectedFile.textContent=
+                "No file selected.";
+
+        }
+
+    }
+
+
+    /*======================================================
+       CLOSE
+    ======================================================*/
+
+    function closeModal(){
+
+        modal.style.display="none";
+
+    }
+
+
+    /*======================================================
+       FILE SELECTED
+    ======================================================*/
+
+    fileInput?.addEventListener(
+        "change",
+        ()=>{
+
+            if(!fileInput.files.length){
+
+                selectedFile.textContent=
+                    "No file selected.";
+
+                return;
+
+            }
+
+
+            const file =
+                fileInput.files[0];
+
+
+            selectedFile.textContent =
+                `Selected: ${file.name}`;
+
+
+            result.style.display="none";
+
+        }
+    );
+
+
+    /*======================================================
+       IMPORT
+    ======================================================*/
+
+    importButton?.addEventListener(
+        "click",
+        async ()=>{
+
+            if(!fileInput.files.length){
+
+                result.style.display="block";
+
+                result.style.background="#fee2e2";
+
+                result.style.color="#991b1b";
+
+                result.textContent =
+                    "Please select an Excel file first.";
+
+                return;
+
+            }
+
+
+            const file =
+                fileInput.files[0];
+
+
+            const filename =
+                file.name.toLowerCase();
+
+
+            if(
+                !filename.endsWith(".xlsx") &&
+                !filename.endsWith(".xls")
+            ){
+
+                result.style.display="block";
+
+                result.style.background="#fee2e2";
+
+                result.style.color="#991b1b";
+
+                result.textContent =
+                    "Only .xlsx and .xls files are supported.";
+
+                return;
+
+            }
+
+
+            /*----------------------------------------------
+               FORM DATA
+            ----------------------------------------------*/
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "file",
+                file
+            );
+
+
+            /*----------------------------------------------
+               BUTTON STATE
+            ----------------------------------------------*/
+
+            importButton.disabled=true;
+
+
+            importButton.innerHTML = `
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                ></i>
+
+                Importing...
+
+            `;
+
+
+            result.style.display="block";
+
+            result.style.background="#f3f4f6";
+
+            result.style.color="#374151";
+
+            result.textContent =
+                "Uploading and processing Excel file...";
+
+
+            try{
+
+                /*------------------------------------------
+                   SEND TO BACKEND
+                ------------------------------------------*/
+
+                const response =
+                    await fetch(
+                        `${OPERATIONS_ADMISSIONS_API}/admissions/import`,
+                        {
+                            method:"POST",
+                            body:formData
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if(
+                    !response.ok ||
+                    !data.success
+                ){
+
+                    throw new Error(
+                        data.message ||
+                        "Excel import failed."
+                    );
+
+                }
+
+
+                /*------------------------------------------
+                   IMPORT RESULT
+                ------------------------------------------*/
+
+                const imported =
+                    data.import || {};
+
+
+                result.style.background =
+                    "#dcfce7";
+
+
+                result.style.color =
+                    "#166534";
+
+
+                result.innerHTML = `
+
+                    <strong>
+                        Import successful!
+                    </strong>
+
+                    <br><br>
+
+                    Records processed:
+                    <strong>
+                        ${Number(
+                            imported.recordsProcessed || 0
+                        )}
+                    </strong>
+
+                    <br>
+
+                    New records:
+                    <strong>
+                        ${Number(
+                            imported.newRecords || 0
+                        )}
+                    </strong>
+
+                    <br>
+
+                    Updated records:
+                    <strong>
+                        ${Number(
+                            imported.updatedRecords || 0
+                        )}
+                    </strong>
+
+                    <br>
+
+                    Errors:
+                    <strong>
+                        ${Number(
+                            imported.errorCount || 0
+                        )}
+                    </strong>
+
+                `;
+
+
+                /*------------------------------------------
+                   REFRESH DASHBOARD
+                ------------------------------------------*/
+
+                await loadOperationsAdmissions();
+
+
+            }catch(error){
+
+                console.error(
+                    "ADMISSIONS IMPORT ERROR:",
+                    error
+                );
+
+
+                result.style.display="block";
+
+                result.style.background =
+                    "#fee2e2";
+
+
+                result.style.color =
+                    "#991b1b";
+
+
+                result.innerHTML = `
+
+                    <strong>
+                        Import failed.
+                    </strong>
+
+                    <br>
+
+                    ${escapeAdmissionsValue(
+                        error.message
+                    )}
+
+                `;
+
+
+            }finally{
+
+                importButton.disabled=false;
+
+
+                importButton.innerHTML = `
+
+                    <i
+                        class="fa-solid fa-cloud-arrow-up"
+                    ></i>
+
+                    Import Excel
+
+                `;
+
+            }
+
+        }
+    );
+
+
+    /*======================================================
+       CLOSE BUTTONS
+    ======================================================*/
+
+    closeButton?.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    cancelButton?.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    /*======================================================
+       CLICK OUTSIDE
+    ======================================================*/
+
+    modal.addEventListener(
+        "click",
+        event=>{
+
+            if(event.target===modal){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /*======================================================
+       ESC
+    ======================================================*/
+
+    document.addEventListener(
+        "keydown",
+        event=>{
+
+            if(
+                event.key==="Escape" &&
+                modal.style.display==="flex"
+            ){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /*======================================================
+       CONNECT DASHBOARD BUTTON
+    ======================================================*/
+
+    document.addEventListener(
+        "click",
+        event=>{
+
+            const button =
+                event.target.closest(
+                    "#operationsAdmissionsImport"
+                );
+
+
+            if(button){
+
+                openModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/*==========================================================
+   START IMPORT SYSTEM
+==========================================================*/
+
+createAdmissionsImportModal();
+
+/*==========================================================
 STATISTICS
 ==========================================================*/
 
-async function updateStatistics(){
+/*==========================================================
+   TEAM PERFORMANCE
+   Uses the same live admissions data as
+   University Admissions Progress
+==========================================================*/
 
-    try{
-        const res = await fetch("https://icm-website-test-production.up.railway.app/api/team-performance");
-        const data = await res.json();
+/*==========================================================
+   TEAM PERFORMANCE
+   LIVE DATA FROM OPERATIONS ADMISSIONS DASHBOARD
+==========================================================*/
 
-        if(!data.success) throw new Error(data.message || "Failed to load");
+async function updateStatistics() {
 
-        const totalApplications=document.querySelector('.stat-box[data-metric="applications"] span');
-        const totalAdmissions=document.querySelector('.stat-box[data-metric="admissions"] span');
-        const totalRevenue=document.querySelector('.stat-box[data-metric="revenue"] span');
-        const responseRate=document.querySelector('.stat-box[data-metric="response"] span');
+    try {
 
-        if(totalApplications) totalApplications.textContent=data.applications;
-        if(totalAdmissions) totalAdmissions.textContent=data.admissions;
-        if(totalRevenue) totalRevenue.textContent="\u00A3"+Number(data.revenue).toLocaleString();
-        if(responseRate) responseRate.textContent=data.responseRate+"%";
+        /*======================================================
+           LOAD THE SAME LIVE DATA USED BY
+           UNIVERSITY ADMISSIONS PROGRESS
+        ======================================================*/
 
-    }catch(error){
-        console.error("Failed to load team performance:", error);
+        const response = await fetch(
+            `${OPERATIONS_ADMISSIONS_API}/dashboard`,
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Operations dashboard returned ${response.status}`
+            );
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(
+                data.message || "Failed to load admissions data"
+            );
+        }
+
+
+        /*======================================================
+           LIVE SUMMARY
+        ======================================================*/
+
+        const summary = data.summary || {};
+
+        const applications =
+            Number(summary.applications || 0);
+
+        const admissions =
+            Number(summary.admissions || 0);
+
+        const revenue =
+            Number(summary.revenue || 0);
+
+
+        /*======================================================
+           FIND THE TEAM PERFORMANCE CARD SPECIFICALLY
+           
+           IMPORTANT:
+           We do NOT use document.querySelector('.stat-box...')
+           globally because other sections can contain metric
+           boxes as well.
+        ======================================================*/
+
+        const teamPerformanceCard =
+            Array.from(
+                document.querySelectorAll(".glass-card")
+            ).find(card => {
+
+                const heading =
+                    card.querySelector(".card-title h3");
+
+                return heading &&
+                    heading.textContent.trim()
+                        .toLowerCase() === "team performance";
+
+            });
+
+
+        if (!teamPerformanceCard) {
+
+            console.warn(
+                "Team Performance card not found."
+            );
+
+            return;
+
+        }
+
+
+        /*======================================================
+           FIND ONLY THE METRICS INSIDE TEAM PERFORMANCE
+        ======================================================*/
+
+        const applicationBox =
+            teamPerformanceCard.querySelector(
+            
+                '.stat-box[data-operations-metric="applications"] span'
+            );
+
+        const admissionBox =
+            teamPerformanceCard.querySelector(
+                '.stat-box[data-operations-metric="admissions"] span'
+            );
+
+        const revenueBox =
+            teamPerformanceCard.querySelector(
+                '.stat-box[data-operations-metric="revenue"] span'
+            );
+
+        const responseBox =
+            teamPerformanceCard.querySelector(
+                '.stat-box[data-metric="response"] span'
+            );
+
+
+        /*======================================================
+           UPDATE APPLICATIONS
+        ======================================================*/
+
+        if (applicationBox) {
+
+            applicationBox.textContent =
+                applications.toLocaleString();
+
+        }
+
+
+        /*======================================================
+           UPDATE ADMISSIONS
+        ======================================================*/
+
+        if (admissionBox) {
+
+            admissionBox.textContent =
+                admissions.toLocaleString();
+
+        }
+
+
+        /*======================================================
+           UPDATE REVENUE
+        ======================================================*/
+
+        if (revenueBox) {
+
+            revenueBox.textContent =
+                "£" +
+                revenue.toLocaleString();
+
+        }
+
+
+        /*======================================================
+           RESPONSE RATE
+           
+           This is still supplied by the existing
+           team-performance endpoint.
+
+           If that endpoint fails, we leave the current
+           response-rate value alone instead of falsely
+           displaying a value calculated from admissions.
+        ======================================================*/
+
+        if (responseBox) {
+
+            try {
+
+                const responseRateResponse =
+                    await fetch(
+                        "http://localhost:5000/api/team-performance",
+                        {
+                            method: "GET",
+                            cache: "no-store"
+                        }
+                    );
+
+                if (responseRateResponse.ok) {
+
+                    const teamData =
+                        await responseRateResponse.json();
+
+                    if (
+                        teamData.success &&
+                        teamData.responseRate !== undefined
+                    ) {
+
+                        responseBox.textContent =
+                            Number(
+                                teamData.responseRate
+                            ) + "%";
+
+                    }
+
+                } else {
+
+                    console.warn(
+                        "Response rate endpoint returned:",
+                        responseRateResponse.status
+                    );
+
+                }
+
+            } catch (responseError) {
+
+                console.warn(
+                    "Response rate unavailable:",
+                    responseError
+                );
+
+            }
+
+        }
+
+
+        /*======================================================
+           DEBUG
+        ======================================================*/
+
+        console.log(
+            "TEAM PERFORMANCE UPDATED:",
+            {
+                applications,
+                admissions,
+                revenue
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load Team Performance:",
+            error
+        );
+
     }
 
 }
@@ -1398,4 +4185,216 @@ FINAL CLOSE
 ==========================================================*/
 
 })();
+
+// ============================================================
+// SALES TARGETS & GOALS
+// ============================================================
+
+// ============================================================
+// SALES TARGETS & GOALS
+// ============================================================
+
+async function loadOperationsGoals() {
+    const goalsContainer = document.getElementById("goalsContainer");
+
+    if (!goalsContainer) {
+        console.warn("goalsContainer not ready. Retrying...");
+        setTimeout(loadOperationsGoals, 500);
+        return;
+    }
+
+    goalsContainer.innerHTML = `
+        <div style="padding:20px 0;color:#6b7280;">
+            Loading goals...
+        </div>
+    `;
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/goals"
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Goals API returned ${response.status}`
+            );
+        }
+
+        const data = await response.json();
+
+        console.log(
+            "GOALS DATA FULL:",
+            JSON.stringify(data, null, 2)
+        );
+
+        console.log("GOALS DATA:", data);
+
+        // API returns one goals object
+        const goal = data;
+
+        if (!goal || !goal.id) {
+            goalsContainer.innerHTML = `
+                <div style="padding:20px 0;color:#6b7280;">
+                    No sales targets have been set yet.
+                </div>
+            `;
+            return;
+        }
+
+        const admissionsActual =
+            Number(goal.admissions_actual || 0);
+
+        const admissionsTarget =
+            Number(goal.admissions_target || 0);
+
+        const applicationsActual =
+            Number(goal.applications_actual || 0);
+
+        const applicationsTarget =
+            Number(goal.applications_target || 0);
+
+        const enrolmentActual =
+            Number(goal.enrolment_actual || 0);
+
+        const enrolmentTarget =
+            Number(goal.enrolment_target || 0);
+
+        const admissionsPercent =
+            admissionsTarget > 0
+                ? Math.min(
+                    100,
+                    Math.round(
+                        (admissionsActual / admissionsTarget) * 100
+                    )
+                )
+                : 0;
+
+        const applicationsPercent =
+            applicationsTarget > 0
+                ? Math.min(
+                    100,
+                    Math.round(
+                        (applicationsActual / applicationsTarget) * 100
+                    )
+                )
+                : 0;
+
+        const enrolmentPercent =
+            enrolmentTarget > 0
+                ? Math.min(
+                    100,
+                    Math.round(
+                        (enrolmentActual / enrolmentTarget) * 100
+                    )
+                )
+                : 0;
+
+        // Render goals
+        goalsContainer.innerHTML = `
+            <div class="goals-grid">
+
+                <!-- APPLICATIONS -->
+                <div class="operations-goal-card">
+                    <div class="goal-card-top">
+                        <div>
+                            <strong>Applications</strong>
+                            <span>
+                                ${applicationsActual} / ${applicationsTarget}
+                            </span>
+                        </div>
+
+                        <div class="goal-percentage">
+                            ${applicationsPercent}%
+                        </div>
+                    </div>
+
+                    <div class="goal-progress">
+                        <div
+                            class="goal-progress-fill"
+                            style="width:${applicationsPercent}%"
+                        ></div>
+                    </div>
+                </div>
+
+
+                <!-- ADMISSIONS -->
+                <div class="operations-goal-card">
+                    <div class="goal-card-top">
+                        <div>
+                            <strong>Admissions</strong>
+                            <span>
+                                ${admissionsActual} / ${admissionsTarget}
+                            </span>
+                        </div>
+
+                        <div class="goal-percentage">
+                            ${admissionsPercent}%
+                        </div>
+                    </div>
+
+                    <div class="goal-progress">
+                        <div
+                            class="goal-progress-fill"
+                            style="width:${admissionsPercent}%"
+                        ></div>
+                    </div>
+                </div>
+
+
+                <!-- ENROLMENT -->
+                <div class="operations-goal-card">
+                    <div class="goal-card-top">
+                        <div>
+                            <strong>Enrolment</strong>
+                            <span>
+                                ${enrolmentActual} / ${enrolmentTarget}
+                            </span>
+                        </div>
+
+                        <div class="goal-percentage">
+                            ${enrolmentPercent}%
+                        </div>
+                    </div>
+
+                    <div class="goal-progress">
+                        <div
+                            class="goal-progress-fill"
+                            style="width:${enrolmentPercent}%"
+                        ></div>
+                    </div>
+                </div>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("GOALS FETCH ERROR:", error);
+
+        goalsContainer.innerHTML = `
+            <div style="padding:20px 0;color:#b91c1c;">
+                Unable to load sales targets.
+            </div>
+        `;
+    }
+}
+
+
+// ============================================================
+// LOAD SALES TARGETS & GOALS
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadOperationsGoals();
+});
+
+
+
+// ============================================================
+// LOAD SALES TARGETS & GOALS
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadOperationsGoals();
+});
 
