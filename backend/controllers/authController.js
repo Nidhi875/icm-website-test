@@ -233,7 +233,8 @@ console.log("RESET LINK =", resetLink);
            from:
   "Gouldings Global Academy <support@gouldings.education>",
 
-        to: [email],
+      
+        to: ["nidhi2437@gmail.com"],
 
           subject:
             "Reset Your Password",

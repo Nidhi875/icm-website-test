@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    from: "Gouldings Website <onboarding@resend.dev>",
+                    from: "Gouldings Website <support@gouldings.education>",
                     to: ["Admin@gouldings.education"],
                     reply_to: email,
                     subject: `Website Contact: ${subject}`,
