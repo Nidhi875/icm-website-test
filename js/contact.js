@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   CONTACT FORM SUBMISSION
 =====================================*/
 
-const form = document.querySelector(".contact-form form");
+const form = document.querySelector(".contact-form");
 
 if (form) {
 
