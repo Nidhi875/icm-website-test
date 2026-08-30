@@ -1400,79 +1400,107 @@ function createAdmissionsDashboard(){
 
         <!-- STUDENT TABLE -->
 
-        <div style="
-            width:100%;
-            overflow-x:auto;
-        ">
+     <!-- STUDENT ADMISSIONS LIST - COLLAPSED BY DEFAULT -->
 
-            <table
-                style="
-                    width:100%;
-                    min-width:850px;
-                    border-collapse:collapse;
-                    font-size:13px;
-                "
-            >
+<details
+    class="ops-admissions-controls"
+    id="operationsAdmissionsStudentDetails"
+>
+    <summary class="ops-admissions-summary">
 
-                <thead>
+        <div class="ops-admissions-summary-left">
 
-                    <tr>
+            <i class="fa-solid fa-users"></i>
 
-                        <th style="text-align:left;padding:10px;">
-                            Student
-                        </th>
+            <div>
+                <div class="ops-admissions-summary-title">
+                    Student Admissions List
+                </div>
 
-                        <th style="text-align:left;padding:10px;">
-                            Sales Agent
-                        </th>
-
-                        <th style="text-align:left;padding:10px;">
-                            Country
-                        </th>
-
-                        <th style="text-align:left;padding:10px;">
-                            University
-                        </th>
-
-                        <th style="text-align:left;padding:10px;">
-                            Application
-                        </th>
-
-                        <th style="text-align:left;padding:10px;">
-                            Offer
-                        </th>
-
-                        <th style="text-align:left;padding:10px;">
-                            Admission
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="operationsAdmissionsStudentsTable">
-
-                    <tr>
-
-                        <td
-                            colspan="7"
-                            style="
-                                text-align:center;
-                                padding:25px;
-                                opacity:.6;
-                            "
-                        >
-                            Loading admissions data...
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
+                <div class="ops-admissions-summary-subtitle">
+                    Click to view all student records
+                </div>
+            </div>
 
         </div>
+
+        <i class="fa-solid fa-chevron-down ops-admissions-chevron"></i>
+
+    </summary>
+
+
+    <div style="
+        width:100%;
+        overflow-x:auto;
+        padding:0 18px 18px;
+        box-sizing:border-box;
+    ">
+
+        <table
+            style="
+                width:100%;
+                min-width:850px;
+                border-collapse:collapse;
+                font-size:13px;
+            "
+        >
+
+            <thead>
+                <tr>
+
+                    <th style="text-align:left;padding:10px;">
+                        Student
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Sales Agent
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Country
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        University
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Application
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Offer
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Admission
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody id="operationsAdmissionsStudentsTable">
+
+                <tr>
+                    <td
+                        colspan="7"
+                        style="
+                            text-align:center;
+                            padding:25px;
+                            opacity:.6;
+                        "
+                    >
+                        Loading admissions data...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</details>
 
     `;
 
