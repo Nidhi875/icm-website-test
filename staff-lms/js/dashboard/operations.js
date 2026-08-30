@@ -1181,7 +1181,7 @@ PART 4 WILL COMPLETE THE ENTIRE FILE
 ==========================================================*/
 
 const OPERATIONS_ADMISSIONS_API =
-    "http://icm-website-test-production.up.railway.app";
+    "https://icm-website-test-production.up.railway.app";
 
 
 /*==========================================================
