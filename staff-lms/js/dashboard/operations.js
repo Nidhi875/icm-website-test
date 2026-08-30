@@ -1181,7 +1181,7 @@ PART 4 WILL COMPLETE THE ENTIRE FILE
 ==========================================================*/
 
 const OPERATIONS_ADMISSIONS_API =
-    "http://localhost:5000/api/operations";
+    "http://icm-website-test-production.up.railway.app";
 
 
 /*==========================================================
@@ -3949,7 +3949,8 @@ async function updateStatistics() {
 
                 const responseRateResponse =
                     await fetch(
-                        "http://localhost:5000/api/team-performance",
+                        "https://icm-website-test-production.up.railway.app/api/team-performance",
+                        
                         {
                             method: "GET",
                             cache: "no-store"
@@ -4239,7 +4240,7 @@ async function loadOperationsGoals() {
 
     try {
         const response = await fetch(
-            "http://localhost:5000/api/goals"
+            "https://icm-website-test-production.up.railway.app/api/goals"
         );
 
         if (!response.ok) {
