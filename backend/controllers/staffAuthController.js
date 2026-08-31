@@ -59,9 +59,10 @@ exports.login = async (req, res) => {
    ========================================================== */
 exports.listStaff = async (req, res) => {
   try {
+
     const result = await pool.query(
-      "SELECT id, name, email, phone, role, created_at FROM staff ORDER BY id ASC"
-    );
+  "SELECT id, name, email, phone, role, created_at FROM public.staff ORDER BY id ASC"
+);
     res.json({ success: true, staff: result.rows });
   } catch (error) {
     console.error("LIST STAFF ERROR:", error);
