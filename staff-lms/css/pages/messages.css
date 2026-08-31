@@ -434,19 +434,14 @@ KPI CARDS
 /*==============================================================
 THREE COLUMN LAYOUT
 ==============================================================*/
+
 .messages-layout{
     display:grid;
-
-    grid-template-columns:
-        280px
-        minmax(0,1fr)
-        280px;
-
+    grid-template-columns:300px minmax(0,1fr) 300px;
     gap:20px;
-
     width:100%;
     align-items:start;
-    min-width: 0;
+    min-width:0;
 }
 
 /*==============================================================
@@ -1088,13 +1083,18 @@ RIGHT PANEL
 ==============================================================*/
 
 .right-panel{
-
     display:flex;
     flex-direction:column;
     gap:20px;
 
     width:100%;
     min-width:0;
+
+    height:900px;
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    box-sizing:border-box;
 }
 
 
@@ -1269,7 +1269,8 @@ FILES
 
 }
 
-.shared-file i{
+.shared-file > .shared-file-link > i,
+.shared-file-link > i{
 
     font-size:22px;
 
@@ -1314,22 +1315,28 @@ FILES
 }
 
 .shared-file-actions button {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 14px;
 }
 
 .shared-file-edit {
     background: #eef3f9;
+    color: #2563eb;
 }
 
 .shared-file-delete {
     background: #fff0f0;
+    color: #dc2626;
 }
 
 .shared-file-actions button:hover {
@@ -1426,12 +1433,6 @@ img{
     height:auto;
 }
 
-.side-card,
-.chat-panel,
-.conversation-panel{
-    overflow:hidden;
-}
-
 
 .messages-page{
     overflow-x:hidden;
@@ -1445,6 +1446,16 @@ img{
 .conversation-panel,
 .right-panel{
     overflow:hidden;
+}
+
+.chat-panel,
+.conversation-panel{
+    overflow:hidden;
+}
+
+.right-panel{
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 
@@ -1478,6 +1489,24 @@ RECENT ANNOUNCEMENTS
     box-shadow:var(--shadow);
 
     transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.announcement-card:focus-visible{
+
+    outline:3px solid rgba(37,99,235,.35);
+    outline-offset:2px;
+
+}
+
+.announcements-loading,
+.announcements-empty{
+
+    grid-column:1/-1;
+    color:#6b7280;
+    padding:20px 4px;
 
 }
 
@@ -1895,6 +1924,7 @@ RECENT ACTIVITY
     justify-content: space-between;
     gap: 12px;
     width: 100%;
+    
 }
 
 .shared-file-link {
@@ -1936,6 +1966,9 @@ RECENT ACTIVITY
 .shared-file-actions button {
     width: 32px;
     height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
     border: none;
     border-radius: 7px;
     cursor: pointer;
@@ -1943,6 +1976,7 @@ RECENT ACTIVITY
     align-items: center;
     justify-content: center;
     background: #f1f5f9;
+    font-size: 14px;
 }
 
 .shared-file-edit {
@@ -2026,8 +2060,11 @@ RECENT ACTIVITY
 }
 
 .shared-file-actions button {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
 
     display: inline-flex;
     align-items: center;
@@ -2038,7 +2075,7 @@ RECENT ACTIVITY
 
     cursor: pointer;
 
-    font-size: 15px;
+    font-size: 14px;
 
     transition:
         transform 0.15s ease,
@@ -2077,6 +2114,75 @@ RECENT ACTIVITY
     transform: scale(0.94);
 }
 
+
+/* ==========================================================
+   SHARED FILES - FIXED HEIGHT + INTERNAL SCROLL
+========================================================== */
+
+.shared-files-card {
+    display: flex;
+    flex-direction: column;
+
+    /* Keep this card from growing when files are added */
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.shared-files-card {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.shared-files-card .side-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.shared-files-card .side-title h3 {
+    margin: 0;
+}
+
+
+
+/* The element containing all uploaded files */
+.shared-files-card #sharedFilesList {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 6px;
+}
+
+
+/* Keep the scrollbar inside the files section */
+.shared-files-card #sharedFilesList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.shared-files-card #sharedFilesList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.shared-files-card #sharedFilesList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.shared-files-card #sharedFilesList::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
 /* ==========================================================
    MOBILE RESPONSIVE FIX - MESSAGES PAGE
    ========================================================== */
@@ -2448,5 +2554,847 @@ RECENT ACTIVITY
 
     .quick-actions-grid {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ==========================================================
+   SHARED FILES - FIXED HEIGHT + INTERNAL SCROLL
+========================================================== */
+
+/* Shared Files card */
+.side-card:has(#sharedFilesList) {
+    display: flex;
+    flex-direction: column;
+
+    height: 520px;
+    min-height: 520px;
+    max-height: 520px;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+
+/* File list itself becomes scrollable */
+#sharedFilesList {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 6px;
+}
+
+
+/* Keep upload controls/header fixed */
+#sharedFilesControls {
+    flex-shrink: 0;
+}
+
+
+/* Scrollbar */
+#sharedFilesList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sharedFilesList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sharedFilesList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+#sharedFilesList::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* Prevent very long filenames from breaking layout */
+#sharedFilesList .shared-file {
+    flex-shrink: 0;
+}
+
+#sharedFilesList .shared-file-info {
+    min-width: 0;
+}
+
+#sharedFilesList .shared-file-info h5 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* ==========================================================
+   SHARED FILES CARD
+========================================================== */
+
+.shared-files-card {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* ==========================================================
+   SHARED FILES HEADER
+========================================================== */
+
+.shared-files-card .side-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.shared-files-card .side-title h3 {
+    margin: 0;
+}
+
+
+/* ==========================================================
+   UPLOAD BUTTON
+========================================================== */
+
+.shared-file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 9px 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #16427c;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+
+    box-shadow: 0 4px 10px rgba(22, 66, 124, 0.15);
+}
+
+.shared-file-upload-btn:hover {
+    background: #123968;
+    box-shadow: 0 5px 14px rgba(22, 66, 124, 0.22);
+}
+
+.shared-file-upload-btn:active {
+    transform: scale(0.97);
+}
+
+.shared-file-upload-btn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+
+/* ==========================================================
+   SCROLLABLE FILE LIST
+========================================================== */
+
+.shared-files-list {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    margin-top: 14px;
+    padding-right: 6px;
+}
+
+
+/* Nice scrollbar */
+
+.shared-files-list::-webkit-scrollbar {
+    width: 7px;
+}
+
+.shared-files-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.shared-files-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.shared-files-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* ==========================================================
+   INDIVIDUAL FILE
+========================================================== */
+
+.shared-file {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+
+    gap: 10px;
+
+    padding: 14px 4px;
+
+    border-bottom: 1px solid #e5eaf2;
+
+    box-sizing: border-box;
+}
+
+.shared-file:last-child {
+    border-bottom: none;
+}
+
+
+/* ==========================================================
+   FILE LINK / INFORMATION
+========================================================== */
+
+.shared-file-link {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex: 1;
+    min-width: 0;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* File icon */
+
+.shared-file-link > i {
+    flex-shrink: 0;
+
+    width: 30px;
+
+    text-align: center;
+
+    color: #2563eb;
+
+    font-size: 23px;
+}
+
+
+/* File information */
+
+.shared-file-info {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+
+/* Filename */
+
+.shared-file-info h5 {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.35;
+
+    font-weight: 600;
+
+    color: #172b4d;
+
+    /* Allow wrapping, but only at sensible points */
+    overflow-wrap: break-word;
+    word-break: normal;
+
+    /* Don't break every character */
+    hyphens: none;
+}
+
+
+/* File size */
+
+.shared-file-info small {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+    line-height: 1.2;
+
+    color: #718096;
+}
+
+
+/* ==========================================================
+   FILE ACTIONS
+========================================================== */
+
+.shared-file-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+}
+
+
+/* Action buttons */
+
+.shared-file-actions button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+/* ==========================================================
+   EDIT
+========================================================== */
+
+.shared-file-edit {
+    background: #eaf2ff;
+    color: #2563eb;
+}
+
+.shared-file-edit:hover {
+    background: #dbeafe;
+}
+
+
+/* ==========================================================
+   DELETE
+========================================================== */
+
+.shared-file-delete {
+    background: #feecec;
+    color: #dc2626;
+}
+
+.shared-file-delete:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* ==========================================================
+   BUTTON CLICK
+========================================================== */
+
+.shared-file-actions button:active {
+    transform: scale(0.94);
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .shared-file {
+        gap: 8px;
+        padding: 12px 2px;
+    }
+
+    .shared-file-link {
+        gap: 8px;
+    }
+
+    .shared-file-link > i {
+        width: 26px;
+        font-size: 20px;
+    }
+
+    .shared-file-info h5 {
+        font-size: 13px;
+    }
+
+    .shared-file-info small {
+        font-size: 12px;
+    }
+
+    .shared-file-actions {
+        gap: 5px;
+    }
+
+    .shared-file-actions button {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+}
+
+
+/* ==========================================================
+   MESSAGES LEFT COLUMN - FIXED HEIGHT + SCROLL
+========================================================== */
+
+.messages-layout {
+    align-items: stretch;
+}
+
+/* Shared Files + Department Activity column */
+.conversation-panel {
+    height: 900px;
+    max-height: 900px;
+    min-height: 900px;
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Chrome / Edge scrollbar */
+.conversation-panel::-webkit-scrollbar {
+    width: 7px;
+}
+
+.conversation-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.conversation-panel::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.conversation-panel::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ==========================================================
+   SHARED FILES CARD
+========================================================== */
+
+.side-card:has(#sharedFilesList) {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 520px;
+    min-height: 520px;
+    max-height: 520px;
+
+    padding: 22px;
+
+    overflow: hidden;
+}
+
+/* ==========================================================
+   SHARED FILE LIST - INTERNAL SCROLL
+========================================================== */
+
+#sharedFilesList {
+    flex: 1;
+    min-height: 0;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 8px;
+}
+
+/* File list scrollbar */
+#sharedFilesList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sharedFilesList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sharedFilesList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+#sharedFilesList::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+#sharedFilesList {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* ==========================================================
+   SHARED FILE ROW
+========================================================== */
+
+#sharedFilesList .shared-file {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    gap: 10px;
+
+    padding: 15px 2px;
+
+    border-bottom: 1px solid #edf2f7;
+
+    flex-shrink: 0;
+}
+
+
+/* ==========================================================
+   FILE LINK
+========================================================== */
+
+#sharedFilesList .shared-file-link {
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+    min-width: 0;
+
+    gap: 10px;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* ==========================================================
+   FILE ICON
+========================================================== */
+
+#sharedFilesList .shared-file-link > i {
+    flex: 0 0 30px;
+
+    width: 30px;
+
+    font-size: 22px;
+    color: #2563eb;
+
+    text-align: center;
+}
+
+
+/* ==========================================================
+   FILE INFORMATION
+========================================================== */
+
+#sharedFilesList .shared-file-info {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+#sharedFilesList .shared-file-info h5 {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.25;
+    font-weight: 600;
+
+    color: #172b4d;
+
+    /* Maximum 2 lines */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    overflow: hidden;
+
+    /* DON'T break every few characters */
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+#sharedFilesList .shared-file-info small {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 12px;
+    line-height: 1.2;
+
+    color: #718096;
+}
+
+/* ==========================================================
+   FILE ACTION BUTTONS
+========================================================== */
+
+#sharedFilesList .shared-file-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+
+    margin-left: 4px;
+}
+
+#sharedFilesList .shared-file-actions button {
+    width: 30px;
+    height: 30px;
+
+    min-width: 30px;
+    min-height: 30px;
+
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* EDIT */
+
+#sharedFilesList .shared-file-edit {
+    background: transparent;
+    color: #94a3b8;
+}
+
+#sharedFilesList .shared-file-edit i {
+    color: inherit;
+    font-size: 13px;
+}
+
+#sharedFilesList .shared-file-edit:hover {
+    background: #eaf2ff;
+    color: #2563eb;
+}
+
+
+/* DELETE */
+
+#sharedFilesList .shared-file-delete {
+    background: transparent;
+    color: #94a3b8;
+}
+
+#sharedFilesList .shared-file-delete i {
+    color: inherit;
+    font-size: 13px;
+}
+
+#sharedFilesList .shared-file-delete:hover {
+    background: #feecec;
+    color: #dc2626;
+}
+
+/* ==========================================================
+   SHARED FILE UPLOAD BUTTON
+========================================================== */
+
+#sharedFilesControls {
+    display: flex !important;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+
+    margin-bottom: 12px;
+
+    flex-shrink: 0;
+}
+
+#uploadSharedFileBtn,
+.shared-file-upload,
+.shared-file-upload-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    height: 40px;
+    min-height: 40px;
+
+    padding: 0 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #123f7a;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(18, 63, 122, 0.16);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+#uploadSharedFileBtn:hover,
+.shared-file-upload:hover,
+.shared-file-upload-btn:hover {
+    background: #0f3568;
+
+    box-shadow: 0 6px 15px rgba(18, 63, 122, 0.22);
+}
+
+#uploadSharedFileBtn:active,
+.shared-file-upload:active,
+.shared-file-upload-btn:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================================
+   DEPARTMENT ACTIVITY
+========================================================== */
+
+.conversation-panel > .side-card:last-child {
+    margin-top: 20px;
+}
+
+.activity-row {
+    margin-bottom: 20px;
+}
+
+.activity-row:last-child {
+    margin-bottom: 0;
+}
+
+.activity-row span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #243858;
+}
+
+.activity-row .progress {
+    width: 100%;
+    height: 9px;
+
+    background: #edf2f8;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+}
+
+.activity-row .progress-fill {
+    height: 100%;
+
+    border-radius: 999px;
+
+    background: linear-gradient(
+        90deg,
+        #16396f,
+        #2b67bf
+    );
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .messages-layout {
+        display: flex;
+        flex-direction: column;
+
+        gap: 16px;
+    }
+
+    .conversation-panel {
+        width: 100%;
+
+        height: auto;
+        min-height: 0;
+        max-height: none;
+
+        overflow: visible;
+    }
+
+    .side-card:has(#sharedFilesList) {
+        height: 450px;
+        min-height: 450px;
+        max-height: 450px;
+    }
+
+    #sharedFilesList .shared-file-info h5 {
+        font-size: 14px;
+    }
+
+    #sharedFilesList .shared-file-actions button {
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+        min-height: 34px;
     }
 }

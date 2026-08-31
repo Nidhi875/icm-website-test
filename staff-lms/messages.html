@@ -354,41 +354,91 @@
 
 <aside class="conversation-panel">
 
-    <div class="panel-header">
+    <!-- ================= SHARED FILES ================= -->
 
-        <h2>Conversations</h2>
+<div class="side-card">
 
-        <button class="new-chat-btn">
+    <div class="side-title">
+        <h3>Shared Files</h3>
+    </div>
 
-            <i class="fa-solid fa-plus"></i>
+    <div id="sharedFilesList">
+        <div class="shared-files-loading">
+            Loading files...
+        </div>
+    </div>
 
-        </button>
+</div> 
+
+
+    <!-- ================= DEPARTMENT ACTIVITY ================= -->
+
+    <div class="side-card">
+
+        <div class="side-title">
+
+            <h3>Department Activity</h3>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Operations</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:95%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Admissions</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:82%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Finance</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:70%"></div>
+
+            </div>
+
+        </div>
+
+        <div class="activity-row">
+
+            <span>Marketing</span>
+
+            <div class="progress">
+
+                <div class="progress-fill" style="width:88%"></div>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="conversation-search">
+    
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+ 
+  
 
-        <input
-            type="text"
-            placeholder="Search staff or department">
+  
 
-    </div>
-
-    <div class="department-tabs">
-
-        <button class="active">All</button>
-
-        <button>Unread</button>
-
-        <button>Pinned</button>
-
-    </div>
-
-   <div class="conversation-list" id="conversationList">
-    <!-- Conversations will be loaded from PostgreSQL -->
-</div>
+  
 
 </aside>
 
@@ -609,83 +659,7 @@
 
 
 
-  <!-- ================= SHARED FILES ================= -->
-
-<div class="side-card">
-
-    <div class="side-title">
-        <h3>Shared Files</h3>
-    </div>
-
-    <div id="sharedFilesList">
-        <div class="shared-files-loading">
-            Loading files...
-        </div>
-    </div>
-
-</div> 
-
-
-    <!-- ================= DEPARTMENT ACTIVITY ================= -->
-
-    <div class="side-card">
-
-        <div class="side-title">
-
-            <h3>Department Activity</h3>
-
-        </div>
-
-        <div class="activity-row">
-
-            <span>Operations</span>
-
-            <div class="progress">
-
-                <div class="progress-fill" style="width:95%"></div>
-
-            </div>
-
-        </div>
-
-        <div class="activity-row">
-
-            <span>Admissions</span>
-
-            <div class="progress">
-
-                <div class="progress-fill" style="width:82%"></div>
-
-            </div>
-
-        </div>
-
-        <div class="activity-row">
-
-            <span>Finance</span>
-
-            <div class="progress">
-
-                <div class="progress-fill" style="width:70%"></div>
-
-            </div>
-
-        </div>
-
-        <div class="activity-row">
-
-            <span>Marketing</span>
-
-            <div class="progress">
-
-                <div class="progress-fill" style="width:88%"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+  
 </aside>
 
 </section>
@@ -701,78 +675,13 @@
 
         <h2>Recent Announcements</h2>
 
-        <a href="#">View All</a>
+        <a href="#" id="viewAllAnnouncementsLink">View All</a>
 
     </div>
 
-    <div class="announcements-grid">
+    <div class="announcements-grid" id="announcementsGrid">
 
-        <div class="announcement-card">
-
-            <div class="announcement-icon blue">
-
-                <i class="fa-solid fa-bullhorn"></i>
-
-            </div>
-
-            <div>
-
-                <h4>Semester Orientation</h4>
-
-                <p>
-                    Orientation starts Monday at 9:00 AM.
-                    All departments should ensure attendance.
-                </p>
-
-                <span>Today • Administration</span>
-
-            </div>
-
-        </div>
-
-        <div class="announcement-card">
-
-            <div class="announcement-icon green">
-
-                <i class="fa-solid fa-calendar-days"></i>
-
-            </div>
-
-            <div>
-
-                <h4>Holiday Notice</h4>
-
-                <p>
-                    University will remain closed next Friday.
-                </p>
-
-                <span>Yesterday • HR</span>
-
-            </div>
-
-        </div>
-
-        <div class="announcement-card">
-
-            <div class="announcement-icon orange">
-
-                <i class="fa-solid fa-file-circle-check"></i>
-
-            </div>
-
-            <div>
-
-                <h4>Exam Schedule Published</h4>
-
-                <p>
-                    Final examination timetable is now available.
-                </p>
-
-                <span>2 Days Ago</span>
-
-            </div>
-
-        </div>
+        <div class="announcements-loading">Loading announcements…</div>
 
     </div>
 

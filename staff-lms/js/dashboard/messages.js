@@ -30,6 +30,8 @@
     
         bindTasks();
 
+        bindViewAllAnnouncements();
+
         ensureSharedFileUploadUI();
 
         await loadMessages();
@@ -489,6 +491,7 @@ function formatActivityTime(timestamp) {
                     : [];
 
             renderMessages(messages);
+            renderRecentAnnouncements();
 
             updateCounters();
 
@@ -4170,6 +4173,308 @@ function showAnnouncements() {
 
             modal.close();
 
+        },
+
+        "Close"
+
+    );
+
+}
+
+
+/* ==========================================================
+   RECENT ANNOUNCEMENTS - CARD GRID
+========================================================== */
+
+function bindViewAllAnnouncements() {
+
+    const link =
+        document.getElementById(
+            "viewAllAnnouncementsLink"
+        );
+
+    if (!link) {
+        return;
+    }
+
+    link.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            showAnnouncements();
+
+        }
+    );
+
+}
+
+
+function splitAnnouncementText(rawText) {
+
+    const text =
+        String(rawText || "").trim();
+
+    if (!text) {
+
+        return {
+            title: "Announcement",
+            body: ""
+        };
+
+    }
+
+    const newlineIndex =
+        text.indexOf("\n");
+
+    if (newlineIndex > -1) {
+
+        return {
+            title:
+                text.slice(0, newlineIndex).trim() ||
+                "Announcement",
+            body:
+                text.slice(newlineIndex + 1).trim()
+        };
+
+    }
+
+    const words =
+        text.split(/\s+/);
+
+    const title =
+        words.slice(0, 6).join(" ") +
+        (words.length > 6 ? "…" : "");
+
+    return {
+        title: title || "Announcement",
+        body: text
+    };
+
+}
+
+
+function formatRelativeDay(dateString) {
+
+    if (!dateString) {
+        return "";
+    }
+
+    const date =
+        new Date(dateString);
+
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    const startOfDay =
+        value =>
+            new Date(
+                value.getFullYear(),
+                value.getMonth(),
+                value.getDate()
+            );
+
+    const diffDays =
+        Math.round(
+            (startOfDay(new Date()) - startOfDay(date)) /
+            86400000
+        );
+
+    if (diffDays <= 0) {
+        return "Today";
+    }
+
+    if (diffDays === 1) {
+        return "Yesterday";
+    }
+
+    if (diffDays < 7) {
+        return `${diffDays} Days Ago`;
+    }
+
+    return date.toLocaleDateString(
+        [],
+        { month: "short", day: "numeric" }
+    );
+
+}
+
+
+const ANNOUNCEMENT_THEMES = [
+    { color: "blue", icon: "fa-bullhorn" },
+    { color: "green", icon: "fa-calendar-days" },
+    { color: "orange", icon: "fa-file-circle-check" },
+    { color: "purple", icon: "fa-circle-info" },
+    { color: "red", icon: "fa-triangle-exclamation" },
+    { color: "navy", icon: "fa-bell" }
+];
+
+
+function renderRecentAnnouncements() {
+
+    const grid =
+        document.getElementById(
+            "announcementsGrid"
+        );
+
+    if (!grid) {
+        return;
+    }
+
+    const announcements =
+        messages
+            .filter(
+                message =>
+                    message.message_type ===
+                    "announcement"
+            )
+            .sort(
+                (a, b) =>
+                    new Date(b.created_at) -
+                    new Date(a.created_at)
+            );
+
+    if (!announcements.length) {
+
+        grid.innerHTML = `
+            <div class="announcements-empty">
+                No announcements yet. Use the Announcement
+                button above to publish one.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    grid.innerHTML =
+        announcements
+            .slice(0, 3)
+            .map(
+                (announcement, index) => {
+
+                    const theme =
+                        ANNOUNCEMENT_THEMES[
+                            index % ANNOUNCEMENT_THEMES.length
+                        ];
+
+                    const { title, body } =
+                        splitAnnouncementText(
+                            announcement.message_text
+                        );
+
+                    const meta =
+                        [
+                            formatRelativeDay(
+                                announcement.created_at
+                            ),
+                            announcement.sender_name
+                        ]
+                            .filter(Boolean)
+                            .join(" • ");
+
+                    return `
+                        <div
+                            class="announcement-card"
+                            data-announcement-id="${escapeHtml(String(announcement.id ?? index))}"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <div class="announcement-icon ${theme.color}">
+                                <i class="fa-solid ${theme.icon}"></i>
+                            </div>
+                            <div>
+                                <h4>${escapeHtml(title)}</h4>
+                                <p>${escapeHtml(body || title)}</p>
+                                <span>${escapeHtml(meta)}</span>
+                            </div>
+                        </div>
+                    `;
+
+                }
+            )
+            .join("");
+
+    grid
+        .querySelectorAll("[data-announcement-id]")
+        .forEach(card => {
+
+            const openThisCard = () => {
+
+                const id =
+                    card.dataset.announcementId;
+
+                const announcement =
+                    announcements.find(
+                        (item, index) =>
+                            String(item.id ?? index) === id
+                    );
+
+                if (announcement) {
+                    openAnnouncementDetail(announcement);
+                }
+
+            };
+
+            card.addEventListener(
+                "click",
+                openThisCard
+            );
+
+            card.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        event.preventDefault();
+                        openThisCard();
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+function openAnnouncementDetail(announcement) {
+
+    const { title, body } =
+        splitAnnouncementText(
+            announcement.message_text
+        );
+
+    const meta =
+        [
+            formatRelativeDay(announcement.created_at),
+            announcement.sender_name
+        ]
+            .filter(Boolean)
+            .join(" • ");
+
+    openModal(
+
+        title,
+
+        `
+            <p style="color:#6b7280;margin-top:-4px;margin-bottom:14px;">
+                ${escapeHtml(meta)}
+            </p>
+            <div style="white-space:pre-wrap;line-height:1.7;">
+                ${escapeHtml(body || title)}
+            </div>
+        `,
+
+        modal => {
+            modal.close();
         },
 
         "Close"
