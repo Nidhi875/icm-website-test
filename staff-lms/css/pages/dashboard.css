@@ -527,14 +527,6 @@ MEETING WIDGET
     font-weight:700;
 }
 
-.zoom{
-    background:#2D8CFF;
-}
-
-.teams{
-    background:#635BCE;
-}
-
 .meet{
     background:#00A884;
 }
@@ -911,3 +903,4 @@ MEETING WIDGET
 .dashboard-right #calendarWidget .calendar-widget-grid {
     grid-template-columns:repeat(7,minmax(0,1fr));
     min-width:0;
+}

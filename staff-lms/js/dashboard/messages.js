@@ -4080,11 +4080,17 @@ function showReports() {
 function showAnnouncements() {
 
     const announcements =
-        messages.filter(
-            message =>
-                message.message_type ===
-                "announcement"
-        );
+        messages
+            .filter(
+                message =>
+                    message.message_type ===
+                    "announcement"
+            )
+            .sort(
+                (a, b) =>
+                    new Date(b.created_at) -
+                    new Date(a.created_at)
+            );
 
 
     let html = "";
@@ -4101,83 +4107,234 @@ function showAnnouncements() {
 
     else {
 
-        announcements.forEach(
-            announcement => {
+        html =
+            announcements
+                .map(
+                    (announcement, index) => {
 
-                html += `
+                        const theme =
+                            getAnnouncementTheme(
+                                announcement,
+                                index
+                            );
 
-                    <div
-                        style="
-                            padding:14px;
-                            border:1px solid #ddd;
-                            border-radius:10px;
-                            margin-bottom:12px;
-                        "
-                    >
+                        const { title, body } =
+                            splitAnnouncementText(
+                                announcement.message_text
+                            );
 
-                        <strong>
-
-                            ${
-                                escapeHtml(
-                                    announcement.sender_name ||
-                                    "Unknown"
-                                )
-                            }
-
-                        </strong>
-
-
-                        <div
-                            style="
-                                margin-top:7px;
-                            "
-                        >
-
-                            ${
-                                escapeHtml(
-                                    announcement.message_text ||
-                                    ""
-                                )
-                            }
-
-                        </div>
-
-
-                        <small>
-
-                            ${
-                                formatTime(
+                        const meta =
+                            [
+                                formatRelativeDay(
                                     announcement.created_at
+                                ),
+                                announcement.sender_name
+                            ]
+                                .filter(Boolean)
+                                .join(" • ");
+
+                        const itemId =
+                            escapeHtml(
+                                String(
+                                    announcement.id ?? index
                                 )
-                            }
+                            );
 
-                        </small>
+                        return `
 
-                    </div>
+                            <div
+                                class="announcement-list-item"
+                                data-announcement-id="${itemId}"
+                                style="
+                                    display:flex;
+                                    gap:14px;
+                                    align-items:flex-start;
+                                    padding:14px;
+                                    border:1px solid #ddd;
+                                    border-radius:14px;
+                                    margin-bottom:12px;
+                                "
+                            >
 
-                `;
+                                <div
+                                    class="announcement-icon ${theme.color}"
+                                    style="
+                                        width:42px;
+                                        height:42px;
+                                        border-radius:12px;
+                                        font-size:17px;
+                                        flex-shrink:0;
+                                    "
+                                >
+                                    <i class="fa-solid ${theme.icon}"></i>
+                                </div>
 
-            }
-        );
+                                <div style="flex:1;min-width:0;">
+
+                                    <strong>
+                                        ${escapeHtml(title)}
+                                    </strong>
+
+                                    <div style="margin-top:6px;color:#374151;">
+                                        ${escapeHtml(body || title)}
+                                    </div>
+
+                                    <small style="display:block;margin-top:8px;color:#6b7280;">
+                                        ${escapeHtml(meta)}
+                                    </small>
+
+                                </div>
+
+                                <div style="display:flex;gap:4px;flex-shrink:0;">
+
+                                    <button
+                                        type="button"
+                                        class="announcement-list-edit"
+                                        data-id="${itemId}"
+                                        title="Edit"
+                                        style="
+                                            width:30px;
+                                            height:30px;
+                                            border:none;
+                                            border-radius:8px;
+                                            background:transparent;
+                                            color:#94a3b8;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="announcement-list-delete"
+                                        data-id="${itemId}"
+                                        title="Delete"
+                                        style="
+                                            width:30px;
+                                            height:30px;
+                                            border:none;
+                                            border-radius:8px;
+                                            background:transparent;
+                                            color:#94a3b8;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
 
     }
 
 
-    openModal(
+    const modal =
+        openModal(
 
-        "Recent Announcements",
+            "Recent Announcements",
 
-        html,
+            html,
 
-        modal => {
+            modalRef => {
 
-            modal.close();
+                modalRef.close();
 
-        },
+            },
 
-        "Close"
+            "Close"
 
-    );
+        );
+
+
+    modal.element
+        .querySelectorAll(".announcement-list-item")
+        .forEach(row => {
+
+            row.addEventListener("click", event => {
+
+                if (event.target.closest("button")) {
+                    return;
+                }
+
+                const id =
+                    row.dataset.announcementId;
+
+                const announcement =
+                    announcements.find(
+                        (item, index) =>
+                            String(item.id ?? index) === id
+                    );
+
+                if (announcement) {
+                    modal.close();
+                    openAnnouncementDetail(announcement);
+                }
+
+            });
+
+        });
+
+
+    modal.element
+        .querySelectorAll(".announcement-list-edit")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                const id = button.dataset.id;
+
+                const announcement =
+                    announcements.find(
+                        (item, index) =>
+                            String(item.id ?? index) === id
+                    );
+
+                if (announcement) {
+                    modal.close();
+                    openAnnouncementEditor(announcement);
+                }
+
+            });
+
+        });
+
+
+    modal.element
+        .querySelectorAll(".announcement-list-delete")
+        .forEach(button => {
+
+            button.addEventListener("click", async () => {
+
+                const id = button.dataset.id;
+
+                const confirmed =
+                    confirm(
+                        "Delete this announcement? This can't be undone."
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                const success =
+                    await deleteAnnouncement(id);
+
+                if (success) {
+                    modal.close();
+                    showAnnouncements();
+                }
+
+            });
+
+        });
 
 }
 
@@ -4312,6 +4469,52 @@ const ANNOUNCEMENT_THEMES = [
 ];
 
 
+/* Keyword → icon/color mapping so an announcement's icon reflects what
+   it's actually about, not just its position in the list. First match
+   wins; falls back to the cycling palette above when nothing matches. */
+const ANNOUNCEMENT_KEYWORD_THEMES = [
+    { keywords: ["holiday", "closed", "closure", "vacation", "break"], color: "green", icon: "fa-umbrella-beach" },
+    { keywords: ["exam", "test", "assessment", "result", "grade"], color: "orange", icon: "fa-file-circle-check" },
+    { keywords: ["orientation", "welcome", "induction", "onboarding"], color: "blue", icon: "fa-bullhorn" },
+    { keywords: ["meeting", "seminar", "workshop", "conference"], color: "purple", icon: "fa-people-group" },
+    { keywords: ["event", "celebration", "party", "fest"], color: "purple", icon: "fa-calendar-check" },
+    { keywords: ["urgent", "important", "alert", "warning", "emergency"], color: "red", icon: "fa-triangle-exclamation" },
+    { keywords: ["maintenance", "downtime", "outage", "technical issue"], color: "navy", icon: "fa-screwdriver-wrench" },
+    { keywords: ["policy", "handbook", "guideline", "compliance"], color: "navy", icon: "fa-file-contract" },
+    { keywords: ["deadline", "reminder", "due date", "submit by"], color: "orange", icon: "fa-clock" },
+    { keywords: ["congratulat", "achievement", "award", "winner"], color: "green", icon: "fa-trophy" },
+    { keywords: ["payroll", "salary", "invoice", "budget", "finance"], color: "purple", icon: "fa-sack-dollar" },
+    { keywords: ["security", "breach", "password", "phishing"], color: "red", icon: "fa-shield-halved" },
+    { keywords: ["admission", "enrolment", "enrollment", "application"], color: "blue", icon: "fa-graduation-cap" },
+    { keywords: ["schedule", "timetable", "calendar"], color: "green", icon: "fa-calendar-days" }
+];
+
+
+function getAnnouncementTheme(announcement, fallbackIndex) {
+
+    const haystack =
+        String(announcement.message_text || "")
+            .toLowerCase();
+
+    const match =
+        ANNOUNCEMENT_KEYWORD_THEMES.find(
+            theme =>
+                theme.keywords.some(
+                    keyword => haystack.includes(keyword)
+                )
+        );
+
+    if (match) {
+        return { color: match.color, icon: match.icon };
+    }
+
+    return ANNOUNCEMENT_THEMES[
+        fallbackIndex % ANNOUNCEMENT_THEMES.length
+    ];
+
+}
+
+
 function renderRecentAnnouncements() {
 
     const grid =
@@ -4356,9 +4559,10 @@ function renderRecentAnnouncements() {
                 (announcement, index) => {
 
                     const theme =
-                        ANNOUNCEMENT_THEMES[
-                            index % ANNOUNCEMENT_THEMES.length
-                        ];
+                        getAnnouncementTheme(
+                            announcement,
+                            index
+                        );
 
                     const { title, body } =
                         splitAnnouncementText(
@@ -4460,26 +4664,265 @@ function openAnnouncementDetail(announcement) {
             .filter(Boolean)
             .join(" • ");
 
+    const modal =
+        openModal(
+
+            title,
+
+            `
+                <p style="color:#6b7280;margin-top:-4px;margin-bottom:14px;">
+                    ${escapeHtml(meta)}
+                </p>
+                <div style="white-space:pre-wrap;line-height:1.7;margin-bottom:20px;">
+                    ${escapeHtml(body || title)}
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button
+                        type="button"
+                        data-action="edit-announcement"
+                        style="
+                            flex:1;
+                            padding:10px 16px;
+                            border:1px solid #d0d7e2;
+                            border-radius:10px;
+                            background:#fff;
+                            color:#172b4d;
+                            font-weight:600;
+                            cursor:pointer;
+                        "
+                    >
+                        <i class="fa-solid fa-pen" style="margin-right:7px;"></i>Edit
+                    </button>
+                    <button
+                        type="button"
+                        data-action="delete-announcement"
+                        style="
+                            flex:1;
+                            padding:10px 16px;
+                            border:1px solid #f3c6c6;
+                            border-radius:10px;
+                            background:#fff0f0;
+                            color:#dc2626;
+                            font-weight:600;
+                            cursor:pointer;
+                        "
+                    >
+                        <i class="fa-solid fa-trash" style="margin-right:7px;"></i>Delete
+                    </button>
+                </div>
+            `,
+
+            modalRef => {
+                modalRef.close();
+            },
+
+            "Close"
+
+        );
+
+    modal
+        .query('[data-action="edit-announcement"]')
+        ?.addEventListener("click", () => {
+
+            modal.close();
+            openAnnouncementEditor(announcement);
+
+        });
+
+    modal
+        .query('[data-action="delete-announcement"]')
+        ?.addEventListener("click", async () => {
+
+            const confirmed =
+                confirm(
+                    "Delete this announcement? This can't be undone."
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            const success =
+                await deleteAnnouncement(
+                    announcement.id
+                );
+
+            if (success) {
+                modal.close();
+            }
+
+        });
+
+}
+
+
+function openAnnouncementEditor(announcement) {
+
     openModal(
 
-        title,
+        "Edit Announcement",
 
         `
-            <p style="color:#6b7280;margin-top:-4px;margin-bottom:14px;">
-                ${escapeHtml(meta)}
-            </p>
-            <div style="white-space:pre-wrap;line-height:1.7;">
-                ${escapeHtml(body || title)}
-            </div>
+            <textarea
+                id="editAnnouncementText"
+                style="
+                    width:100%;
+                    min-height:160px;
+                    padding:12px;
+                    box-sizing:border-box;
+                    border:1px solid #d0d7e2;
+                    border-radius:10px;
+                    resize:vertical;
+                    font-family:inherit;
+                    font-size:14px;
+                "
+            >${escapeHtml(announcement.message_text || "")}</textarea>
         `,
 
-        modal => {
-            modal.close();
+        async modal => {
+
+            const textarea =
+                modal.query("#editAnnouncementText");
+
+            const text =
+                textarea?.value.trim();
+
+            if (!text) {
+                showToast(
+                    "Please enter an announcement.",
+                    "error"
+                );
+                return;
+            }
+
+            const success =
+                await updateAnnouncement(
+                    announcement.id,
+                    text
+                );
+
+            if (success) {
+                modal.close();
+                showToast("Announcement updated.");
+            }
+
         },
 
-        "Close"
+        "Save"
 
     );
+
+}
+
+
+async function updateAnnouncement(id, text) {
+
+    if (id === undefined || id === null) {
+        showToast(
+            "Unable to update: missing announcement id.",
+            "error"
+        );
+        return false;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${encodeURIComponent(id)}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        messageText: text
+                    })
+                }
+            );
+
+        const data =
+            await response.json().catch(() => ({}));
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || `HTTP ${response.status}`
+            );
+        }
+
+        await loadMessages();
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "UPDATE ANNOUNCEMENT ERROR:",
+            error
+        );
+
+        showToast(
+            "Unable to update announcement: " +
+            error.message,
+            "error"
+        );
+
+        return false;
+
+    }
+
+}
+
+
+async function deleteAnnouncement(id) {
+
+    if (id === undefined || id === null) {
+        showToast(
+            "Unable to delete: missing announcement id.",
+            "error"
+        );
+        return false;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${encodeURIComponent(id)}`,
+                { method: "DELETE" }
+            );
+
+        const data =
+            await response.json().catch(() => ({}));
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || `HTTP ${response.status}`
+            );
+        }
+
+        showToast("Announcement deleted.");
+
+        await loadMessages();
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "DELETE ANNOUNCEMENT ERROR:",
+            error
+        );
+
+        showToast(
+            "Unable to delete announcement: " +
+            error.message,
+            "error"
+        );
+
+        return false;
+
+    }
 
 }
 

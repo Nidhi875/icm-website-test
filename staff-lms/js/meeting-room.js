@@ -199,24 +199,6 @@ VIDEO PROVIDER
 
 switch(meeting.provider){
 
-    case "zoom":
-
-        loadZoomMeeting(meeting);
-
-        break;
-
-    case "jitsi":
-
-        loadJitsiMeeting(meeting);
-
-        break;
-
-    case "teams":
-
-        loadTeamsMeeting(meeting);
-
-        break;
-
     case "meet":
 
         loadGoogleMeetMeeting(meeting);

@@ -187,39 +187,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <div class="toolbar-right">
 
-                    <select id="providerFilter">
-
-                        <option value="all">
-
-                            All Providers
-
-                        </option>
-
-                        <option value="zoom">
-
-                            Zoom
-
-                        </option>
-
-                        <option value="jitsi">
-
-                            Jitsi Meet
-
-                        </option>
-
-                        <option value="teams">
-
-                            Microsoft Teams
-
-                        </option>
-
-                        <option value="meet">
-
-                            Google Meet
-
-                        </option>
-
-                    </select>
+                
+                 <select id="providerFilter">
+                 <option value="meet">Google Meet</option>
+                 </select>
 
                     <select id="statusFilter">
 
@@ -410,15 +381,7 @@ CREATE MEETING MODAL
                     <label>Meeting Provider</label>
 
                     <select id="meetingProvider">
-
-                        <option value="zoom">Zoom</option>
-
-                        <option value="meet">Google Meet</option>
-
-                        <option value="teams">Microsoft Teams</option>
-
-                        <option value="jitsi">Jitsi Meet</option>
-
+                     <option value="meet">Google Meet</option>
                     </select>
 
                 </div>
@@ -472,9 +435,6 @@ JAVASCRIPT
 <script src="js/data/meeting-storage.js"></script>
 
 
-<script src="js/providers/zoom.js"></script>
-<script src="js/providers/jitsi.js"></script>
-<script src="js/providers/teams.js"></script>
 <script src="js/providers/meet.js"></script>
 
 <script src="js/meetings/create-meeting.js"></script>

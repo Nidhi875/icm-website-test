@@ -55,21 +55,6 @@ function initialiseCreateMeeting(){
 
         const providers = {
 
-            zoom:{
-                platform:"Zoom",
-                badge:"zoom"
-            },
-
-            jitsi:{
-                platform:"Jitsi Meet",
-                badge:"jitsi"
-            },
-
-            teams:{
-                platform:"Microsoft Teams",
-                badge:"teams"
-            },
-
             meet:{
                 platform:"Google Meet",
                 badge:"meet"

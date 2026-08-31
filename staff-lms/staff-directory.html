@@ -118,13 +118,41 @@
 <script src="js/common/app.js"></script>
 
 <script>
+
 const API_BASE = "https://icm-website-test-production.up.railway.app";
 
-function getToken() { return localStorage.getItem("staffToken"); }
-function getRole() { return (localStorage.getItem("staffRole") || "").trim(); }
+function getToken() {
+  return localStorage.getItem("staffToken");
+}
 
-function showMsg(text, isSuccess) {
+function getCurrentEmail() {
+  return (
+    localStorage.getItem("staffEmail") ||
+    localStorage.getItem("email") ||
+    localStorage.getItem("userEmail") ||
+    ""
+  ).trim().toLowerCase();
+}
+
+function getRole() {
+  return (localStorage.getItem("staffRole") || "").trim();
+}
+
+function isAdmin() {
+  const role = getRole().toLowerCase();
+
+  return (
+    role === "administrator" ||
+    role === "admin"
+  );
+}
+
+
+function showMsg(text, isSuccess = false) {
   const box = document.getElementById("staffMsg");
+
+  if (!box) return;
+
   box.style.display = "block";
   box.style.background = isSuccess ? "#dcfce7" : "#fee2e2";
   box.style.color = isSuccess ? "#166534" : "#991b1b";
@@ -134,154 +162,508 @@ function showMsg(text, isSuccess) {
 async function init() {
   const content = document.getElementById("staffContent");
 
-  if (getRole() !== "Administrator") {
-    content.innerHTML = `<div class="glass-card staff-denied">Only Administrators can view the staff directory.</div>`;
+  if (!content) {
+    console.error("staffContent element not found");
     return;
   }
+
+  const admin = isAdmin();
 
   content.innerHTML = `
     <div class="glass-card" style="margin-bottom:20px;">
       <table class="staff-table">
         <thead>
-          <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th></th></tr>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            ${admin ? "<th>Actions</th>" : ""}
+          </tr>
         </thead>
-        <tbody id="staff-body"></tbody>
+
+        <tbody id="staff-body">
+          <tr>
+            <td colspan="${admin ? 5 : 4}" style="text-align:center;">
+              Loading staff...
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
-    <div class="glass-card">
-      <div class="card-title"><h3>Add staff member</h3></div>
-      <div class="staff-add-form">
-        <div><label>Name</label><input id="new-name" type="text"></div>
-        <div><label>Email</label><input id="new-email" type="email"></div>
-        <div><label>Phone</label><input id="new-phone" type="tel" placeholder="Optional"></div>
-        <div>
-          <label>Role</label>
-          <select id="new-role">
-            <option value="Team Member">Team Member</option>
-            <option value="Administrator">Administrator</option>
-          </select>
+    ${
+      admin
+        ? `
+      <div class="glass-card">
+        <div class="card-title">
+          <h3>Add staff member</h3>
         </div>
-        <div class="full-width">
-          <button id="add-btn" class="primary-btn">Add staff member</button>
+
+        <div class="staff-add-form">
+
+          <div>
+            <label>Name</label>
+            <input id="new-name" type="text">
+          </div>
+
+          <div>
+            <label>Email</label>
+            <input id="new-email" type="email">
+          </div>
+
+          <div>
+            <label>Phone</label>
+            <input id="new-phone" type="tel" placeholder="Optional">
+          </div>
+
+          <div>
+            <label>Role</label>
+            <select id="new-role">
+              <option value="Team Member">Team Member</option>
+              <option value="Administrator">Administrator</option>
+            </select>
+          </div>
+
+          <div class="full-width">
+            <button id="add-btn" class="primary-btn">
+              Add staff member
+            </button>
+          </div>
+
         </div>
       </div>
-    </div>
+    `
+        : ""
+    }
   `;
 
-  document.getElementById("add-btn").addEventListener("click", addStaff);
-  loadStaff();
+  const addBtn = document.getElementById("add-btn");
+
+  if (addBtn) {
+    addBtn.addEventListener("click", addStaff);
+  }
+
+  await loadStaff();
 }
 
-async function loadStaff() {
-  try {
-    const res = await fetch(`${API_BASE}/api/staff`, {
-      headers: { Authorization: `Bearer ${getToken()}` },
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.message);
 
-    const body = document.getElementById("staff-body");
+/* =========================================================
+   LOAD STAFF
+========================================================= */
+
+async function loadStaff() {
+  const body = document.getElementById("staff-body");
+
+  if (!body) {
+    console.error("staff-body not found");
+    return;
+  }
+
+  try {
+    const token = getToken();
+
+    if (!token) {
+      throw new Error("You are not logged in.");
+    }
+
+    console.log("Loading staff directory...");
+
+    const res = await fetch(`${API_BASE}/api/staff`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    console.log("GET /api/staff status:", res.status);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error(`Server returned HTTP ${res.status}`);
+    }
+
+    console.log("Staff API response:", data);
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || `HTTP ${res.status}`);
+    }
+
+    const staff = Array.isArray(data.staff) ? data.staff : [];
+
+    if (staff.length === 0) {
+      body.innerHTML = `
+        <tr>
+          <td colspan="${isAdmin() ? 5 : 4}"
+              style="text-align:center; padding:25px; opacity:.6;">
+            No staff members found.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     body.innerHTML = "";
 
-    data.staff.forEach((person) => {
+    staff.forEach(person => {
       const row = document.createElement("tr");
+
+      const name = person.name || "";
+      const email = person.email || "";
+      const phone = person.phone || "";
+      const role = person.role || "Team Member";
+
       row.innerHTML = `
-        <td><input type="text" class="name-input" data-id="${person.id}" value="${person.name}"></td>
-        <td>${person.email}</td>
-        <td><input type="tel" class="phone-input" data-id="${person.id}" value="${person.phone || ""}"></td>
         <td>
-          <select class="role-select" data-id="${person.id}">
-            <option value="Team Member" ${person.role === "Team Member" ? "selected" : ""}>Team Member</option>
-            <option value="Administrator" ${person.role === "Administrator" ? "selected" : ""}>Administrator</option>
+          <input
+            type="text"
+            class="name-input"
+            data-id="${person.id}"
+            value="${escapeHtml(name)}"
+            ${isAdmin() ? "" : "readonly"}
+          >
+        </td>
+
+        <td>
+          ${escapeHtml(email)}
+        </td>
+
+        <td>
+          <input
+            type="tel"
+            class="phone-input"
+            data-id="${person.id}"
+            value="${escapeHtml(phone)}"
+            ${isAdmin() ? "" : "readonly"}
+          >
+        </td>
+
+        <td>
+          <select
+            class="role-select"
+            data-id="${person.id}"
+            ${isAdmin() ? "" : "disabled"}
+          >
+            <option
+              value="Team Member"
+              ${role === "Team Member" ? "selected" : ""}
+            >
+              Team Member
+            </option>
+
+            <option
+              value="Administrator"
+              ${role === "Administrator" ? "selected" : ""}
+            >
+              Administrator
+            </option>
           </select>
         </td>
-        <td>
-          <div class="staff-actions">
-            <button class="link-btn save-btn" data-id="${person.id}">Save</button>
-            <button class="staff-remove-btn delete-btn" data-id="${person.id}">Remove</button>
-          </div>
-        </td>
+
+        ${
+          isAdmin()
+            ? `
+          <td>
+            <div class="staff-actions">
+
+              <button
+                class="link-btn save-btn"
+                data-id="${person.id}">
+                Save
+              </button>
+
+              <button
+                class="staff-remove-btn delete-btn"
+                data-id="${person.id}">
+                Remove
+              </button>
+
+            </div>
+          </td>
+        `
+            : ""
+        }
       `;
+
       body.appendChild(row);
     });
 
-    document.querySelectorAll(".save-btn").forEach((btn) =>
-      btn.addEventListener("click", () => saveStaff(btn.dataset.id))
-    );
-    document.querySelectorAll(".delete-btn").forEach((btn) =>
-      btn.addEventListener("click", () => deleteStaff(btn.dataset.id))
-    );
+    if (isAdmin()) {
+      document.querySelectorAll(".save-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          saveStaff(btn.dataset.id);
+        });
+      });
+
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          deleteStaff(btn.dataset.id);
+        });
+      });
+    }
+
   } catch (err) {
-    showMsg("Failed to load staff: " + err.message, false);
+    console.error("LOAD STAFF ERROR:", err);
+
+    body.innerHTML = `
+      <tr>
+        <td colspan="${isAdmin() ? 5 : 4}"
+            style="text-align:center; padding:25px;">
+          Failed to load staff.
+        </td>
+      </tr>
+    `;
+
+    showMsg(
+      `Failed to load staff: ${escapeHtml(err.message)}`,
+      false
+    );
   }
 }
+
+
+/* =========================================================
+   SAVE / EDIT STAFF
+========================================================= */
 
 async function saveStaff(id) {
-  const name = document.querySelector(`.name-input[data-id="${id}"]`).value;
-  const phone = document.querySelector(`.phone-input[data-id="${id}"]`).value;
-  const role = document.querySelector(`.role-select[data-id="${id}"]`).value;
+
+  if (!isAdmin()) {
+    showMsg(
+      "You do not have permission to edit staff.",
+      false
+    );
+    return;
+  }
+
+  const nameInput =
+    document.querySelector(`.name-input[data-id="${id}"]`);
+
+  const phoneInput =
+    document.querySelector(`.phone-input[data-id="${id}"]`);
+
+  const roleInput =
+    document.querySelector(`.role-select[data-id="${id}"]`);
+
+  if (!nameInput || !phoneInput || !roleInput) {
+    showMsg("Could not find staff fields.", false);
+    return;
+  }
+
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+  const role = roleInput.value;
+
+  if (!name) {
+    showMsg("Name cannot be empty.", false);
+    return;
+  }
 
   try {
+
     const res = await fetch(`${API_BASE}/api/staff/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
-      body: JSON.stringify({ name, phone, role }),
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`
+      },
+
+      body: JSON.stringify({
+        name,
+        phone,
+        role
+      })
     });
+
     const data = await res.json();
-    if (!data.success) throw new Error(data.message);
-    showMsg("Saved ✅", true);
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || "Failed to update staff");
+    }
+
+    showMsg("Staff member updated successfully.", true);
+
+    await loadStaff();
+
   } catch (err) {
-    showMsg("Failed to save: " + err.message, false);
+
+    console.error("SAVE STAFF ERROR:", err);
+
+    showMsg(
+      `Failed to save: ${escapeHtml(err.message)}`,
+      false
+    );
   }
 }
+
+
+/* =========================================================
+   DELETE STAFF
+========================================================= */
 
 async function deleteStaff(id) {
-  if (!confirm("Remove this staff member? They will no longer be able to log in.")) return;
+
+  if (!isAdmin()) {
+    showMsg(
+      "You do not have permission to delete staff.",
+      false
+    );
+    return;
+  }
+
+  const confirmed = confirm(
+    "Remove this staff member?\n\nThey will no longer be able to log in."
+  );
+
+  if (!confirmed) return;
+
   try {
+
     const res = await fetch(`${API_BASE}/api/staff/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${getToken()}` },
+
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      }
     });
+
     const data = await res.json();
-    if (!data.success) throw new Error(data.message);
-    showMsg("Removed ✅", true);
-    loadStaff();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || "Failed to delete staff");
+    }
+
+    showMsg(
+      "Staff member removed successfully.",
+      true
+    );
+
+    await loadStaff();
+
   } catch (err) {
-    showMsg("Failed to remove: " + err.message, false);
+
+    console.error("DELETE STAFF ERROR:", err);
+
+    showMsg(
+      `Failed to remove: ${escapeHtml(err.message)}`,
+      false
+    );
   }
 }
 
-async function addStaff() {
-  const name = document.getElementById("new-name").value.trim();
-  const email = document.getElementById("new-email").value.trim();
-  const phone = document.getElementById("new-phone").value.trim();
-  const role = document.getElementById("new-role").value;
 
-  if (!name || !email) { showMsg("Fill in name and email.", false); return; }
+/* =========================================================
+   ADD STAFF
+========================================================= */
+
+async function addStaff() {
+
+  if (!isAdmin()) {
+    showMsg(
+      "You do not have permission to add staff.",
+      false
+    );
+    return;
+  }
+
+  const name =
+    document.getElementById("new-name").value.trim();
+
+  const email =
+    document.getElementById("new-email").value.trim();
+
+  const phone =
+    document.getElementById("new-phone").value.trim();
+
+  const role =
+    document.getElementById("new-role").value;
+
+  if (!name || !email) {
+    showMsg(
+      "Please enter the staff member's name and email.",
+      false
+    );
+    return;
+  }
 
   try {
+
     const res = await fetch(`${API_BASE}/api/staff`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
-      body: JSON.stringify({ name, email, phone, role }),
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.message);
 
-    showMsg(`<strong>${name}</strong> was added. Share this one-time temporary password with them — it will not be shown again:<br><br><code>${data.temporaryPassword}</code>`, true);
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`
+      },
+
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        role
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || "Failed to add staff");
+    }
+
+    showMsg(
+      `<strong>${escapeHtml(name)}</strong> was added successfully.
+      <br><br>
+      Temporary password:
+      <br><br>
+      <code>${escapeHtml(data.temporaryPassword || "")}</code>
+      <br><br>
+      Give this temporary password to the staff member.`,
+      true
+    );
 
     document.getElementById("new-name").value = "";
     document.getElementById("new-email").value = "";
     document.getElementById("new-phone").value = "";
-    loadStaff();
+
+    await loadStaff();
+
   } catch (err) {
-    showMsg("Failed to add: " + err.message, false);
+
+    console.error("ADD STAFF ERROR:", err);
+
+    showMsg(
+      `Failed to add staff: ${escapeHtml(err.message)}`,
+      false
+    );
   }
 }
 
-init();
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", init);
 </script>
+
 
 <script>
 window.addEventListener("load", function () {

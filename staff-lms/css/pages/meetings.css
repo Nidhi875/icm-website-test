@@ -354,24 +354,6 @@ MEETING CARD
 
 }
 
-.meeting-provider.zoom{
-
-    background:#2D8CFF;
-
-}
-
-.meeting-provider.jitsi{
-
-    background:#00A389;
-
-}
-
-.meeting-provider.teams{
-
-    background:#635BCE;
-
-}
-
 .meeting-provider.meet{
 
     background:#00A884;
@@ -483,24 +465,6 @@ MEETING CARD
     font-size:12px;
 
     font-weight:700;
-
-}
-
-.provider-badge.zoom{
-
-    background:#2D8CFF;
-
-}
-
-.provider-badge.jitsi{
-
-    background:#00A389;
-
-}
-
-.provider-badge.teams{
-
-    background:#635BCE;
 
 }
 

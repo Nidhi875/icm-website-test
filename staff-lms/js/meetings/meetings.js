@@ -735,21 +735,6 @@ function saveMeeting(e) {
 
     const providerMap = {
 
-        jitsi: {
-            platform: "Jitsi Meet",
-            badge: "jitsi"
-        },
-
-        zoom: {
-            platform: "Zoom",
-            badge: "zoom"
-        },
-
-        teams: {
-            platform: "Microsoft Teams",
-            badge: "teams"
-        },
-
         meet: {
             platform: "Google Meet",
             badge: "meet"
