@@ -2076,3 +2076,377 @@ RECENT ACTIVITY
 .shared-file-actions button:active {
     transform: scale(0.94);
 }
+
+/* ==========================================================
+   MOBILE RESPONSIVE FIX - MESSAGES PAGE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* Page spacing */
+    .messages-page {
+        padding: 12px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* HERO */
+    .messages-hero {
+        padding: 25px 20px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 25px;
+    }
+
+    .hero-left h1 {
+        font-size: 34px;
+        line-height: 1.1;
+        margin-bottom: 15px;
+    }
+
+    .hero-left p {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .hero-tag {
+        font-size: 12px;
+        padding: 8px 13px;
+        margin-bottom: 18px;
+    }
+
+    /* HERO BUTTONS */
+    .hero-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-btn {
+        width: 100%;
+        padding: 13px 18px;
+    }
+
+    /* INBOX CARD */
+    .inbox-card {
+        width: 100%;
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .card-top h3 {
+        font-size: 21px;
+    }
+
+    .inbox-grid {
+        gap: 10px;
+    }
+
+    .inbox-item {
+        padding: 14px 8px;
+    }
+
+    .inbox-item h2 {
+        font-size: 25px;
+    }
+
+    .inbox-item p {
+        font-size: 12px;
+    }
+
+    /* KPI CARDS */
+    .messages-kpis {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 20px 0;
+    }
+
+    .kpi-card {
+        padding: 18px;
+    }
+
+    .kpi-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        border-radius: 14px;
+        font-size: 21px;
+    }
+
+    .kpi-content h2 {
+        font-size: 27px;
+    }
+
+    /* ======================================================
+       MAIN MESSAGING AREA
+       ====================================================== */
+
+    .messages-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    /* CONVERSATIONS */
+    .conversation-panel {
+        width: 100%;
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .panel-header h2 {
+        font-size: 20px;
+    }
+
+    .department-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+    }
+
+    .department-tabs button {
+        flex-shrink: 0;
+        padding: 9px 15px;
+    }
+
+    /* CHAT */
+    .chat-panel {
+        width: 100%;
+        min-height: 550px;
+        border-radius: 18px;
+    }
+
+    .chat-header {
+        padding: 16px;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .chat-user {
+        gap: 10px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .chat-user h3 {
+        font-size: 17px;
+    }
+
+    .chat-user span {
+        font-size: 12px;
+    }
+
+    .chat-icons {
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .chat-icons button {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+    }
+
+    /* CHAT MESSAGES */
+    .chat-messages {
+        padding: 18px 12px;
+        min-height: 300px;
+        max-height: 500px;
+    }
+
+    .message-row {
+        gap: 8px;
+    }
+
+    .message-content {
+        max-width: 82%;
+    }
+
+    .message-bubble {
+        padding: 10px 13px;
+        font-size: 14px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .initials-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 13px;
+    }
+
+    /* CHAT INPUT */
+    .chat-input {
+        padding: 12px;
+        gap: 7px;
+    }
+
+    .chat-input input {
+        min-width: 0;
+        padding: 12px 13px;
+        font-size: 14px;
+    }
+
+    .chat-input button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    /* RIGHT SIDEBAR */
+    .right-panel {
+        width: 100%;
+    }
+
+    .side-card {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    /* ANNOUNCEMENTS */
+    .announcements-section {
+        margin-top: 30px;
+    }
+
+    .announcements-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .announcement-card {
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .announcement-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        font-size: 21px;
+    }
+
+    .announcement-card h4 {
+        font-size: 17px;
+    }
+
+    .announcement-card p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* QUICK ACTIONS */
+    .quick-actions {
+        margin-top: 30px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .action-card {
+        padding: 18px 10px;
+        border-radius: 16px;
+        gap: 10px;
+    }
+
+    .action-card i {
+        width: 52px;
+        height: 52px;
+        font-size: 21px;
+    }
+
+    .action-card span {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    /* ANALYTICS */
+    .analytics-section {
+        margin-top: 30px;
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .analytics-card {
+        padding: 22px;
+    }
+
+    .analytics-card h2 {
+        font-size: 32px;
+    }
+
+    /* ACTIVITY */
+    .activity-section {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .activity-item {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .activity-item i {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        font-size: 18px;
+    }
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    .messages-page {
+        padding: 8px;
+    }
+
+    .messages-hero {
+        padding: 20px 16px;
+    }
+
+    .hero-left h1 {
+        font-size: 29px;
+    }
+
+    .hero-left p {
+        font-size: 14px;
+    }
+
+    .inbox-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .inbox-item h2 {
+        font-size: 22px;
+    }
+
+    .chat-icons button:nth-child(1),
+    .chat-icons button:nth-child(2) {
+        display: none;
+    }
+
+    .message-content {
+        max-width: 86%;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
