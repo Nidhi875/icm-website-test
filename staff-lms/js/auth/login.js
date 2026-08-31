@@ -141,6 +141,11 @@ if (loginForm) {
                 staff.role
             );
 
+           localStorage.setItem(
+              "staffToken",
+               data.token
+            );
+
 
             /*==================================================
             SUCCESS MESSAGE
