@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Staff Directory — Staff Portal</title>
+<style>
+  body { font-family: sans-serif; max-width: 900px; margin: 40px auto; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+  th, td { text-align: left; padding: 10px; border-bottom: 1px solid #ddd; }
+  select, input { padding: 4px 6px; }
+  button { padding: 6px 12px; cursor: pointer; }
+  .msg { margin: 10px 0; }
+  .add-form { border: 1px solid #ddd; padding: 16px; border-radius: 8px; }
+  .add-form input, .add-form select { display: block; width: 100%; margin: 6px 0 14px; box-sizing: border-box; }
+  .denied { padding: 20px; background: #fee2e2; color: #991b1b; border-radius: 8px; }
+  .temp-password { padding: 16px; background: #dcfce7; color: #166534; border-radius: 8px; margin-bottom: 20px; }
+  .temp-password code { background: #fff; padding: 2px 8px; border-radius: 4px; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<h1>Staff Directory</h1>
+<div class="msg" id="msg"></div>
+<div id="content"></div>
+
+<script>
+const API_BASE = "https://icm-website-test-production.up.railway.app";
+
+function getToken() {
+  return localStorage.getItem("staffToken");
+}
+function getRole() {
+  return (localStorage.getItem("staffRole") || "").trim();
+}
+
+async function init() {
+  const content = document.getElementById("content");
+
+  if (getRole() !== "Administrator") {
+    content.innerHTML = `<div class="denied">Only Administrators can view the staff directory.</div>`;
+    return;
+  }
+
+  content.innerHTML = `
+    <div id="temp-password-banner"></div>
+
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th></th></tr>
+      </thead>
+      <tbody id="staff-body"></tbody>
+    </table>
+
+    <h3>Add staff member</h3>
+    <div class="add-form">
+      <label>Name<input id="new-name" type="text"></label>
+      <label>Email<input id="new-email" type="email"></label>
+      <label>Phone<input id="new-phone" type="tel" placeholder="Optional"></label>
+      <label>Role
+        <select id="new-role">
+          <option value="Team Member">Team Member</option>
+          <option value="Administrator">Administrator</option>
+        </select>
+      </label>
+      <button id="add-btn">Add staff member</button>
+    </div>
+  `;
+
+  document.getElementById("add-btn").addEventListener("click", addStaff);
+  loadStaff();
+}
+
+async function loadStaff() {
+  try {
+    const res = await fetch(`${API_BASE}/api/staff`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+
+    const body = document.getElementById("staff-body");
+    body.innerHTML = "";
+
+    data.staff.forEach((person) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><input type="text" class="name-input" data-id="${person.id}" value="${person.name}"></td>
+        <td>${person.email}</td>
+        <td><input type="tel" class="phone-input" data-id="${person.id}" value="${person.phone || ""}"></td>
+        <td>
+          <select class="role-select" data-id="${person.id}">
+            <option value="Team Member" ${person.role === "Team Member" ? "selected" : ""}>Team Member</option>
+            <option value="Administrator" ${person.role === "Administrator" ? "selected" : ""}>Administrator</option>
+          </select>
+        </td>
+        <td>
+          <button class="save-btn" data-id="${person.id}">Save</button>
+          <button class="delete-btn" data-id="${person.id}">Remove</button>
+        </td>
+      `;
+      body.appendChild(row);
+    });
+
+    document.querySelectorAll(".save-btn").forEach((btn) =>
+      btn.addEventListener("click", () => saveStaff(btn.dataset.id))
+    );
+    document.querySelectorAll(".delete-btn").forEach((btn) =>
+      btn.addEventListener("click", () => deleteStaff(btn.dataset.id))
+    );
+  } catch (err) {
+    document.getElementById("msg").textContent = "Failed to load staff: " + err.message;
+  }
+}
+
+async function saveStaff(id) {
+  const name = document.querySelector(`.name-input[data-id="${id}"]`).value;
+  const phone = document.querySelector(`.phone-input[data-id="${id}"]`).value;
+  const role = document.querySelector(`.role-select[data-id="${id}"]`).value;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/staff/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ name, phone, role }),
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+
+    showMsg("Saved ✅");
+  } catch (err) {
+    showMsg("Failed to save: " + err.message);
+  }
+}
+
+async function deleteStaff(id) {
+  if (!confirm("Remove this staff member? They will no longer be able to log in.")) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/staff/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+
+    showMsg("Removed ✅");
+    loadStaff();
+  } catch (err) {
+    showMsg("Failed to remove: " + err.message);
+  }
+}
+
+async function addStaff() {
+  const name = document.getElementById("new-name").value.trim();
+  const email = document.getElementById("new-email").value.trim();
+  const phone = document.getElementById("new-phone").value.trim();
+  const role = document.getElementById("new-role").value;
+
+  if (!name || !email) {
+    showMsg("Fill in name and email.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/api/staff`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ name, email, phone, role }),
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+
+    // Show the auto-generated password ONCE — it is never stored in
+    // plain text and will not be shown again after this.
+    document.getElementById("temp-password-banner").innerHTML = `
+      <div class="temp-password">
+        <strong>${name}</strong> was added. Share this one-time temporary
+        password with them — it will not be shown again:
+        <br><br>
+        <code>${data.temporaryPassword}</code>
+      </div>
+    `;
+
+    document.getElementById("new-name").value = "";
+    document.getElementById("new-email").value = "";
+    document.getElementById("new-phone").value = "";
+    loadStaff();
+  } catch (err) {
+    showMsg("Failed to add: " + err.message);
+  }
+}
+
+function showMsg(text) {
+  const msg = document.getElementById("msg");
+  msg.textContent = text;
+  setTimeout(() => (msg.textContent = ""), 3000);
+}
+
+init();
+</script>
+
+</body>
+</html>
