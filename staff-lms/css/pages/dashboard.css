@@ -904,3 +904,129 @@ MEETING WIDGET
     grid-template-columns:repeat(7,minmax(0,1fr));
     min-width:0;
 }
+
+/*=========================
+ATTENDANCE WIDGET
+=========================*/
+
+.attendance-filter{
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    padding:10px 16px;
+    font-weight:600;
+    font-size:14px;
+    color:#081D38;
+    background:#fff;
+    cursor:pointer;
+}
+
+.attendance-filter:focus{
+    border-color:#D4AF37;
+}
+
+.attendance-table-wrap{
+    overflow-x:auto;
+    margin-top:6px;
+}
+
+.attendance-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:560px;
+}
+
+.attendance-table th{
+    text-align:left;
+    font-size:14px;
+    color:#081D38;
+    font-weight:700;
+    padding:12px 14px;
+    border-bottom:1px solid #EEF2F7;
+    white-space:nowrap;
+}
+
+.attendance-table td{
+    padding:16px 14px;
+    font-size:15px;
+    color:#1F2937;
+    border-bottom:1px solid #F3F4F6;
+    white-space:nowrap;
+}
+
+.attendance-table tr:last-child td{
+    border-bottom:none;
+}
+
+.attendance-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+    flex-shrink:0;
+}
+
+.late-tag{
+    display:inline-block;
+    margin-left:6px;
+    padding:2px 9px;
+    border-radius:20px;
+    background:#FEF3C7;
+    color:#B45309;
+    font-size:11px;
+    font-weight:700;
+}
+
+.attendance-info{
+    margin-top:28px;
+    padding-top:22px;
+    border-top:1px solid #EEF2F7;
+}
+
+.attendance-info h4{
+    font-size:16px;
+    color:#081D38;
+    margin-bottom:14px;
+}
+
+.attendance-info ul{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px 24px;
+    margin-bottom:16px;
+}
+
+.attendance-info li{
+    position:relative;
+    padding-left:16px;
+    color:#4B5563;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.attendance-info li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:8px;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#D4AF37;
+}
+
+.attendance-info p{
+    color:#4B5563;
+    font-size:14px;
+}
+
+@media (max-width:768px){
+    .attendance-info ul{
+        grid-template-columns:1fr;
+    }
+}
