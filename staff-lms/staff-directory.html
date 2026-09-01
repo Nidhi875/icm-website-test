@@ -84,6 +84,324 @@
       padding: 2px 8px;
       border-radius: 4px;
     }
+
+    /* =========================================================
+   STAFF DIRECTORY
+   Responsive design
+   ========================================================= */
+
+.staff-directory-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    box-sizing: border-box;
+}
+
+/* Page heading */
+.staff-directory-page h1 {
+    color: #09244a;
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.staff-directory-page > p {
+    color: #64748b;
+    font-size: 17px;
+    margin-bottom: 30px;
+}
+
+/* Main staff card */
+.staff-directory-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+/* Table wrapper */
+.staff-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Table */
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.staff-table thead {
+    background: #f8fafc;
+}
+
+.staff-table th {
+    padding: 16px 20px;
+    text-align: left;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.staff-table td {
+    padding: 16px 20px;
+    color: #1e293b;
+    font-size: 15px;
+    border-bottom: 1px solid #edf0f3;
+    vertical-align: middle;
+}
+
+.staff-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.staff-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Staff name */
+.staff-name {
+    font-weight: 600;
+    color: #09244a;
+}
+
+/* Email */
+.staff-email {
+    color: #475569;
+}
+
+/* Role badge */
+.staff-role {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Admin badge */
+.staff-role.admin {
+    background: #fff7df;
+    color: #8a6500;
+}
+
+/* Action buttons */
+.staff-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.staff-actions button {
+    border: 1px solid #dbe2ea;
+    background: #ffffff;
+    color: #334155;
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.staff-actions button:hover {
+    background: #f1f5f9;
+}
+
+.staff-actions .edit-btn {
+    color: #09244a;
+}
+
+.staff-actions .delete-btn {
+    color: #b42318;
+    border-color: #f1d0cc;
+}
+
+.staff-actions .delete-btn:hover {
+    background: #fff5f4;
+}
+
+/* Admin add button */
+.add-staff-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #09244a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.add-staff-btn:hover {
+    background: #12345f;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .staff-directory-page {
+        padding: 24px 16px 40px;
+    }
+
+    .staff-directory-page h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .staff-directory-page > p {
+        font-size: 15px;
+        margin-bottom: 22px;
+    }
+
+    .staff-directory-card {
+        border-radius: 14px;
+    }
+
+    /*
+       Instead of making the table extremely wide on phones,
+       convert each staff row into a card.
+    */
+
+    .staff-table-wrapper {
+        overflow: visible;
+    }
+
+    .staff-table {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .staff-table thead {
+        display: none;
+    }
+
+    .staff-table,
+    .staff-table tbody,
+    .staff-table tr,
+    .staff-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .staff-table tbody tr {
+        padding: 16px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .staff-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .staff-table td {
+        border: none;
+        padding: 5px 0;
+        font-size: 14px;
+    }
+
+    .staff-table td::before {
+        display: block;
+        color: #94a3b8;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 2px;
+    }
+
+    .staff-table td:nth-child(1)::before {
+        content: "Name";
+    }
+
+    .staff-table td:nth-child(2)::before {
+        content: "Email";
+    }
+
+    .staff-table td:nth-child(3)::before {
+        content: "Role";
+    }
+
+    .staff-table td:nth-child(4)::before {
+        content: "Actions";
+    }
+
+    .staff-name {
+        font-size: 16px;
+    }
+
+    .staff-email {
+        word-break: break-word;
+    }
+
+    .staff-actions {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .staff-actions button {
+        min-height: 38px;
+        padding: 8px 14px;
+    }
+
+    .add-staff-btn {
+        width: 100%;
+        min-height: 44px;
+        margin-bottom: 16px;
+    }
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .staff-directory-page {
+        padding: 20px 12px 32px;
+    }
+
+    .staff-directory-page h1 {
+        font-size: 28px;
+    }
+
+    .staff-directory-page > p {
+        font-size: 14px;
+    }
+
+    .staff-directory-card {
+        border-radius: 12px;
+    }
+
+    .staff-table tbody tr {
+        padding: 14px;
+    }
+
+    .staff-actions {
+        gap: 6px;
+    }
+
+    .staff-actions button {
+        flex: 1;
+    }
+}
   </style>
 </head>
 

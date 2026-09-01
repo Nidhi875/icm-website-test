@@ -320,6 +320,24 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .video-list { display: flex; flex-direction: column; gap: 8px; }
+    .video-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      background: rgba(15, 30, 60, 0.04);
+      transition: background 0.15s ease;
+    }
+    .video-item:hover { background: rgba(15, 30, 60, 0.08); }
+    .video-item-icon, .video-item-info { cursor: pointer; }
+    .video-item-icon { color: #12305c; font-size: 18px; flex: 0 0 auto; }
+    .video-item-info { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+    .video-item-name { font-weight: 600; font-size: 13.5px; color: #12305c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .video-item-meta { font-size: 12px; color: #6b7a90; }
+    .video-item-remove { flex: 0 0 auto; color: #9aa5b1; }
+    .video-item-remove:hover { color: #c0392b; }
+    #trainingVideoModal video { width: 100%; border-radius: 8px; background: #000; display: block; }
+  </style>
 </head>
 
 <body>
@@ -501,8 +519,14 @@ with this: -->
         </div>
 
         <div class="glass-card">
-          <div class="card-title"><h3>Training Videos</h3></div>
-          <div class="video-placeholder"><i class="fa-solid fa-circle-play"></i><p>Training videos will appear here.</p></div>
+          <div class="card-title">
+            <h3>Training Videos</h3>
+            <button type="button" class="link-btn" id="openTrainingVideoUpload">Upload</button>
+          </div>
+          <input type="file" id="trainingVideoInput" accept="video/*" multiple hidden>
+          <div class="video-list" id="trainingVideoList">
+            <div class="video-placeholder" id="trainingVideoEmpty"><i class="fa-solid fa-circle-play"></i><p>Training videos will appear here.</p></div>
+          </div>
         </div>
       </aside>
 
@@ -581,6 +605,12 @@ with this: -->
       <div class="modal-body"><div id="listModalContent" class="list-modal-content"></div></div>
     </div>
   </div>
+  <div class="event-modal" id="trainingVideoModal" aria-hidden="true">
+    <div class="event-modal-box" role="dialog" aria-modal="true" aria-labelledby="trainingVideoModalTitle">
+      <div class="modal-header"><h2 id="trainingVideoModalTitle">Training video</h2><button type="button" id="closeTrainingVideoModal" aria-label="Close">&times;</button></div>
+      <div class="modal-body"><video id="trainingVideoPlayer" controls style="width:100%;border-radius:8px;background:#000;"></video></div>
+    </div>
+  </div>
 
 </div> <!-- end page-wrapper -->
 </div> <!-- end main-content -->
@@ -605,6 +635,95 @@ window.addEventListener("load", function () {
     document.documentElement.style.overflow = "auto";
 
 });
+</script>
+
+<script>
+(function () {
+  var videos = [];
+  var listEl = document.getElementById("trainingVideoList");
+  var emptyEl = document.getElementById("trainingVideoEmpty");
+  var input = document.getElementById("trainingVideoInput");
+  var uploadBtn = document.getElementById("openTrainingVideoUpload");
+  var modal = document.getElementById("trainingVideoModal");
+  var player = document.getElementById("trainingVideoPlayer");
+  var modalTitle = document.getElementById("trainingVideoModalTitle");
+  var closeModalBtn = document.getElementById("closeTrainingVideoModal");
+
+  if (!listEl || !input || !uploadBtn || !modal) return;
+
+  function formatSize(bytes) {
+    if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + " GB";
+    if (bytes >= 1e6) return (bytes / 1e6).toFixed(1) + " MB";
+    return Math.max(1, Math.round(bytes / 1e3)) + " KB";
+  }
+
+  function render() {
+    listEl.innerHTML = "";
+    if (videos.length === 0) {
+      listEl.appendChild(emptyEl);
+      return;
+    }
+    videos.forEach(function (v, i) {
+      var item = document.createElement("div");
+      item.className = "video-item";
+      item.innerHTML =
+        '<span class="video-item-icon"><i class="fa-solid fa-circle-play"></i></span>' +
+        '<span class="video-item-info"><span class="video-item-name"></span>' +
+        '<span class="video-item-meta"></span></span>' +
+        '<button type="button" class="link-btn video-item-remove" title="Remove"><i class="fa-solid fa-trash"></i></button>';
+      item.querySelector(".video-item-name").textContent = v.name;
+      item.querySelector(".video-item-meta").textContent = formatSize(v.size);
+      item.querySelector(".video-item-info").addEventListener("click", function () {
+        openPlayer(v);
+      });
+      item.querySelector(".video-item-icon").addEventListener("click", function () {
+        openPlayer(v);
+      });
+      item.querySelector(".video-item-remove").addEventListener("click", function (e) {
+        e.stopPropagation();
+        URL.revokeObjectURL(v.url);
+        videos.splice(i, 1);
+        render();
+      });
+      listEl.appendChild(item);
+    });
+  }
+
+  function openPlayer(v) {
+    modalTitle.textContent = v.name;
+    player.src = v.url;
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    player.play().catch(function () {});
+  }
+
+  function closePlayer() {
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    player.pause();
+    player.removeAttribute("src");
+    player.load();
+  }
+
+  uploadBtn.addEventListener("click", function () {
+    input.click();
+  });
+
+  input.addEventListener("change", function () {
+    Array.prototype.forEach.call(input.files, function (file) {
+      videos.push({ name: file.name, size: file.size, url: URL.createObjectURL(file) });
+    });
+    input.value = "";
+    render();
+  });
+
+  if (closeModalBtn) closeModalBtn.addEventListener("click", closePlayer);
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) closePlayer();
+  });
+
+  render();
+})();
 </script>
 
 
