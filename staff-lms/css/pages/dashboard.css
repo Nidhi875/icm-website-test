@@ -951,6 +951,18 @@ ATTENDANCE WIDGET
     font-weight:600;
 }
 
+.attendance-reset-btn{
+    margin-left:auto;
+    color:#B91C1C;
+    border-color:#FCA5A5;
+    background:#FEF2F2;
+}
+
+.attendance-reset-btn:hover{
+    background:#FEE2E2;
+    color:#991B1B;
+}
+
 .attendance-table-wrap{
     overflow-x:auto;
     margin-top:6px;

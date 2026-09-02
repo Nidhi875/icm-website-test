@@ -304,6 +304,7 @@ function renderAttendanceWidget(){
                 '<button type="button" id="attendanceClockInBtn" class="primary-btn small">Clock In</button>' +
                 '<button type="button" id="attendanceClockOutBtn" class="primary-btn small">Clock Out</button>' +
                 '<span id="attendanceClockMsg" class="attendance-clock-msg"></span>' +
+                (user.isAdmin ? '<button type="button" id="attendanceResetBtn" class="link-btn attendance-reset-btn">Reset attendance data</button>' : '') +
             '</div>' +
 
             '<div class="attendance-table-wrap">' +
@@ -354,6 +355,19 @@ function renderAttendanceWidget(){
         msg.textContent = ok ? "Clocked out at " + attFormatTime(new Date()) + "." : "Already clocked out today.";
         renderAttendanceTable(filter.value, user);
     });
+
+    const resetBtn = document.getElementById("attendanceResetBtn");
+    if(resetBtn){
+        resetBtn.addEventListener("click", function(){
+            const sure = window.confirm(
+                "This clears ALL attendance records for ALL staff (including any old test data). This cannot be undone. Continue?"
+            );
+            if(!sure) return;
+            localStorage.removeItem(ATTENDANCE_CONFIG.storageKey);
+            msg.textContent = "Attendance data reset.";
+            renderAttendanceTable(filter.value, user);
+        });
+    }
 
     renderAttendanceTable("today", user);
 
