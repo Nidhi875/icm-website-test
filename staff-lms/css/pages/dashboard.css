@@ -936,14 +936,13 @@ ATTENDANCE WIDGET
     border-radius:14px;
 }
 
-.attendance-clock-bar label{
+.attendance-whoami{
     font-size:14px;
-    font-weight:600;
-    color:#081D38;
+    color:#4B5563;
 }
 
-.attendance-clock-bar select{
-    width:auto;
+.attendance-whoami strong{
+    color:#081D38;
 }
 
 .attendance-clock-msg{

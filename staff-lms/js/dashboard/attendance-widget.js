@@ -1,7 +1,8 @@
 /*==========================================
 ATTENDANCE WIDGET
 Real, functioning clock-in / clock-out
-attendance tracking, backed by localStorage.
+attendance tracking, tied to the actual
+logged-in staff member (see js/auth/login.js).
 ==========================================*/
 
 /*----------------------
@@ -31,6 +32,28 @@ function attDateKey(date){
 }
 
 /*----------------------
+Current logged-in user
+(set by js/auth/login.js)
+----------------------*/
+
+function attCurrentUser(){
+    const keys = ATTENDANCE_CONFIG.authKeys;
+    const loggedIn = localStorage.getItem(keys.loggedIn) === "true";
+    const id = localStorage.getItem(keys.staffId);
+    const name = localStorage.getItem(keys.staffName);
+    const role = (localStorage.getItem(keys.staffRole) || "").toLowerCase();
+
+    if(!loggedIn || !id) return null;
+
+    return {
+        id: id,
+        name: name || "Staff",
+        role: role,
+        isAdmin: ATTENDANCE_CONFIG.adminRoles.indexOf(role) !== -1
+    };
+}
+
+/*----------------------
 Storage
 ----------------------*/
 
@@ -53,10 +76,37 @@ function attGetTodayRecord(staffId){
 }
 
 /*----------------------
-Clock in / out actions
+Discover staff who have
+ever clocked in (used to
+build the admin roster,
+since there's no staff-list
+API yet)
 ----------------------*/
 
-function attClockIn(staffId){
+function attGetKnownStaff(){
+    const records = attLoadRecords();
+    const map = {};
+
+    Object.keys(records).forEach(function(dateKey){
+        const day = records[dateKey];
+        Object.keys(day).forEach(function(staffId){
+            const rec = day[staffId];
+            map[staffId] = rec.name || map[staffId] || staffId;
+        });
+    });
+
+    return Object.keys(map).map(function(id){
+        return { id: id, name: map[id] };
+    });
+}
+
+/*----------------------
+Clock in / out actions
+(always act on the real
+logged-in user)
+----------------------*/
+
+function attClockIn(staffId, staffName){
     const records = attLoadRecords();
     const today = attDateKey(new Date());
     records[today] = records[today] || {};
@@ -67,6 +117,7 @@ function attClockIn(staffId){
 
     const now = new Date();
     records[today][staffId] = {
+        name: staffName,
         loginTs: now.getTime(),
         login: attFormatTime(now),
         logoutTs: null,
@@ -153,16 +204,35 @@ function attendanceStatusMarkup(status){
     return '<span class="attendance-status"><span class="status-dot" style="background:' + s.color + '"></span>' + s.label + '</span>';
 }
 
-function renderAttendanceTable(range){
+function attRosterFor(user){
+    // Admins see everyone who has ever clocked in;
+    // regular staff only ever see their own row.
+    if(!user.isAdmin){
+        return [{ id: user.id, name: user.name }];
+    }
+
+    const known = attGetKnownStaff();
+    const hasSelf = known.some(function(s){ return s.id === user.id; });
+
+    if(!hasSelf){
+        known.push({ id: user.id, name: user.name });
+    }
+
+    return known;
+}
+
+function renderAttendanceTable(range, user){
     const thead = document.getElementById("attendanceTableHead");
     const tbody = document.getElementById("attendanceTableBody");
     if(!thead || !tbody) return;
+
+    const roster = attRosterFor(user);
 
     if(range === "today"){
         thead.innerHTML =
             '<tr><th>Staff</th><th>Status</th><th>Login</th><th>Logout</th><th>Hours</th></tr>';
 
-        tbody.innerHTML = ATTENDANCE_STAFF.map(function(staff){
+        tbody.innerHTML = roster.map(function(staff){
             const rec = attGetTodayRecord(staff.id);
             const status = attStatusForToday(rec);
             const login = (rec && rec.login) ? rec.login : "—";
@@ -184,7 +254,7 @@ function renderAttendanceTable(range){
 
         thead.innerHTML = '<tr><th>Staff</th><th>Present</th><th>Late</th><th>Hours</th></tr>';
 
-        tbody.innerHTML = ATTENDANCE_STAFF.map(function(staff){
+        tbody.innerHTML = roster.map(function(staff){
             const agg = attAggregate(staff.id, days);
             return '<tr>' +
                 '<td>' + staff.name + '</td>' +
@@ -196,9 +266,24 @@ function renderAttendanceTable(range){
     }
 }
 
+function renderLoggedOutNotice(container){
+    container.innerHTML =
+        '<div class="schedule-widget attendance-widget">' +
+            '<div class="widget-header"><div><h2>Attendance</h2></div></div>' +
+            '<p style="color:#6B7280;">Please log in to view and track attendance.</p>' +
+        '</div>';
+}
+
 function renderAttendanceWidget(){
     const container = document.getElementById("attendanceWidget");
     if(!container) return;
+
+    const user = attCurrentUser();
+
+    if(!user){
+        renderLoggedOutNotice(container);
+        return;
+    }
 
     container.innerHTML =
         '<div class="schedule-widget attendance-widget">' +
@@ -215,8 +300,7 @@ function renderAttendanceWidget(){
             '</div>' +
 
             '<div class="attendance-clock-bar">' +
-                '<label for="attendanceStaffSelect">Clock in/out as</label>' +
-                '<select id="attendanceStaffSelect" class="attendance-filter"></select>' +
+                '<div class="attendance-whoami">Signed in as <strong>' + user.name + '</strong></div>' +
                 '<button type="button" id="attendanceClockInBtn" class="primary-btn small">Clock In</button>' +
                 '<button type="button" id="attendanceClockOutBtn" class="primary-btn small">Clock Out</button>' +
                 '<span id="attendanceClockMsg" class="attendance-clock-msg"></span>' +
@@ -245,14 +329,9 @@ function renderAttendanceWidget(){
             '</div>' +
         '</div>';
 
-    const staffSelect = document.getElementById("attendanceStaffSelect");
-    staffSelect.innerHTML = ATTENDANCE_STAFF.map(function(s){
-        return '<option value="' + s.id + '">' + s.name + '</option>';
-    }).join("");
-
     const filter = document.getElementById("attendanceFilter");
     filter.addEventListener("change", function(){
-        renderAttendanceTable(filter.value);
+        renderAttendanceTable(filter.value, user);
     });
 
     const clockInBtn = document.getElementById("attendanceClockInBtn");
@@ -260,30 +339,28 @@ function renderAttendanceWidget(){
     const msg = document.getElementById("attendanceClockMsg");
 
     clockInBtn.addEventListener("click", function(){
-        const staffId = staffSelect.value;
-        const ok = attClockIn(staffId);
+        const ok = attClockIn(user.id, user.name);
         msg.textContent = ok ? "Clocked in at " + attFormatTime(new Date()) + "." : "Already clocked in today.";
-        renderAttendanceTable(filter.value);
+        renderAttendanceTable(filter.value, user);
     });
 
     clockOutBtn.addEventListener("click", function(){
-        const staffId = staffSelect.value;
-        const rec = attGetTodayRecord(staffId);
+        const rec = attGetTodayRecord(user.id);
         if(!rec || !rec.loginTs){
             msg.textContent = "Not clocked in yet today.";
             return;
         }
-        const ok = attClockOut(staffId);
+        const ok = attClockOut(user.id);
         msg.textContent = ok ? "Clocked out at " + attFormatTime(new Date()) + "." : "Already clocked out today.";
-        renderAttendanceTable(filter.value);
+        renderAttendanceTable(filter.value, user);
     });
 
-    renderAttendanceTable("today");
+    renderAttendanceTable("today", user);
 
     // Keep "today" hours ticking upward for anyone still clocked in
     if(window.__attendanceInterval) clearInterval(window.__attendanceInterval);
     window.__attendanceInterval = setInterval(function(){
-        if(filter.value === "today") renderAttendanceTable("today");
+        if(filter.value === "today") renderAttendanceTable("today", user);
     }, 30000);
 }
 
