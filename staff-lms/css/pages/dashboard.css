@@ -924,6 +924,34 @@ ATTENDANCE WIDGET
     border-color:#D4AF37;
 }
 
+.attendance-clock-bar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin:6px 0 24px;
+    padding:16px;
+    background:#F8FAFC;
+    border:1px solid #E2E8F0;
+    border-radius:14px;
+}
+
+.attendance-clock-bar label{
+    font-size:14px;
+    font-weight:600;
+    color:#081D38;
+}
+
+.attendance-clock-bar select{
+    width:auto;
+}
+
+.attendance-clock-msg{
+    font-size:13px;
+    color:#16A34A;
+    font-weight:600;
+}
+
 .attendance-table-wrap{
     overflow-x:auto;
     margin-top:6px;

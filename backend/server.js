@@ -9,6 +9,8 @@ const goalsRoutes = require("./routes/goalsRoutes");
 const studentsRoutes = require("./routes/studentsRoutes");
 const teamPerformanceRoutes = require("./routes/teamPerformanceRoutes");
 const staffPresenceRoutes = require("./routes/staffPresenceRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
+
 
 const operationsAdmissionsRoutes =
     require("./routes/operationsAdmissionsRoutes");
@@ -56,6 +58,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/staff", staffAuthRoutes);
 app.use("/api/staff/presence", staffPresenceRoutes);
+app.use("/api/attendance", attendanceRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/messages", messagesRoutes);
