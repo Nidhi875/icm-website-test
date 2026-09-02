@@ -66,7 +66,6 @@ function syncSharedMeetings() {
 
         badge: meeting.badge || "meet",
 
-
         status: getCurrentMeetingStatus(meeting),
 
         attendees: meeting.attendees || 0,
@@ -94,6 +93,7 @@ function syncSharedMeetings() {
 
     return sharedMeetings;
 }
+
 
 /*==================================================
     CALCULATE CURRENT MEETING STATUS
@@ -130,6 +130,7 @@ function getCurrentMeetingStatus(meeting) {
     return "COMPLETED";
 }
 
+
 /*==================================================
 INITIALISE
 ==================================================*/
@@ -152,8 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initialiseFilters();
 
-
 });
+
 
 /*==================================================
 GET MEETINGS
@@ -164,6 +165,7 @@ function refreshMeetings(){
     filteredMeetings = syncSharedMeetings();
 
 }
+
 
 /*==================================================
 MEETING CARD TEMPLATE
@@ -229,57 +231,58 @@ function createMeetingCard(meeting){
 
         </div>
 
-      <div class="meeting-actions">
-
-    <button
-        class="join-btn"
-        onclick="event.stopPropagation(); joinMeeting(${meeting.id})">
-
-        <i class="fa-solid fa-video"></i>
-        Join
-
-    </button>
-
-    <div class="meeting-menu">
-
-        <button
-            class="menu-btn"
-            onclick="event.stopPropagation(); toggleMeetingMenu(${meeting.id})">
-
-            <i class="fa-solid fa-ellipsis-vertical"></i>
-
-        </button>
-
-        <div
-            class="meeting-dropdown"
-            id="meeting-menu-${meeting.id}">
+        <div class="meeting-actions">
 
             <button
-                onclick="event.stopPropagation(); editMeeting(${meeting.id})">
+                class="join-btn"
+                onclick="event.stopPropagation(); joinMeeting(${meeting.id})">
 
-                <i class="fa-solid fa-pen"></i>
-                Edit Meeting
+                <i class="fa-solid fa-video"></i>
+                Join
 
             </button>
 
-            <button
-                onclick="event.stopPropagation(); deleteMeeting(${meeting.id})">
+            <div class="meeting-menu">
 
-                <i class="fa-solid fa-trash"></i>
-                Delete Meeting
+                <button
+                    class="menu-btn"
+                    onclick="event.stopPropagation(); toggleMeetingMenu(${meeting.id})">
 
-            </button>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+
+                </button>
+
+                <div
+                    class="meeting-dropdown"
+                    id="meeting-menu-${meeting.id}">
+
+                    <button
+                        onclick="event.stopPropagation(); editMeeting(${meeting.id})">
+
+                        <i class="fa-solid fa-pen"></i>
+                        Edit Meeting
+
+                    </button>
+
+                    <button
+                        onclick="event.stopPropagation(); deleteMeeting(${meeting.id})">
+
+                        <i class="fa-solid fa-trash"></i>
+                        Delete Meeting
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
-    </div>
-
     `;
-
 }
+
 
 /*==================================================
 RENDER
@@ -291,18 +294,26 @@ function renderMeetings(){
 
     console.log(filteredMeetings);
 
-console.table(filteredMeetings);
+    console.table(filteredMeetings);
 
-    console.log("Meetings loaded:", filteredMeetings);
-console.log("Number of meetings:", filteredMeetings.length);
+    console.log(
+        "Meetings loaded:",
+        filteredMeetings
+    );
 
-    const container = document.getElementById("meetingsList");
+    console.log(
+        "Number of meetings:",
+        filteredMeetings.length
+    );
+
+    const container =
+        document.getElementById("meetingsList");
 
     if(!container) return;
 
-    if(filteredMeetings.length===0){
+    if(filteredMeetings.length === 0){
 
-        container.innerHTML=`
+        container.innerHTML = `
 
         <div class="empty-state">
 
@@ -315,16 +326,19 @@ console.log("Number of meetings:", filteredMeetings.length);
         `;
 
         return;
-
     }
 
-   container.innerHTML = filteredMeetings
-    .map(createMeetingCard)
-    .join("");
+    container.innerHTML = filteredMeetings
+        .map(createMeetingCard)
+        .join("");
 
-    console.log("Cards rendered:", container.children.length);
+    console.log(
+        "Cards rendered:",
+        container.children.length
+    );
 
 }
+
 
 /*==================================================
 STATISTICS
@@ -333,8 +347,12 @@ STATISTICS
 function updateStatistics(){
 
     const meetings = getMeetings().map(meeting => ({
+
         ...meeting,
-        status: getCurrentMeetingStatus(meeting)
+
+        status:
+            getCurrentMeetingStatus(meeting)
+
     }));
 
     const total =
@@ -368,8 +386,6 @@ function updateStatistics(){
         completed;
 }
 
-
-
 /*==================================================
 FILTERS
 ==================================================*/
@@ -381,27 +397,115 @@ function initialiseFilters(){
 
     if(search){
 
-        search.addEventListener("input",filterMeetings);
+        search.addEventListener(
+            "input",
+            filterMeetings
+        );
 
     }
+
 
     const provider =
         document.getElementById("providerFilter");
 
     if(provider){
 
-        provider.addEventListener("change",filterMeetings);
+        provider.addEventListener(
+            "change",
+            filterMeetings
+        );
 
     }
+
 
     const status =
         document.getElementById("statusFilter");
 
     if(status){
 
-        status.addEventListener("change",filterMeetings);
+        status.addEventListener(
+            "change",
+            filterMeetings
+        );
 
     }
+
+
+    /*
+    ==================================================
+    QUICK FILTER BUTTONS
+    ==================================================
+    */
+
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    /*
+                    Remove active state
+                    from every button
+                    */
+
+                    document
+                        .querySelectorAll(".filter-btn")
+                        .forEach(btn => {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    /*
+                    Activate clicked button
+                    */
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    /*
+                    Get selected filter
+                    */
+
+                    const selectedFilter =
+                        (
+                            button.dataset.filter ||
+                            "all"
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    /*
+                    Keep the top status
+                    dropdown synchronized
+                    */
+
+                    if(status){
+
+                        status.value =
+                            selectedFilter;
+
+                    }
+
+
+                    /*
+                    Apply filters
+                    */
+
+                    filterMeetings();
+
+                }
+            );
+
+        });
 
 }
 
@@ -412,70 +516,415 @@ FILTER MEETINGS
 
 function filterMeetings(){
 
+    /*
+    ==================================================
+    GET SEARCH VALUE
+    ==================================================
+    */
+
     const keyword =
-        document.getElementById("meetingSearch")?.value.toLowerCase() || "";
+        (
+            document
+                .getElementById(
+                    "meetingSearch"
+                )
+                ?.value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+    ==================================================
+    GET PROVIDER
+    ==================================================
+    */
 
     const provider =
-        document.getElementById("providerFilter")?.value || "";
+        (
+            document
+                .getElementById(
+                    "providerFilter"
+                )
+                ?.value || "all"
+        )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+    ==================================================
+    GET STATUS
+    ==================================================
+    */
 
     const status =
-        document.getElementById("statusFilter")?.value || "";
+        (
+            document
+                .getElementById(
+                    "statusFilter"
+                )
+                ?.value || "all"
+        )
+        .trim()
+        .toLowerCase();
 
-    filteredMeetings = getMeetings().filter(meeting=>{
 
-        const matchesSearch =
+    /*
+    ==================================================
+    TODAY
+    ==================================================
+    */
 
-            meeting.title.toLowerCase().includes(keyword) ||
+    const now = new Date();
 
-            meeting.tutor.toLowerCase().includes(keyword);
 
-        const matchesProvider =
+    const today =
+        new Date(now);
 
-            !provider ||
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
-            meeting.provider===provider;
 
-        const matchesStatus =
+    /*
+    ==================================================
+    TOMORROW
+    ==================================================
+    */
 
-            !status ||
+    const tomorrow =
+        new Date(today);
 
-            meeting.status===status;
+    tomorrow.setDate(
+        tomorrow.getDate() + 1
+    );
 
-        return matchesSearch &&
-               matchesProvider &&
-               matchesStatus;
 
-    });
+    /*
+    ==================================================
+    DAY AFTER TOMORROW
+    ==================================================
+    */
+
+    const dayAfterTomorrow =
+        new Date(tomorrow);
+
+    dayAfterTomorrow.setDate(
+        dayAfterTomorrow.getDate() + 1
+    );
+
+
+    /*
+    ==================================================
+    GET ALL MEETINGS
+    ==================================================
+    */
+
+    const meetings =
+        getMeetings();
+
+
+    /*
+    ==================================================
+    APPLY FILTERS
+    ==================================================
+    */
+
+    filteredMeetings =
+        meetings.filter(
+            meeting => {
+
+                /*
+                ==========================================
+                ALWAYS RECALCULATE STATUS
+                ==========================================
+                */
+
+                const currentStatus =
+                    getCurrentMeetingStatus(
+                        meeting
+                    )
+                    .toLowerCase();
+
+
+                /*
+                ==========================================
+                SEARCH DATA
+                ==========================================
+                */
+
+                const title =
+                    String(
+                        meeting.title || ""
+                    )
+                    .toLowerCase();
+
+
+                const tutor =
+                    String(
+                        meeting.tutor || ""
+                    )
+                    .toLowerCase();
+
+
+                const meetingProvider =
+                    String(
+                        meeting.provider || ""
+                    )
+                    .toLowerCase();
+
+
+                /*
+                ==========================================
+                MEETING DATE
+                ==========================================
+                */
+
+                const meetingDate =
+                    meeting.date
+                        ? new Date(
+                            `${meeting.date}T00:00:00`
+                        )
+                        : null;
+
+
+                /*
+                ==========================================
+                SEARCH FILTER
+                ==========================================
+                */
+
+                const matchesSearch =
+
+                    !keyword ||
+
+                    title.includes(
+                        keyword
+                    ) ||
+
+                    tutor.includes(
+                        keyword
+                    ) ||
+
+                    meetingProvider.includes(
+                        keyword
+                    );
+
+
+                /*
+                ==========================================
+                PROVIDER FILTER
+                ==========================================
+                */
+
+                const matchesProvider =
+
+                    provider === "all" ||
+
+                    !provider ||
+
+                    meetingProvider ===
+                        provider;
+
+
+                /*
+                ==========================================
+                STATUS FILTER
+                ==========================================
+                */
+
+                let matchesStatus = true;
+
+
+                /*
+                LIVE
+                */
+
+                if(
+                    status === "live"
+                ){
+
+                    matchesStatus =
+                        currentStatus ===
+                        "live";
+
+                }
+
+
+                /*
+                COMPLETED
+                */
+
+                else if(
+                    status === "completed"
+                ){
+
+                    matchesStatus =
+                        currentStatus ===
+                        "completed";
+
+                }
+
+
+                /*
+                UPCOMING
+                */
+
+                else if(
+                    status === "upcoming"
+                ){
+
+                    matchesStatus =
+                        currentStatus ===
+                        "upcoming";
+
+                }
+
+
+                /*
+                TODAY
+                */
+
+                else if(
+                    status === "today"
+                ){
+
+                    matchesStatus =
+
+                        meetingDate &&
+
+                        meetingDate >=
+                            today &&
+
+                        meetingDate <
+                            tomorrow;
+
+                }
+
+
+                /*
+                TOMORROW
+                */
+
+                else if(
+                    status === "tomorrow"
+                ){
+
+                    matchesStatus =
+
+                        meetingDate &&
+
+                        meetingDate >=
+                            tomorrow &&
+
+                        meetingDate <
+                            dayAfterTomorrow;
+
+                }
+
+
+                /*
+                ALL
+                */
+
+                else {
+
+                    matchesStatus =
+                        true;
+
+                }
+
+
+                /*
+                ==========================================
+                FINAL RESULT
+                ==========================================
+                */
+
+                return (
+
+                    matchesSearch &&
+
+                    matchesProvider &&
+
+                    matchesStatus
+
+                );
+
+            }
+        );
+
+
+    /*
+    ==================================================
+    DISPLAY RESULTS
+    ==================================================
+    */
 
     renderFilteredMeetings();
 
 }
 
-
 /*==================================================
-RENDER FILTERED
-==================================================*/
-
-/*==================================================
-RENDER FILTERED
+RENDER FILTERED MEETINGS
 ==================================================*/
 
 function renderFilteredMeetings(){
 
     const container =
-        document.getElementById("meetingsList");
+        document.getElementById(
+            "meetingsList"
+        );
 
-    if(!container) return;
 
-    if(filteredMeetings.length===0){
+    /*
+    ==================================================
+    SAFETY CHECK
+    ==================================================
+    */
+
+    if(!container){
+
+        console.warn(
+            "meetingsList not found."
+        );
+
+        return;
+
+    }
+
+
+    /*
+    ==================================================
+    EMPTY RESULTS
+    ==================================================
+    */
+
+    if(
+        !filteredMeetings ||
+        filteredMeetings.length === 0
+    ){
 
         container.innerHTML = `
 
             <div class="empty-state">
 
-                <h3>No meetings found</h3>
+                <div class="empty-state-icon">
+                    <i class="fas fa-calendar-times"></i>
+                </div>
 
-                <p>No meetings match your search.</p>
+                <h3>
+                    No meetings found
+                </h3>
+
+                <p>
+                    No meetings match the
+                    selected filters.
+                </p>
 
             </div>
 
@@ -485,554 +934,566 @@ function renderFilteredMeetings(){
 
     }
 
-    container.innerHTML = filteredMeetings
-    .map(createMeetingCard)
-    .join("");
+
+    /*
+    ==================================================
+    RENDER MEETING CARDS
+    ==================================================
+    */
+
+    container.innerHTML =
+        filteredMeetings
+            .map(
+                meeting =>
+                    createMeetingCard(
+                        meeting
+                    )
+            )
+            .join("");
+
+
+    /*
+    ==================================================
+    UPDATE CARD EVENTS
+    ==================================================
+    */
+
+    initialiseMeetingCardEvents();
+
 }
 
 
-
 /*==================================================
-EDIT MEETING
+MEETING CARD EVENTS
 ==================================================*/
 
-/*==================================================
-EDIT MEETING
-==================================================*/
+function initialiseMeetingCardEvents(){
 
-function editMeeting(id) {
+    /*
+    ==================================================
+    FIND ALL MEETING CARDS
+    ==================================================
+    */
 
-    console.log("EDIT MEETING CLICKED:", id);
-
-    const sharedKey = "staff-lms-meetings";
-
-    let meetings = [];
-
-    try {
-        meetings = JSON.parse(
-            localStorage.getItem(sharedKey) || "[]"
+    const cards =
+        document.querySelectorAll(
+            "[data-meeting-id]"
         );
-    } catch (error) {
-        console.error("Unable to read meetings:", error);
-        alert("Unable to load meeting.");
-        return;
-    }
 
-    const meeting = meetings.find(
-        m => String(m.id) === String(id)
-    );
 
-    if (!meeting) {
-        console.error("Meeting not found:", id);
-        console.table(meetings);
-        alert("Meeting not found.");
-        return;
-    }
+    /*
+    ==================================================
+    ATTACH CLICK EVENTS
+    ==================================================
+    */
 
-    console.log("MEETING TO EDIT:", meeting);
+    cards.forEach(card => {
 
-    editingMeetingId = meeting.id;
+        card.addEventListener(
+            "click",
+            event => {
 
-    const title =
-        document.getElementById("meetingTitle");
+                /*
+                ==========================================
+                DO NOT TRIGGER FROM BUTTONS/LINKS
+                ==========================================
+                */
 
-    const tutor =
-        document.getElementById("meetingTutor");
+                if(
+                    event.target.closest(
+                        "button"
+                    ) ||
+                    event.target.closest(
+                        "a"
+                    )
+                ){
 
-    const date =
-        document.getElementById("meetingDate");
+                    return;
 
-    const time =
-        document.getElementById("meetingTime");
+                }
 
-    const duration =
-        document.getElementById("meetingDuration");
 
-    const provider =
-        document.getElementById("meetingProvider");
+                /*
+                ==========================================
+                GET MEETING ID
+                ==========================================
+                */
 
-    if (title) {
-        title.value = meeting.title || "";
-    }
+                const meetingId =
+                    card.dataset.meetingId;
 
-    if (tutor) {
-        tutor.value = meeting.tutor || "Claire";
-    }
 
-    if (date) {
-        date.value = meeting.date || "";
-    }
+                if(!meetingId){
 
-    if (time) {
-        time.value = meeting.time || "";
-    }
+                    return;
 
-    if (duration) {
-        duration.value = meeting.duration || 60;
-    }
+                }
 
-    if (provider) {
-        provider.value = meeting.provider || "meet";
-    }
 
-    const modal =
-        document.getElementById("meetingModal");
+                /*
+                ==========================================
+                OPEN MEETING ROOM
+                ==========================================
+                */
 
-    if (!modal) {
-        console.error("meetingModal not found.");
-        alert("Meeting editor could not be opened.");
-        return;
-    }
-
-    modal.classList.add("show");
-
-    console.log(
-        "EDIT MODE:",
-        editingMeetingId
-    );
-}
-
-function toggleMeetingMenu(id){
-
-    document
-        .querySelectorAll(".meeting-dropdown")
-        .forEach(menu=>{
-
-            if(menu.id !== `meeting-menu-${id}`){
-
-                menu.classList.remove("show");
+                window.location.href =
+                    `meeting-room.html?id=${encodeURIComponent(
+                        meetingId
+                    )}`;
 
             }
+        );
 
-        });
-
-    document
-        .getElementById(`meeting-menu-${id}`)
-        .classList.toggle("show");
+    });
 
 }
 
-/*==================================================
-DELETE MEETING
-==================================================*/
 
 /*==================================================
-DELETE MEETING
+MEETING ACTIONS
 ==================================================*/
 
-function deleteMeeting(id) {
+function openMeeting(meetingId){
 
-    if (!confirm("Delete this meeting?")) {
-        return;
-    }
+    if(!meetingId){
 
-    const sharedKey = "staff-lms-meetings";
-
-    let meetings = [];
-
-    try {
-        meetings = JSON.parse(
-            localStorage.getItem(sharedKey) || "[]"
-        );
-
-        if (!Array.isArray(meetings)) {
-            meetings = [];
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Unable to read meetings before deletion:",
-            error
+        console.warn(
+            "Meeting ID missing."
         );
 
         return;
-    }
-
-
-    /* Remove the selected meeting */
-
-    const updatedMeetings = meetings.filter(
-        meeting =>
-            String(meeting.id) !== String(id)
-    );
-
-
-    /* Save directly to the SAME storage
-       used by the Messages page and Meetings page */
-
-    localStorage.setItem(
-        sharedKey,
-        JSON.stringify(updatedMeetings)
-    );
-
-
-    /* Update the page without calling renderMeetings(),
-       because renderMeetings() reloads the old shared data. */
-
-    filteredMeetings = [...updatedMeetings];
-
-
-    renderFilteredMeetings();
-
-    updateStatistics();
-
-
-    console.log(
-        "MEETING DELETED SUCCESSFULLY:",
-        id
-    );
-
-    console.log(
-        "REMAINING MEETINGS:",
-        updatedMeetings
-    );
-}
-
-document.addEventListener("click",()=>{
-
-    document
-        .querySelectorAll(".meeting-dropdown")
-        .forEach(menu=>menu.classList.remove("show"));
-
-});
-
-
-/*==================================================
-SAVE / UPDATE MEETING
-==================================================*/
-
-function saveMeeting(e) {
-
-    e.preventDefault();
-
-    const title =
-        document.getElementById("meetingTitle")?.value.trim();
-
-    const tutor =
-          document.getElementById("meetingTutor")?.value.trim()
-    || "Claire";
-
-    const date =
-        document.getElementById("meetingDate")?.value;
-
-    const time =
-        document.getElementById("meetingTime")?.value;
-
-    const duration =
-        parseInt(
-            document.getElementById("meetingDuration")?.value
-        ) || 60;
-
-    const provider =
-
-         document.getElementById("meetingProvider")?.value || "meet";
-
-    if (!title || !tutor || !date || !time) {
-         alert("Please enter the meeting title, date and time.");
-        return;
-    }
-
-    const providerMap = {
-
-        meet: {
-            platform: "Google Meet",
-            badge: "meet"
-        }
-
-    };
-
-    const sharedKey = "staff-lms-meetings";
-
-    let meetings = [];
-
-    try {
-
-        meetings = JSON.parse(
-            localStorage.getItem(sharedKey) || "[]"
-        );
-
-        if (!Array.isArray(meetings)) {
-            meetings = [];
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Unable to read meetings:",
-            error
-        );
-
-        alert("Unable to save meeting.");
-        return;
-    }
-
-
-    /*==================================================
-    UPDATE EXISTING MEETING
-    ==================================================*/
-
-    if (editingMeetingId !== null) {
-
-        const index = meetings.findIndex(
-            meeting =>
-                String(meeting.id) ===
-                String(editingMeetingId)
-        );
-
-        if (index === -1) {
-
-            console.error(
-                "Meeting not found while saving:",
-                editingMeetingId
-            );
-
-            alert("Meeting could not be found.");
-            return;
-        }
-
-        const oldMeeting = meetings[index];
-
-        meetings[index] = {
-
-            ...oldMeeting,
-
-            title: title,
-
-            tutor: tutor,
-
-            date: date,
-
-            time: time,
-
-            duration: duration,
-
-            provider: provider,
-
-            platform:
-                providerMap[provider]?.platform ||
-                oldMeeting.platform ||
-                "Google Meet",
-
-            badge:
-                providerMap[provider]?.badge ||
-                oldMeeting.badge ||
-                "meet"
-
-        };
-
-        console.log(
-            "MEETING UPDATED:",
-            meetings[index]
-        );
-
-        editingMeetingId = null;
 
     }
 
-    /*==================================================
-    CREATE NEW MEETING
-    ==================================================*/
-
-    else {
-
-        meetings.unshift({
-
-            id: Date.now(),
-
-            title: title,
-
-            tutor: tutor,
-
-            date: date,
-
-            time: time,
-
-            duration: duration,
-
-            provider: provider,
-
-            platform:
-                providerMap[provider]?.platform ||
-                "Google Meet",
-
-            badge:
-                providerMap[provider]?.badge ||
-                "meet",
-
-            status: "UPCOMING",
-
-            attendees: 0,
-
-            meetingId: "",
-
-            meetingPassword: "",
-
-            join: "#",
-
-            description: "",
-
-            createdAt:
-                new Date().toISOString()
-
-        });
-
-        console.log(
-            "MEETING CREATED:",
-            meetings[0]
-        );
-    }
-
-
-    /*==================================================
-    SAVE TO SHARED STORAGE
-    ==================================================*/
-
-    localStorage.setItem(
-        sharedKey,
-        JSON.stringify(meetings)
-    );
-
-
-    /*==================================================
-    REFRESH PAGE
-    ==================================================*/
-
-    filteredMeetings = [...meetings];
-
-    renderFilteredMeetings();
-
-    updateStatistics();
-
-
-    const modal =
-        document.getElementById("meetingModal");
-
-    if (modal) {
-        modal.classList.remove("show");
-    }
-
-    if (e.target && typeof e.target.reset === "function") {
-        e.target.reset();
-    }
-
-    console.log(
-        "SHARED MEETINGS AFTER SAVE:",
-        meetings
-    );
-
-    alert(
-        editingMeetingId === null
-            ? "Meeting created successfully."
-            : "Meeting updated successfully."
-    );
-}
-
-
-/*==========================================
-    JOIN MEETING
-==========================================*/
-
-window.joinMeeting = function (id) {
-
-    console.log("========== JOIN MEETING ==========");
-    console.log("JOIN BUTTON ID:", id);
-
-    let meetings = [];
-
-    try {
-        meetings = getMeetings();
-
-        if (!Array.isArray(meetings)) {
-            meetings = [];
-        }
-
-    } catch (error) {
-        console.error("GET MEETINGS ERROR:", error);
-        alert("Unable to load meeting information.");
-        return;
-    }
-
-    console.log("MEETINGS AVAILABLE:", meetings);
-
-    const meeting = meetings.find(
-        m =>
-            m &&
-            m.id !== undefined &&
-            m.id !== null &&
-            String(m.id).trim() === String(id).trim()
-    );
-
-    console.log("SELECTED MEETING:", meeting);
-
-    if (!meeting) {
-        console.error("MEETING NOT FOUND:", id);
-        console.error(
-            "AVAILABLE IDS:",
-            meetings.map(m => m.id)
-        );
-
-        alert("Meeting not found.");
-        return;
-    }
-
-    const now = new Date();
-
-    const meetingStart = new Date(
-        `${meeting.date}T${meeting.time}:00`
-    );
-
-    const duration =
-        Number(meeting.duration) || 60;
-
-    const meetingEnd = new Date(
-        meetingStart.getTime() +
-        duration * 60000
-    );
-
-    /*==========================================
-        NOT STARTED
-    ==========================================*/
-
-    if (now < meetingStart) {
-
-        alert(
-            `This meeting has not started yet.\n\n` +
-            `Scheduled for ${meetingStart.toLocaleDateString(
-                "en-GB",
-                {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric"
-                }
-            )} at ${meetingStart.toLocaleTimeString([], {
-                hour: "numeric",
-                minute: "2-digit"
-            })}.`
-        );
-
-        return;
-    }
-
-    /*==========================================
-        ENDED
-    ==========================================*/
-
-    if (now >= meetingEnd) {
-
-        alert("This meeting has already ended.");
-
-        return;
-    }
-
-    /*==========================================
-        LIVE — OPEN MEETING ROOM
-    ==========================================*/
-
-    console.log("OPENING MEETING:", meeting.id);
 
     window.location.href =
         `meeting-room.html?id=${encodeURIComponent(
-            String(meeting.id)
+            meetingId
         )}`;
-};
+
+}
+
+
+/*==================================================
+DELETE MEETING
+==================================================*/
+
+function deleteMeeting(meetingId){
+
+    if(!meetingId){
+
+        return;
+
+    }
+
+
+    /*
+    ==================================================
+    CONFIRMATION
+    ==================================================
+    */
+
+    const confirmed =
+        window.confirm(
+            "Are you sure you want to delete this meeting?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    /*
+    ==================================================
+    GET EXISTING MEETINGS
+    ==================================================
+    */
+
+    const meetings =
+        getMeetings();
+
+
+    /*
+    ==================================================
+    REMOVE SELECTED MEETING
+    ==================================================
+    */
+
+    const updatedMeetings =
+        meetings.filter(
+            meeting =>
+                String(
+                    meeting.id
+                ) !==
+                String(
+                    meetingId
+                )
+        );
+
+
+    /*
+    ==================================================
+    SAVE
+    ==================================================
+    */
+
+    localStorage.setItem(
+        "meetings",
+        JSON.stringify(
+            updatedMeetings
+        )
+    );
+
+
+    /*
+    ==================================================
+    REFRESH PAGE DATA
+    ==================================================
+    */
+
+    syncSharedMeetings();
+
+    refreshMeetings();
+
+    updateStatistics();
+
+
+    /*
+    ==================================================
+    SHOW MESSAGE
+    ==================================================
+    */
+
+    showMeetingNotification(
+        "Meeting deleted successfully.",
+        "success"
+    );
+
+}
+
+
+/*==================================================
+MEETING NOTIFICATION
+==================================================*/
+
+function showMeetingNotification(
+    message,
+    type = "info"
+){
+
+    /*
+    ==================================================
+    REMOVE EXISTING NOTIFICATION
+    ==================================================
+    */
+
+    const existing =
+        document.querySelector(
+            ".meeting-notification"
+        );
+
+
+    if(existing){
+
+        existing.remove();
+
+    }
+
+
+    /*
+    ==================================================
+    CREATE NOTIFICATION
+    ==================================================
+    */
+
+    const notification =
+        document.createElement(
+            "div"
+        );
+
+
+    notification.className =
+        `meeting-notification ${type}`;
+
+
+    notification.textContent =
+        message;
+
+
+    /*
+    ==================================================
+    ADD TO PAGE
+    ==================================================
+    */
+
+    document.body.appendChild(
+        notification
+    );
+
+
+    /*
+    ==================================================
+    AUTO REMOVE
+    ==================================================
+    */
+
+    setTimeout(
+        () => {
+
+            notification.remove();
+
+        },
+        3000
+    );
+
+}
+
+/*==================================================
+MEETING MODAL HELPERS
+==================================================*/
+
+function closeMeetingModal(){
+
+    const modal =
+        document.querySelector(
+            ".meeting-modal"
+        );
+
+    if(modal){
+
+        modal.remove();
+
+    }
+
+}
+
+
+/*==================================================
+ESC KEY
+==================================================*/
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Escape"
+        ){
+
+            closeMeetingModal();
+
+        }
+
+    }
+);
+
+
+/*==================================================
+CLICK OUTSIDE MODAL
+==================================================*/
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const modal =
+            event.target.closest(
+                ".meeting-modal"
+            );
+
+
+        if(
+            modal &&
+            event.target === modal
+        ){
+
+            closeMeetingModal();
+
+        }
+
+    }
+);
+
+
+/*==================================================
+CREATE MEETING BUTTON
+==================================================*/
+
+function initialiseCreateMeetingButton(){
+
+    const buttons =
+        document.querySelectorAll(
+            "#createMeetingBtn, .create-meeting-btn"
+        );
+
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                /*
+                ==========================================
+                USE EXISTING CREATE MEETING FUNCTION
+                ==========================================
+                */
+
+                if(
+                    typeof window.openCreateMeetingModal ===
+                    "function"
+                ){
+
+                    window.openCreateMeetingModal();
+
+                    return;
+
+                }
+
+
+                if(
+                    typeof window.showCreateMeetingModal ===
+                    "function"
+                ){
+
+                    window.showCreateMeetingModal();
+
+                    return;
+
+                }
+
+
+                console.warn(
+                    "Create Meeting modal function not found."
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/*==================================================
+REFRESH MEETING DATA
+==================================================*/
+
+function refreshMeetingData(){
+
+    /*
+    ==================================================
+    SYNC SHARED DATA
+    ==================================================
+    */
+
+    syncSharedMeetings();
+
+
+    /*
+    ==================================================
+    REFRESH DISPLAY
+    ==================================================
+    */
+
+    filterMeetings();
+
+
+    /*
+    ==================================================
+    REFRESH STATISTICS
+    ==================================================
+    */
+
+    updateStatistics();
+
+}
+
+
+/*==================================================
+STORAGE EVENT
+==================================================*/
+
+window.addEventListener(
+    "storage",
+    event => {
+
+        /*
+        ==================================================
+        ONLY RESPOND TO MEETING STORAGE CHANGES
+        ==================================================
+        */
+
+        if(
+            event.key === "meetings"
+        ){
+
+            refreshMeetingData();
+
+        }
+
+    }
+);
+
+
+/*==================================================
+PAGE VISIBILITY
+==================================================*/
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        /*
+        ==================================================
+        REFRESH WHEN USER RETURNS TO PAGE
+        ==================================================
+        */
+
+        if(
+            document.visibilityState ===
+            "visible"
+        ){
+
+            refreshMeetingData();
+
+        }
+
+    }
+);
+
+
+/*==================================================
+INITIALISE CREATE MEETING BUTTON
+==================================================*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        initialiseCreateMeetingButton();
+
+    }
+);
+
+
+/*==================================================
+GLOBAL HELPERS
+==================================================*/
+
+window.openMeeting =
+    openMeeting;
+
+window.deleteMeeting =
+    deleteMeeting;
+
+window.refreshMeetings =
+    refreshMeetingData;
+
+
+/*==================================================
+END OF MEETINGS.JS
+==================================================*/
