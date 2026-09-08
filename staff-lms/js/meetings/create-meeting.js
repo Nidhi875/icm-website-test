@@ -2,13 +2,13 @@
 CREATE MEETING
 ==========================================*/
 
-function initialiseCreateMeeting(){
+async function initialiseCreateMeeting(){
 
     const form = document.getElementById("meetingForm");
 
     if(!form) return;
 
-    form.addEventListener("submit", function(e){
+    form.addEventListener("submit", async function(e){
 
         e.preventDefault();
 
@@ -32,13 +32,21 @@ function initialiseCreateMeeting(){
 
             attendees: 0,
 
-            description: "",
+            description:
+                document.getElementById("meetingDescription")?.value.trim() || "",
 
             meetingId: "",
 
-            meetingPassword: ""
+            meetingPassword: "",
+
+            join: "#"
 
         };
+
+
+        /*==========================================
+        VALIDATE
+        ==========================================*/
 
         if(
             !meeting.title ||
@@ -53,41 +61,240 @@ function initialiseCreateMeeting(){
 
         }
 
+
+        /*==========================================
+        PROVIDERS
+        ==========================================*/
+
         const providers = {
 
-            meet:{
-                platform:"Google Meet",
-                badge:"meet"
+            gouldings: {
+                platform: "Gouldings Meeting",
+                badge: "gouldings"
+            },
+
+            meet: {
+                platform: "Google Meet",
+                badge: "meet"
             }
 
         };
 
+
         meeting.platform =
-            providers[meeting.provider].platform;
+            providers[meeting.provider]?.platform || "Google Meet";
 
         meeting.badge =
-            providers[meeting.provider].badge;
+            providers[meeting.provider]?.badge || "meet";
 
-            meeting.status = "UPCOMING";
+        meeting.status = "UPCOMING";
 
-        const meetings = getMeetings();
 
-meetings.unshift(meeting);
+        /*==========================================
+        GOOGLE MEET
+        ==========================================*/
 
-saveMeetings(meetings);
+        if(meeting.provider === "meet"){
 
-        location.reload();
-        document.getElementById("meetingModal")
-            .classList.remove("show");
+            const token =
+                localStorage.getItem("staffToken");
+
+            if(!token){
+
+                alert(
+                    "Your staff login session has expired. Please log in again."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response = await fetch(
+                      "https://icm-website-test-production.up.railway.app/api/google/create-meet",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+
+                        body: JSON.stringify({
+
+                            title: meeting.title,
+
+                            date: meeting.date,
+
+                            time: meeting.time,
+
+                            duration: meeting.duration
+
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                console.log(
+                    "GOOGLE MEET RESPONSE:",
+                    response.status,
+                    data
+                );
+
+
+                /*==========================================
+                GOOGLE AUTH REQUIRED
+                ==========================================*/
+
+                if(
+                    response.status === 400 &&
+                    data.message?.includes(
+                        "Google Calendar is not connected"
+                    )
+                ){
+
+                    alert(
+                        "Google Calendar is not connected. Please connect your Google account first."
+                    );
+
+                    return;
+
+                }
+
+
+                /*==========================================
+                OTHER API ERROR
+                ==========================================*/
+
+                if(!response.ok){
+
+                    alert(
+                        data.message ||
+                        "Unable to create Google Meet."
+                    );
+
+                    return;
+
+                }
+
+
+                /*==========================================
+                MEET STILL BEING CREATED
+                ==========================================*/
+
+                if(data.pending){
+
+                    alert(
+                        "Google Meet is still being created. Please try again shortly."
+                    );
+
+                    return;
+
+                }
+
+
+                /*==========================================
+                MEET CREATED
+                ==========================================*/
+
+                if(data.success && data.meetUrl){
+
+                    meeting.join =
+                        data.meetUrl;
+
+                    meeting.meetingId =
+                        data.googleEventId || "";
+
+                    console.log(
+                        "GOOGLE MEET CREATED:",
+                        data.meetUrl
+                    );
+
+                } else {
+
+                    alert(
+                        "Google Meet could not be created."
+                    );
+
+                    return;
+
+                }
+
+
+            } catch(error){
+
+                console.error(
+                    "GOOGLE MEET REQUEST ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to connect to the Google Meet service."
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /*==========================================
+        SAVE MEETING
+        ==========================================*/
+
+        const meetings =
+            getMeetings();
+
+        meetings.unshift(meeting);
+
+        saveMeetings(meetings);
+
+
+        /*==========================================
+        CLOSE MODAL
+        ==========================================*/
+
+        const modal =
+            document.getElementById("meetingModal");
+
+        if(modal){
+
+            modal.classList.remove("show");
+
+        }
 
         form.reset();
 
-        alert("Meeting created successfully.");
+
+        /*==========================================
+        SUCCESS
+        ==========================================*/
+
+        alert(
+            meeting.provider === "meet"
+                ? "Google Meet created successfully."
+                : "Meeting created successfully."
+        );
+
+
+        location.reload();
 
     });
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    initialiseCreateMeeting();
-});
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        initialiseCreateMeeting();
+
+    }
+);
