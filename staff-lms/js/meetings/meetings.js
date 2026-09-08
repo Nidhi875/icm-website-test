@@ -1053,6 +1053,84 @@ function initialiseMeetingCardEvents(){
 MEETING ACTIONS
 ==================================================*/
 
+function joinMeeting(id) {
+
+    // Get all saved meetings
+    const meetings = JSON.parse(
+        localStorage.getItem("staff-lms-meetings") || "[]"
+    );
+
+    // Find the meeting that was clicked
+    const meeting = meetings.find(
+        m => String(m.id) === String(id)
+    );
+
+    // Meeting doesn't exist
+    if (!meeting) {
+        alert("Meeting not found.");
+        return;
+    }
+
+    // ==============================
+    // GOULDINGS MEETING
+    // ==============================
+
+    if (meeting.provider === "gouldings") {
+
+        window.location.href =
+            `meeting-room.html?id=${meeting.id}`;
+
+        return;
+    }
+
+    // ==============================
+    // GOOGLE MEET
+    // ==============================
+
+    if (meeting.provider === "meet") {
+
+        if (!meeting.join || meeting.join === "#") {
+
+            alert(
+                "Google Meet has not been created for this meeting yet."
+            );
+
+            return;
+        }
+
+        window.open(meeting.join, "_blank");
+
+        return;
+    }
+
+    // Unknown provider
+    alert("Unable to determine meeting provider.");
+}
+
+
+function openMeeting(meetingId){
+
+    if(!meetingId){
+
+        console.warn(
+            "Meeting ID missing."
+        );
+
+        return;
+    }
+
+    window.location.href =
+        `meeting-room.html?id=${encodeURIComponent(
+            meetingId
+        )}`;
+
+}
+
+
+/*==================================================
+MEETING ACTIONS
+==================================================*/
+
 function openMeeting(meetingId){
 
     if(!meetingId){
@@ -1487,13 +1565,15 @@ GLOBAL HELPERS
 window.openMeeting =
     openMeeting;
 
+window.joinMeeting =
+    joinMeeting;
+
 window.deleteMeeting =
     deleteMeeting;
 
 window.refreshMeetings =
     refreshMeetingData;
-
-
+    
 /*==================================================
 END OF MEETINGS.JS
 ==================================================*/
