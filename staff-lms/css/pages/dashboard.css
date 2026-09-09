@@ -394,6 +394,33 @@ SCHEDULE WIDGET
 
 }
 
+.schedule-status{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:700;
+    flex-shrink:0;
+}
+
+.schedule-status.live{
+    background:#FEE2E2;
+    color:#DC2626;
+}
+
+.schedule-status.upcoming{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+.schedule-status.completed{
+    background:#E5E7EB;
+    color:#6B7280;
+}
+
 /*=========================
 MEETING WIDGET
 =========================*/
@@ -903,6 +930,31 @@ MEETING WIDGET
 .dashboard-right #calendarWidget .calendar-widget-grid {
     grid-template-columns:repeat(7,minmax(0,1fr));
     min-width:0;
+}
+
+/* Stop the global "premium calendar" page styles (calendar.css,
+   loaded site-wide via style.css) from leaking their dark-theme
+   .day.today rule into this light dashboard widget. Those rules
+   use !important, so this override also needs !important — the
+   #calendarWidget id selector gives it higher specificity, so it
+   wins regardless of stylesheet load order. */
+#calendarWidget .calendar-widget-day.today,
+#calendarWidget .day.today{
+    background:#CDA74A !important;
+    border:none !important;
+    box-shadow:none !important;
+    color:#ffffff !important;
+    font-weight:700 !important;
+}
+
+/* Same leak, different property: calendar.css also defines a
+   dark, !important .event-dot rule meant for the full calendar
+   page's dark theme. Neutralize it here too so any "has an
+   event" marker in this widget stays visible and legible on
+   both the navy day cells and the gold "today" cell. */
+#calendarWidget .event-dot{
+    background:#ffffff !important;
+    box-shadow:0 0 6px rgba(0,0,0,.25) !important;
 }
 
 /*=========================

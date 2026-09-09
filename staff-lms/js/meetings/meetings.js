@@ -644,8 +644,11 @@ function filterMeetings(){
     ==================================================
     */
 
-    const meetings =
-        getMeetings();
+      const meetings =
+        getMeetings().map(meeting => ({
+            ...meeting,
+            status: getCurrentMeetingStatus(meeting)
+        }));
 
 
     /*
@@ -1522,7 +1525,7 @@ window.addEventListener(
         */
 
         if(
-            event.key === "meetings"
+            event.key === "staff-lms-meetings"
         ){
 
             refreshMeetingData();

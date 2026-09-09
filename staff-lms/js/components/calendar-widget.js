@@ -1,211 +1,797 @@
 /*==================================================
-  GOULDINGS STAFF LMS
-  DASHBOARD CALENDAR WIDGET
+    GOULDINGS STAFF LMS
+    REAL DASHBOARD CALENDAR
 ==================================================*/
 
-console.log("Calendar Widget JS Loaded");
+(function () {
 
-function initCalendarWidget() {
+    "use strict";
 
-    const monthSelect = document.getElementById("monthSelect");
-    const yearSelect = document.getElementById("yearSelect");
-    const prevMonth = document.getElementById("prevMonth");
-    const nextMonth = document.getElementById("nextMonth");
-    const todayBtn = document.getElementById("todayBtn");
-    const calendarGrid = document.getElementById("calendarGrid");
-    const calendarUserFilter = document.getElementById("calendarUserFilter");
 
-    if (
-        !monthSelect ||
-        !yearSelect ||
-        !prevMonth ||
-        !nextMonth ||
-        !todayBtn ||
-        !calendarGrid
-    ) {
-        return;
-    }
+    /*==================================================
+        STATE
+    ==================================================*/
 
     let currentDate = new Date();
-    function formatDate(year, month, day) {
-        return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    let selectedDate = new Date();
+
+
+    const MEETING_STORAGE_KEY =
+        "staff-lms-meetings";
+
+
+    /*==================================================
+        DATE HELPERS
+    ==================================================*/
+
+    function formatDateKey(date) {
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
+
+        return `${year}-${month}-${day}`;
+
     }
 
-    function getMeetings(date) {
+
+    function getMeetings() {
+
         try {
-            const selectedUser = calendarUserFilter?.value || "all";
-            const events = JSON.parse(localStorage.getItem("ops_events") || "[]");
-            const cleanedEvents = events.filter(event => event.title?.trim().toLowerCase() !== "test");
 
-            if (cleanedEvents.length !== events.length) {
-                localStorage.setItem("ops_events", JSON.stringify(cleanedEvents));
-            }
+            const stored =
+                localStorage.getItem(
+                    MEETING_STORAGE_KEY
+                );
 
-            return cleanedEvents.filter(event => event.date === date && (selectedUser === "all" || event.staff === selectedUser));
-        } catch {
-            return [];
+
+            const meetings =
+                JSON.parse(
+                    stored || "[]"
+                );
+
+
+            return Array.isArray(meetings)
+                ? meetings
+                : [];
+
         }
-    }
 
-    /*=========================================
-      Populate Year Dropdown
-    =========================================*/
+        catch (error) {
 
-    yearSelect.innerHTML = "";
+            console.error(
+                "Unable to load meetings:",
+                error
+            );
 
-    for (let year = 2020; year <= 2035; year++) {
+            return [];
 
-        const option = document.createElement("option");
-
-        option.value = year;
-        option.textContent = year;
-
-        yearSelect.appendChild(option);
+        }
 
     }
 
-    /*=========================================
-      Render Calendar
-    =========================================*/
+
+    function getMeetingDateTime(meeting) {
+
+        if (
+            !meeting ||
+            !meeting.date ||
+            !meeting.time
+        ) {
+
+            return null;
+
+        }
+
+
+        const date =
+            new Date(
+                `${meeting.date}T${meeting.time}:00`
+            );
+
+
+        return isNaN(date.getTime())
+            ? null
+            : date;
+
+    }
+
+
+    function getMeetingStatus(meeting) {
+
+        const start =
+            getMeetingDateTime(
+                meeting
+            );
+
+
+        if (!start) {
+
+            return "UPCOMING";
+
+        }
+
+
+        const duration =
+            Number(
+                meeting.duration
+            ) || 60;
+
+
+        const end =
+            new Date(
+                start.getTime() +
+                duration * 60000
+            );
+
+
+        const now =
+            new Date();
+
+
+        if (
+            now < start
+        ) {
+
+            return "UPCOMING";
+
+        }
+
+
+        if (
+            now >= start &&
+            now < end
+        ) {
+
+            return "LIVE";
+
+        }
+
+
+        return "COMPLETED";
+
+    }
+
+
+    /*==================================================
+        CALENDAR
+    ==================================================*/
 
     function renderCalendar() {
 
-        calendarGrid.innerHTML = "";
+        const grid =
+            document.getElementById(
+                "calendarGrid"
+            );
 
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
 
-        monthSelect.value = month;
-        yearSelect.value = year;
+        if (!grid) {
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        const prevMonthDays = new Date(year, month, 0).getDate();
-
-        /* Previous Month */
-
-        for (let i = firstDay; i > 0; i--) {
-
-            const day = document.createElement("div");
-
-            day.className = "day inactive";
-
-            day.innerHTML = `
-                <div class="date-number">${prevMonthDays - i + 1}</div>
-            `;
-
-            calendarGrid.appendChild(day);
+            return;
 
         }
 
-        /* Current Month */
 
-        const today = new Date();
+        const monthSelect =
+            document.getElementById(
+                "monthSelect"
+            );
 
-        for (let d = 1; d <= daysInMonth; d++) {
 
-            const day = document.createElement("div");
+        const yearSelect =
+            document.getElementById(
+                "yearSelect"
+            );
 
-    
-            day.className = "calendar-widget-day";
+
+        const year =
+            currentDate.getFullYear();
+
+
+        const month =
+            currentDate.getMonth();
+
+
+        /*
+        ==============================================
+        UPDATE SELECTORS
+        ==============================================
+        */
+
+        if (monthSelect) {
+
+            monthSelect.value =
+                String(month);
+
+        }
+
+
+        if (yearSelect) {
+
+            yearSelect.value =
+                String(year);
+
+        }
+
+
+        /*
+        ==============================================
+        CLEAR CALENDAR
+        ==============================================
+        */
+
+        grid.innerHTML = "";
+
+
+        /*
+        ==============================================
+        FIRST DAY / LAST DAY
+        ==============================================
+        */
+
+        const firstDay =
+            new Date(
+                year,
+                month,
+                1
+            ).getDay();
+
+
+        const lastDate =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+
+        /*
+        ==============================================
+        MEETINGS
+        ==============================================
+        */
+
+        const meetings =
+            getMeetings();
+
+
+        /*
+        ==============================================
+        PREVIOUS MONTH EMPTY CELLS
+        ==============================================
+        */
+
+        for (
+            let i = 0;
+            i < firstDay;
+            i++
+        ) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "day inactive";
+
+
+            grid.appendChild(
+                empty
+            );
+
+        }
+
+
+        /*
+        ==============================================
+        DAYS
+        ==============================================
+        */
+
+        for (
+            let day = 1;
+            day <= lastDate;
+            day++
+        ) {
+
+            const date =
+                new Date(
+                    year,
+                    month,
+                    day
+                );
+
+
+            const dateKey =
+                formatDateKey(
+                    date
+                );
+
+
+            const today =
+                formatDateKey(
+                    new Date()
+                ) ===
+                dateKey;
+
+
+            const selected =
+                formatDateKey(
+                    selectedDate
+                ) ===
+                dateKey;
+
+
+            const dayMeetings =
+                meetings.filter(
+                    meeting =>
+                        meeting.date ===
+                        dateKey
+                );
+
+
+            const dayElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            dayElement.className =
+                "day" +
+                (
+                    today
+                        ? " today"
+                        : ""
+                ) +
+                (
+                    selected
+                        ? " selected"
+                        : ""
+                ) +
+                (
+                    dayMeetings.length
+                        ? " has-event"
+                        : ""
+                );
+
+
+            /*
+            ==========================================
+            DAY NUMBER
+            ==========================================
+            */
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+
+            number.className =
+                "date";
+
+
+            number.textContent =
+                day;
+
+
+            dayElement.appendChild(
+                number
+            );
+
+
+            /*
+            ==========================================
+            EVENT DOT
+            ==========================================
+            */
 
             if (
-                d === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear()
+                dayMeetings.length
             ) {
-                day.classList.add("today");
+
+                const dot =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                dot.className =
+                    "event-dot";
+
+
+                dayElement.appendChild(
+                    dot
+                );
+
             }
-            const date = formatDate(year, month, d);
-            const meetings = getMeetings(date);
-            day.dataset.date = date;
-            day.innerHTML = `
-                <div class="date-number">${d}</div>
-                <div class="calendar-meetings">${meetings.slice(0, 2).map(meeting => `<span class="calendar-meeting" title="${meeting.title}">${meeting.title}</span>`).join("")}</div>
-            `;
-            day.addEventListener("click", () => {
-                document.dispatchEvent(new CustomEvent("calendarWidget:dateSelected", { detail: { date } }));
-            });
 
-            calendarGrid.appendChild(day);
 
-        }
+            /*
+            ==========================================
+            CLICK DATE
+            ==========================================
+            */
 
-        /* Next Month */
+            dayElement.addEventListener(
+                "click",
+                function () {
 
-        while (calendarGrid.children.length < 42) {
+                    selectedDate =
+                        new Date(
+                            year,
+                            month,
+                            day
+                        );
 
-            const day = document.createElement("div");
 
-        
-            day.className = "calendar-widget-day inactive";
+                    renderCalendar();
 
-            day.innerHTML = `
-                <div class="date-number">
-                    ${calendarGrid.children.length - (firstDay + daysInMonth) + 1}
-                </div>
-            `;
 
-            calendarGrid.appendChild(day);
+                    /*
+                    If a schedule renderer exists,
+                    show the selected date there.
+                    */
+
+                    if (
+                        typeof window.renderDashboardSchedule ===
+                        "function"
+                    ) {
+
+                        window.renderDashboardSchedule(
+                            selectedDate
+                        );
+
+                    }
+
+                }
+            );
+
+
+            grid.appendChild(
+                dayElement
+            );
 
         }
 
     }
 
-    /*=========================================
-      Navigation
-    =========================================*/
 
-    prevMonth.onclick = function () {
+    /*==================================================
+        POPULATE YEAR DROPDOWN
+    ==================================================*/
 
-        currentDate.setMonth(currentDate.getMonth() - 1);
+    function populateYears() {
+
+        const yearSelect =
+            document.getElementById(
+                "yearSelect"
+            );
+
+
+        if (!yearSelect) {
+
+            return;
+
+        }
+
+
+        yearSelect.innerHTML =
+            "";
+
+
+        const currentYear =
+            new Date().getFullYear();
+
+
+        /*
+        Give a useful range around
+        the current year.
+        */
+
+        for (
+            let year =
+                currentYear - 5;
+
+            year <=
+                currentYear + 10;
+
+            year++
+        ) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                String(year);
+
+
+            option.textContent =
+                year;
+
+
+            yearSelect.appendChild(
+                option
+            );
+
+        }
+
+
+        yearSelect.value =
+            String(
+                currentDate.getFullYear()
+            );
+
+    }
+
+
+    /*==================================================
+        BUTTONS
+    ==================================================*/
+
+    function initialiseCalendarControls() {
+
+        const previous =
+            document.getElementById(
+                "prevMonth"
+            );
+
+
+        const next =
+            document.getElementById(
+                "nextMonth"
+            );
+
+
+        const today =
+            document.getElementById(
+                "todayBtn"
+            );
+
+
+        const month =
+            document.getElementById(
+                "monthSelect"
+            );
+
+
+        const year =
+            document.getElementById(
+                "yearSelect"
+            );
+
+
+        /*
+        ==============================================
+        PREVIOUS MONTH
+        ==============================================
+        */
+
+        if (previous) {
+
+            previous.onclick =
+                function () {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() -
+                        1
+                    );
+
+
+                    renderCalendar();
+
+                };
+
+        }
+
+
+        /*
+        ==============================================
+        NEXT MONTH
+        ==============================================
+        */
+
+        if (next) {
+
+            next.onclick =
+                function () {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() +
+                        1
+                    );
+
+
+                    renderCalendar();
+
+                };
+
+        }
+
+
+        /*
+        ==============================================
+        TODAY
+        ==============================================
+        */
+
+        if (today) {
+
+            today.onclick =
+                function () {
+
+                    currentDate =
+                        new Date();
+
+
+                    selectedDate =
+                        new Date();
+
+
+                    renderCalendar();
+
+
+                    if (
+                        typeof window.renderDashboardSchedule ===
+                        "function"
+                    ) {
+
+                        window.renderDashboardSchedule(
+                            new Date()
+                        );
+
+                    }
+
+                };
+
+        }
+
+
+        /*
+        ==============================================
+        MONTH DROPDOWN
+        ==============================================
+        */
+
+        if (month) {
+
+            month.onchange =
+                function () {
+
+                    currentDate.setMonth(
+                        Number(
+                            month.value
+                        )
+                    );
+
+
+                    renderCalendar();
+
+                };
+
+        }
+
+
+        /*
+        ==============================================
+        YEAR DROPDOWN
+        ==============================================
+        */
+
+        if (year) {
+
+            year.onchange =
+                function () {
+
+                    currentDate.setFullYear(
+                        Number(
+                            year.value
+                        )
+                    );
+
+
+                    renderCalendar();
+
+                };
+
+        }
+
+    }
+
+
+    /*==================================================
+        INITIALISE
+    ==================================================*/
+
+    function initCalendarWidget() {
+
+        /*
+        Make sure component HTML has
+        already been injected.
+        */
+
+        if (
+            !document.getElementById(
+                "calendarGrid"
+            )
+        ) {
+
+            console.warn(
+                "Calendar component not loaded yet."
+            );
+
+            return;
+
+        }
+
+
+        populateYears();
+
+
+        initialiseCalendarControls();
+
 
         renderCalendar();
 
-    };
-
-    nextMonth.onclick = function () {
-
-        currentDate.setMonth(currentDate.getMonth() + 1);
-
-        renderCalendar();
-
-    };
-
-    monthSelect.onchange = function () {
-
-        currentDate.setMonth(parseInt(this.value));
-
-        renderCalendar();
-
-    };
-
-    yearSelect.onchange = function () {
-
-        currentDate.setFullYear(parseInt(this.value));
-
-        renderCalendar();
-
-    };
-    calendarUserFilter?.addEventListener("change", renderCalendar);
+    }
 
 
-    todayBtn.onclick = function () {
+    /*==================================================
+        STORAGE CHANGES
+    ==================================================*/
 
-        currentDate = new Date();
+    window.addEventListener(
+        "storage",
+        function (event) {
 
-        renderCalendar();
+            if (
+                event.key ===
+                MEETING_STORAGE_KEY
+            ) {
 
-    };
+                renderCalendar();
+
+            }
+
+        }
+    );
 
 
+    /*==================================================
+        SAME-TAB REFRESH
+    ==================================================*/
 
-    window.addEventListener("opsEventsChanged", renderCalendar);
+    window.refreshDashboardCalendar =
+        function () {
 
-    renderCalendar();
+            renderCalendar();
 
-}
+        };
 
-window.initCalendarWidget = initCalendarWidget;
 
+    /*
+    Expose initializer because
+    app.js calls this function.
+    */
+
+    window.initCalendarWidget =
+        initCalendarWidget;
+
+
+})();

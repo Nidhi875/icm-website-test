@@ -71,7 +71,7 @@ if (loginForm) {
         try {
 
             const response = await fetch(
-                "https://icm-website-test-production.up.railway.app/api/staff/login",
+                  "http://localhost:5000/api/staff/login",
                 {
                     method: "POST",
 
