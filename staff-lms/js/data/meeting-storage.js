@@ -49,6 +49,12 @@ function saveMeetings(data) {
             MEETING_KEY,
             JSON.stringify(data)
         );
+        window.dispatchEvent(
+            new CustomEvent("staff-lms-meetings-changed", {
+                detail: { meetings: data }
+            })
+        );
+
 
         console.log(
             "MEETINGS SAVED:",

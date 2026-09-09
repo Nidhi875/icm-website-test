@@ -678,6 +678,15 @@ function initHeaderLiveCounts() {
     /* ======================================================
        REFRESH CALENDAR WHEN ANOTHER TAB CHANGES MEETINGS
     ====================================================== */
+    if (!window.gouldingsMeetingCountListener) {
+        window.gouldingsMeetingCountListener = true;
+
+        window.addEventListener(
+            "staff-lms-meetings-changed",
+            updateCalendarCount
+        );
+    }
+
 
     if (
         !window.gouldingsCalendarStorageListener
