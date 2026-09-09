@@ -49,9 +49,14 @@ async function initialiseCreateMeeting(){
 
         e.preventDefault();
 
+        const editingId = form.dataset.editingId;
+        const existingMeeting = editingId
+            ? getMeetings().find(item => String(item.id) === String(editingId))
+            : null;
+
         const meeting = {
 
-            id: Date.now(),
+            id: existingMeeting?.id || Date.now(),
 
             title: document.getElementById("meetingTitle").value.trim(),
 
@@ -67,16 +72,16 @@ async function initialiseCreateMeeting(){
 
             provider: document.getElementById("meetingProvider").value,
 
-            attendees: 0,
+            attendees: existingMeeting?.attendees || 0,
 
             description:
                 document.getElementById("meetingDescription")?.value.trim() || "",
 
-            meetingId: "",
+            meetingId: existingMeeting?.meetingId || "",
 
-            meetingPassword: "",
+            meetingPassword: existingMeeting?.meetingPassword || "",
 
-            join: "#"
+            join: existingMeeting?.join || "#"
 
         };
 
@@ -131,7 +136,7 @@ async function initialiseCreateMeeting(){
         GOOGLE MEET
         ==========================================*/
 
-        if(meeting.provider === "meet"){
+        if(meeting.provider === "meet" && !(existingMeeting && existingMeeting.provider === "meet" && existingMeeting.join && existingMeeting.join !== "#")){
 
             const token =
                 localStorage.getItem("staffToken");
@@ -288,9 +293,11 @@ async function initialiseCreateMeeting(){
         const meetings =
             getMeetings();
 
-        meetings.unshift(meeting);
+        const updatedMeetings = existingMeeting
+            ? meetings.map(item => String(item.id) === String(meeting.id) ? meeting : item)
+            : [meeting, ...meetings];
 
-        saveMeetings(meetings);
+        saveMeetings(updatedMeetings);
 
 
         /*==========================================
@@ -307,6 +314,11 @@ async function initialiseCreateMeeting(){
         }
 
         form.reset();
+        delete form.dataset.editingId;
+        const modalHeading = modal?.querySelector(".modal-header h2");
+        if (modalHeading) {
+            modalHeading.textContent = "Create New Meeting";
+        }
 
 
         /*==========================================

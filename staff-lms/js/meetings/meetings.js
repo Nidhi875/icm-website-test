@@ -1217,13 +1217,9 @@ function deleteMeeting(meetingId){
     SAVE
     ==================================================
     */
-
-    localStorage.setItem(
-        "meetings",
-        JSON.stringify(
-            updatedMeetings
-        )
-    );
+    saveMeetings(updatedMeetings);
+    filteredMeetings = updatedMeetings;
+    renderMeetings();
 
 
     /*
@@ -1577,3 +1573,41 @@ window.refreshMeetings =
 /*==================================================
 END OF MEETINGS.JS
 ==================================================*/
+/* Meeting menu and editing */
+function toggleMeetingMenu(meetingId) {
+    const menu = document.getElementById(`meeting-menu-${meetingId}`);
+    document.querySelectorAll(".meeting-dropdown.show").forEach(dropdown => {
+        if (dropdown !== menu) dropdown.classList.remove("show");
+    });
+    menu?.classList.toggle("show");
+}
+
+function editMeeting(meetingId) {
+    const meeting = getMeetings().find(item => String(item.id) === String(meetingId));
+    if (!meeting) {
+        alert("Meeting not found.");
+        return;
+    }
+
+    const form = document.getElementById("meetingForm");
+    const modal = document.getElementById("meetingModal");
+    if (!form || !modal) return;
+
+    form.dataset.editingId = meeting.id;
+    document.getElementById("meetingTitle").value = meeting.title || "";
+    document.getElementById("meetingTutor").value = meeting.tutor || "";
+    document.getElementById("meetingDate").value = meeting.date || "";
+    document.getElementById("meetingTime").value = meeting.time || "";
+    document.getElementById("meetingDuration").value = meeting.duration || 60;
+    document.getElementById("meetingProvider").value = meeting.provider || "gouldings";
+    document.getElementById("meetingDescription").value = meeting.description || "";
+    modal.querySelector(".modal-header h2").textContent = "Edit Meeting";
+    document.getElementById(`meeting-menu-${meetingId}`)?.classList.remove("show");
+    modal.classList.add("show");
+}
+
+document.addEventListener("click", event => {
+    if (!event.target.closest(".meeting-menu")) {
+        document.querySelectorAll(".meeting-dropdown.show").forEach(dropdown => dropdown.classList.remove("show"));
+    }
+});
