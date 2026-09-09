@@ -131,6 +131,15 @@ function getCurrentMeetingStatus(meeting) {
 }
 
 
+function getMeetingStatusLabel(status) {
+    const labels = {
+        UPCOMING: "Not started yet",
+        LIVE: "Live now",
+        COMPLETED: "Finished"
+    };
+
+    return labels[status] || "Not started yet";
+}
 /*==================================================
 INITIALISE
 ==================================================*/
@@ -152,6 +161,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStatistics();
 
     initialiseFilters();
+    window.addEventListener("staff-lms-meetings-changed", () => {
+        filterMeetings();
+        updateStatistics();
+    });
+
+    if (!window.meetingStatusRefreshTimer) {
+        window.meetingStatusRefreshTimer = setInterval(() => {
+            filterMeetings();
+            updateStatistics();
+        }, 60000);
+    }
 
 });
 
@@ -193,7 +213,7 @@ function createMeetingCard(meeting){
 
                     <span class="meeting-status ${String(meeting.status || "").toLowerCase()}">
 
-                        ${meeting.status || "UPCOMING"}
+                        ${getMeetingStatusLabel(meeting.status)}
 
                     </span>
 
