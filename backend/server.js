@@ -23,6 +23,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 require("./config/db");
+const pool = require("./config/db");   // ← add this, reuses the same connection pool
 
 const authRoutes = require("./routes/authRoutes");
 const staffAuthRoutes = require("./routes/staffAuthRoutes");
@@ -82,3 +83,24 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// ↓ add everything below this line
+
+async function cleanupOldMessages() {
+    try {
+        const result = await pool.query(`
+            DELETE FROM messages
+            WHERE created_at < NOW() - INTERVAL '3 days'
+        `);
+        console.log(`Auto-cleanup: removed ${result.rowCount} messages older than 3 days`);
+    } catch (error) {
+        console.error("AUTO-CLEANUP ERROR:", error);
+    }
+}
+
+cleanupOldMessages();
+setInterval(cleanupOldMessages, 24 * 60 * 60 * 1000);

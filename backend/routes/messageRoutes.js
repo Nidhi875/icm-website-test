@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
+const requireAdmin = require("../middleware/requireAdmin");  
 
 
 /* ==========================================================
@@ -396,6 +397,32 @@ router.post("/", async (req, res) => {
 
     }
 
+});
+
+
+
+module.exports = router;
+
+/* ==========================================================
+   DELETE OLD MESSAGES (older than 3 days)
+========================================================== */
+
+router.delete("/cleanup", requireAdmin, async (req, res) => {
+    try {
+        const result = await pool.query(`
+            DELETE FROM messages
+            WHERE created_at < NOW() - INTERVAL '3 days'
+            RETURNING id
+        `);
+
+        res.json({
+            success: true,
+            deletedCount: result.rowCount
+        });
+    } catch (error) {
+        console.error("MESSAGE CLEANUP ERROR:", error);
+        res.status(500).json({ success: false, message: "Failed to clean up old messages" });
+    }
 });
 
 
