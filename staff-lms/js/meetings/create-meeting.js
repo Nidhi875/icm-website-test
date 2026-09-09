@@ -1,12 +1,49 @@
 /*==========================================
 CREATE MEETING
 ==========================================*/
+const GOOGLE_API_BASE_URL =
+    "https://icm-website-test-production.up.railway.app";
+
 
 async function initialiseCreateMeeting(){
 
     const form = document.getElementById("meetingForm");
 
     if(!form) return;
+
+    const connectGoogleButton =
+        document.getElementById("connectGoogleCalendar");
+
+    if (connectGoogleButton) {
+        connectGoogleButton.addEventListener("click", async () => {
+            const token = localStorage.getItem("staffToken");
+
+            if (!token) {
+                alert("Your staff login session has expired. Please log in again.");
+                return;
+            }
+
+            connectGoogleButton.disabled = true;
+
+            try {
+                const response = await fetch(
+                    `${GOOGLE_API_BASE_URL}/api/google/auth`,
+                    { headers: { "Authorization": `Bearer ${token}` } }
+                );
+                const data = await response.json();
+
+                if (!response.ok || !data.authUrl) {
+                    throw new Error(data.message || "Unable to start Google Calendar connection.");
+                }
+
+                window.location.href = data.authUrl;
+            } catch (error) {
+                console.error("GOOGLE CALENDAR CONNECTION ERROR:", error);
+                alert(error.message || "Unable to start Google Calendar connection.");
+                connectGoogleButton.disabled = false;
+            }
+        });
+    }
 
     form.addEventListener("submit", async function(e){
 
@@ -113,7 +150,7 @@ async function initialiseCreateMeeting(){
             try {
 
                 const response = await fetch(
-                      "https://icm-website-test-production.up.railway.app/api/google/create-meet",
+                      `${GOOGLE_API_BASE_URL}/api/google/create-meet`,
                     {
                         method: "POST",
 
