@@ -606,9 +606,23 @@ async function loadStaff() {
 
     console.log("Staff API response:", data);
 
-    if (!res.ok || !data.success) {
-      throw new Error(data.message || `HTTP ${res.status}`);
-    }
+   if (!res.ok || !data.success) {
+
+  if (res.status === 401) {
+
+    localStorage.removeItem("staffLoggedIn");
+    localStorage.removeItem("staffName");
+    localStorage.removeItem("staffEmail");
+    localStorage.removeItem("staffRole");
+    localStorage.removeItem("staffId");
+    localStorage.removeItem("staffToken");
+
+    window.location.href = "login.html";
+    return;
+  }
+
+  throw new Error(data.message || `HTTP ${res.status}`);
+}
 
     const staff = Array.isArray(data.staff) ? data.staff : [];
 
