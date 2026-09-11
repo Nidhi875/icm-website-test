@@ -24,8 +24,12 @@ const TABLE_SQL = `
     admission_status VARCHAR(100),
     revenue NUMERIC(14,2) NOT NULL DEFAULT 0,
     imported_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    import_batch_id BIGINT
   );
+
+  ALTER TABLE operations_student_progression
+    ADD COLUMN IF NOT EXISTS import_batch_id BIGINT;
 
   CREATE TABLE IF NOT EXISTS operations_import_batches (
     id BIGSERIAL PRIMARY KEY,
@@ -87,11 +91,127 @@ function statusIn(value, statuses) {
 }
 
 /* ==========================================================
+   LIST IMPORTED ADMISSIONS EXCEL FILES
+   GET /api/operations/admissions/imports
+   ========================================================== */
+router.get("/admissions/imports", async (req, res) => {
+  try {
+    await ensureTables();
+
+    const result = await pool.query(`
+      SELECT
+        id,
+        file_name,
+        records_processed,
+        new_records,
+        updated_records,
+        error_count,
+        imported_at
+      FROM operations_import_batches
+      ORDER BY imported_at DESC, id DESC
+    `);
+
+    res.json({
+      success: true,
+      imports: result.rows
+    });
+  } catch (error) {
+    console.error("OPERATIONS IMPORT LIST ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load admissions Excel files."
+    });
+  }
+});
+
+/* ==========================================================
+   DELETE AN IMPORTED ADMISSIONS EXCEL FILE
+   DELETE /api/operations/admissions/imports/:id
+   ========================================================== */
+router.delete("/admissions/imports/:id", async (req, res) => {
+  const batchId = Number(req.params.id);
+
+  if (!Number.isInteger(batchId) || batchId <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid Excel import ID."
+    });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    await ensureTables(client);
+
+    const batchResult = await client.query(
+      `SELECT id, file_name, records_processed
+       FROM operations_import_batches
+       WHERE id = $1
+       FOR UPDATE`,
+      [batchId]
+    );
+
+    if (!batchResult.rows.length) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({
+        success: false,
+        message: "Excel import was not found."
+      });
+    }
+
+    const deletedRecords = await client.query(
+      `DELETE FROM operations_student_progression
+       WHERE import_batch_id = $1`,
+      [batchId]
+    );
+
+    await client.query(
+      `DELETE FROM operations_import_batches WHERE id = $1`,
+      [batchId]
+    );
+
+    await client.query("COMMIT");
+
+    res.json({
+      success: true,
+      message: "Admissions Excel import deleted successfully.",
+      deleted: {
+        id: batchId,
+        fileName: batchResult.rows[0].file_name,
+        recordsDeleted: deletedRecords.rowCount
+      }
+    });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("OPERATIONS EXCEL DELETE ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: "The Excel import could not be deleted."
+    });
+  } finally {
+    client.release();
+  }
+});
+
+/* ==========================================================
    GET OPERATIONS ADMISSIONS DASHBOARD
    ========================================================== */
 router.get("/dashboard", async (req, res) => {
   try {
     await ensureTables();
+
+    await pool.query(`
+      UPDATE operations_student_progression
+      SET import_batch_id = (
+        SELECT id
+        FROM operations_import_batches
+        ORDER BY imported_at DESC, id DESC
+        LIMIT 1
+      )
+      WHERE import_batch_id IS NULL
+        AND EXISTS (SELECT 1 FROM operations_import_batches)
+    `);
 
     const summaryResult = await pool.query(`
       SELECT
@@ -395,6 +515,18 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
       existingResult.rows.map(row => row.student_id)
     );
 
+    const batchResult = await client.query(
+      `
+        INSERT INTO operations_import_batches
+        (file_name, records_processed, new_records, updated_records, error_count)
+        VALUES ($1,$2,0,0,$3)
+        RETURNING *
+      `,
+      [req.file.originalname, records.length, errors.length]
+    );
+
+    const importBatchId = batchResult.rows[0].id;
+
     let newRecords = 0;
     let updatedRecords = 0;
 
@@ -420,9 +552,10 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
             admission_status,
             revenue,
             imported_at,
-            updated_at
+            updated_at,
+            import_batch_id
           )
-          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,NOW(),NOW())
+          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,NOW(),NOW(),$11)
           ON CONFLICT (student_id)
           DO UPDATE SET
             student_name = EXCLUDED.student_name,
@@ -435,7 +568,8 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
             admission_status = EXCLUDED.admission_status,
             revenue = EXCLUDED.revenue,
             imported_at = NOW(),
-            updated_at = NOW()
+            updated_at = NOW(),
+            import_batch_id = EXCLUDED.import_batch_id
         `,
         [
           record.studentId,
@@ -447,26 +581,29 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
           record.applicationStatus || null,
           record.offerStatus || null,
           record.admissionStatus || null,
-          record.revenue
+          record.revenue,
+          importBatchId
         ]
       );
     }
 
-    const batchResult = await client.query(
+    await client.query(
       `
-        INSERT INTO operations_import_batches
-        (file_name, records_processed, new_records, updated_records, error_count)
-        VALUES ($1,$2,$3,$4,$5)
-        RETURNING *
+        UPDATE operations_import_batches
+        SET new_records = $1,
+            updated_records = $2,
+            error_count = $3
+        WHERE id = $4
       `,
-      [
-        req.file.originalname,
-        records.length,
-        newRecords,
-        updatedRecords,
-        errors.length
-      ]
+      [newRecords, updatedRecords, errors.length, importBatchId]
     );
+
+    const finalBatchResult = await client.query(
+      `SELECT * FROM operations_import_batches WHERE id = $1`,
+      [importBatchId]
+    );
+
+    const completedBatch = finalBatchResult.rows[0];
 
     await client.query("COMMIT");
 
@@ -480,7 +617,7 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
         updatedRecords,
         errorCount: errors.length,
         errors,
-        importedAt: batchResult.rows[0].imported_at
+        importedAt: completedBatch.imported_at
       }
     });
   } catch (error) {
