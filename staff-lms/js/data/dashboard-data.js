@@ -9,33 +9,33 @@ const dashboardData = {
         {
             id: 1,
             title: "Students",
-            value: 524,
+            value: 0,
             icon: "graduation-cap",
-            change: "+12 This Week"
+            change: "No data yet"
         },
 
         {
             id: 2,
             title: "Tutors",
-            value: 18,
+            value: 0,
             icon: "users",
-            change: "+2 This Month"
+            change: "No data yet"
         },
 
         {
             id: 3,
             title: "Courses",
-            value: 36,
+            value: 0,
             icon: "book-open",
-            change: "4 New"
+            change: "No data yet"
         },
 
         {
             id: 4,
             title: "Meetings",
-            value: 5,
+            value: 0,
             icon: "video",
-            change: "Today"
+            change: "No data yet"
         }
 
     ]

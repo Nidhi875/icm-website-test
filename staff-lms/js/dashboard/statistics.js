@@ -5,30 +5,30 @@
 const dashboardStats = [
     {
         title: "Students",
-        value: 524,
+        value: 0,
         icon: "graduation-cap",
-        change: "+12 This Week"
+        change: "No data yet"
     },
     {
         title: "Tutors",
-        value: 18,
+        value: 0,
         icon: "users",
-        change: "+2 This Month"
+        change: "No data yet"
     },
+    
     {
         title: "Courses",
-        value: 36,
+        value: 0,
         icon: "book-open",
-        change: "4 New"
+        change: "No data yet"
     },
     {
         title: "Meetings",
-        value: 5,
+        value: 0,
         icon: "video",
-        change: "Today"
+        change: "No data yet"
     }
 ];
-
 /*==================================================
     RENDER CARDS
 ==================================================*/
