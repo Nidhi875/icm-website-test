@@ -1263,7 +1263,16 @@ function createAdmissionsDashboard(){
                     class="primary-btn"
                 >
                     <i class="fa-solid fa-file-excel"></i>
-                    Import Admissions Excel
+                    Add Excel
+                </button>
+
+                <button
+                    type="button"
+                    id="operationsAdmissionsManageImports"
+                    class="link-btn"
+                >
+                    <i class="fa-solid fa-folder-open"></i>
+                    Manage Excel
                 </button>
 
             </div>
@@ -3071,6 +3080,367 @@ document.addEventListener(
 
 
 /*==========================================================
+   ADMISSIONS EXCEL FILE MANAGER
+==========================================================*/
+
+function createAdmissionsImportManager(){
+
+    if(document.getElementById("operationsAdmissionsImportManager")){
+        return;
+    }
+
+    const modal = document.createElement("div");
+
+    modal.id = "operationsAdmissionsImportManager";
+
+    modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        z-index:99999;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+        background:rgba(0,0,0,.65);
+        backdrop-filter:blur(5px);
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            width:100%;
+            max-width:760px;
+            max-height:90vh;
+            overflow:auto;
+            background:#ffffff;
+            color:#111827;
+            border-radius:18px;
+            padding:25px;
+            box-sizing:border-box;
+            box-shadow:0 25px 80px rgba(0,0,0,.35);
+        ">
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+                margin-bottom:20px;
+            ">
+                <div>
+                    <h2 style="margin:0;font-size:21px;">
+                        <i class="fa-solid fa-file-excel"></i>
+                        Manage Admissions Excel
+                    </h2>
+                    <p style="
+                        margin:6px 0 0;
+                        font-size:13px;
+                        color:#6b7280;
+                    ">
+                        View and delete imported Excel files.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    id="closeOperationsAdmissionsImportManager"
+                    style="
+                        border:0;
+                        background:transparent;
+                        font-size:26px;
+                        cursor:pointer;
+                        color:#6b7280;
+                    "
+                >&times;</button>
+            </div>
+
+            <div id="operationsAdmissionsImportManagerStatus"
+                 style="
+                    margin-bottom:12px;
+                    font-size:13px;
+                    color:#6b7280;
+                 ">
+                Loading Excel files...
+            </div>
+
+            <div id="operationsAdmissionsImportManagerList"></div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const list =
+        document.getElementById(
+            "operationsAdmissionsImportManagerList"
+        );
+
+    const status =
+        document.getElementById(
+            "operationsAdmissionsImportManagerStatus"
+        );
+
+    async function loadImports(){
+
+        status.textContent = "Loading Excel files...";
+        list.innerHTML = "";
+
+        try{
+
+            const response =
+                await fetch(
+                    `${OPERATIONS_ADMISSIONS_API}/admissions/imports`,
+                    {
+                        method:"GET",
+                        cache:"no-store"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if(!response.ok || !data.success){
+                throw new Error(
+                    data.message ||
+                    "Unable to load Excel files."
+                );
+            }
+
+            const imports =
+                Array.isArray(data.imports)
+                    ? data.imports
+                    : [];
+
+            if(imports.length === 0){
+
+                status.textContent =
+                    "No admissions Excel files have been imported yet.";
+
+                list.innerHTML = `
+                    <div style="
+                        padding:25px;
+                        text-align:center;
+                        border:1px solid #e5e7eb;
+                        border-radius:12px;
+                        color:#6b7280;
+                    ">
+                        No Excel imports found.
+                    </div>
+                `;
+
+                return;
+            }
+
+            status.textContent =
+                `${imports.length} imported Excel file${imports.length === 1 ? "" : "s"}.`;
+
+            list.innerHTML = imports.map(item => {
+
+                const importedAt =
+                    item.imported_at
+                        ? new Date(item.imported_at)
+                            .toLocaleString("en-GB")
+                        : "—";
+
+                return `
+                    <div
+                        data-delete-admissions-row
+                        data-file-name="${escapeAdmissionsValue(
+                            item.file_name || "Admissions Excel"
+                        )}"
+                        style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:15px;
+                        padding:14px;
+                        margin-bottom:10px;
+                        border:1px solid #e5e7eb;
+                        border-radius:12px;
+                        background:#f9fafb;
+                    ">
+                        <div style="min-width:0;flex:1;">
+                            <div style="
+                                font-weight:700;
+                                overflow:hidden;
+                                text-overflow:ellipsis;
+                                white-space:nowrap;
+                            ">
+                                <i class="fa-solid fa-file-excel"
+                                   style="margin-right:7px;"></i>
+                                ${escapeAdmissionsValue(
+                                    item.file_name || "Admissions Excel"
+                                )}
+                            </div>
+
+                            <div style="
+                                margin-top:5px;
+                                font-size:12px;
+                                color:#6b7280;
+                            ">
+                                ${Number(
+                                    item.records_processed || 0
+                                ).toLocaleString()}
+                                records
+                                • Imported ${importedAt}
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="link-btn"
+                            data-delete-admissions-import="${item.id}"
+                            style="
+                                color:#b91c1c;
+                                flex:0 0 auto;
+                            "
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+            }).join("");
+
+        }catch(error){
+
+            console.error(
+                "ADMISSIONS IMPORT LIST ERROR:",
+                error
+            );
+
+            status.textContent =
+                error.message ||
+                "Unable to load Excel files.";
+        }
+    }
+
+    function openManager(){
+        modal.style.display = "flex";
+        loadImports();
+    }
+
+    function closeManager(){
+        modal.style.display = "none";
+    }
+
+    document.addEventListener(
+        "click",
+        async event => {
+
+            const openButton =
+                event.target.closest(
+                    "#operationsAdmissionsManageImports"
+                );
+
+            if(openButton){
+                openManager();
+                return;
+            }
+
+            const deleteButton =
+                event.target.closest(
+                    "[data-delete-admissions-import]"
+                );
+
+            if(!deleteButton){
+                return;
+            }
+
+            const batchId =
+                deleteButton.dataset
+                    .deleteAdmissionsImport;
+
+            const row =
+                deleteButton.closest(
+                    "[data-delete-admissions-row]"
+                );
+
+            const fileName =
+                row?.dataset.fileName ||
+                "this Excel file";
+
+            if(!confirm(
+                `Delete ${fileName}?\n\nThis will also delete the admissions records created by this import.`
+            )){
+                return;
+            }
+
+            deleteButton.disabled = true;
+            deleteButton.innerHTML =
+                `<i class="fa-solid fa-spinner fa-spin"></i> Deleting...`;
+
+            try{
+
+                const response =
+                    await fetch(
+                        `${OPERATIONS_ADMISSIONS_API}/admissions/imports/${encodeURIComponent(batchId)}`,
+                        {
+                            method:"DELETE"
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                if(!response.ok || !data.success){
+                    throw new Error(
+                        data.message ||
+                        "Unable to delete Excel import."
+                    );
+                }
+
+                await loadOperationsAdmissions();
+                await loadImports();
+
+            }catch(error){
+
+                console.error(
+                    "ADMISSIONS IMPORT DELETE ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to delete Excel import."
+                );
+
+                deleteButton.disabled = false;
+                deleteButton.innerHTML =
+                    `<i class="fa-solid fa-trash"></i> Delete`;
+            }
+        }
+    );
+
+    document.getElementById(
+        "closeOperationsAdmissionsImportManager"
+    )?.addEventListener(
+        "click",
+        closeManager
+    );
+
+    modal.addEventListener(
+        "click",
+        event => {
+            if(event.target === modal){
+                closeManager();
+            }
+        }
+    );
+
+    document.addEventListener(
+        "keydown",
+        event => {
+            if(
+                event.key === "Escape" &&
+                modal.style.display === "flex"
+            ){
+                closeManager();
+            }
+        }
+    );
+}
+
+
+/*==========================================================
    ADMISSIONS EXCEL IMPORT MODAL
 ==========================================================*/
 
@@ -3769,6 +4139,7 @@ function createAdmissionsImportModal(){
    START IMPORT SYSTEM
 ==========================================================*/
 
+createAdmissionsImportManager();
 createAdmissionsImportModal();
 
 /*==========================================================
