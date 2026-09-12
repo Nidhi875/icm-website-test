@@ -171,50 +171,56 @@ function initHeaderActions() {
        CALENDAR
     --------------------------- */
 
-    const calendarButtons =
-        document.querySelectorAll(".header .action-btn");
+    const calendarButton =
+        document.getElementById("calendarHeaderBtn");
 
-    if (calendarButtons.length > 0) {
+    if (
+        calendarButton &&
+        !calendarButton.dataset.headerActionBound
+    ) {
 
-        /*
-         * First action button = Calendar
-         */
-        const calendarButton = calendarButtons[0];
+        calendarButton.dataset.headerActionBound = "true";
 
-        if (
-            calendarButton &&
-            !calendarButton.dataset.headerActionBound
-        ) {
+        calendarButton.addEventListener("click", () => {
 
-            calendarButton.dataset.headerActionBound = "true";
+            const calendarWidget =
+                document.getElementById("calendarWidget");
 
-            calendarButton.addEventListener("click", () => {
+            if (calendarWidget) {
 
-                /*
-                 * If a calendar widget exists on the current page,
-                 * scroll to it.
-                 */
-                const calendarWidget =
-                    document.getElementById("calendarWidget");
+                calendarWidget.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
 
-                if (calendarWidget) {
+                return;
+            }
 
-                    calendarWidget.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
+            window.location.href = "meetings.html";
 
-                    return;
-                }
+        });
 
-                /*
-                 * Otherwise open Meetings page.
-                 */
-                window.location.href = "meetings.html";
+    }
 
-            });
 
-        }
+    /* ---------------------------
+       MESSAGES
+    --------------------------- */
+
+    const messagesButton =
+        document.getElementById("messagesBtn");
+
+    if (
+        messagesButton &&
+        !messagesButton.dataset.headerActionBound
+    ) {
+
+        messagesButton.dataset.headerActionBound = "true";
+
+        messagesButton.addEventListener("click", () => {
+            window.location.href = "messages.html";
+        });
+
     }
 
 
@@ -253,6 +259,7 @@ function initHeaderActions() {
         `;
 
         document.head.appendChild(style);
+
     }
 
 
@@ -269,13 +276,9 @@ function initHeaderActions() {
 
         moonButton.dataset.headerActionBound = "true";
 
-        /*
-         * Restore saved preference
-         */
+
         if (
-            localStorage.getItem(
-                "staffDarkMode"
-            ) === "true"
+            localStorage.getItem("staffDarkMode") === "true"
         ) {
 
             document.body.classList.add(
@@ -295,11 +298,6 @@ function initHeaderActions() {
             localStorage.setItem(
                 "staffDarkMode",
                 enabled ? "true" : "false"
-            );
-
-            console.log(
-                "Dark mode:",
-                enabled ? "ON" : "OFF"
             );
 
         });
@@ -324,22 +322,12 @@ function initHeaderActions() {
         profile.style.cursor = "pointer";
 
         profile.addEventListener("click", () => {
-
-            /*
-             * Only navigate if profile.html exists
-             * or if your project already uses that page.
-             *
-             * Change this to your actual profile page
-             * if it has a different filename.
-             */
             window.location.href = "profile.html";
-
         });
 
     }
 
 }
-
 
 /* ==========================================================
    HEADER LIVE COUNTS
@@ -630,50 +618,7 @@ function initHeaderLiveCounts() {
        Only if the button exists
     ====================================================== */
 
-    const calendarButton =
-        document.getElementById(
-            "calendarHeaderBtn"
-        );
-
-
-    if (
-        calendarButton &&
-        !calendarButton.dataset.liveCountBound
-    ) {
-
-        calendarButton.dataset.liveCountBound =
-            "true";
-
-
-        calendarButton.addEventListener(
-            "click",
-            () => {
-
-                const calendarWidget =
-                    document.getElementById(
-                        "calendarWidget"
-                    );
-
-
-                if (calendarWidget) {
-
-                    calendarWidget.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                } else {
-
-                    window.location.href =
-                        "meetings.html";
-
-                }
-
-            }
-        );
-
-    }
-
+  
 
     /* ======================================================
        REFRESH CALENDAR WHEN ANOTHER TAB CHANGES MEETINGS
@@ -965,6 +910,7 @@ function initLogout() {
         localStorage.removeItem("staffEmail");
         localStorage.removeItem("staffRole");
         localStorage.removeItem("staffId");
+        localStorage.removeItem("staffToken");
 
         // Redirect to login page
         window.location.href = "login.html";

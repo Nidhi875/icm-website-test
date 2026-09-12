@@ -3,73 +3,22 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // ==========================================================
-// SETUP: make sure the "staff" table exists, and that the
-// original 7 hardcoded accounts exist as real rows.
-// This runs safely every time — it never overwrites existing
-// data (ON CONFLICT DO NOTHING), it only creates what's missing.
+// SETUP
+// Your "staff" table already exists with real accounts and
+// real hashed passwords in "password_hash" — we never touch
+// or re-seed that. We ONLY add a few extra optional columns
+// needed for the profile page (department, bio, profile
+// image), and only if they don't already exist. This cannot
+// affect your existing 5 accounts or their passwords.
 // ==========================================================
 
-async function ensureStaffTable() {
-    await pool.query(`
-        CREATE TABLE IF NOT EXISTS staff (
-            id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            phone TEXT,
-            department TEXT,
-            bio TEXT,
-            role TEXT NOT NULL DEFAULT 'Team Member',
-            profile_image TEXT,
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-        )
-      `);
-
-    // Add password column to older staff tables if it is missing.
+async function ensureProfileColumns() {
     await pool.query(`
         ALTER TABLE staff
-        ADD COLUMN IF NOT EXISTS password TEXT
+        ADD COLUMN IF NOT EXISTS department TEXT,
+        ADD COLUMN IF NOT EXISTS bio TEXT,
+        ADD COLUMN IF NOT EXISTS profile_image TEXT
     `);
-}
-
-async function seedStaffTable() {
-    // Same accounts / same password that used to be hardcoded in this file.
-    // This only inserts them the FIRST time — if they already exist
-    // (e.g. because a real signup/admin flow created them later),
-    // nothing here will touch or overwrite them.
-    const defaultPasswordHash = await bcrypt.hash("DistanceAdmin2026@Gouldings", 10);
-
-    await pool.query(
-    `UPDATE staff
-     SET password = $1
-     WHERE password IS NULL`,
-    [defaultPasswordHash]
-);
-
-    const seedUsers = [
-        { name: "Administrator", email: "derrick.mason@gouldings.education", role: "Administrator" },
-        { name: "Claire", email: "claire@gouldings.education", role: "Administrator" },
-        { name: "jOY banerjee", email: "joy@gouldings.education", role: "Team Member" },
-        { name: "Prathistha", email: "prathistha@gouldings.education", role: "Team Member" },
-        { name: "DP", email: "dp@gouldings.education", role: "Team Member" },
-        { name: "Arnab", email: "arnab@gouldings.education", role: "Team Member" },
-        { name: "Nidhi", email: "nidhi@gouldings.education", role: "Team Member" },
-    ];
-
-    for (const u of seedUsers) {
-        await pool.query(
-            `INSERT INTO staff (name, email, password, role)
-             VALUES ($1, $2, $3, $4)
-             ON CONFLICT (email) DO NOTHING`,
-            [u.name, u.email, defaultPasswordHash, u.role]
-        );
-    }
-}
-
-async function ensureReady() {
-    await ensureStaffTable();
-    await seedStaffTable();
 }
 
 // ==========================================================
@@ -78,8 +27,6 @@ async function ensureReady() {
 
 exports.login = async (req, res) => {
     try {
-        await ensureReady();
-
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -96,7 +43,7 @@ exports.login = async (req, res) => {
         }
 
         const user = result.rows[0];
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
             return res.status(401).json({ success: false, message: "Invalid email or password" });
@@ -135,7 +82,7 @@ exports.login = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        await ensureReady();
+        await ensureProfileColumns();
 
         const result = await pool.query(
             `SELECT id, name, email, phone, department, bio, role, profile_image
@@ -175,34 +122,29 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        await ensureReady();
+        await ensureProfileColumns();
 
-        const {
-            name,
-            phone,
-            department,
-            bio,
-            role,
-            profileImage
-        } = req.body;
+        const { name, phone, department, bio, role, profileImage } = req.body;
 
         if (!name || !name.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Full name is required"
-            });
+            return res.status(400).json({ success: false, message: "Full name is required" });
         }
 
+        // Accepts any of the real dropdown options from the profile page,
+        // instead of the old hardcoded 2-value list that caused "Invalid role".
         const allowedRoles = [
             "Administrator",
-            "Team Member"
+            "Tutor",
+            "Course Manager",
+            "HR",
+            "Marketing",
+            "Finance"
         ];
 
-        if (!role || !allowedRoles.includes(role)) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid role"
-            });
+        // If a role was sent but doesn't match, reject clearly.
+        // If no role was sent at all, just keep the existing one (don't fail the save).
+        if (role && !allowedRoles.includes(role)) {
+            return res.status(400).json({ success: false, message: "Invalid role" });
         }
 
         const result = await pool.query(
@@ -211,7 +153,7 @@ exports.updateProfile = async (req, res) => {
                  phone = $2,
                  department = $3,
                  bio = $4,
-                 role = $5,
+                 role = COALESCE($5, role),
                  profile_image = COALESCE($6, profile_image),
                  updated_at = NOW()
              WHERE id = $7
@@ -221,17 +163,14 @@ exports.updateProfile = async (req, res) => {
                 phone || null,
                 department || null,
                 bio || null,
-                role,
+                role || null,
                 profileImage || null,
                 req.user.id
             ]
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Staff account not found"
-            });
+            return res.status(404).json({ success: false, message: "Staff account not found" });
         }
 
         const user = result.rows[0];
@@ -253,14 +192,9 @@ exports.updateProfile = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-
-        res.status(500).json({
-            success: false,
-            message: "Internal server error"
-        });
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
-
 
 // ==========================================================
 // CHANGE PASSWORD  (requires requireStaffAuth middleware first)
@@ -268,8 +202,6 @@ exports.updateProfile = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
     try {
-        await ensureReady();
-
         const { currentPassword, newPassword, confirmPassword } = req.body;
 
         if (!currentPassword || !newPassword || !confirmPassword) {
@@ -291,7 +223,7 @@ exports.changePassword = async (req, res) => {
         }
 
         const user = result.rows[0];
-        const match = await bcrypt.compare(currentPassword, user.password);
+        const match = await bcrypt.compare(currentPassword, user.password_hash);
 
         if (!match) {
             return res.status(401).json({ success: false, message: "Current password is incorrect" });
@@ -300,7 +232,7 @@ exports.changePassword = async (req, res) => {
         const newHash = await bcrypt.hash(newPassword, 10);
 
         await pool.query(
-            "UPDATE staff SET password = $1, updated_at = NOW() WHERE id = $2",
+            "UPDATE staff SET password_hash = $1, updated_at = NOW() WHERE id = $2",
             [newHash, req.user.id]
         );
 
