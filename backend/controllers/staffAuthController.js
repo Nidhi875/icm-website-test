@@ -24,6 +24,12 @@ async function ensureStaffTable() {
             created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
             updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
+      `);
+
+    // Add password column to older staff tables if it is missing.
+    await pool.query(`
+        ALTER TABLE staff
+        ADD COLUMN IF NOT EXISTS password TEXT
     `);
 }
 
@@ -33,6 +39,13 @@ async function seedStaffTable() {
     // (e.g. because a real signup/admin flow created them later),
     // nothing here will touch or overwrite them.
     const defaultPasswordHash = await bcrypt.hash("DistanceAdmin2026@Gouldings", 10);
+
+    await pool.query(
+    `UPDATE staff
+     SET password = $1
+     WHERE password IS NULL`,
+    [defaultPasswordHash]
+);
 
     const seedUsers = [
         { name: "Administrator", email: "derrick.mason@gouldings.education", role: "Administrator" },
