@@ -193,3 +193,33 @@ OUR STORY GRID
     position: relative;
     z-index: 1;
 }
+
+
+
+/* =========================================================
+   GOULDINGS MISSION STATEMENT
+   ========================================================= */
+
+.mission-heading {
+    font-size: 52px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: #071f41;
+    margin: 0 0 24px 0;
+}
+
+.mission-heading + .red-divider {
+    width: 94px;
+    height: 4px;
+    background: #b21f2d;
+    margin: 0 0 38px 0;
+}
+
+/* Space between mission paragraphs */
+.about-intro-block p {
+    margin-bottom: 32px;
+}
+
+.about-intro-block p:last-child {
+    margin-bottom: 0;
+}
