@@ -17,6 +17,9 @@ const googleRoutes = require("./routes/googleRoutes");
 const operationsAdmissionsRoutes =
     require("./routes/operationsAdmissionsRoutes");
 
+const reportsRoutes =
+    require("./routes/reportsRoutes");
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -71,6 +74,8 @@ app.use("/api/students", studentsRoutes);
 app.use("/api/team-performance", teamPerformanceRoutes);
 
 app.use("/api/operations", operationsAdmissionsRoutes);
+
+app.use("/api/reports", reportsRoutes);
 app.use("/api/contact", contactRoutes);
 
 

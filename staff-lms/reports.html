@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | Gouldings Staff LMS</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/pages/reports.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <div class="main-content">
+
+        <header id="header"></header>
+
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <main class="page-wrapper">
+
+            <div class="page-title reports-header">
+                <div>
+                    <h1>Reports</h1>
+                    <p>An overview of enrollment, engagement, staff performance, and finances.</p>
+                </div>
+
+                <div class="reports-controls">
+                    <select id="dateRange" class="reports-select">
+                        <option value="this_month">This Month</option>
+                        <option value="last_month">Last Month</option>
+                        <option value="this_year">This Year</option>
+                    </select>
+
+                    <button id="exportCsv" class="btn btn-secondary">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <div id="dataNotice" class="data-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                Some figures below use sample data until the matching data source is connected on the backend. Sections pulling live data are marked <span class="badge-live">LIVE</span>.
+            </div>
+
+            <!-- ================= OPERATIONAL SUMMARY ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Operational Summary</h2>
+                </div>
+
+                <div class="stat-grid" id="summaryStats">
+                    <!-- filled by JS -->
+                </div>
+
+                <div class="card chart-card">
+                    <h3>Trend: This Period vs Last</h3>
+                    <div id="trendChart" class="bar-chart"></div>
+                </div>
+            </section>
+
+            <!-- ================= STUDENT & ENROLLMENT ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Student &amp; Enrollment</h2>
+                </div>
+
+                <div class="report-grid">
+                    <div class="card chart-card">
+                        <h3>New Enrollments by Course</h3>
+                        <div id="enrollmentChart" class="bar-chart"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Enrollment Status</h3>
+                        <div id="enrollmentStatusList" class="stat-list"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Course Completion Rates</h3>
+                    <table class="report-table" id="completionTable"></table>
+                </div>
+            </section>
+
+            <!-- ================= ATTENDANCE & ENGAGEMENT ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Attendance &amp; Engagement</h2>
+                </div>
+
+                <div class="report-grid">
+                    <div class="card">
+                        <h3>Attendance Rate</h3>
+                        <div id="attendanceGauge" class="gauge"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Assignment Submission Rate</h3>
+                        <div id="submissionGauge" class="gauge"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Students at Risk (Low Attendance / Overdue Work)</h3>
+                    <table class="report-table" id="riskTable"></table>
+                </div>
+            </section>
+
+            <!-- ================= STAFF & TUTOR PERFORMANCE ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Staff &amp; Tutor Performance</h2>
+                </div>
+
+                <div class="card">
+                    <h3>Classes Taught &amp; Ratings by Tutor</h3>
+                    <table class="report-table" id="tutorTable"></table>
+                </div>
+            </section>
+
+            <!-- ================= OPERATIONS TEAM ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Operations Team</h2>
+                </div>
+
+                <div class="stat-grid" id="operationsStats"></div>
+
+                <div class="report-grid">
+                    <div class="card chart-card">
+                        <h3>Tasks Completed by Team Member</h3>
+                        <div id="operationsChart" class="bar-chart"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Task Status Breakdown</h3>
+                        <div id="operationsStatusList" class="stat-list"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Open Tasks &amp; Priorities</h3>
+                    <table class="report-table" id="operationsTaskTable"></table>
+                </div>
+            </section>
+
+            <!-- ================= FINANCIAL ================= -->
+            <section class="report-section">
+                <div class="report-section-header">
+                    <h2>Financial</h2>
+                </div>
+
+                <div class="stat-grid" id="financeStats"></div>
+
+                <div class="card chart-card">
+                    <h3>Revenue by Course</h3>
+                    <div id="revenueChart" class="bar-chart"></div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script src="js/common/app.js"></script>
+<script src="js/reports/reports.js"></script>
+
+</body>
+
+</html>
