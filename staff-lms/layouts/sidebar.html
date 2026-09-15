@@ -2,57 +2,59 @@
 SIDEBAR
 ===========================-->
 
+<!-- Profile -->
 
-    <!-- Profile -->
+<div class="sidebar-profile">
 
-    <div class="sidebar-profile">
+    <div class="profile-avatar-wrap">
 
-        <div class="profile-avatar-wrap">
+        <img
+            id="sidebarProfilePic"
+            src="images/avatars/adair.jpg"
+            alt="Dr. Adair Ford">
 
-            <img
-                id="sidebarProfilePic"
-                src="images/avatars/adair.jpg"
-                alt="Dr. Adair Ford">
+        <label for="profilePicUpload" class="avatar-upload-btn" title="Change photo">
 
-            <label for="profilePicUpload" class="avatar-upload-btn" title="Change photo">
+            <i data-lucide="camera"></i>
 
-                <i data-lucide="camera"></i>
+        </label>
 
-            </label>
-
-            <input
-                type="file"
-                id="profilePicUpload"
-                accept="image/*"
-                hidden>
-
-        </div>
-
-        <div class="profile-info">
-
-          <h3 id="sidebarStaffName">Staff Member</h3>
-
-           <p id="sidebarStaffRole">Administrator</p>
-
-            <span class="online-dot">
-
-                ● Online
-
-            </span>
-
-        </div>
+        <input
+            type="file"
+            id="profilePicUpload"
+            accept="image/*"
+            hidden>
 
     </div>
 
-      <!-- Header action icons move here on mobile -->
-    <div class="sidebar-header-actions" id="sidebarHeaderActions"></div>
+    <div class="profile-info">
 
-    <!-- Navigation -->
+        <h3 id="sidebarStaffName">Staff Member</h3>
 
- 
-    <!-- Navigation -->
+        <p id="sidebarStaffRole">Administrator</p>
+
+        <span class="online-dot">
+
+            ● Online
+
+        </span>
+
+    </div>
+
+</div>
+
+<!-- Header action icons move here on mobile -->
+<div class="sidebar-header-actions" id="sidebarHeaderActions"></div>
+
+<!-- Navigation -->
 
 <nav class="sidebar-menu">
+
+    <!-- HOME -->
+    <a href="../index.html">
+        <i data-lucide="house"></i>
+        Home
+    </a>
 
     <a href="dashboard.html">
         <i data-lucide="layout-dashboard"></i>
@@ -64,17 +66,15 @@ SIDEBAR
         My Profile
     </a>
 
-   
-
     <a href="operations.html">
         <i data-lucide="briefcase"></i>
         Operations
     </a>
 
     <a href="staff-directory.html">
-    <i data-lucide="users"></i>
-    Staff Directory
-</a>
+        <i data-lucide="users"></i>
+        Staff Directory
+    </a>
 
     <a href="reports.html">
         <i data-lucide="bar-chart-3"></i>
@@ -93,8 +93,7 @@ SIDEBAR
 
 </nav>
 
-
-  <div class="sidebar-bottom">
+<div class="sidebar-bottom">
 
     <a href="#" id="logoutBtn">
         <i data-lucide="log-out"></i>
