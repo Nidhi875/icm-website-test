@@ -243,3 +243,35 @@ exports.changePassword = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
+// ==========================================================
+// LIST STAFF
+// ==========================================================
+
+exports.listStaff = async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT
+                id,
+                name,
+                email,
+                phone,
+                role
+            FROM staff
+            ORDER BY name ASC
+        `);
+
+        res.json({
+            success: true,
+            staff: result.rows
+        });
+
+    } catch (error) {
+        console.error("LIST STAFF ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to load staff"
+        });
+    }
+};
