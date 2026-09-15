@@ -426,39 +426,67 @@
             ==========================================
             */
 
-            dayElement.addEventListener(
-                "click",
-                function () {
+         dayElement.addEventListener(
+    "click",
+    function () {
 
-                    selectedDate =
-                        new Date(
-                            year,
-                            month,
-                            day
-                        );
-
-
-                    renderCalendar();
-
-
-                    /*
-                    If a schedule renderer exists,
-                    show the selected date there.
-                    */
-
-                    if (
-                        typeof window.renderDashboardSchedule ===
-                        "function"
-                    ) {
-
-                        window.renderDashboardSchedule(
-                            selectedDate
-                        );
-
-                    }
-
-                }
+        selectedDate =
+            new Date(
+                year,
+                month,
+                day
             );
+
+        /*
+        Open Google Calendar directly
+        with the selected date ready for
+        creating a meeting.
+        */
+
+        const selectedYear =
+            selectedDate.getFullYear();
+
+        const selectedMonth =
+            String(
+                selectedDate.getMonth() + 1
+            ).padStart(2, "0");
+
+        const selectedDay =
+            String(
+                selectedDate.getDate()
+            ).padStart(2, "0");
+
+        const nextDay =
+            new Date(selectedDate);
+
+        nextDay.setDate(
+            nextDay.getDate() + 1
+        );
+
+        const nextYear =
+            nextDay.getFullYear();
+
+        const nextMonth =
+            String(
+                nextDay.getMonth() + 1
+            ).padStart(2, "0");
+
+        const nextDayNumber =
+            String(
+                nextDay.getDate()
+            ).padStart(2, "0");
+
+        const googleCalendarUrl =
+            `https://calendar.google.com/calendar/u/0/r/eventedit?text=Gouldings%20Global%20Academy%20Meeting&dates=${selectedYear}${selectedMonth}${selectedDay}/${nextYear}${nextMonth}${nextDayNumber}`;
+
+        window.open(
+            googleCalendarUrl,
+            "_blank"
+        );
+
+    }
+);
+
 
 
             grid.appendChild(
