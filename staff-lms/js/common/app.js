@@ -109,11 +109,11 @@ async function loadLayout() {
         });
     }
 
-    if (scheduleMeetingBtn) {
-        scheduleMeetingBtn.addEventListener('click', () => {
-            window.location.href = 'meetings.html';
-        });
-    }
+  if (scheduleMeetingBtn) {
+    scheduleMeetingBtn.addEventListener('click', () => {
+        window.open('https://meet.google.com/', '_blank');
+    });
+}
 
 
     if (document.querySelector("#meetingsWidget")) {
