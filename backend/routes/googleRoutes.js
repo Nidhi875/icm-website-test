@@ -74,8 +74,7 @@ router.get("/auth", (req, res) => {
                 prompt: "consent",
 
                 scope: [
-                    "https://www.googleapis.com/auth/calendar.events",
-                    "https://www.googleapis.com/auth/gmail.readonly"
+                    "https://www.googleapis.com/auth/calendar.events"
                 ],
 
                 state: state
@@ -107,17 +106,11 @@ router.get("/auth", (req, res) => {
 
 
 // ==================================================
-// START GMAIL CONNECTION
+// GET UPCOMING GOOGLE CALENDAR EVENTS
 // ==================================================
 
-router.get("/gmail/auth", (req, res) => {
-
+router.get("/events", async (req, res) => {
     try {
-
-        // ------------------------------------------
-        // GET LMS LOGIN TOKEN
-        // ------------------------------------------
-
         const token =
             req.headers.authorization?.replace("Bearer ", "");
 
@@ -128,80 +121,88 @@ router.get("/gmail/auth", (req, res) => {
             });
         }
 
+        const user = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
 
-        // ------------------------------------------
-        // VERIFY LMS USER
-        // ------------------------------------------
+        const result = await pool.query(
+            `
+            SELECT refresh_token
+            FROM staff_google_tokens
+            WHERE staff_id = $1
+            `,
+            [user.id]
+        );
 
-        const user =
-            jwt.verify(
-                token,
-                process.env.JWT_SECRET
-            );
-
-
-        // ------------------------------------------
-        // STATE REMEMBERS STAFF MEMBER
-        // ------------------------------------------
-
-        const state =
-            jwt.sign(
-                {
-                    staffId: user.id,
-                    purpose: "gmail"
-                },
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: "10m"
-                }
-            );
-
-
-        // ------------------------------------------
-        // CREATE GOOGLE AUTHORIZATION URL
-        // ------------------------------------------
-
-        const authUrl =
-            googleOAuth.generateAuthUrl({
-
-                access_type: "offline",
-
-                prompt: "consent",
-
-                scope: [
-                       "https://www.googleapis.com/auth/calendar.events",
-                    "https://www.googleapis.com/auth/gmail.readonly"
-                ],
-
-                state: state
-
+        if (result.rows.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Google Calendar is not connected for this staff member."
             });
+        }
 
+        googleOAuth.setCredentials({
+            refresh_token: result.rows[0].refresh_token
+        });
+
+        const calendar = google.calendar({
+            version: "v3",
+            auth: googleOAuth
+        });
+
+        const response = await calendar.events.list({
+            calendarId: "primary",
+            timeMin: new Date().toISOString(),
+            maxResults: 20,
+            singleEvents: true,
+            orderBy: "startTime"
+        });
+
+        const events = (response.data.items || []).map(event => {
+            const start = event.start?.dateTime || event.start?.date;
+            const end = event.end?.dateTime || event.end?.date;
+
+            const videoEntry =
+                event.conferenceData?.entryPoints?.find(
+                    entry => entry.entryPointType === "video"
+                );
+
+            const meetUrl =
+                videoEntry?.uri ||
+                event.hangoutLink ||
+                null;
+
+            return {
+                id: event.id,
+                title: event.summary || "Untitled Meeting",
+                start,
+                end,
+                meetUrl,
+                htmlLink: event.htmlLink || null
+            };
+        });
 
         res.json({
             success: true,
-            authUrl: authUrl
+            events
         });
+    } catch (error) {
+        console.error("GOOGLE CALENDAR EVENTS ERROR:", error);
 
-    }
-
-    catch (error) {
-
-        console.error(
-            "GMAIL AUTH START ERROR:",
-            error
-        );
+        if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                success: false,
+                message: "Your staff session has expired. Please log in again."
+            });
+        }
 
         res.status(500).json({
             success: false,
-            message:
-                "Unable to start Gmail connection."
+            message: "Unable to load Google Calendar events."
         });
-
     }
-
 });
-
 
 // ==================================================
 // CREATE GOOGLE MEET
@@ -535,48 +536,9 @@ router.get("/callback", async (req, res) => {
 
 if (!tokens.refresh_token) {
 
-
     return res.status(400).send(
         "Google did not provide a refresh token. Please disconnect the Google account and try again."
     );
-    
-}
-
-// ==================================================
-// GET GOOGLE ACCOUNT EMAIL
-// ==================================================
-
-let googleEmail = null;
-
-if (decodedState.purpose === "gmail") {
-
-    try {
-
-        const gmail =
-            google.gmail({
-                version: "v1",
-                auth: googleOAuth
-            });
-
-        const profile =
-            await gmail.users.getProfile({
-                userId: "me"
-            });
-
-        googleEmail =
-            profile.data.emailAddress || null;
-
-    }
-
-    catch (emailError) {
-
-        console.error(
-            "GOOGLE EMAIL FETCH ERROR:",
-            emailError
-        );
-
-    }
-
 }
 
 await pool.query(
@@ -599,7 +561,7 @@ await pool.query(
     `,
     [
         staffId,
-        googleEmail,
+        null,
         tokens.refresh_token
     ]
 );
@@ -611,13 +573,8 @@ console.log(
 );
 
 
-const connectionType =
-    decodedState.purpose === "gmail"
-        ? "Gmail"
-        : "Google Calendar";
-
 res.send(`
-    <h2>Google ${connectionType} Connected</h2>
+    <h2>Google Calendar Connected</h2>
     <p>You can close this window and return to Gouldings Staff LMS.</p>
 `);
 
@@ -632,519 +589,6 @@ res.send(`
         res.status(500).send(
             "Google authorization failed."
         );
-
-    }
-
-});
-
-
-// ============================================================
-// GMAIL INTEGRATION
-// ============================================================
-
-// Get Gmail client for the currently logged-in staff member
-async function getGmailClient(staffId) {
-
-    const result = await pool.query(
-        `SELECT refresh_token
-         FROM staff_google_tokens
-         WHERE staff_id = $1`,
-        [staffId]
-    );
-
-    if (result.rows.length === 0 || !result.rows[0].refresh_token) {
-        throw new Error("GOOGLE_ACCOUNT_NOT_CONNECTED");
-    }
-
-    const refreshToken = result.rows[0].refresh_token;
-
-    // Create a NEW OAuth client for this request.
-    // This keeps one staff member's Google credentials
-    // isolated from another staff member's credentials.
-    const oauthClient = new google.auth.OAuth2(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET,
-        process.env.GOOGLE_REDIRECT_URI
-    );
-
-    oauthClient.setCredentials({
-        refresh_token: refreshToken
-    });
-
-    return google.gmail({
-        version: "v1",
-        auth: oauthClient
-    });
-}
-
-
-// ============================================================
-// GMAIL CONNECTION STATUS
-// ============================================================
-
-router.get("/gmail/status", async (req, res) => {
-
-    try {
-
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                message: "Authorization token required"
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        const result = await pool.query(
-            `SELECT google_email
-             FROM staff_google_tokens
-             WHERE staff_id = $1`,
-            [decoded.id]
-        );
-
-        if (result.rows.length === 0) {
-
-            return res.json({
-                success: true,
-                connected: false,
-                email: null
-            });
-
-        }
-
-        return res.json({
-            success: true,
-            connected: true,
-            email: result.rows[0].google_email || null
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GMAIL STATUS ERROR:",
-            error
-        );
-
-        return res.status(500).json({
-            success: false,
-            message: "Unable to check Gmail connection"
-        });
-    }
-});
-
-
-// ============================================================
-// GMAIL UNREAD COUNT
-// ============================================================
-
-router.get("/gmail/unread-count", async (req, res) => {
-
-    try {
-
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                message: "Authorization token required"
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        const gmail = await getGmailClient(decoded.id);
-
-        const result = await gmail.users.labels.get({
-            userId: "me",
-            id: "INBOX"
-        });
-
-        const unreadCount =
-            result.data.messagesUnread || 0;
-
-        const totalMessages =
-            result.data.messagesTotal || 0;
-
-        return res.json({
-            success: true,
-            unreadCount,
-            totalMessages
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GMAIL UNREAD COUNT ERROR:",
-            error
-        );
-
-        if (error.message === "GOOGLE_ACCOUNT_NOT_CONNECTED") {
-
-            return res.status(404).json({
-                success: false,
-                connected: false,
-                message: "Google account is not connected"
-            });
-        }
-
-        return res.status(500).json({
-            success: false,
-            message: "Unable to fetch Gmail unread count"
-        });
-    }
-});
-
-
-// ============================================================
-// GMAIL INBOX
-// ============================================================
-
-router.get("/gmail/inbox", async (req, res) => {
-
-    try {
-
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                message: "Authorization token required"
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        const gmail = await getGmailClient(decoded.id);
-
-        const listResult =
-            await gmail.users.messages.list({
-                userId: "me",
-                labelIds: ["INBOX"],
-                maxResults: 20
-            });
-
-        const messageList =
-            listResult.data.messages || [];
-
-        const messages = await Promise.all(
-
-            messageList.map(async (message) => {
-
-                const result =
-                    await gmail.users.messages.get({
-                        userId: "me",
-                        id: message.id,
-                        format: "metadata",
-                        metadataHeaders: [
-                            "From",
-                            "To",
-                            "Subject",
-                            "Date"
-                        ]
-                    });
-
-                const headers =
-                    result.data.payload?.headers || [];
-
-                const getHeader = (name) => {
-
-                    const header = headers.find(
-                        h =>
-                            h.name.toLowerCase() ===
-                            name.toLowerCase()
-                    );
-
-                    return header
-                        ? header.value
-                        : "";
-                };
-
-                const labels =
-                    result.data.labelIds || [];
-
-                return {
-
-                    id: result.data.id,
-
-                    threadId:
-                        result.data.threadId,
-
-                    from:
-                        getHeader("From"),
-
-                    to:
-                        getHeader("To"),
-
-                    subject:
-                        getHeader("Subject"),
-
-                    date:
-                        getHeader("Date"),
-
-                    snippet:
-                        result.data.snippet || "",
-
-                    unread:
-                        labels.includes("UNREAD")
-                };
-
-            })
-
-        );
-
-        return res.json({
-            success: true,
-            messages
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GMAIL INBOX ERROR:",
-            error
-        );
-
-        if (error.message === "GOOGLE_ACCOUNT_NOT_CONNECTED") {
-
-            return res.status(404).json({
-                success: false,
-                connected: false,
-                message: "Google account is not connected"
-            });
-        }
-
-        return res.status(500).json({
-            success: false,
-            message: "Unable to fetch Gmail inbox"
-        });
-    }
-});
-
-
-// ============================================================
-// GET INDIVIDUAL GMAIL MESSAGE
-// ============================================================
-
-router.get("/gmail/message/:id", async (req, res) => {
-
-    try {
-
-        // ------------------------------------------
-        // GET LMS LOGIN TOKEN
-        // ------------------------------------------
-
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                message: "Authorization token required"
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        // ------------------------------------------
-        // VERIFY LMS USER
-        // ------------------------------------------
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        // ------------------------------------------
-        // GET GMAIL CLIENT FOR THIS STAFF MEMBER
-        // ------------------------------------------
-
-        const gmail = await getGmailClient(decoded.id);
-
-        // ------------------------------------------
-        // GET MESSAGE
-        // ------------------------------------------
-
-        const result =
-            await gmail.users.messages.get({
-                userId: "me",
-                id: req.params.id,
-                format: "full"
-            });
-
-        const message = result.data;
-
-        // ------------------------------------------
-        // READ EMAIL HEADERS
-        // ------------------------------------------
-
-        const headers =
-            message.payload?.headers || [];
-
-        const getHeader = (name) => {
-
-            const header = headers.find(
-                h =>
-                    h.name.toLowerCase() ===
-                    name.toLowerCase()
-            );
-
-            return header
-                ? header.value
-                : "";
-        };
-
-        // ------------------------------------------
-        // DECODE GMAIL BODY
-        // ------------------------------------------
-
-        const decodeBody = (data) => {
-
-            if (!data) {
-                return "";
-            }
-
-            return Buffer
-                .from(
-                    data
-                        .replace(/-/g, "+")
-                        .replace(/_/g, "/"),
-                    "base64"
-                )
-                .toString("utf-8");
-        };
-
-        // ------------------------------------------
-        // FIND EMAIL BODY
-        // ------------------------------------------
-
-        let textBody = "";
-        let htmlBody = "";
-
-        const extractParts = (part) => {
-
-            if (!part) {
-                return;
-            }
-
-            if (
-                part.mimeType === "text/plain" &&
-                part.body?.data
-            ) {
-                textBody = decodeBody(
-                    part.body.data
-                );
-            }
-
-            if (
-                part.mimeType === "text/html" &&
-                part.body?.data
-            ) {
-                htmlBody = decodeBody(
-                    part.body.data
-                );
-            }
-
-            if (part.parts) {
-
-                part.parts.forEach(
-                    extractParts
-                );
-
-            }
-        };
-
-        extractParts(message.payload);
-
-        // ------------------------------------------
-        // RETURN EMAIL
-        // ------------------------------------------
-
-        return res.json({
-
-            success: true,
-
-            message: {
-
-                id:
-                    message.id,
-
-                threadId:
-                    message.threadId,
-
-                from:
-                    getHeader("From"),
-
-                to:
-                    getHeader("To"),
-
-                cc:
-                    getHeader("Cc"),
-
-                bcc:
-                    getHeader("Bcc"),
-
-                subject:
-                    getHeader("Subject"),
-
-                date:
-                    getHeader("Date"),
-
-                snippet:
-                    message.snippet || "",
-
-                unread:
-                    (message.labelIds || [])
-                        .includes("UNREAD"),
-
-                textBody,
-
-                htmlBody
-            }
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GMAIL MESSAGE ERROR:",
-            error
-        );
-
-        if (
-            error.message ===
-            "GOOGLE_ACCOUNT_NOT_CONNECTED"
-        ) {
-
-            return res.status(404).json({
-                success: false,
-                connected: false,
-                message:
-                    "Google account is not connected"
-            });
-
-        }
-
-        return res.status(500).json({
-            success: false,
-            message:
-                "Unable to fetch Gmail message"
-        });
 
     }
 

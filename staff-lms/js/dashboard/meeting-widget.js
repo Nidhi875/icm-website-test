@@ -1,143 +1,246 @@
 /*==========================================
-MEETING WIDGET
+GOOGLE CALENDAR MEETING WIDGET
 ==========================================*/
 
-function renderMeetings() {
+const GOOGLE_CALENDAR_API =
+    "https://icm-website-test-production.up.railway.app/api/google/events";
 
-    const meetingsContainer = document.getElementById("meetingsList");
+function getStaffToken() {
+    return (
+        localStorage.getItem("staffToken") ||
+        localStorage.getItem("token") ||
+        ""
+    );
+}
+
+function formatGoogleMeetingDate(dateTime) {
+    if (!dateTime) return "";
+
+    const date = new Date(dateTime);
+
+    return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+function formatGoogleMeetingTime(dateTime) {
+    if (!dateTime) return "";
+
+    const date = new Date(dateTime);
+
+    return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
+
+function getMeetingDuration(start, end) {
+    if (!start || !end) return "";
+
+    const minutes = Math.round(
+        (new Date(end) - new Date(start)) / 60000
+    );
+
+    return minutes > 0 ? `${minutes} mins` : "";
+}
+
+async function renderMeetings() {
+    const meetingsContainer =
+        document.getElementById("meetingsList");
 
     if (!meetingsContainer) return;
 
-   const meetings = getMeetings();
-
-const sortedMeetings = [...meetings].sort((a,b)=>{
-
-    const statusOrder = {
-
-        live:0,
-        upcoming:1,
-        completed:2
-
-    };
-
-    const aStatus = getMeetingStatus(a).class;
-    const bStatus = getMeetingStatus(b).class;
-
-    if(statusOrder[aStatus]!==statusOrder[bStatus]){
-
-        return statusOrder[aStatus]-statusOrder[bStatus];
-
-    }
-
-    return new Date(`${a.date}T${a.time}`)-
-           new Date(`${b.date}T${b.time}`);
-
-});
-
-meetingsContainer.innerHTML = sortedMeetings.map(meeting => `
-
-    
-
-<div class="meeting-card">
-
-   <div class="meeting-left">
-
-    <div class="meeting-video-icon">
-        <i data-lucide="video"></i>
-    </div>
-
-    <div class="meeting-content">
-
-    ${(() => {
-
-    const status = getMeetingStatus(meeting);
-
-    return `
-
-        <div class="meeting-top">
-
-            <span class="meeting-status ${status.class}">
-                ${status.text}
-            </span>
-
-            <span class="meeting-platform ${meeting.badge}">
-                ${meeting.platform}
-            </span>
-
+    meetingsContainer.innerHTML = `
+        <div class="meeting-card">
+            <div class="meeting-left">
+                <div class="meeting-video-icon">
+                    <i data-lucide="loader-circle"></i>
+                </div>
+                <div class="meeting-details">
+                    <h3>Loading upcoming meetings...</h3>
+                </div>
+            </div>
         </div>
-
     `;
 
-})()}
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 
-        <h3>${meeting.title}</h3>
+    const token = getStaffToken();
 
-        <p class="meeting-tutor">${meeting.tutor}</p>
+    if (!token) {
+        meetingsContainer.innerHTML = `
+            <div class="meeting-card">
+                <div class="meeting-left">
+                    <div class="meeting-video-icon">
+                        <i data-lucide="calendar-x"></i>
+                    </div>
+                    <div class="meeting-details">
+                        <h3>Please log in again</h3>
+                        <p class="meeting-tutor">Your Staff LMS session is not available.</p>
+                    </div>
+                </div>
+            </div>
+        `;
 
-        <div class="meeting-meta">
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
 
-            <span>${formatMeetingDate(meeting)}</span>
-            <span>•</span>
-          <span>
+    try {
+        const response = await fetch(GOOGLE_CALENDAR_API, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
 
-${new Date(`${meeting.date}T${meeting.time}`)
-.toLocaleTimeString("en-US",{
+        const data = await response.json();
 
-hour:"numeric",
+        if (response.status === 401) {
+            localStorage.removeItem("staffLoggedIn");
+            localStorage.removeItem("staffName");
+            localStorage.removeItem("staffEmail");
+            localStorage.removeItem("staffRole");
+            localStorage.removeItem("staffId");
+            localStorage.removeItem("staffToken");
+            window.location.href = "login.html";
+            return;
+        }
 
-minute:"2-digit",
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load meetings.");
+        }
 
-hour12:true
+        const meetings = data.events || [];
 
-})}
+        if (meetings.length === 0) {
+            meetingsContainer.innerHTML = `
+                <div class="meeting-card">
+                    <div class="meeting-left">
+                        <div class="meeting-video-icon">
+                            <i data-lucide="calendar-check"></i>
+                        </div>
+                        <div class="meeting-details">
+                            <h3>No upcoming meetings</h3>
+                            <p class="meeting-tutor">Your Google Calendar has no upcoming events.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-</span>
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
 
+        meetingsContainer.innerHTML = meetings.map(meeting => {
+            const duration = getMeetingDuration(meeting.start, meeting.end);
+            const hasMeet = Boolean(meeting.meetUrl);
 
-            <span>•</span>
-            <span>
+            return `
+                <div class="meeting-card">
+                    <div class="meeting-left">
+                        <div class="meeting-video-icon">
+                            <i data-lucide="video"></i>
+                        </div>
 
-${meeting.duration} mins
+                        <div class="meeting-details">
+                            <span class="meeting-status upcoming">UPCOMING</span>
 
-</span>
-            <span>•</span>
-            <span>${meeting.attendees} Attendees</span>
+                            <h3>${escapeMeetingText(meeting.title)}</h3>
 
-        </div>
+                            <div class="meeting-meta">
+                                <span>
+                                    <i class="fa-regular fa-calendar"></i>
+                                    ${formatGoogleMeetingDate(meeting.start)}
+                                </span>
 
-    </div>
+                                <span>•</span>
 
-</div>
+                                <span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    ${formatGoogleMeetingTime(meeting.start)}
+                                </span>
 
-<div class="meeting-right">
+                                ${duration ? `
+                                    <span>•</span>
+                                    <span>${duration}</span>
+                                ` : ""}
+                            </div>
+                        </div>
+                    </div>
 
-    <button
-        class="join-btn"
-        onclick="joinMeeting(${meeting.id})">
+                    <div class="meeting-right">
+                        ${hasMeet ? `
+                            <button
+                                class="join-btn"
+                                onclick="joinGoogleMeeting('${encodeURIComponent(meeting.meetUrl)}')">
+                                <i class="fa-solid fa-video"></i>
+                                Join Meeting
+                            </button>
+                        ` : `
+                            <button
+                                class="join-btn"
+                                onclick="openGoogleCalendarEvent('${encodeURIComponent(meeting.htmlLink || "") }')">
+                                <i class="fa-solid fa-calendar"></i>
+                                Open Calendar
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }).join("");
 
-        <i data-lucide="video"></i>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    } catch (error) {
+        console.error("MEETING WIDGET ERROR:", error);
 
-        Join
+        meetingsContainer.innerHTML = `
+            <div class="meeting-card">
+                <div class="meeting-left">
+                    <div class="meeting-video-icon">
+                        <i data-lucide="calendar-x"></i>
+                    </div>
+                    <div class="meeting-details">
+                        <h3>Unable to load meetings</h3>
+                        <p class="meeting-tutor">${escapeMeetingText(error.message)}</p>
+                    </div>
+                </div>
+            </div>
+        `;
 
-    </button>
-
-</div>
-
-</div>
-
-
-`).join("");
-
-
-
-
-if (window.lucide) {
-    lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
+    }
 }
 
+function joinGoogleMeeting(encodedUrl) {
+    const url = decodeURIComponent(encodedUrl || "");
 
+    if (!url) return;
+
+    window.open(url, "_blank", "noopener,noreferrer");
 }
 
-/*==========================================
-JOIN MEETING
-==========================================*/
+function openGoogleCalendarEvent(encodedUrl) {
+    const url = decodeURIComponent(encodedUrl || "");
+
+    if (!url) return;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function escapeMeetingText(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+window.renderMeetings = renderMeetings;
