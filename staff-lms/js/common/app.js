@@ -116,22 +116,22 @@ async function loadLayout() {
 }
 
 
-    if (document.querySelector("#meetingsWidget")) {
-        loadComponent(
-            "components/meeting-widget.html",
-            "#meetingsWidget"
-        );
-    }
-
-
-    if (typeof initCalendarWidget === "function") {
-        initCalendarWidget();
-    }
-
+ if (document.querySelector("#meetingsWidget")) {
+    await loadComponent(
+        "components/meeting-widget.html",
+        "#meetingsWidget"
+    );
 
     if (typeof renderMeetings === "function") {
         renderMeetings();
     }
+}
+
+
+if (typeof initCalendarWidget === "function") {
+    initCalendarWidget();
+}
+
 
 
     /* Render Lucide Icons */
