@@ -1508,6 +1508,11 @@ nav > a{
     min-height: 100px;
 }
 
+.navbar-inner nav > a{
+    font-size:18px;
+    font-weight:600;
+}
+
 /* parent */
 .nav-item--has-submenu{
     position:relative;
@@ -1723,6 +1728,62 @@ nav > a{
         font-size:32px;   /* Change to 30px, 32px or 34px if you prefer */
     }
 
+
+}
+
+/* =====================================================
+   NAVBAR ACTIVE STATE
+   ===================================================== */
+
+@media (max-width:768px){
+
+    .navbar-inner nav .nav-title{
+        background:transparent;
+        color:#222;
+        font-weight:500;
+    }
+
+    .navbar-inner nav .nav-item--has-submenu.active > .nav-title{
+        background:#f5f7fa;
+        color:#0b2a57;
+        font-weight:700;
+    }
+
+}
+
+/* =====================================================
+   MOBILE NAVBAR - NORMAL DROPDOWN BUTTONS
+   ===================================================== */
+
+@media (max-width:768px){
+
+    .navbar-inner nav .nav-title{
+        width:100%;
+        min-height:68px;
+        padding:0 28px;
+
+        border:0 !important;
+        border-bottom:1px solid #ececec !important;
+
+        background:transparent !important;
+
+        color:#222 !important;
+        font-size:18px !important;
+        font-weight:500 !important;
+
+        text-align:left;
+
+        box-sizing:border-box;
+    }
+
+
+    /* ONLY CURRENT SECTION */
+    .navbar-inner nav .nav-item--has-submenu.active > .nav-title{
+        color:#0b2a57 !important;
+        font-weight:700 !important;
+       
+        background:#e9edf2 !important;
+    }
 
 }
 

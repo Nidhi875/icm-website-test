@@ -320,3 +320,30 @@ CALENDAR FOOTER
 .operations-calendar-widget .calendar-meetings { display:flex; flex-direction:column; gap:4px; width:100%; margin-top:8px; }
 .operations-calendar-widget .calendar-meeting { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:3px 6px; border-radius:5px; background:#eaf0fb; color:#0a2148; font-size:11px; font-weight:700; line-height:1.25; }
 .operations-calendar-widget .calendar-widget-day.today .calendar-meeting { background:rgba(255,255,255,.28); color:#fff; }
+
+
+/* =========================================================
+   OPERATIONS CALENDAR - SHOW ALL DATE NUMBERS
+   ========================================================= */
+
+#calendarWidget .calendar-grid .day {
+    color: #081D38 !important;
+    opacity: 1 !important;
+}
+
+#calendarWidget .calendar-grid .day .date {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #081D38 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+#calendarWidget .calendar-grid .day.today {
+    color: #ffffff !important;
+}
+
+#calendarWidget .calendar-grid .day.today .date {
+    color: #ffffff !important;
+}
