@@ -223,3 +223,12 @@ OUR STORY GRID
 .about-intro-block p:last-child {
     margin-bottom: 0;
 }
+
+
+/* Remove unwanted vertical line on About/Mission pages */
+.about-main-section,
+.about-main-section .intro-grid,
+.about-main-section .qualification-content {
+    border-left: none !important;
+    border-right: none !important;
+}

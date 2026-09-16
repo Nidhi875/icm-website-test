@@ -103,22 +103,9 @@ QUALIFICATIONS PAGE
 }
 
 .intro-grid::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:290px;
-
-    top:0;
-
-    bottom:0;
-
-    width:1px;
-
-    background:#e5e5e5;
-
+    display:none;
 }
+
 /*=====================================
 ICM SIDEBAR
 ======================================*/
