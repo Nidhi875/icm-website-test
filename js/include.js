@@ -174,6 +174,54 @@ nav.querySelectorAll(":scope > a").forEach(link => {
 });
 
 
+    // NESTED ACADEMY ACCORDION (Business Academy, Tourism & Hospitality,
+    // etc. inside the Qualifications dropdown). Works on click, on both
+    // desktop and mobile — unlike the top-level dropdowns above, which
+    // use hover on desktop. This has to live here in include.js: a
+    // <script> tag placed inside navbar.html never runs, because it's
+    // inserted via innerHTML, and browsers do not execute scripts added
+    // that way.
+
+    const nestedAcademyItems =
+        document.querySelectorAll(".nav-item--nested");
+
+    nestedAcademyItems.forEach(item => {
+
+        const nestedButton = item.querySelector(":scope > .nav-title");
+
+        if (!nestedButton) return;
+
+        nestedButton.addEventListener("click", (e) => {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isOpen = item.classList.contains("nested-open");
+
+            // Close any other open Academy item in the same dropdown
+            // so only one is expanded at a time.
+            const parentSubmenu = item.closest(".nav-submenu");
+
+            if (parentSubmenu) {
+                parentSubmenu
+                    .querySelectorAll(":scope > .nav-item--nested")
+                    .forEach(other => {
+                        if (other !== item) {
+                            other.classList.remove("nested-open");
+                            other
+                                .querySelector(":scope > .nav-title")
+                                ?.setAttribute("aria-expanded", "false");
+                        }
+                    });
+            }
+
+            item.classList.toggle("nested-open", !isOpen);
+            nestedButton.setAttribute("aria-expanded", String(!isOpen));
+        });
+
+    });
+
+
     // SIDEBAR
     const sidebar =
         document.getElementById(

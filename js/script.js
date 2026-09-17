@@ -79,6 +79,22 @@ sidebarMenu.classList.toggle("open");
 
 
 /* ==========================================
+   QUALIFICATIONS ACADEMY DROPDOWNS
+========================================== */
+
+document.querySelectorAll(".qualification-academy-title").forEach(title => {
+
+    title.addEventListener("click", () => {
+
+        const academy = title.closest(".qualification-academy-item");
+
+        academy.classList.toggle("open");
+
+    });
+
+});
+
+/* ==========================================
 QUALIFICATIONS MOBILE SIDEBAR
 ========================================== */
 

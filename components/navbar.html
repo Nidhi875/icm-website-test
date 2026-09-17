@@ -59,20 +59,94 @@
 
             <div class="nav-submenu">
                 <a href="qualifications.html">About Our Qualifications</a>
+                <a href="qualification-levels.html">Qualification Levels</a>
                 <a href="professional-qualifications.html">Professional Qualifications</a>
-                 <a href="/Level-3-professional-Diploma-Course.html">Level 3 Diploma Course</a>
-                 <a href="/Level-4-professional-Diploma-Course.html">Level 4 Diploma Course</a>
-                  <a href="/Level-5-professional-Diploma-Course.html">Level 5 Diploma Course</a>
 
 
 
                 
                 <a href="relative-equivalencies.html">Relative Equivalencies</a>
                 <a href="single-subjects.html">Single Subjects</a>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>Business Academy</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="business-academy-introduction.html">Introduction</a>
+                        <a href="business-academy-level-2.html">Level 2</a>
+                        <a href="business-academy-level-3.html">Level 3</a>
+                        <a href="business-academy-level-4.html">Level 4</a>
+                        <a href="business-academy-level-5.html">Level 5</a>
+                        <a href="business-academy-level-6.html">Level 6</a>
+                        <a href="business-academy-level-7.html">Level 7</a>
+                        <a href="business-academy-qualification-bundles.html">Business Qualification Bundles</a>
+                    </div>
+                </div>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>Tourism &amp; Hospitality Academy</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="tourism-hospitality-introduction.html">Introduction</a>
+                        <a href="tourism-hospitality-level-2.html">Level 2</a>
+                        <a href="tourism-hospitality-level-3.html">Level 3</a>
+                        <a href="tourism-hospitality-level-4.html">Level 4</a>
+                        <a href="tourism-hospitality-level-5.html">Level 5</a>
+                        <a href="tourism-hospitality-level-6.html">Level 6</a>
+                        <a href="tourism-hospitality-level-7.html">Level 7</a>
+                        <a href="tourism-hospitality-bundle-courses.html">Tourism &amp; Hospitality Bundle Courses</a>
+                    </div>
+                </div>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>Data Science &amp; AI Academy</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="data-science-ai-introduction.html">Introduction</a>
+                        <a href="data-science-ai-level-3.html">Level 3</a>
+                        <a href="data-science-ai-level-7.html">Level 7</a>
+                    </div>
+                </div>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>English, Media and Journalism Academy</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="english-media-journalism-introduction.html">Introduction</a>
+                        <a href="english-media-journalism-level-2.html">Level 2 English</a>
+                        <a href="english-media-journalism-level-3.html">Level 3</a>
+                        <a href="english-media-journalism-level-4.html">Level 4</a>
+                    </div>
+                </div>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>Fashion &amp; Design Academy</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="fashion-design-introduction.html">Introduction</a>
+                        <a href="fashion-design-level-3.html">Level 3</a>
+                        <a href="fashion-design-level-4.html">Level 4</a>
+                        <a href="fashion-design-level-5.html">Level 5</a>
+                        <a href="fashion-design-level-7.html">Level 7</a>
+                    </div>
+                </div>
             </div>
         </div>
-
-      
 
         <a href="/student-portal/">
             Student Portal
@@ -95,5 +169,24 @@
     </div>
 
 </div>
+
+<script>
+    // Click-to-open / click-to-close for the Academy items nested
+    // inside the Qualifications dropdown. Independent of the
+    // existing hover-based top-level dropdown behavior.
+    document.querySelectorAll('.nav-item--nested > .nav-title').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const parent = btn.closest('.nav-item--nested');
+            const isOpen = parent.classList.contains('nested-open');
+
+            // Close this one if it's already open, otherwise open it.
+            parent.classList.toggle('nested-open', !isOpen);
+            btn.setAttribute('aria-expanded', String(!isOpen));
+        });
+    });
+</script>
 
 </header>

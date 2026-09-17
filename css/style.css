@@ -1656,6 +1656,85 @@ nav > a{
     padding-left:30px;
 }
 
+/* =========================================
+   NESTED ACADEMY ACCORDION (inside Qualifications)
+   Click-to-open/close, not hover-flyout.
+========================================= */
+
+.nav-item--nested{
+    border-top:1px solid #ececec;
+}
+
+.nav-item--nested > .nav-title{
+    height:auto;
+    padding:16px 24px;
+    color:#222;
+    font-size:15px;
+    font-weight:500;
+    justify-content:space-between;
+    width:100%;
+}
+
+.nav-item--nested > .nav-title i{
+    color:#222;
+    font-size:12px;
+    transition:.25s;
+}
+
+.nav-item--nested > .nav-title:hover{
+    background:#f7f7f7;
+    color:#a32135;
+}
+
+.nav-item--nested > .nav-title:hover i{
+    color:#a32135;
+}
+
+.nav-item--nested.nested-open > .nav-title i{
+    transform:rotate(180deg);
+}
+
+.nav-item--nested .nav-submenu{
+    position:static;
+    transform:none;
+    top:auto;
+    left:auto;
+
+    display:none;
+
+    min-width:0;
+    width:100%;
+
+    background:#fbfbfb;
+    box-shadow:none;
+    border-radius:0;
+
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.nav-item--nested.nested-open .nav-submenu{
+    display:block;
+}
+
+.nav-item--nested:hover .nav-submenu,
+.nav-item--nested:focus-within .nav-submenu{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+}
+
+.nav-item--nested:not(.nested-open) .nav-submenu{
+    display:none !important;
+}
+
+.nav-item--nested .nav-submenu a{
+    padding-left:40px;
+    font-size:14px;
+}
+
 }
 }
 
@@ -1786,5 +1865,3 @@ nav > a{
     }
 
 }
-
-

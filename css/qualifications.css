@@ -1415,3 +1415,98 @@ QUALIFICATIONS MOBILE
     border-radius:6px;
     text-decoration:none;
 }
+
+
+/* ==========================================
+   OUR QUALIFICATIONS - NEW SECTION
+========================================== */
+
+.our-qualifications-section {
+    margin-top: 42px;
+}
+
+.our-qualifications-section h2 {
+    font-size: 34px;
+    line-height: 1.3;
+    font-weight: 400;
+    color: #333;
+    margin: 0 0 14px;
+}
+
+.our-qualifications-section p {
+    width: 100%;
+    max-width: 860px;
+    font-size: 16px;
+    line-height: 1.9;
+    font-weight: 400;
+    color: #555;
+    margin: 0 0 20px;
+}
+
+/* ==========================================
+   QUALIFICATIONS ACADEMY NESTED MENU
+========================================== */
+
+.qualification-academy-item {
+    border-top: 1px solid #ececec;
+    background: #f8f8f8;
+}
+
+.qualification-academy-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px 14px 28px;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .25s ease, color .25s ease;
+}
+
+.qualification-academy-title:hover {
+    background: #fff;
+    color: #a32135;
+}
+
+.qualification-academy-title i {
+    font-size: 11px;
+    transition: transform .25s ease;
+}
+
+.qualification-academy-item.open .qualification-academy-title i {
+    transform: rotate(180deg);
+}
+
+.qualification-academy-submenu {
+    display: none;
+    background: #fff;
+}
+
+.qualification-academy-item.open .qualification-academy-submenu {
+    display: block;
+}
+
+.qualification-academy-submenu a {
+    display: block;
+    padding: 11px 15px 11px 48px;
+    border-top: 1px solid #eeeeee;
+    color: #555;
+    background: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: background .25s ease, color .25s ease;
+}
+
+.qualification-academy-submenu a:hover {
+    background: #f7f7f7;
+    color: #a32135;
+}
+
+.qualification-academy-submenu a.active {
+    color: #a32135;
+    font-weight: 600;
+    border-left: 4px solid #a32135;
+    padding-left: 44px;
+}
