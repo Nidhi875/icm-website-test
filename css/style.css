@@ -1656,9 +1656,16 @@ nav > a{
     padding-left:30px;
 }
 
+}
+}
+
 /* =========================================
-   NESTED ACADEMY ACCORDION (inside Qualifications)
+   NESTED ACADEMY ACCORDION (inside Qualifications
+   dropdown AND the qualifications sidebar).
    Click-to-open/close, not hover-flyout.
+   Global (not inside a media query) so it works
+   identically on desktop and on the mobile-width
+   sidebar menu.
 ========================================= */
 
 .nav-item--nested{
@@ -1673,6 +1680,9 @@ nav > a{
     font-weight:500;
     justify-content:space-between;
     width:100%;
+    background:none;
+    border:none;
+    cursor:pointer;
 }
 
 .nav-item--nested > .nav-title i{
@@ -1695,10 +1705,10 @@ nav > a{
 }
 
 .nav-item--nested .nav-submenu{
-    position:static;
-    transform:none;
-    top:auto;
-    left:auto;
+    position:static !important;
+    transform:none !important;
+    top:auto !important;
+    left:auto !important;
 
     display:none;
 
@@ -1715,7 +1725,7 @@ nav > a{
 }
 
 .nav-item--nested.nested-open .nav-submenu{
-    display:block;
+    display:block !important;
 }
 
 .nav-item--nested:hover .nav-submenu,
@@ -1733,9 +1743,6 @@ nav > a{
 .nav-item--nested .nav-submenu a{
     padding-left:40px;
     font-size:14px;
-}
-
-}
 }
 
 @media (max-width:768px){

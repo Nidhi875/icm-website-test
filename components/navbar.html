@@ -59,13 +59,26 @@
 
             <div class="nav-submenu">
                 <a href="qualifications.html">About Our Qualifications</a>
-                <a href="qualification-levels.html">Qualification Levels</a>
+
+                <a href="framework-tool.html">Framework Alignment Tool</a>
+
+                <div class="nav-item nav-item--has-submenu nav-item--nested">
+                    <button class="nav-title" type="button" aria-expanded="false">
+                        <span>Qualification Levels</span>
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="nav-submenu">
+                        <a href="qualification-levels.html">Overview</a>
+                        <a href="relative-equivalencies.html">Qualifications Levels and Equivalencies</a>
+                    </div>
+                </div>
+
                 <a href="professional-qualifications.html">Professional Qualifications</a>
 
 
 
                 
-                <a href="relative-equivalencies.html">Relative Equivalencies</a>
                 <a href="single-subjects.html">Single Subjects</a>
 
                 <div class="nav-item nav-item--has-submenu nav-item--nested">
@@ -169,24 +182,5 @@
     </div>
 
 </div>
-
-<script>
-    // Click-to-open / click-to-close for the Academy items nested
-    // inside the Qualifications dropdown. Independent of the
-    // existing hover-based top-level dropdown behavior.
-    document.querySelectorAll('.nav-item--nested > .nav-title').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const parent = btn.closest('.nav-item--nested');
-            const isOpen = parent.classList.contains('nested-open');
-
-            // Close this one if it's already open, otherwise open it.
-            parent.classList.toggle('nested-open', !isOpen);
-            btn.setAttribute('aria-expanded', String(!isOpen));
-        });
-    });
-</script>
 
 </header>

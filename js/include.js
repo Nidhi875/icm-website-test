@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
    // NAVBAR ACTIVE PAGE + MOBILE DROPDOWN MENUS
 
 const submenuItems =
-    document.querySelectorAll(".nav-item--has-submenu");
+    document.querySelectorAll(".nav-item--has-submenu:not(.nav-item--nested)");
 
 const currentPath =
     window.location.pathname.replace(/\/+$/, "") || "/";
@@ -175,51 +175,58 @@ nav.querySelectorAll(":scope > a").forEach(link => {
 
 
     // NESTED ACADEMY ACCORDION (Business Academy, Tourism & Hospitality,
-    // etc. inside the Qualifications dropdown). Works on click, on both
-    // desktop and mobile — unlike the top-level dropdowns above, which
-    // use hover on desktop. This has to live here in include.js: a
-    // <script> tag placed inside navbar.html never runs, because it's
-    // inserted via innerHTML, and browsers do not execute scripts added
-    // that way.
+    // etc. inside the Qualifications dropdown/sidebar). Works on click,
+    // on both desktop and mobile. This has to live here in include.js:
+    // a <script> tag placed inside navbar.html or the sidebar's HTML
+    // never runs, because that content is inserted via innerHTML, and
+    // browsers do not execute scripts added that way.
+    // Reusable so it can be called again once the sidebar loads
+    // (the sidebar loads later, in its own separate fetch below).
 
-    const nestedAcademyItems =
-        document.querySelectorAll(".nav-item--nested");
+    function setupNestedAccordions(root) {
 
-    nestedAcademyItems.forEach(item => {
+        const nestedAcademyItems =
+            root.querySelectorAll(".nav-item--nested");
 
-        const nestedButton = item.querySelector(":scope > .nav-title");
+        nestedAcademyItems.forEach(item => {
 
-        if (!nestedButton) return;
+            const nestedButton = item.querySelector(":scope > .nav-title");
 
-        nestedButton.addEventListener("click", (e) => {
+            if (!nestedButton) return;
 
-            e.preventDefault();
-            e.stopPropagation();
+            nestedButton.addEventListener("click", (e) => {
 
-            const isOpen = item.classList.contains("nested-open");
+                e.preventDefault();
+                e.stopPropagation();
 
-            // Close any other open Academy item in the same dropdown
-            // so only one is expanded at a time.
-            const parentSubmenu = item.closest(".nav-submenu");
+                const isOpen = item.classList.contains("nested-open");
 
-            if (parentSubmenu) {
-                parentSubmenu
-                    .querySelectorAll(":scope > .nav-item--nested")
-                    .forEach(other => {
-                        if (other !== item) {
-                            other.classList.remove("nested-open");
-                            other
-                                .querySelector(":scope > .nav-title")
-                                ?.setAttribute("aria-expanded", "false");
-                        }
-                    });
-            }
+                // Close any other open item in the same dropdown
+                // so only one is expanded at a time.
+                const parentSubmenu = item.closest(".nav-submenu");
 
-            item.classList.toggle("nested-open", !isOpen);
-            nestedButton.setAttribute("aria-expanded", String(!isOpen));
+                if (parentSubmenu) {
+                    parentSubmenu
+                        .querySelectorAll(":scope > .nav-item--nested")
+                        .forEach(other => {
+                            if (other !== item) {
+                                other.classList.remove("nested-open");
+                                other
+                                    .querySelector(":scope > .nav-title")
+                                    ?.setAttribute("aria-expanded", "false");
+                            }
+                        });
+                }
+
+                item.classList.toggle("nested-open", !isOpen);
+                nestedButton.setAttribute("aria-expanded", String(!isOpen));
+            });
+
         });
+    }
 
-    });
+    // Run it now for the navbar (already loaded above)
+    setupNestedAccordions(document);
 
 
     // SIDEBAR
@@ -236,6 +243,10 @@ nav.querySelectorAll(":scope > a").forEach(link => {
         .then(r => r.text())
         .then(data => {
             sidebar.innerHTML = data;
+
+            // Run it again now that the sidebar's own nested
+            // Qualifications accordion items exist in the DOM.
+            setupNestedAccordions(sidebar);
         });
 
     }
