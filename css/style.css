@@ -1872,3 +1872,33 @@ nav > a{
     }
 
 }
+
+/* =========================================
+   SCROLLABLE DESKTOP NAVBAR DROPDOWN
+========================================= */
+
+@media (min-width: 769px) {
+
+    .nav-item--has-submenu > .nav-submenu {
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        scrollbar-width: thin;
+        scrollbar-color: #999 transparent;
+    }
+
+    .nav-item--has-submenu > .nav-submenu::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .nav-item--has-submenu > .nav-submenu::-webkit-scrollbar-thumb {
+        background: #999;
+        border-radius: 10px;
+    }
+
+    .nav-item--has-submenu > .nav-submenu::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+}
