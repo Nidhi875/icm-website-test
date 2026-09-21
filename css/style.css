@@ -216,24 +216,39 @@ nav{
 }
 
 
-.stats{
-background:#001f4d;
-color:white;
-
-display:flex;
-justify-content:center;
-gap:80px;
-
-padding:80px 20px;
-text-align:center;
-
-flex-wrap:wrap;
+.stats {
+    background: #001f4d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    padding: 80px 20px;
+    text-align: center;
+    flex-wrap: nowrap;
 }
 
-.stats h2{
-font-size:60px;
-margin-bottom:10px;
+/* Align all statistics in one row */
+.stats > div {
+    flex: 1;
+    min-width: 0;
 }
+
+/* Keep ICM and 50+ on the same line */
+.stats > div:first-child h2 {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.stats h2 {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+.stats p {
+    margin-top: 0;
+}
+
 
 .tool-banner{
 padding:120px 20px;
