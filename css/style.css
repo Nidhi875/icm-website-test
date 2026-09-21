@@ -950,10 +950,10 @@ transform:translateY(0);
 FOOTER DESKTOP
 ========================== */
 
-.footer-top{
-    background:#343434;
-    padding:90px 50px;
-    color:#fff;
+.footer-top {
+    background: #343434;
+    padding: 40px 50px;
+    color: #fff;
 }
 
 .footer-container{
