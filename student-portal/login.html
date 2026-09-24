@@ -3,13 +3,8 @@
 
 <head>
 
-
-
 <link rel="stylesheet"
       href="css/login.css">
-
-
-
 
 </head>
 
@@ -22,17 +17,23 @@
         <img src="../images/logo.png"
              class="login-logo">
 
-       <h1>
+       <h1 id="loginTitle">
                Student<br>
                Portal
             </h1>
 
 
-        <p>
+        <p id="loginSubtext">
 
             Sign in to continue
 
         </p>
+
+        <!-- MODE TOGGLE -->
+        <div class="login-mode-toggle">
+            <button type="button" id="studentModeBtn" class="mode-btn active">Student Login</button>
+            <button type="button" id="adminModeBtn" class="mode-btn">Admin Login</button>
+        </div>
 
         <form id="loginForm">
 
@@ -42,11 +43,36 @@
         placeholder="Email"
         required>
 
+  <div class="password-wrapper">
     <input
         id="password"
         type="password"
         placeholder="Password"
         required>
+
+  <button
+    type="button"
+    id="togglePassword"
+    class="password-toggle"
+    aria-label="Show password">
+
+    <svg
+        id="eyeIcon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+        <circle cx="12" cy="12" r="3"/>
+    </svg>
+</button>
+</div>
 
     <button type="submit">
 
@@ -56,7 +82,9 @@
 
 </form>
 
-        <div class="portal-links">
+        <p id="loginError" class="login-error"></p>
+
+        <div class="portal-links" id="studentOnlyLinks">
 
     
    <a href="forgot-password.html">
@@ -84,22 +112,72 @@
 
 <script>
 
+// Access is based on ROLE, not identity. Whoever currently holds
+// the Administrator role can use Admin Login — if that role is
+// reassigned to someone else later, access follows automatically.
+// This front-end check is only for a clean error message; the
+// real enforcement lives on the backend (see studentsController-
+// additions.js), which independently checks the same role.
+const REQUIRED_ADMIN_ROLE = "Administrator";
+
+let mode = "student"; // "student" or "admin"
+
+const studentModeBtn = document.getElementById("studentModeBtn");
+const adminModeBtn = document.getElementById("adminModeBtn");
+const loginTitle = document.getElementById("loginTitle");
+const loginSubtext = document.getElementById("loginSubtext");
+const studentOnlyLinks = document.getElementById("studentOnlyLinks");
+const loginError = document.getElementById("loginError");
+
+studentModeBtn.addEventListener("click", () => setMode("student"));
+adminModeBtn.addEventListener("click", () => setMode("admin"));
+
+function setMode(newMode) {
+    mode = newMode;
+    loginError.textContent = "";
+
+    studentModeBtn.classList.toggle("active", mode === "student");
+    adminModeBtn.classList.toggle("active", mode === "admin");
+
+    if (mode === "admin") {
+        loginTitle.innerHTML = "Admin<br>Login";
+        loginSubtext.textContent = "Restricted access — administrators only";
+        studentOnlyLinks.style.display = "none";
+    } else {
+        loginTitle.innerHTML = "Student<br>Portal";
+        loginSubtext.textContent = "Sign in to continue";
+        studentOnlyLinks.style.display = "flex";
+    }
+}
+
+// Open Admin Login automatically when requested.
+const loginParams = new URLSearchParams(window.location.search);
+
+if (loginParams.get("mode") === "admin") {
+    setMode("admin");
+}
+
 document.getElementById("loginForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
+    loginError.textContent = "";
+
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
+    if (mode === "student") {
+        await studentLogin(email, password);
+    } else {
+        await adminLogin(email, password);
+    }
+});
+
+async function studentLogin(email, password) {
     try {
         const response = await fetch("https://icm-website-test-production.up.railway.app/api/auth/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email,
-                password
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
@@ -107,17 +185,82 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         if (response.ok) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
-            alert("Login Successful");
             window.location.href = "dashboard.html";
         } else {
-            alert(data.message);
+            loginError.textContent = data.message || "Invalid email or password.";
         }
     } catch (error) {
-        console.log(error);
-        alert("Cannot connect to server.");
+        console.error(error);
+        loginError.textContent = "Cannot connect to server.";
     }
+}
+
+async function adminLogin(email, password) {
+    try {
+        const response = await fetch(  "http://localhost:5000/api/staff/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            loginError.textContent = data.message || "Invalid email or password.";
+            return;
+        }
+
+        if (data.user.role !== REQUIRED_ADMIN_ROLE) {
+            // Valid staff login, but this account doesn't currently
+            // hold the Administrator role.
+            loginError.textContent = "This account does not have admin access to the Student Portal.";
+            return;
+        }
+
+        localStorage.setItem("staffToken", data.token);
+        localStorage.setItem("staffEmail", data.user.email);
+        localStorage.setItem("staffName", data.user.name);
+        localStorage.setItem("staffRole", data.user.role);
+
+        window.location.href = "admin.html";
+
+    } catch (error) {
+        console.error(error);
+        loginError.textContent = "Cannot connect to server.";
+    }
+}
+
+
+// Show / Hide Password
+
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+const eyeIcon = document.getElementById("eyeIcon");
+
+togglePassword.addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+
+    passwordInput.type = isPassword ? "text" : "password";
+
+    togglePassword.setAttribute(
+        "aria-label",
+        isPassword ? "Hide password" : "Show password"
+    );
+
+    eyeIcon.innerHTML = isPassword
+        ? `
+            <path d="M3 3l18 18"/>
+            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+            <path d="M9.9 4.2A10.6 10.6 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-3.2 4.4"/>
+            <path d="M6.6 6.6C3.7 8.5 2 12 2 12s3 8 10 8a10.5 10.5 0 0 0 4.1-.8"/>
+          `
+        : `
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+          `;
 });
 
 </script>
 
 </body>
+</html>

@@ -25,7 +25,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-require("./config/db");
+
 const pool = require("./config/db");   // ← add this, reuses the same connection pool
 
 const authRoutes = require("./routes/authRoutes");
@@ -71,6 +71,9 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/students", studentsRoutes);
+
+
+
 app.use("/api/team-performance", teamPerformanceRoutes);
 
 app.use("/api/operations", operationsAdmissionsRoutes);

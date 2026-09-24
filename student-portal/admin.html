@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Admin — Student Records</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+
+</head>
+
+<body>
+
+<script>
+    // This page belongs to the Student Portal folder, but it is
+    // gated by the STAFF login (staffToken), not the student login
+    // (token/user). Access is restricted by ROLE — whoever currently
+    // holds the Administrator role — not by a specific person. The
+    // real enforcement lives on the backend (see studentsController-
+    // additions.js); this check just redirects everyone else cleanly
+    // rather than showing a broken page full of failed requests.
+    const REQUIRED_ADMIN_ROLE = "Administrator";
+
+    const staffToken = localStorage.getItem("staffToken");
+    const staffRole = localStorage.getItem("staffRole");
+
+  if (!staffToken || staffRole !== REQUIRED_ADMIN_ROLE) {
+    // Always use the Student Portal Admin Login.
+    window.location.replace("login.html?mode=admin");
+}
+</script>
+
+<div class="admin-shell">
+
+    <aside class="sidebar">
+        <img src="images/logo.png" class="sidebar-logo">
+        <h2>Admin Panel</h2>
+
+        <nav>
+            <a href="admin.html" class="active">Student Records</a>
+            <a href="../staff-lms/dashboard.html">Staff LMS</a>
+            <a href="#" onclick="logoutAdmin()">Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="page-header">
+            <div>
+                <h1>Student Records</h1>
+                <p>View, edit, and manage every student account.</p>
+            </div>
+
+            <div class="admin-controls">
+                <input type="text" id="studentSearch" placeholder="Search by name or email...">
+                <select id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="admitted">Admitted</option>
+                    <option value="enrolled">Enrolled</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+        </header>
+
+        <div id="loadError" class="load-error" style="display:none;"></div>
+
+        <div class="panel">
+            <table class="students-table" id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Student ID</th>
+                        <th>Status</th>
+                        <th>Fee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                    <tr><td colspan="6" class="loading-row">Loading students...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModalOverlay">
+    <div class="modal">
+        <h3>Edit Student</h3>
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="editName">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="editEmail">
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select id="editStatus">
+                <option value="pending">Pending</option>
+                <option value="admitted">Admitted</option>
+                <option value="enrolled">Enrolled</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Fee Amount</label>
+            <input type="number" id="editFee">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" id="cancelEdit">Cancel</button>
+            <button class="btn-primary" id="saveEdit">Save Changes</button>
+        </div>
+
+        <div id="editError" class="edit-error"></div>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="deleteModalOverlay">
+    <div class="modal">
+        <h3>Delete Student?</h3>
+        <p id="deleteConfirmText">This will permanently remove this student record. This cannot be undone.</p>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="btn-danger" id="confirmDelete">Delete Permanently</button>
+        </div>
+
+        <div id="deleteError" class="edit-error"></div>
+    </div>
+</div>
+
+<script>
+  function logoutAdmin() {
+    localStorage.removeItem("staffToken");
+    localStorage.removeItem("staffEmail");
+    localStorage.removeItem("staffName");
+    localStorage.removeItem("staffRole");
+
+    window.location.replace("login.html?mode=admin");
+}
+
+</script>
+
+<script src="js/admin.js"></script>
+
+</body>
+</html>

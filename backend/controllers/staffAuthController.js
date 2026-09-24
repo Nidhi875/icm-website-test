@@ -124,27 +124,10 @@ exports.updateProfile = async (req, res) => {
     try {
         await ensureProfileColumns();
 
-        const { name, phone, department, bio, role, profileImage } = req.body;
+        const { name, phone, department, bio, profileImage } = req.body;
 
         if (!name || !name.trim()) {
             return res.status(400).json({ success: false, message: "Full name is required" });
-        }
-
-        // Accepts any of the real dropdown options from the profile page,
-        // instead of the old hardcoded 2-value list that caused "Invalid role".
-        const allowedRoles = [
-            "Administrator",
-            "Tutor",
-            "Course Manager",
-            "HR",
-            "Marketing",
-            "Finance"
-        ];
-
-        // If a role was sent but doesn't match, reject clearly.
-        // If no role was sent at all, just keep the existing one (don't fail the save).
-        if (role && !allowedRoles.includes(role)) {
-            return res.status(400).json({ success: false, message: "Invalid role" });
         }
 
         const result = await pool.query(
@@ -153,8 +136,7 @@ exports.updateProfile = async (req, res) => {
                  phone = $2,
                  department = $3,
                  bio = $4,
-                 role = COALESCE($5, role),
-                 profile_image = COALESCE($6, profile_image),
+                 profile_image = COALESCE($5, profile_image),
                  updated_at = NOW()
              WHERE id = $7
              RETURNING id, name, email, phone, department, bio, role, profile_image`,
@@ -163,7 +145,6 @@ exports.updateProfile = async (req, res) => {
                 phone || null,
                 department || null,
                 bio || null,
-                role || null,
                 profileImage || null,
                 req.user.id
             ]

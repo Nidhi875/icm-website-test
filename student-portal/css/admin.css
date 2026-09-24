@@ -1,0 +1,302 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Plus Jakarta Sans", sans-serif;
+    background:#f5f7fa;
+    color:#294f67;
+}
+
+.admin-shell{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ---------- Sidebar (matches dashboard.html's pattern) ---------- */
+
+.sidebar{
+    width:260px;
+    background:#294f67;
+    color:#fff;
+    padding:30px 24px;
+    flex-shrink:0;
+}
+
+.sidebar-logo{
+    width:60px;
+    margin-bottom:18px;
+}
+
+.sidebar h2{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:30px;
+}
+
+.sidebar nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.sidebar nav a{
+    color:#cfdae3;
+    text-decoration:none;
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:15px;
+    transition:.2s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active{
+    background:rgba(255,255,255,0.12);
+    color:#fff;
+}
+
+/* ---------- Main content ---------- */
+
+.main-content{
+    flex:1;
+    padding:40px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.page-header h1{
+    font-size:28px;
+    font-weight:700;
+    color:#294f67;
+}
+
+.page-header p{
+    color:#777;
+    margin-top:4px;
+}
+
+.admin-controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.admin-controls input,
+.admin-controls select{
+    height:44px;
+    padding:0 14px;
+    border:1px solid #e2e2e2;
+    border-radius:6px;
+    font-size:14px;
+    font-family:inherit;
+}
+
+.admin-controls input{
+    min-width:240px;
+}
+
+.load-error{
+    background:#fde8e8;
+    color:#b42318;
+    padding:14px 18px;
+    border-radius:8px;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+/* ---------- Panel / table ---------- */
+
+.panel{
+    background:#fff;
+    border-radius:12px;
+    padding:10px 20px;
+    box-shadow:0 8px 30px rgba(0,0,0,.05);
+}
+
+.students-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+.students-table th{
+    text-align:left;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:#8a97a3;
+    border-bottom:1px solid #eef1f4;
+    padding:16px 10px;
+}
+
+.students-table td{
+    padding:16px 10px;
+    border-bottom:1px solid #f3f5f8;
+    color:#294f67;
+}
+
+.loading-row, .empty-row{
+    text-align:center;
+    color:#9aa5b1;
+    font-style:italic;
+    padding:36px 0 !important;
+}
+
+.status-pill{
+    display:inline-block;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    text-transform:capitalize;
+}
+
+.status-pill.pending{ background:#fef3c7; color:#92400e; }
+.status-pill.admitted{ background:#dbeafe; color:#1e40af; }
+.status-pill.enrolled{ background:#dcfce7; color:#15803d; }
+.status-pill.rejected{ background:#fde8e8; color:#b42318; }
+
+.row-actions{
+    display:flex;
+    gap:6px;
+}
+
+.row-actions button{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:14px;
+    padding:8px 12px;
+    border-radius:6px;
+    color:#294f67;
+}
+
+.row-actions .edit-btn:hover{ background:#eaf1f6; }
+.row-actions .delete-btn{ color:#b42318; }
+.row-actions .delete-btn:hover{ background:#fde8e8; }
+
+/* ---------- Modal ---------- */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(41,79,103,0.45);
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+
+.modal-overlay.open{
+    display:flex;
+}
+
+.modal{
+    background:#fff;
+    border-radius:16px;
+    padding:32px;
+    width:100%;
+    max-width:440px;
+    box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
+
+.modal h3{
+    margin-bottom:20px;
+    color:#294f67;
+    font-size:20px;
+}
+
+.modal p{
+    color:#666;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.modal .form-group{
+    margin-bottom:16px;
+}
+
+.modal label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:#294f67;
+    margin-bottom:6px;
+}
+
+.modal input, .modal select{
+    width:100%;
+    height:48px;
+    padding:0 14px;
+    border-radius:6px;
+    border:1px solid #e2e2e2;
+    font-family:inherit;
+    font-size:15px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:24px;
+}
+
+.btn-primary{
+    background:#294f67;
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:15px;
+    transition:.2s;
+}
+
+.btn-primary:hover{ background:#203f52; }
+
+.btn-secondary{
+    background:#eef1f4;
+    color:#294f67;
+    border:none;
+    padding:12px 22px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:15px;
+}
+
+.btn-danger{
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:15px;
+}
+
+.edit-error{
+    color:#b42318;
+    font-size:13px;
+    margin-top:12px;
+}
+
+@media (max-width:768px){
+    .admin-shell{
+        flex-direction:column;
+    }
+    .sidebar{
+        width:100%;
+    }
+}

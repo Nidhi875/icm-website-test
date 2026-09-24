@@ -240,3 +240,82 @@ body{
     width:70px;
     margin-bottom:25px;
 }
+
+/* ---------- Admin/Student mode toggle ---------- */
+
+.login-mode-toggle{
+    display:flex;
+    gap:8px;
+    background:#f0f2f5;
+    padding:6px;
+    border-radius:8px;
+    margin-bottom:30px;
+}
+
+.mode-btn{
+    flex:1;
+    padding:12px 0;
+    border:none;
+    background:none;
+    border-radius:6px;
+    font-size:14px;
+    font-weight:600;
+    color:#777;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.mode-btn.active{
+    background:#294f67;
+    color:#fff;
+}
+
+.login-error{
+    color:#c0392b;
+    font-size:14px;
+    margin-top:-10px;
+    margin-bottom:15px;
+    min-height:18px;
+}
+
+
+/* Password show/hide button */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 60px;
+    margin-bottom: 0;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 42px !important;
+    height: 42px !important;
+
+    padding: 0;
+    background: transparent !important;
+    color: #294f67 !important;
+
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    background: transparent !important;
+    color: #203f52 !important;
+}
