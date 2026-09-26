@@ -31,6 +31,10 @@ const pool = require("./config/db");   // ← add this, reuses the same connecti
 const authRoutes = require("./routes/authRoutes");
 const staffAuthRoutes = require("./routes/staffAuthRoutes");
 
+const {
+    ensureStudentDetailsTables
+} = require("./migration/studentDetailsMigration");
+
 
 const app = express();
 app.use(helmet());
@@ -88,24 +92,67 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+// ==========================================================
+// START SERVER
+// ==========================================================
+
+async function startServer() {
+
+    try {
+
+        // Create Student Details tables/columns if they
+        // don't already exist.
+        await ensureStudentDetailsTables();
+
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+
+    } catch (error) {
+
+        console.error(
+            "STUDENT DETAILS MIGRATION ERROR:",
+            error
+        );
+
+        process.exit(1);
+    }
+}
+
+startServer();
 
 
-// ↓ add everything below this line
+// ==========================================================
+// AUTO-CLEANUP OLD MESSAGES
+// ==========================================================
 
 async function cleanupOldMessages() {
+
     try {
+
         const result = await pool.query(`
             DELETE FROM messages
             WHERE created_at < NOW() - INTERVAL '3 days'
         `);
-        console.log(`Auto-cleanup: removed ${result.rowCount} messages older than 3 days`);
+
+        console.log(
+            `Auto-cleanup: removed ${result.rowCount} messages older than 3 days`
+        );
+
     } catch (error) {
-        console.error("AUTO-CLEANUP ERROR:", error);
+
+        console.error(
+            "AUTO-CLEANUP ERROR:",
+            error
+        );
     }
 }
 
 cleanupOldMessages();
-setInterval(cleanupOldMessages, 24 * 60 * 60 * 1000);
+
+setInterval(
+    cleanupOldMessages,
+    24 * 60 * 60 * 1000
+);
+
