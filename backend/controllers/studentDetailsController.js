@@ -17,18 +17,15 @@ async function getStudentDetails(req, res) {
     }
 
     try {
-
-        const userResult = await pool.query(`
-            SELECT
-                id,
-                full_name,
-                email,
-                student_id,
-                created_at,
-                updated_at
-            FROM users
-            WHERE id = $1
-        `, [userId]);
+const userResult = await pool.query(`
+    SELECT
+        id,
+        full_name,
+        email,
+        student_id
+    FROM users
+    WHERE id = $1
+`, [userId]);
 
         if (userResult.rows.length === 0) {
             return res.status(404).json({
