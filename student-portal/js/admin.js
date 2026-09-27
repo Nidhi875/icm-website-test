@@ -259,13 +259,25 @@ async function openStudentDetails(id) {
             return;
         }
 
-        const data = await res.json();
+      const responseText = await res.text();
 
-        if (!res.ok || !data.success) {
-            throw new Error(
-                data.message || "Failed to load student details."
-            );
-        }
+let data;
+
+try {
+    data = JSON.parse(responseText);
+} catch (parseError) {
+    console.error("Non-JSON response from server:", responseText);
+
+    throw new Error(
+        `Server returned ${res.status} instead of JSON. Check Railway logs.`
+    );
+}
+
+if (!res.ok || !data.success) {
+    throw new Error(
+        data.message || `Failed to load student details (${res.status})`
+    );
+}
 
         renderStudentDetails(data.student || data);
 
