@@ -221,6 +221,92 @@ async function ensureStudentDetailsTables() {
         ON student_activity(user_id)
     `);
 
+        // =========================================================
+    // ENSURE REQUIRED COLUMNS EXIST ON ALREADY-CREATED TABLES
+    // =========================================================
+
+    await pool.query(`
+        ALTER TABLE student_profiles
+        ADD COLUMN IF NOT EXISTS preferred_name TEXT,
+        ADD COLUMN IF NOT EXISTS phone TEXT,
+        ADD COLUMN IF NOT EXISTS whatsapp_number TEXT,
+        ADD COLUMN IF NOT EXISTS date_of_birth DATE,
+        ADD COLUMN IF NOT EXISTS gender TEXT,
+        ADD COLUMN IF NOT EXISTS nationality TEXT,
+        ADD COLUMN IF NOT EXISTS address TEXT,
+        ADD COLUMN IF NOT EXISTS city TEXT,
+        ADD COLUMN IF NOT EXISTS country TEXT,
+        ADD COLUMN IF NOT EXISTS emergency_contact_name TEXT,
+        ADD COLUMN IF NOT EXISTS emergency_contact_phone TEXT,
+        ADD COLUMN IF NOT EXISTS emergency_contact_relationship TEXT,
+        ADD COLUMN IF NOT EXISTS profile_photo_url TEXT,
+        ADD COLUMN IF NOT EXISTS account_status TEXT DEFAULT 'Active',
+        ADD COLUMN IF NOT EXISTS last_login TIMESTAMPTZ,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW(),
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE student_academic
+        ADD COLUMN IF NOT EXISTS highest_qualification TEXT,
+        ADD COLUMN IF NOT EXISTS previous_institution TEXT,
+        ADD COLUMN IF NOT EXISTS graduation_year INTEGER,
+        ADD COLUMN IF NOT EXISTS english_qualification TEXT,
+        ADD COLUMN IF NOT EXISTS english_score TEXT,
+        ADD COLUMN IF NOT EXISTS subjects TEXT,
+        ADD COLUMN IF NOT EXISTS study_level TEXT,
+        ADD COLUMN IF NOT EXISTS gouldings_course TEXT,
+        ADD COLUMN IF NOT EXISTS intended_intake TEXT,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW(),
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE student_documents
+        ADD COLUMN IF NOT EXISTS document_type TEXT,
+        ADD COLUMN IF NOT EXISTS document_name TEXT,
+        ADD COLUMN IF NOT EXISTS file_url TEXT,
+        ADD COLUMN IF NOT EXISTS verification_status TEXT DEFAULT 'Uploaded',
+        ADD COLUMN IF NOT EXISTS rejection_reason TEXT,
+        ADD COLUMN IF NOT EXISTS uploaded_at TIMESTAMPTZ DEFAULT NOW(),
+        ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW(),
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE student_payments
+        ADD COLUMN IF NOT EXISTS payment_type TEXT,
+        ADD COLUMN IF NOT EXISTS amount NUMERIC(12,2) DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'GBP',
+        ADD COLUMN IF NOT EXISTS payment_status TEXT DEFAULT 'Pending',
+        ADD COLUMN IF NOT EXISTS payment_date TIMESTAMPTZ,
+        ADD COLUMN IF NOT EXISTS payment_method TEXT,
+        ADD COLUMN IF NOT EXISTS transaction_id TEXT,
+        ADD COLUMN IF NOT EXISTS invoice_url TEXT,
+        ADD COLUMN IF NOT EXISTS receipt_url TEXT,
+        ADD COLUMN IF NOT EXISTS notes TEXT,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW(),
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE student_messages
+        ADD COLUMN IF NOT EXISTS sender_type TEXT,
+        ADD COLUMN IF NOT EXISTS sender_name TEXT,
+        ADD COLUMN IF NOT EXISTS message TEXT,
+        ADD COLUMN IF NOT EXISTS is_internal BOOLEAN DEFAULT FALSE,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
+    await pool.query(`
+        ALTER TABLE student_activity
+        ADD COLUMN IF NOT EXISTS activity_type TEXT,
+        ADD COLUMN IF NOT EXISTS description TEXT,
+        ADD COLUMN IF NOT EXISTS performed_by TEXT,
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW()
+    `);
+
     console.log("Student Details tables ready.");
 }
 
