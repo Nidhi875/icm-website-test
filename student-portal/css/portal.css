@@ -47,7 +47,7 @@ body{
 }
 
 .portal-logo{
-    width:350px;
+    width:240px;
     height:auto;
     display:block;
     margin-bottom: 20px;
@@ -843,4 +843,13 @@ MOBILE SLIDE MENU
 
 }
 
+
+/* ---------- Responsive Login Logo ---------- */
+
+@media (max-width: 768px) {
+    .login-logo {
+        width: 190px;
+        margin-bottom: 25px;
+    }
+}
 
