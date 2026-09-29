@@ -1917,3 +1917,51 @@ nav > a{
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOBILE RESPONSIVE - STATS SECTION
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .stats {
+        width: 100%;
+        max-width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 35px 20px !important;
+        padding: 50px 20px !important;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .stats > div {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .stats h2 {
+        font-size: 42px !important;
+        line-height: 1.1 !important;
+        margin: 0 0 8px !important;
+        white-space: normal !important;
+        word-break: normal;
+    }
+
+    .stats p {
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+}
