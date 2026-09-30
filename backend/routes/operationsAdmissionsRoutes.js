@@ -585,6 +585,65 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
           importBatchId
         ]
       );
+
+      // Keep the Student Portal application record synchronized with the
+      // Operations spreadsheet for students that already exist in users.
+      // The Student Details endpoint also reads the Operations table directly,
+      // so Excel remains the source of truth for these workflow fields.
+      await client.query(
+        `
+          INSERT INTO applications (
+            user_id,
+            status,
+            fee_amount,
+            course,
+            university,
+            destination_country,
+            offer_status,
+            admission_status,
+            updated_at
+          )
+          SELECT
+            u.id,
+            COALESCE(NULLIF($2, ''), 'pending'),
+            CASE WHEN $3 > 0 THEN $3 ELSE 0 END,
+            NULLIF($4, ''),
+            NULLIF($5, ''),
+            NULLIF($6, ''),
+            NULLIF($7, ''),
+            NULLIF($8, ''),
+            NOW()
+          FROM users u
+          WHERE LOWER(TRIM(u.student_id)) = LOWER(TRIM($1))
+          ON CONFLICT (user_id)
+          DO UPDATE SET
+            status = CASE
+              WHEN EXCLUDED.status <> 'pending' OR NULLIF($2, '') IS NOT NULL
+                THEN EXCLUDED.status
+              ELSE applications.status
+            END,
+            fee_amount = CASE
+              WHEN $3 > 0 THEN EXCLUDED.fee_amount
+              ELSE applications.fee_amount
+            END,
+            course = COALESCE(EXCLUDED.course, applications.course),
+            university = COALESCE(EXCLUDED.university, applications.university),
+            destination_country = COALESCE(EXCLUDED.destination_country, applications.destination_country),
+            offer_status = COALESCE(EXCLUDED.offer_status, applications.offer_status),
+            admission_status = COALESCE(EXCLUDED.admission_status, applications.admission_status),
+            updated_at = NOW()
+        `,
+        [
+          record.studentId,
+          record.applicationStatus,
+          record.revenue,
+          record.gouldingsCourse,
+          record.university,
+          record.destinationCountry,
+          record.offerStatus,
+          record.admissionStatus
+        ]
+      );
     }
 
     await client.query(
