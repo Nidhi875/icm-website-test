@@ -199,12 +199,11 @@ async function updateStudentDetails(req, res) {
             }
 
             await client.query(`
-                UPDATE users
+              UPDATE users
                 SET
-                    full_name = $1,
-                    email = $2,
-                    updated_at = NOW()
-                WHERE id = $3
+              full_name = $1,
+              email = $2
+             WHERE id = $3
             `, [
                 full_name !== undefined ? full_name : current.rows[0].full_name,
                 email !== undefined ? email : current.rows[0].email,
