@@ -2384,13 +2384,14 @@ nav > a{
     justify-content: center !important;
     align-items: center !important;
 
-    gap: 90px !important;
+    gap: 120px !important;
 
     width: 100% !important;
 
     margin: 0 0 30px !important;
-}
 
+    transform: translateX(120px);
+}
 
 /* Logo */
 
@@ -2429,7 +2430,7 @@ nav > a{
 
     text-align: center !important;
 
-    font-size: 21px !important;
+    font-size: 91px !important;
 
     line-height: 1.45 !important;
 
@@ -2660,5 +2661,149 @@ nav > a{
         font-size: 15px !important;
 
         padding: 0 20px !important;
+    }
+}
+
+/* =========================================
+   FINAL MOBILE FOOTER DESIGN
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Footer bottom container */
+    .footer-bottom {
+        padding: 35px 18px 40px !important;
+        text-align: center !important;
+        overflow: hidden !important;
+    }
+
+    /* Logo + Address */
+    .footer-bottom .footer-brand-row {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        width: 100% !important;
+        gap: 22px !important;
+
+        margin: 0 auto 28px !important;
+
+        /* Cancel desktop movement */
+        transform: none !important;
+    }
+
+    /* Logo container */
+    .footer-bottom .footer-logo {
+        width: 100% !important;
+        max-width: 380px !important;
+
+        padding: 0 0 22px !important;
+
+        border-left: none !important;
+        border-right: none !important;
+
+        border-top: 1px solid rgba(255,255,255,0.15) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+    }
+
+    /* Logo */
+    .footer-bottom .footer-logo img {
+        display: block !important;
+
+        width: 290px !important;
+        max-width: 90% !important;
+
+        height: auto !important;
+
+        margin: 22px auto 0 !important;
+    }
+
+    /* Address */
+    .footer-bottom .footer-address {
+        width: 100% !important;
+        max-width: 390px !important;
+
+        margin: 0 auto !important;
+
+        text-align: center !important;
+
+        font-size: 18px !important;
+        line-height: 1.45 !important;
+
+        color: #ffffff !important;
+    }
+
+    .footer-bottom .footer-address p {
+        margin: 0 !important;
+    }
+
+    /* Buttons */
+    .footer-bottom .footer-buttons {
+        display: flex !important;
+
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        width: 100% !important;
+
+        gap: 14px !important;
+
+        margin: 0 auto 35px !important;
+    }
+
+    .footer-bottom .footer-buttons a {
+        display: flex !important;
+
+        justify-content: center !important;
+        align-items: center !important;
+
+        width: 100% !important;
+        max-width: 405px !important;
+
+        min-height: 60px !important;
+
+        padding: 12px 18px !important;
+
+        box-sizing: border-box !important;
+
+        font-size: 19px !important;
+        line-height: 1.2 !important;
+
+        text-align: center !important;
+    }
+
+    /* Partner logos */
+    .footer-bottom .partner-badges {
+        display: flex !important;
+
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        flex-wrap: wrap !important;
+
+        width: 100% !important;
+
+        gap: 18px !important;
+
+        margin: 0 auto 30px !important;
+    }
+
+    .footer-bottom .partner-badges img {
+        width: 150px !important;
+        height: auto !important;
+
+        display: block !important;
+    }
+
+    /* Copyright */
+    .footer-bottom .copyright {
+        font-size: 15px !important;
+        line-height: 1.4 !important;
+
+        margin: 0 !important;
+        padding: 0 10px !important;
     }
 }
