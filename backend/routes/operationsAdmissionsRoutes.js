@@ -590,7 +590,22 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
       // Operations spreadsheet for students that already exist in users.
       // The Student Details endpoint also reads the Operations table directly,
       // so Excel remains the source of truth for these workflow fields.
+     const applicationStatus = clean(record.applicationStatus).toLowerCase();
+
+const portalStatus = [
+  "pending",
+  "admitted",
+  "rejected",
+  "enrolled",
+  "confirmed"
+].includes(applicationStatus)
+  ? applicationStatus
+  : null;
+
+  
       await client.query(
+
+        
         `
           INSERT INTO applications (
             user_id,
@@ -635,7 +650,7 @@ router.post("/admissions/import", upload.single("file"), async (req, res) => {
         `,
         [
           record.studentId,
-          record.applicationStatus,
+          portalStatus,
           record.revenue,
           record.gouldingsCourse,
           record.university,
