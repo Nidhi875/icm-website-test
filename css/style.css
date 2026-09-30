@@ -2807,3 +2807,31 @@ nav > a{
         padding: 0 10px !important;
     }
 }
+
+/* =========================================
+   FINAL COMPACT FOOTER HEIGHT
+========================================= */
+
+.footer-bottom {
+    padding: 10px 15px 15px !important;
+}
+
+/* Logo + Address */
+.footer-bottom .footer-brand-row {
+    margin-bottom: 12px !important;
+}
+
+/* Buttons */
+.footer-bottom .footer-buttons {
+    margin-bottom: 15px !important;
+}
+
+/* Partner logos */
+.footer-bottom .partner-badges {
+    margin-bottom: 12px !important;
+}
+
+/* Copyright */
+.footer-bottom .copyright {
+    margin: 0 !important;
+}
