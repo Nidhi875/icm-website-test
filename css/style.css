@@ -2835,3 +2835,25 @@ nav > a{
 .footer-bottom .copyright {
     margin: 0 !important;
 }
+
+/* Fix nested qualification menu title alignment */
+.nav-item--nested > .nav-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+    padding: 14px 20px !important;
+}
+
+.nav-item--nested > .nav-title > span {
+    flex: 1 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+}
+
+.nav-item--nested > .nav-title > i {
+    flex-shrink: 0 !important;
+    margin-left: 15px !important;
+}
