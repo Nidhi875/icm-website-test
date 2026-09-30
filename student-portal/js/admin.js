@@ -47,7 +47,13 @@ async function loadStudents() {
 }
 
 
-        const data = await res.json();
+        const responseText = await res.text();
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch {
+            throw new Error(`Server returned ${res.status} instead of JSON.`);
+        }
 
         if (!res.ok || !data.success) {
             throw new Error(data.message || "Failed to load students");
@@ -279,7 +285,16 @@ if (!res.ok || !data.success) {
     );
 }
 
-        renderStudentDetails(data.student || data);
+        const detailStudent = {
+    ...(student || {}),
+    ...(data.student || {}),
+
+    profile: data.profile || data.student?.profile || {},
+    academic: data.academic || data.student?.academic || {},
+    application: data.application || data.student?.application || {}
+};
+
+renderStudentDetails(detailStudent);
 
     } catch (error) {
         console.error("Student details error:", error);
@@ -412,7 +427,7 @@ function renderStudentDetails(student) {
                 </p>
 
                 <span class="status-pill">
-                    ${escapeHtml(student.status || "unknown")}
+                    ${escapeHtml(application.status || student.status || "unknown")}
                 </span>
 
             </div>
@@ -563,6 +578,22 @@ function renderStudentDetails(student) {
             <h3>Application</h3>
 
             <div class="student-detail-grid">
+
+                <div>
+                    <label>Application Status</label>
+                    <strong>
+                        ${escapeHtml(application.status || "—")}
+                    </strong>
+                </div>
+
+                <div>
+                    <label>Fee Amount</label>
+                    <strong>
+                        ${application.fee_amount != null && application.fee_amount !== ""
+                            ? "£" + Number(application.fee_amount).toLocaleString()
+                            : "—"}
+                    </strong>
+                </div>
 
                 <div>
                     <label>Course</label>
@@ -749,10 +780,12 @@ async function saveEdit() {
     const payload = {
         full_name: document.getElementById("editName").value.trim(),
         email: document.getElementById("editEmail").value.trim(),
-        status: document.getElementById("editStatus").value,
-        fee_amount: document.getElementById("editFee").value
-            ? Number(document.getElementById("editFee").value)
-            : null
+        application: {
+            status: document.getElementById("editStatus").value,
+            fee_amount: document.getElementById("editFee").value
+                ? Number(document.getElementById("editFee").value)
+                : 0
+        }
     };
 
     if (!payload.full_name || !payload.email) {
@@ -761,7 +794,7 @@ async function saveEdit() {
     }
 
     try {
-        const res = await fetch(`${API_BASE}/students/${editingId}`, {
+        const res = await fetch(`${API_BASE}/students/${editingId}/details`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -781,7 +814,7 @@ async function saveEdit() {
 
     } catch (error) {
         console.error(error);
-        errorBox.textContent = error.message + " (this endpoint is new — confirm it's deployed on the backend.)";
+        errorBox.textContent = error.message;
     }
 }
 
@@ -826,7 +859,7 @@ async function confirmDelete() {
 
     } catch (error) {
         console.error(error);
-        errorBox.textContent = error.message + " (this endpoint is new — confirm it's deployed on the backend.)";
+        errorBox.textContent = error.message;
     }
 }
 
