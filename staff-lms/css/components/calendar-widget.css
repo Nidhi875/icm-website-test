@@ -347,3 +347,33 @@ CALENDAR FOOTER
 #calendarWidget .calendar-grid .day.today .date {
     color: #ffffff !important;
 }
+
+/* The site-wide calendar page styles set .day .date to white. On the
+   Operations widget normal tiles are light, which made every date except
+   today's gold tile disappear. Keep this component self-contained. */
+.operations-calendar-widget .calendar-widget-grid .day {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 96px;
+    padding: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.operations-calendar-widget .calendar-widget-grid .day .date {
+    position: static;
+    color: #081d38 !important;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.operations-calendar-widget .calendar-widget-grid .day.today {
+    background: #cda74a !important;
+    border-color: #cda74a !important;
+}
+
+.operations-calendar-widget .calendar-widget-grid .day.today .date {
+    color: #ffffff !important;
+}
