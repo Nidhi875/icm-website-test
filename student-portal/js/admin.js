@@ -105,9 +105,22 @@ function renderTable() {
         return;
     }
 
-    tbody.innerHTML = rows.map((s) => `
+    tbody.innerHTML = rows.map((s) => {
+        const importedOnly = s.source === "operations";
+        const progress = [
+            s.application_status && `Application: ${s.application_status}`,
+            s.offer_status && `Offer: ${s.offer_status}`,
+            s.admission_status && `Admission: ${s.admission_status}`
+        ].filter(Boolean).join(" · ");
+
+        return `
         <tr class="student-row" data-id="${s.id}">
             <td>
+                ${importedOnly ? `
+                <span class="student-name-btn imported-student-name" title="Imported from the Operations Excel file">
+                    ${escapeHtml(s.full_name || "—")}
+                </span>
+                ` : `
                 <button
                     type="button"
                     class="student-name-btn"
@@ -115,9 +128,10 @@ function renderTable() {
                 >
                     ${escapeHtml(s.full_name || "—")}
                 </button>
+                `}
             </td>
 
-            <td>${escapeHtml(s.email || "—")}</td>
+            <td>${escapeHtml(s.email || "Imported from Operations")}</td>
 
             <td>${escapeHtml(s.student_id || "—")}</td>
 
@@ -125,6 +139,7 @@ function renderTable() {
                 <span class="status-pill ${escapeHtml(s.status || "")}">
                     ${escapeHtml(s.status || "unknown")}
                 </span>
+                ${progress ? `<small class="operations-progress">${escapeHtml(progress)}</small>` : ""}
             </td>
 
             <td>
@@ -137,7 +152,9 @@ function renderTable() {
 
             <td>
                 <div class="row-actions">
-
+                    ${importedOnly ? `
+                    <span class="imported-record" title="This record was imported from the Operations Excel file. Create a Student Portal account to enable profile editing.">Imported record</span>
+                    ` : `
                     <button
                         type="button"
                         class="view-btn"
@@ -164,11 +181,12 @@ function renderTable() {
                     >
                         Delete
                     </button>
-
+                    `}
                 </div>
             </td>
         </tr>
-    `).join("");
+    `;
+    }).join("");
 
     // ---------------------------------------------------------
     // VIEW DETAILS

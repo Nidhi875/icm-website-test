@@ -537,3 +537,24 @@ body{
     }
 
 }
+
+.operations-progress{
+    display:block;
+    margin-top:6px;
+    max-width:220px;
+    color:#64748b;
+    font-size:11px;
+    line-height:1.35;
+    white-space:normal;
+}
+
+.imported-record{
+    display:inline-block;
+    color:#475569;
+    font-size:12px;
+    font-weight:600;
+}
+
+.imported-student-name{
+    cursor:default;
+}
