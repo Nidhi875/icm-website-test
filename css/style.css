@@ -57,7 +57,7 @@ header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    min-height:115px;
+    min-height:85px;
 }
 
 .logo{
@@ -65,7 +65,7 @@ header{
     align-items:center;
     flex-shrink:0;
     margin-left:-10px;
-    margin-top:-10px;
+    margin-bottom: 30px;
     overflow:visible;
 }
 
@@ -1533,7 +1533,7 @@ nav > a{
     justify-content:flex-end;
     align-items:center;
     gap:34px;
-    min-height: 100px;
+    min-height: 85px;
 }
 
 .navbar-inner nav > a{
@@ -1798,7 +1798,7 @@ nav > a{
 /* Desktop */
 .logo-desktop{
     display:block;
-    height:90px;
+    height:100px;
     width:auto;
 }
 
@@ -2857,3 +2857,27 @@ nav > a{
     flex-shrink: 0 !important;
     margin-left: 15px !important;
 }
+
+
+/* ==========================================
+   MOBILE - LOGO LEFT ONLY
+   DO NOT MODIFY TOGGLE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar-inner .logo {
+        position: relative !important;
+        top: -5px !important;
+        margin: 0 !important;
+        flex: 0 0 auto;
+    }
+}
+
+
