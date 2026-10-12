@@ -2881,3 +2881,319 @@ nav > a{
 }
 
 
+/* ICM heading above the statistics */
+.stats {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 28px 5% 40px;
+    background: #062653;
+}
+
+.stats .stats-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    width: 100%;
+    margin: 0 0 24px;
+    color: #fff;
+    font-size: clamp(36px, 4.5vw, 76px);
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.stats .stats-title::before,
+.stats .stats-title::after {
+    content: "";
+    flex: 1;
+    max-width: 500px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.stats .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+}
+
+.stats .stats-grid > .stats-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 18px 12px 24px;
+    text-align: center;
+    border: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.stats .stats-grid > .stats-item:last-child {
+    border-right: 0;
+}
+
+.stats .stats-grid > .stats-item h2 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: clamp(30px, 3.5vw, 60px);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.stats .stats-grid > .stats-item p {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(14px, 1.4vw, 20px);
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .stats {
+        padding: 24px 16px 28px;
+    }
+
+    .stats .stats-title {
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+    .stats .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats .stats-grid > .stats-item {
+        padding: 18px 8px;
+        border-right: 1px solid rgba(255, 255, 255, 0.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .stats .stats-grid > .stats-item:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .stats .stats-grid > .stats-item:nth-last-child(-n+2) {
+        border-bottom: 0;
+    }
+}
+
+
+/* FIX: ICM statistics layout on desktop and mobile */
+section.stats {
+    display: block !important;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+section.stats > .stats-title {
+    display: flex !important;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+section.stats > .stats-grid {
+    display: grid !important;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    box-sizing: border-box;
+}
+
+section.stats .stats-grid > .stats-item {
+    display: flex !important;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+section.stats .stats-grid > .stats-item h2 {
+    max-width: 100%;
+    font-size: clamp(24px, 3.5vw, 60px);
+    overflow-wrap: anywhere;
+}
+
+section.stats .stats-grid > .stats-item p {
+    max-width: 100%;
+    font-size: clamp(12px, 1.4vw, 20px);
+    overflow-wrap: anywhere;
+}
+
+/* Mobile: two columns and two rows */
+@media (max-width: 600px) {
+    section.stats {
+        padding: 24px 16px 28px !important;
+    }
+
+    section.stats > .stats-title {
+        gap: 12px;
+        margin: 0 0 18px;
+        font-size: 38px;
+    }
+
+    section.stats > .stats-title::before,
+    section.stats > .stats-title::after {
+        min-width: 0;
+    }
+
+    section.stats > .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    section.stats .stats-grid > .stats-item {
+        padding: 20px 6px;
+    }
+
+    section.stats .stats-grid > .stats-item h2 {
+        font-size: clamp(28px, 8vw, 38px);
+        line-height: 1.15;
+        margin-bottom: 8px;
+        overflow-wrap: normal;
+        white-space: nowrap;
+    }
+
+    section.stats .stats-grid > .stats-item p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    section.stats .stats-grid > .stats-item:nth-child(2n) {
+        border-right: 0;
+    }
+
+    section.stats .stats-grid > .stats-item:nth-last-child(-n+2) {
+        border-bottom: 0;
+    }
+}
+
+
+/* Start Your International Learning Journey */
+section.cta {
+    background: #f4f6f9 !important;
+    color: #000 !important;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+section.cta h2 {
+    color: #000 !important;
+    margin-bottom: 20px;
+}
+
+section.cta p {
+    color: #000 !important;
+    margin-bottom: 12px;
+}
+
+section.cta .cta-get-started {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #000;
+    border: 1px solid #888;
+    border-radius: 2px;
+    padding: 2px 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    box-shadow: none;
+    transition: none;
+}
+
+section.cta .cta-get-started:hover {
+    background: #e8e8e8;
+    color: #000;
+    transform: none;
+    box-shadow: none;
+}
+
+
+
+/* Start Your International Learning Journey - separate section */
+section.cta {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 65px 24px 70px;
+    background: #f1f5f9 !important;
+    color: #000 !important;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #d9e0e8;
+    box-shadow: 0 8px 20px rgba(0, 25, 60, 0.08);
+}
+
+section.cta .cta-content {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+section.cta .cta-content h2 {
+    margin: 0 0 18px;
+    color: #000 !important;
+    font-size: clamp(28px, 3.5vw, 46px);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+section.cta .cta-content p {
+    margin: 0 0 26px;
+    color: #000 !important;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+section.cta .cta-get-started {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #f0f0f0;
+    color: #000;
+    border: 1px solid #888;
+    border-radius: 2px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+}
+
+section.cta .cta-get-started:hover {
+    background: #e2e2e2;
+    color: #000;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+    section.cta {
+        padding: 44px 20px 48px;
+    }
+
+    section.cta .cta-content h2 {
+        font-size: 30px;
+    }
+
+    section.cta .cta-content p {
+        font-size: 15px;
+    }
+}
+
+
+
+
