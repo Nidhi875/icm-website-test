@@ -167,40 +167,51 @@ if (typeof initCalendarWidget === "function") {
 
 function initHeaderActions() {
 
-    /* ---------------------------
-       CALENDAR
-    --------------------------- */
+/* ---------------------------
+   CALENDAR
+--------------------------- */
 
-    const calendarButton =
-        document.getElementById("calendarHeaderBtn");
+const calendarButton =
+    document.getElementById("calendarHeaderBtn");
 
-    if (
-        calendarButton &&
-        !calendarButton.dataset.headerActionBound
-    ) {
+if (
+    calendarButton &&
+    !calendarButton.dataset.headerActionBound
+) {
+    calendarButton.dataset.headerActionBound = "true";
 
-        calendarButton.dataset.headerActionBound = "true";
+    calendarButton.addEventListener("click", () => {
+        const calendarWidget =
+            document.getElementById("calendarWidget");
 
-        calendarButton.addEventListener("click", () => {
+        if (calendarWidget) {
+            calendarWidget.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
-            const calendarWidget =
-                document.getElementById("calendarWidget");
+            return;
+        }
 
-            if (calendarWidget) {
+        const calendarSection =
+            document.querySelector(
+                ".calendar-widget, #calendar, [data-widget='calendar']"
+            );
 
-                calendarWidget.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+        if (calendarSection) {
+            calendarSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
-                return;
-            }
+            return;
+        }
 
-            window.location.href = "meetings.html";
-
-        });
-
-    }
+        console.warn(
+            "Dashboard calendar widget was not found."
+        );
+    });
+}
 
 
     /* ---------------------------
@@ -222,6 +233,298 @@ function initHeaderActions() {
         });
 
     }
+
+
+    
+/* ---------------------------
+   NOTIFICATIONS BELL
+--------------------------- */
+
+const notificationsButton =
+    document.getElementById("notificationsBtn");
+
+if (
+    notificationsButton &&
+    !notificationsButton.dataset.headerActionBound
+) {
+    notificationsButton.dataset.headerActionBound = "true";
+
+    let notificationPanel = document.getElementById(
+        "headerNotificationPanel"
+    );
+
+    if (!notificationPanel) {
+        notificationPanel = document.createElement("div");
+        notificationPanel.id = "headerNotificationPanel";
+
+        Object.assign(notificationPanel.style, {
+            position: "absolute",
+            top: "calc(100% + 12px)",
+            right: "0",
+            width: "340px",
+            maxWidth: "calc(100vw - 32px)",
+            maxHeight: "420px",
+            overflowY: "auto",
+            background: "#ffffff",
+            color: "#1f2937",
+            border: "1px solid #e5e7eb",
+            borderRadius: "12px",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+            zIndex: "2000",
+            display: "none"
+        });
+
+        notificationsButton.parentElement.style.position =
+            "relative";
+
+        notificationsButton.parentElement.appendChild(
+            notificationPanel
+        );
+    }
+
+  
+async function loadHeaderNotifications() {
+    const API =
+        "https://icm-website-test-production.up.railway.app/api/notifications";
+
+    const RETENTION_DAYS = 30;
+
+    notificationPanel.innerHTML = `
+        <div style="padding:16px 18px;font-weight:700">
+            Notifications
+        </div>
+        <div style="padding:18px;color:#64748b">
+            Loading notifications...
+        </div>
+    `;
+
+    try {
+        const response = await fetch(API, {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let notifications = Array.isArray(data.notifications)
+            ? data.notifications
+            : [];
+
+        // Delete notifications that were already read
+        // and are older than 30 days.
+        const cutoff = Date.now() -
+            RETENTION_DAYS * 24 * 60 * 60 * 1000;
+
+        const expiredReadNotifications = notifications.filter(n => {
+            if (!n || !n.id || !n.created_at) return false;
+
+            const isRead =
+                n.is_read === true ||
+                n.is_read === 1 ||
+                n.is_read === "true";
+
+            const createdAt = new Date(n.created_at).getTime();
+
+            return isRead &&
+                Number.isFinite(createdAt) &&
+                createdAt < cutoff;
+        });
+
+        await Promise.all(
+            expiredReadNotifications.map(async n => {
+                const result = await fetch(
+                    `${API}/${encodeURIComponent(n.id)}`,
+                    { method: "DELETE" }
+                );
+
+                if (!result.ok) {
+                    console.warn(
+                        "Could not delete expired notification:",
+                        n.id
+                    );
+                }
+            })
+        );
+
+        const deletedIds = new Set(
+            expiredReadNotifications.map(n => String(n.id))
+        );
+
+        notifications = notifications.filter(
+            n => !deletedIds.has(String(n.id))
+        );
+
+        notificationPanel.innerHTML = `
+            <div style="
+                padding:16px 18px;
+                border-bottom:1px solid #e5e7eb;
+                font-weight:700">
+                Notifications
+            </div>
+        `;
+
+        if (notifications.length === 0) {
+            notificationPanel.insertAdjacentHTML(
+                "beforeend",
+                `<div style="padding:22px 18px;color:#64748b">
+                    You're all caught up.
+                </div>`
+            );
+            return;
+        }
+
+        notifications.slice(0, 10).forEach(notification => {
+            const isRead =
+                notification.is_read === true ||
+                notification.is_read === 1 ||
+                notification.is_read === "true";
+
+            const item = document.createElement("button");
+            item.type = "button";
+
+            Object.assign(item.style, {
+                display: "block",
+                width: "100%",
+                padding: "14px 18px",
+                textAlign: "left",
+                border: "0",
+                borderBottom: "1px solid #eef0f3",
+                cursor: "pointer",
+                background: isRead ? "#ffffff" : "#eff6ff",
+                color: "#1f2937",
+                overflowWrap: "anywhere"
+            });
+
+            const title = document.createElement("div");
+            title.textContent =
+                notification.title || "Notification";
+            title.style.fontWeight = isRead ? "500" : "700";
+            title.style.marginBottom = "5px";
+
+            const message = document.createElement("div");
+            message.textContent = notification.message || "";
+            message.style.fontSize = "13px";
+            message.style.lineHeight = "1.5";
+            message.style.color = "#64748b";
+
+            const status = document.createElement("div");
+            status.textContent = isRead ? "Read" : "Unread";
+            status.style.fontSize = "11px";
+            status.style.marginTop = "7px";
+            status.style.color = isRead ? "#64748b" : "#1d4ed8";
+
+            item.append(title, message, status);
+
+            item.addEventListener("click", async () => {
+                item.disabled = true;
+
+                try {
+                    if (!isRead) {
+                        const readResponse = await fetch(
+                            `${API}/${encodeURIComponent(notification.id)}/read`,
+                            { method: "PUT" }
+                        );
+
+                        if (!readResponse.ok) {
+                            throw new Error(
+                                "Could not mark notification as read."
+                            );
+                        }
+                    }
+
+                    // Refresh the existing header badge.
+                    if (typeof initHeaderLiveCounts === "function") {
+                        // The function is already initialized by loadLayout.
+                        // The next automatic refresh will update the badge.
+                    }
+
+                
+const link = notification.link;
+
+if (typeof link === "string" && link.trim()) {
+    const destination = new URL(link.trim(), window.location.href);
+
+    if (
+        destination.protocol === "http:" ||
+        destination.protocol === "https:"
+    ) {
+        window.location.href = destination.href;
+        return;
+    }
+}
+
+// If there is no link, mark it as read and refresh the dropdown.
+await loadHeaderNotifications();
+
+
+
+                } catch (error) {
+                    console.error(
+                        "Notification click failed:",
+                        error
+                    );
+                    item.disabled = false;
+                    alert(
+                        "The notification could not be opened. Please try again."
+                    );
+                }
+            });
+
+            notificationPanel.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("Could not load notifications:", error);
+
+        notificationPanel.innerHTML = `
+            <div style="padding:18px;font-weight:600">
+                Notifications
+            </div>
+            <div style="padding:18px;color:#b91c1c">
+                Could not load notifications. Please try again.
+            </div>
+        `;
+    }
+}
+
+
+    notificationsButton.addEventListener("click", async event => {
+        event.stopPropagation();
+
+        const isOpen = notificationPanel.style.display !== "none";
+
+        if (isOpen) {
+            notificationPanel.style.display = "none";
+            return;
+        }
+
+        notificationPanel.style.display = "block";
+        await loadHeaderNotifications();
+    });
+
+    notificationPanel.addEventListener("click", event => {
+        event.stopPropagation();
+    });
+
+    document.addEventListener("click", event => {
+        if (
+            !notificationPanel.contains(event.target) &&
+            !notificationsButton.contains(event.target)
+        ) {
+            notificationPanel.style.display = "none";
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            notificationPanel.style.display = "none";
+        }
+    });
+}
+
 
 
     /* ---------------------------

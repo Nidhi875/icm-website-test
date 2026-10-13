@@ -8,6 +8,9 @@
 
     const API_URL = "https://icm-website-test-production.up.railway.app/api/messages";
 
+    const NOTIFICATIONS_API_URL =
+    "https://icm-website-test-production.up.railway.app/api/notifications";
+
     let messages = [];
     let currentConversation = "staff-general";
     let currentFilter = "all";
@@ -1589,6 +1592,53 @@ async function loadSharedFiles() {
                 );
 
             }
+
+            
+            // Create a shared notification after the message is saved.
+            try {
+                const notificationTitle =
+                    type === "announcement"
+                        ? "New Staff Announcement"
+                        : "New Staff Message";
+
+                const notificationMessage =
+                    value.length > 180
+                        ? value.slice(0, 177) + "..."
+                        : value;
+
+                const notificationResponse = await fetch(
+                    NOTIFICATIONS_API_URL,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            title: notificationTitle,
+                            message: notificationMessage,
+                            type: type === "announcement"
+                                ? "announcement"
+                                : "message",
+                            link: "messages.html",
+                            user_id: null
+                        })
+                    }
+                );
+
+                if (!notificationResponse.ok) {
+                    console.error(
+                        "Notification creation failed:",
+                        await notificationResponse.text()
+                    );
+                }
+            } catch (notificationError) {
+                // A notification failure must not undo a saved message.
+                console.error(
+                    "NOTIFICATION ERROR:",
+                    notificationError
+                );
+            }
+
 
 
             const input =

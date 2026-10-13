@@ -1510,3 +1510,237 @@ QUALIFICATIONS MOBILE
     border-left: 4px solid #a32135;
     padding-left: 44px;
 }
+
+
+/* FIX: Qualification sidebar width and nested menu overflow */
+.qualification-sidebar,
+.qualification-sidebar .sidebar-menu,
+.qualification-sidebar .submenu {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.qualification-sidebar .sidebar-menu {
+    width: 100%;
+    overflow: visible;
+}
+
+/* Keep each nested academy menu inside the sidebar */
+.qualification-sidebar .nav-item--nested {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.qualification-sidebar .nav-item--nested > .nav-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: left;
+}
+
+.qualification-sidebar .nav-item--nested > .nav-title > span {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+    line-height: 1.5;
+}
+
+.qualification-sidebar .nav-item--nested > .nav-title > i {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.qualification-sidebar .nav-item--nested > .nav-submenu {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.qualification-sidebar .nav-item--nested > .nav-submenu > a {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Prevent the sidebar and main content from forcing desktop
+   columns on narrow screens */
+@media (max-width: 768px) {
+    .intro-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .qualification-sidebar {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .qualification-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+}
+
+
+
+/* Fix nested academy menu alignment across sidebar pages */
+.sidebar-menu .nav-item--nested {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 14px 22px;
+    border: 0;
+    margin: 0;
+    text-align: left;
+    white-space: normal;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title span {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+    line-height: 1.5;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title i {
+    position: static;
+    flex: 0 0 auto;
+    margin-left: auto;
+    transform: none;
+}
+
+.sidebar-menu .nav-item--nested > .nav-submenu {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.sidebar-menu .nav-item--nested > .nav-submenu a {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px 22px 12px 34px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+/* Keep the sidebar and its items within the grey panel */
+.sidebar-menu,
+.sidebar-menu > .menu-item,
+.sidebar-menu > .submenu,
+.sidebar-menu > .submenu > .submenu-item {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.sidebar-menu > .submenu > .submenu-item {
+    display: block;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+
+
+/* SHARED SIDEBAR LAYOUT — ALL PAGES */
+
+.sidebar-menu,
+.sidebar-menu .submenu,
+.sidebar-menu .nav-item,
+.sidebar-menu .nav-item--nested {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.sidebar-menu .nav-item--nested {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: left;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title span {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+.sidebar-menu .nav-item--nested > .nav-title i {
+    flex: 0 0 auto;
+    position: static;
+    margin-left: auto;
+}
+
+.sidebar-menu .nav-item--nested > .nav-submenu {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.sidebar-menu .nav-item--nested > .nav-submenu a {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}

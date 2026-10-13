@@ -401,8 +401,6 @@ router.post("/", async (req, res) => {
 
 
 
-module.exports = router;
-
 /* ==========================================================
    DELETE OLD MESSAGES (older than 3 days)
 ========================================================== */

@@ -156,24 +156,30 @@
        INITIAL LOAD
     ========================================================== */
 
+/* ==========================================================
+   INITIAL LOAD — supports dynamically loaded headers
+========================================================== */
+
+function startHeaderCounts() {
+    updateHeaderCounts();
+
+    // Refresh badges every 30 seconds.
+    if (!window.headerCountsInterval) {
+        window.headerCountsInterval = setInterval(
+            updateHeaderCounts,
+            30000
+        );
+    }
+}
+
+if (document.readyState === "loading") {
     document.addEventListener(
         "DOMContentLoaded",
-        () => {
-
-            updateHeaderCounts();
-
-            /*
-             * Refresh every 30 seconds so the header
-             * updates automatically without refreshing
-             * the page.
-             */
-            setInterval(
-                updateHeaderCounts,
-                30000
-            );
-
-        },
+        startHeaderCounts,
         { once: true }
     );
+} else {
+    startHeaderCounts();
+}
 
 })();

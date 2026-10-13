@@ -1,47 +1,25 @@
-/*==========================================
-HEADER NOTIFICATIONS
-==========================================*/
 
-// These values will come from the backend later
-const unreadMessages = 0;
-const unreadNotifications = 0;
+/* ==========================================
+   STAFF LMS HEADER INITIALIZATION
+========================================== */
 
-const msg = document.getElementById("messageCount");
-const notify = document.getElementById("notificationCount");
+(() => {
+    "use strict";
 
-// Messages
-if (msg) {
-
-    if (unreadMessages > 0) {
-
-        msg.textContent = unreadMessages;
-        msg.classList.remove("hidden");
-
-    } else {
-
-        msg.classList.add("hidden");
-
+    function initializeHeader() {
+        // Initialize the mobile menu only if the function exists.
+        if (typeof window.initMobileMenu === "function") {
+            window.initMobileMenu();
+        }
     }
 
-}
-
-// Notifications
-if (notify) {
-
-    if (unreadNotifications > 0) {
-
-        notify.textContent = unreadNotifications;
-        notify.classList.remove("hidden");
-
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeHeader,
+            { once: true }
+        );
     } else {
-
-        notify.classList.add("hidden");
-
+        initializeHeader();
     }
-
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    initMobileMenu();
-});
+})();
