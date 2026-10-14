@@ -4,9 +4,12 @@ const pool = require("../config/db");
 
 const requireAdmin = require("../middleware/requireAdmin");
 
+const requireAuth = require("../middleware/requireAuth");
+
 const {
     getStudentDetails,
-    updateStudentDetails
+    updateStudentDetails,
+    getStudentDashboard
 } = require("../controllers/studentDetailsController");
 
 const router = express.Router();
@@ -176,6 +179,17 @@ router.put("/:userId/status", requireAdmin, async (req, res) => {
         });
     }
 });
+
+
+// ============================================================
+// STUDENT DASHBOARD — LOGGED-IN STUDENT ONLY
+// ============================================================
+
+router.get(
+    "/dashboard",
+    requireAuth,
+    getStudentDashboard
+);
 
 
 // ============================================================

@@ -426,7 +426,143 @@ async function updateStudentDetails(req, res) {
 }
 
 
+async function getStudentDashboard(req, res) {
+    const userId = Number(req.user?.id);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+        return res.status(401).json({
+            success: false,
+            message: "Please log in again."
+        });
+    }
+
+    try {
+        const studentResult = await pool.query(
+            `SELECT id, full_name, email, student_id
+             FROM users
+             WHERE id = $1`,
+            [userId]
+        );
+
+        if (!studentResult.rows.length) {
+            return res.status(404).json({
+                success: false,
+                message: "Student not found."
+            });
+        }
+
+        const [
+            profileResult,
+            academicResult,
+            applicationResult,
+            documentsResult,
+            messagesResult,
+            activityResult
+        ] = await Promise.all([
+            pool.query(
+                `SELECT * FROM student_profiles WHERE user_id = $1`,
+                [userId]
+            ),
+            pool.query(
+                `SELECT * FROM student_academic WHERE user_id = $1`,
+                [userId]
+            ),
+            pool.query(
+                `SELECT * FROM applications WHERE user_id = $1`,
+                [userId]
+            ),
+            pool.query(
+                `SELECT * FROM student_documents
+                 WHERE user_id = $1
+                 ORDER BY created_at DESC`,
+                [userId]
+            ),
+            pool.query(
+                `SELECT id, sender_type, sender_name, message, created_at
+                 FROM student_messages
+                 WHERE user_id = $1
+                   AND COALESCE(is_internal, false) = false
+                 ORDER BY created_at DESC`,
+                [userId]
+            ),
+            pool.query(
+                `SELECT activity_type, description, created_at
+                 FROM student_activity
+                 WHERE user_id = $1
+                 ORDER BY created_at DESC
+                 LIMIT 10`,
+                [userId]
+            )
+        ]);
+
+        const student = studentResult.rows[0];
+        const profile = profileResult.rows[0] || null;
+        const academic = academicResult.rows[0] || null;
+        const application = applicationResult.rows[0] || null;
+        const documents = documentsResult.rows;
+        const messages = messagesResult.rows;
+        const activity = activityResult.rows;
+
+        const profileFields = [
+            student.full_name,
+            student.email,
+            profile?.phone,
+            profile?.date_of_birth,
+            profile?.nationality,
+            profile?.address,
+            profile?.city,
+            profile?.country,
+            academic?.highest_qualification,
+            academic?.previous_institution
+        ];
+
+        const completedFields = profileFields.filter(
+            value => value !== null &&
+                     value !== undefined &&
+                     String(value).trim() !== ""
+        ).length;
+
+        const profileCompletion = Math.round(
+            (completedFields / profileFields.length) * 100
+        );
+
+        const certificates = documents.filter(doc =>
+            /certificate/i.test(
+                `${doc.document_type || ""} ${doc.document_name || ""}`
+            ) &&
+            /approved|verified/i.test(doc.verification_status || "")
+        ).length;
+
+        return res.json({
+            success: true,
+            student,
+            profile,
+            academic,
+            application,
+            documents,
+            messages,
+            activity,
+            stats: {
+                messages: messages.length,
+                certificates,
+                profileCompletion
+            }
+        });
+
+    } catch (error) {
+        console.error("STUDENT DASHBOARD ERROR:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to load dashboard."
+        });
+    }
+}
+
+
+
 module.exports = {
     getStudentDetails,
-    updateStudentDetails
+    updateStudentDetails,
+    getStudentDashboard
 };
