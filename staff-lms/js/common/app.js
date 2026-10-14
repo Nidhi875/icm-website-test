@@ -53,6 +53,12 @@ async function loadLayout() {
         loadComponent("components/calendar-widget.html", "#calendarWidget")
     ]);
 
+
+    // Initialise the welcome banner after its HTML is inserted.
+if (typeof initWelcomeBanner === "function") {
+    initWelcomeBanner();
+}
+
     initHeaderActions();
 
     initHeaderLiveCounts();
