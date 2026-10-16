@@ -3536,3 +3536,12 @@ footer.social-footer {
 body {
     margin-bottom: 0 !important;
 }
+
+
+/* Move the Gouldings logo slightly down */
+header .logo,
+header .logo img,
+.navbar .logo,
+.navbar .logo img {
+    transform: translateY(8px);
+}
