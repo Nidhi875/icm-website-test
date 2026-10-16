@@ -1,676 +1,262 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
-
-    <title>Student Dashboard</title>
-
-    <link rel="stylesheet"
-          href="css/dashboard.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Dashboard | Gouldings Global Academy</title>
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
-
 <body>
 
 <script>
+    let token = localStorage.getItem("token");
+    let user = null;
 
-const token =
-localStorage.getItem("token");
+    try {
+        user = JSON.parse(localStorage.getItem("user") || "null");
+    } catch (error) {
+        console.error("Unable to read student login information:", error);
+    }
 
-const user =
-JSON.parse(
-localStorage.getItem("user")
-);
-
-if(!token || !user){
-
-    window.location.href =
-    "login.html";
-
-}
-
+    if (!token || !user) {
+        window.location.href = "login.html";
+    }
 </script>
 
 <!-- PROFILE CARD -->
-
 <section class="profile-card">
-
     <div class="profile-left">
-
-        <div class="profile-avatar"
-             id="avatar">
-
-            NS
-
-        </div>
-
+        <div class="profile-avatar" id="avatar">S</div>
         <div>
-
-            <h2 id="studentName">
-
-                Loading...
-
-            </h2>
-
-            <p id="studentId">
-
-                Loading...
-
-            </p>
-
+            <h2 id="studentName">Loading...</h2>
+            <p id="studentId">Student ID: Loading...</p>
         </div>
-
     </div>
 
     <div class="profile-right">
-
         Active Student
-
     </div>
-
 </section>
-
 
 <div class="dashboard">
 
     <!-- SIDEBAR -->
-
     <aside class="sidebar">
+        <img
+            src="images/logo.png"
+            class="sidebar-logo"
+            alt="Gouldings Global Academy Logo"
+        >
 
-        <img src="images/logo.png"
-             class="sidebar-logo">
-
-        <h2>
-
-            Student Portal
-
-        </h2>
+        <h2>Student Portal</h2>
 
         <nav>
-
-            <a href="dashboard.html"
-               class="active">
-
-                Dashboard
-
-            </a>
-
-            <a href="qualifications.html">
-
-                Qualifications
-
-            </a>
-
-            <a href="assignments.html">
-
-                Assignments
-
-            </a>
-
-            <a href="results.html">
-
-                Results
-
-            </a>
-
-            <a href="certificates.html">
-
-                Certificates
-
-            </a>
-
-            <a href="messages.html">
-
-                Messages
-
-            </a>
-
-            <a href="settings.html">
-
-                Settings
-
-            </a>
-
-            <a href="#"
-               onclick="logout()">
-
-                Logout
-
-            </a>
-
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="qualifications.html">Qualifications</a>
+            <a href="assignments.html">Assignments</a>
+            <a href="results.html">Results</a>
+            <a href="certificates.html">Certificates</a>
+            <a href="messages.html">Messages</a>
+            <a href="settings.html">Settings</a>
+            <a href="#" id="logoutLink">Logout</a>
         </nav>
-
     </aside>
 
-
     <!-- MAIN CONTENT -->
-
     <main class="main-content">
 
         <header>
-
             <h1>
-
                 Welcome Back,
-                <span id="welcomeName">
-
-                    Student
-
-                </span>
-
+                <span id="welcomeName">Student</span>
             </h1>
-
         </header>
 
-
-        <!-- STATS -->
-
+        <!-- STUDENT STATISTICS -->
         <section class="stats-grid">
 
             <div class="stat-card">
-
-                <h3>
-
-                    Enrolled Courses
-
-                </h3>
-
-                <span>
-
-                    6
-
-                </span>
-
+                <h3>Enrolled Courses</h3>
+                <span id="enrolledCourses">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Assignments Due
-
-                </h3>
-
-                <span>
-
-                    3
-
-                </span>
-
+                <h3>Assignments Due</h3>
+                <span id="assignmentsDue">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Certificates
-
-                </h3>
-
-                <span>
-
-                    4
-
-                </span>
-
+                <h3>Certificates</h3>
+                <span id="certificates">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Notifications
-
-                </h3>
-
-                <span>
-
-                    2
-
-                </span>
-
+                <h3>Notifications</h3>
+                <span id="notifications">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Profile Completion
-
-                </h3>
-
-                <span>
-
-                    85%
-
-                </span>
-
+                <h3>Profile Completion</h3>
+                <span id="profileCompletion">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Attendance
-
-                </h3>
-
-                <span>
-
-                    92%
-
-                </span>
-
+                <h3>Attendance</h3>
+                <span id="attendance">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    GPA
-
-                </h3>
-
-                <span>
-
-                    3.8
-
-                </span>
-
+                <h3>GPA</h3>
+                <span id="gpa">—</span>
             </div>
 
             <div class="stat-card">
-
-                <h3>
-
-                    Messages
-
-                </h3>
-
-                <span>
-
-                    2
-
-                </span>
-
+                <h3>Messages</h3>
+                <span id="messages">—</span>
             </div>
 
         </section>
 
-
-        <!-- DEADLINES -->
-
+        <!-- DEADLINES AND ACADEMIC CALENDAR -->
         <section class="dashboard-grid">
 
             <div class="dashboard-panel">
+                <h3>Upcoming Deadlines</h3>
 
-                <h3>
+                <div class="dashboard-title-line"></div>
 
-                    Upcoming Deadlines
-
-                </h3>
-
-                <div class="dashboard-title-line">
-
+                <div id="upcomingDeadlines">
+                    <p>Loading deadlines...</p>
                 </div>
-
-                <div class="deadline-item">
-
-                    <div>
-
-                        <h4>
-
-                            Marketing Assignment
-
-                        </h4>
-
-                        <span>
-
-                            Due:
-                            15 July 2026
-
-                        </span>
-
-                    </div>
-
-                    <a href="assignments.html"
-                       class="submit-btn">
-
-                        Submit
-
-                    </a>
-
-                </div>
-
-
-                <div class="deadline-item">
-
-                    <div>
-
-                        <h4>
-
-                            Finance Quiz
-
-                        </h4>
-
-                        <span>
-
-                            Due:
-                            20 July 2026
-
-                        </span>
-
-                    </div>
-
-                    <a href="assignments.html"
-                       class="submit-btn">
-
-                        Submit
-
-                    </a>
-
-                </div>
-
             </div>
 
-
-            <!-- CALENDAR -->
-
             <div class="dashboard-panel">
+                <h3>Academic Calendar</h3>
 
-                <h3>
-
-                    Academic Calendar
-
-                </h3>
-
-                <p>
-
-                    Semester ends on
-                    30 September.
-
+                <p id="calendarSummary">
+                    Loading calendar...
                 </p>
 
-                <ul class="deadline-list">
-
-                    <li>
-
-                        Semester Starts
-
-                        <span>
-
-                            10 Jan
-
-                        </span>
-
-                    </li>
-
-                    <li>
-
-                        Examination Week
-
-                        <span>
-
-                            15 Sep
-
-                        </span>
-
-                    </li>
-
-                    <li>
-
-                        Semester Ends
-
-                        <span>
-
-                            30 Sep
-
-                        </span>
-
-                    </li>
-
+                <ul class="deadline-list" id="academicCalendar">
                 </ul>
-
             </div>
 
         </section>
 
-
-        <!-- PROGRESS -->
-
+        <!-- QUALIFICATION PROGRESS -->
         <section class="dashboard-panel">
+            <h3>Qualification Progress</h3>
 
-            <h3>
-
-                Qualification Progress
-
-            </h3>
-
-            <div class="progress-item">
-
-                <p>
-
-                    Business Management
-
-                </p>
-
-                <div class="progress-bar">
-
-                    <div class="progress-fill"
-                         style="width:70%">
-
-                    </div>
-
-                </div>
-
+            <div id="qualificationProgress">
+                <p>Loading qualification progress...</p>
             </div>
-
         </section>
 
-
-        <!-- RECENT ACTIVITY + NOTIFICATIONS -->
-
+        <!-- RECENT ACTIVITY AND NOTIFICATIONS -->
         <section class="dashboard-grid">
 
             <div class="dashboard-panel">
+                <h3>Recent Activity</h3>
 
-                <h3>
-
-                    Recent Activity
-
-                </h3>
-
-                <ul>
-
-                    <li>
-
-                        Assignment submitted successfully.
-
-                        <span>
-
-                            2 hours ago
-
-                        </span>
-
-                    </li>
-
-                    <li>
-
-                        Qualification module unlocked.
-
-                        <span>
-
-                            Yesterday
-
-                        </span>
-
-                    </li>
-
-                    <li>
-
-                        Certificate downloaded.
-
-                        <span>
-
-                            2 days ago
-
-                        </span>
-
-                    </li>
-
+                <ul id="recentActivity">
+                    <li>Loading activity...</li>
                 </ul>
-
             </div>
 
-
             <div class="dashboard-panel">
+                <h3>Notifications</h3>
 
-                <h3>
-
-                    Notifications
-
-                </h3>
-
-                <ul>
-
-                    <li>
-
-                        2 assignments due this week.
-
-                        <span>
-
-                            Today
-
-                        </span>
-
-                    </li>
-
-                    <li>
-
-                        New message from tutor.
-
-                        <span>
-
-                            1 hour ago
-
-                        </span>
-
-                    </li>
-
+                <ul id="dashboardNotifications">
+                    <li>Loading notifications...</li>
                 </ul>
-
             </div>
 
         </section>
 
     </main>
-
 </div>
 
 <!-- FOOTER -->
-
 <footer class="portal-footer">
-
     <div class="container">
 
         <img
-            src="./images/logo.png"
+            src="images/logo.png"
             class="footer-logo"
-            alt="Gouldings Logo">
+            alt="Gouldings Global Academy Logo"
+        >
 
         <p>
-
-            Gouldings Global Academy provides internationally recognised qualifications and learner support worldwide.
-
+            Gouldings Global Academy provides internationally
+            recognised qualifications and learner support worldwide.
         </p>
 
         <div class="footer-links">
-
             <a href="../index.html">Main Website</a>
-
             <a href="#">Privacy Policy</a>
-
-            <a href="#">Terms & Conditions</a>
-
+            <a href="#">Terms &amp; Conditions</a>
             <a href="contact.html">Contact Us</a>
-
         </div>
 
         <p class="copyright">
-
-            © 2026 Gouldings Global Academy.
-            All Rights Reserved.
-
+            &copy; 2026 Gouldings Global Academy. All Rights Reserved.
         </p>
 
     </div>
-
 </footer>
 
-
-
+<!-- STUDENT PROFILE AND LOGOUT -->
 <script>
+    const student = user || {};
 
-const studentName =
-user.full_name ||
-user.fullName;
+    const fullName =
+        student.full_name ||
+        student.fullName ||
+        student.name ||
+        "Student";
 
-const studentId =
-user.student_id ||
-user.studentId;
+    const studentNumber =
+        student.student_id ||
+        student.studentId ||
+        "Not assigned";
 
-document
-.getElementById(
-"studentName"
-)
-.innerText =
-studentName;
+    const nameElement = document.getElementById("studentName");
+    const welcomeElement = document.getElementById("welcomeName");
+    const idElement = document.getElementById("studentId");
+    const avatarElement = document.getElementById("avatar");
 
-document
-.getElementById(
-"welcomeName"
-)
-.innerText =
-studentName;
+    if (nameElement) nameElement.textContent = fullName;
+    if (welcomeElement) welcomeElement.textContent = fullName;
 
-document
-.getElementById(
-"studentId"
-)
-.innerText =
-"Student ID: "
-+
-studentId;
+    if (idElement) {
+        idElement.textContent = "Student ID: " + studentNumber;
+    }
 
-document
-.getElementById(
-"avatar"
-)
-.innerText =
-studentName
-.split(" ")
-.map(
-name =>
-name[0]
-)
-.join("")
-.toUpperCase();
+    if (avatarElement) {
+        const initials = fullName
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean)
+            .map(part => part.charAt(0))
+            .join("")
+            .toUpperCase();
 
+        avatarElement.textContent = initials || "S";
+    }
 
-function logout(){
+    document.getElementById("logoutLink")?.addEventListener("click", function (event) {
+        event.preventDefault();
 
-    localStorage.clear();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
-    window.location.href =
-    "login.html";
-
-}
-
+        window.location.href = "login.html";
+    });
 </script>
+
+<!-- DYNAMIC DASHBOARD DATA -->
+<script src="js/dashboard.js"></script>
 
 </body>
 </html>

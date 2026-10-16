@@ -43,14 +43,15 @@ SIDEBAR
 
 }
 
-.sidebar-logo{
-    width:240px;
-    max-width:100%;
-    height:auto;
-    display:block;
-    margin:0 auto 35px;
-    margin-top:-50px;
+
+.sidebar-logo {
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 35px;
 }
+
 
 .sidebar h2{
 
@@ -310,9 +311,7 @@ STAT CARDS
 
 .dashboard-panel:hover{
 
-    transform:translateY(-5px);
-
-    box-shadow: 0 18px 45px rgba(45,86,114,.10);
+    box-shadow: 0 18px 45px rgba(45, 86, 114, .10);
 }
 .dashboard-panel h3{
 
@@ -708,10 +707,14 @@ STAT CARDS
     margin-top:40px;
 }
 
-.footer-logo{
-    width:375px;
-    margin-bottom:15px;
+
+.footer-logo {
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
 }
+
 
 .portal-footer p{
     max-width:650px;
@@ -766,4 +769,48 @@ STAT CARDS
 
     color:#d4af37;
 
+}
+
+
+/* Dashboard layout correction */
+.dashboard {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: start;
+    width: 100%;
+    min-width: 0;
+}
+
+.sidebar {
+    width: 100%;
+    min-width: 0;
+}
+
+.sidebar img.sidebar-logo {
+    display: block;
+    width: 240px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto 35px !important;
+}
+
+.main-content {
+    min-width: 0;
+    width: 100%;
+}
+
+.main-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        display: block;
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar img.sidebar-logo {
+        display: none;
+    }
 }

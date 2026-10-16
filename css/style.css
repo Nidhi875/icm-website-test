@@ -3196,4 +3196,343 @@ section.cta .cta-get-started:hover {
 
 
 
+/* FOOTER */
+.social-footer {
+    background-color: #303030;
+    color: #ffffff;
+    width: 100%;
+    min-height: 300px;
+    padding: 55px 20px 65px;
+    box-sizing: border-box;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 38px;
+
+    border-bottom: 7px solid #061f49;
+}
+
+/* Address above social icons */
+.footer-address {
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.footer-address strong {
+    font-weight: 700;
+}
+
+/* Social media icons */
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 42px;
+}
+
+.footer-socials a {
+    color: #ffffff;
+    font-size: 38px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s ease,
+                transform 0.25s ease;
+}
+
+.footer-socials a:hover {
+    opacity: 0.7;
+    transform: translateY(-3px);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .social-footer {
+        min-height: auto;
+        padding: 40px 18px;
+        gap: 28px;
+    }
+
+    .footer-address {
+        font-size: 17px;
+    }
+
+    .footer-socials {
+        gap: 25px;
+    }
+
+    .footer-socials a {
+        font-size: 29px;
+    }
+}
+
+
+
+/* FOOTER CONTACT DETAILS */
+.footer-phone,
+.footer-email,
+.footer-address {
+    font-family: Arial, sans-serif;
+    font-size: 26px;
+    line-height: 1.5;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Footer layout */
+.social-footer {
+    background: #303030;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px 20px 60px;
+
+    /* Remove top blue line; retain bottom line */
+    border-top: none !important;
+    border-bottom: 7px solid #061f49;
+}
+
+/* Address spacing */
+.footer-address {
+    margin: 0;
+}
+
+/* Social icons */
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 42px;
+    margin-top: 8px;
+}
+
+.footer-socials a {
+    color: #ffffff;
+    font-size: 38px;
+    text-decoration: none;
+}
+
+.footer-socials a:hover {
+    opacity: 0.75;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .footer-phone,
+    .footer-email,
+    .footer-address {
+        font-size: 18px;
+    }
+
+    .footer-socials {
+        gap: 24px;
+    }
+
+    .footer-socials a {
+        font-size: 29px;
+    }
+}
+
+
+
+/* FIX: GGA SOCIAL FOOTER */
+section.footer-top {
+    border-top: none !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+footer.social-footer {
+    background: #303030 !important;
+    color: #ffffff !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 24px !important;
+
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 40px 20px 55px !important;
+}
+
+/* Phone and email: target the existing paragraphs */
+.social-footer > p {
+    font-family: Arial, sans-serif !important;
+    font-size: 26px !important;
+    line-height: 1.5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+/* Address */
+.social-footer .footer-address {
+    font-family: Arial, sans-serif !important;
+    font-size: 26px !important;
+    line-height: 1.5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+/* Social icons */
+.social-footer .footer-socials {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 42px !important;
+    margin-top: 8px !important;
+}
+
+.social-footer .footer-socials a {
+    color: #ffffff !important;
+    font-size: 38px !important;
+    text-decoration: none !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .social-footer > p,
+    .social-footer .footer-address {
+        font-size: 18px !important;
+    }
+
+    .social-footer .footer-socials {
+        gap: 24px !important;
+    }
+
+    .social-footer .footer-socials a {
+        font-size: 29px !important;
+    }
+}
+
+
+
+
+
+
+
+/* FINAL FIX: smaller footer text and icons */
+.footer-top .social-footer > p {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+}
+
+.footer-top .social-footer .footer-address {
+    font-size: 20px !important;
+}
+
+.footer-top .social-footer .footer-socials a {
+    font-size: 30px !important;
+}
+
+@media (max-width: 600px) {
+    .footer-top .social-footer > p,
+    .footer-top .social-footer .footer-address {
+        font-size: 16px !important;
+    }
+
+    .footer-top .social-footer .footer-socials a {
+        font-size: 26px !important;
+    }
+}
+
+
+
+
+/* Remove the bottom grey strip */
+.footer-top {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Remove grey gap and strip around footer */
+.social-footer {
+    margin-bottom: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+.footer-bottom {
+    margin-top: 0 !important;
+    border-top: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Remove any line created by pseudo-elements */
+.footer-top::before,
+.footer-top::after,
+.social-footer::before,
+.social-footer::after {
+    display: none !important;
+    content: none !important;
+}
+
+
+/* Footer top: remove bottom strip and extra spacing */
+.footer-top {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.social-footer {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+/* Keep the footer background consistent */
+.footer-top,
+.footer-top .social-footer {
+    background-color: #303030 !important;
+}
+
+
+
+/* REMOVE WHITE BAR BETWEEN FOOTER SECTIONS */
+.footer-top {
+    display: block !important;
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+    background: #303030 !important;
+}
+
+.footer-top + .footer-bottom {
+    margin-top: 0 !important;
+    padding-top: 28px !important;
+    border-top: none !important;
+}
+
+/* Remove any empty gap or separator */
+.footer-top::after,
+.footer-bottom::before {
+    content: none !important;
+    display: none !important;
+}
+
+body {
+    margin-bottom: 0 !important;
+}
