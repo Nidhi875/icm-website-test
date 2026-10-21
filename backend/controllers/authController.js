@@ -190,10 +190,14 @@ async (
     const user =
       result.rows[0];
 
-    const resetToken =
-      crypto
-      .randomBytes(32)
-      .toString("hex");
+  const resetToken = crypto
+    .randomBytes(32)
+    .toString("hex");
+
+const hashedResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
 
     const expiry =
       new Date(
@@ -209,11 +213,12 @@ async (
       reset_token_expiry=$2
       WHERE id=$3
       `,
-      [
-        resetToken,
-        expiry,
-        user.id
-      ]
+     [
+    hashedResetToken,
+    expiry,
+    user.id
+     ]
+
     );
 
     const resetLink =
@@ -223,72 +228,48 @@ async (
   "Password reset email prepared."
 );
 
- console.log("FRONTEND_URL =", process.env.FRONTEND_URL);
-console.log("RESET LINK =", resetLink);
-
-    try {
-     
-       await resend.emails.send({
-
-           from:
-  "Gouldings Global Academy <support@gouldings.education>",
-
-      
-        to: ["nidhi2437@gmail.com"],
-        
-
-          subject:
-            "Reset Your Password",
-
-          html: `
+ 
+ try {
+    const { data, error } = await resend.emails.send({
+        from: "Gouldings Global Academy <support@gouldings.education>",
+        to: [email.trim()],
+        subject: "Reset Your Password",
+        html: `
             <h2>Password Reset</h2>
+            <p>Click below to reset your password.</p>
 
-            <p>
-            Click below to reset your password.
-            </p>
-
-            <a
-            href="${resetLink}"
-            style="
-              background:#002147;
-              color:white;
-              padding:12px 20px;
-              text-decoration:none;
-              border-radius:6px;
-              display:inline-block;
-            "
-            >
-            Reset Password
+            <a href="${resetLink}"
+               style="background:#002147;color:white;padding:12px 20px;
+                      text-decoration:none;border-radius:6px;display:inline-block;">
+                Reset Password
             </a>
 
-            <p>
-            This link expires in 1 hour.
-            </p>
-          `
+            <p>This link expires in 1 hour.</p>
+        `
+    });
+
+    if (error) {
+        console.error("Password-reset email delivery failed:", error.message);
+
+        return res.status(502).json({
+            message: "Unable to send the reset email. Please try again later."
         });
-
-     console.log(
-  "Password reset email sent."
-);
-
-      return res.json({
-        message:
-          "Reset email sent successfully"
-      });
-
     }
-    catch (emailError) {
 
-      console.log(
-        emailError
-      );
+    return res.json({
+        message: "If the account exists, password-reset instructions have been sent."
+    });
 
-      return res.status(500).json({
-        message:
-          "Email sending failed"
-      });
+} catch (emailError) {
+    console.error(
+        "Password-reset email delivery failed:",
+        emailError.message
+    );
 
-    }
+    return res.status(502).json({
+        message: "Unable to send the reset email. Please try again later."
+    });
+}
 
   }
   catch (error) {
@@ -318,20 +299,34 @@ async (
       password
     } = req.body;
 
+
+    if (
+    typeof token !== "string" ||
+    !token.trim() ||
+    typeof password !== "string" ||
+    password.length < 8
+) {
+    return res.status(400).json({
+        message: "A valid reset token and a password of at least 8 characters are required."
+    });
+}
+
   
 
-    const result =
-      await pool.query(
-        `
-        SELECT *
-        FROM users
-        WHERE
-        reset_token=$1
-        AND
-        reset_token_expiry > NOW()
-        `,
-        [token]
-      );
+  const hashedResetToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  const result = await pool.query(
+    `
+    SELECT *
+    FROM users
+    WHERE reset_token=$1
+    AND reset_token_expiry > NOW()
+    `,
+    [hashedResetToken]
+  );
 
 
 console.log(
