@@ -1,262 +1,158 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Student Dashboard | Gouldings Global Academy</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard | Gouldings Global Academy</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
+  <script>
+    const token = localStorage.getItem("token");
+    let user = {};
+    try { user = JSON.parse(localStorage.getItem("user") || "{}"); } catch (_) {}
+    if (!token || !user || !Object.keys(user).length) window.location.href = "login.html";
+  </script>
 
-<script>
-    let token = localStorage.getItem("token");
-    let user = null;
-
-    try {
-        user = JSON.parse(localStorage.getItem("user") || "null");
-    } catch (error) {
-        console.error("Unable to read student login information:", error);
-    }
-
-    if (!token || !user) {
-        window.location.href = "login.html";
-    }
-</script>
-
-<!-- PROFILE CARD -->
-<section class="profile-card">
-    <div class="profile-left">
-        <div class="profile-avatar" id="avatar">S</div>
-        <div>
-            <h2 id="studentName">Loading...</h2>
-            <p id="studentId">Student ID: Loading...</p>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="../index.html" aria-label="Gouldings Global Academy home">
+        <img src="images/logo.png" alt="Gouldings Global Academy logo" onerror="this.style.display='none'">
+        <span class="brand-fallback"><strong>GOULDINGS</strong><small>GLOBAL ACADEMY</small></span>
+      </a>
+      <nav class="side-nav" aria-label="Student navigation">
+        <a class="active" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+        <a href="qualifications.html"><i class="fa-solid fa-graduation-cap"></i><span>My Qualifications</span></a>
+        <a href="my-courses.html"><i class="fa-solid fa-book-open"></i><span>My Learning</span></a>
+        <a href="assignments.html"><i class="fa-solid fa-file-lines"></i><span>Assignments</span><b class="nav-count" id="assignmentNavCount" hidden></b></a>
+        <a href="calendar.html"><i class="fa-regular fa-calendar-days"></i><span>Calendar</span></a>
+        <a href="messages.html"><i class="fa-regular fa-message"></i><span>Messages</span><b class="nav-count" id="messageNavCount" hidden></b></a>
+        <a href="certificates.html"><i class="fa-solid fa-award"></i><span>Certificates</span></a>
+        <a href="payments.html"><i class="fa-regular fa-credit-card"></i><span>Payments</span></a>
+        <a href="documents.html"><i class="fa-regular fa-folder-open"></i><span>Documents</span></a>
+        <a href="../contact.html"><i class="fa-solid fa-headset"></i><span>Student Support</span></a>
+      </nav>
+      <div class="help-card">
+        <div class="help-shade"></div>
+        <div class="help-content">
+          <span class="help-eyebrow">HERE TO HELP</span>
+          <h3>Need support?</h3>
+          <p>Our team is here to help with your learning journey.</p>
+          <a href="../contact.html">Contact support <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-    </div>
-
-    <div class="profile-right">
-        Active Student
-    </div>
-</section>
-
-<div class="dashboard">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <img
-            src="images/logo.png"
-            class="sidebar-logo"
-            alt="Gouldings Global Academy Logo"
-        >
-
-        <h2>Student Portal</h2>
-
-        <nav>
-            <a href="dashboard.html" class="active">Dashboard</a>
-            <a href="qualifications.html">Qualifications</a>
-            <a href="assignments.html">Assignments</a>
-            <a href="results.html">Results</a>
-            <a href="certificates.html">Certificates</a>
-            <a href="messages.html">Messages</a>
-            <a href="settings.html">Settings</a>
-            <a href="#" id="logoutLink">Logout</a>
-        </nav>
+      </div>
+      <button class="logout-button" type="button" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</button>
     </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+    <main class="main-area">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+        <div class="breadcrumbs"><span>Student Portal</span><i class="fa-solid fa-chevron-right"></i><strong>Dashboard</strong></div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="notificationShortcut" aria-label="Notifications"><i class="fa-regular fa-bell"></i><span class="notification-dot" id="notificationDot" hidden></span></button>
+          <div class="user-menu">
+            <div class="user-avatar" id="topAvatar">NS</div>
+            <div class="user-details"><strong id="topName">Student</strong><span>Student</span></div>
+            <i class="fa-solid fa-chevron-down user-chevron"></i>
+          </div>
+        </div>
+      </header>
 
-        <header>
-            <h1>
-                Welcome Back,
-                <span id="welcomeName">Student</span>
-            </h1>
-        </header>
-
-        <!-- STUDENT STATISTICS -->
-        <section class="stats-grid">
-
-            <div class="stat-card">
-                <h3>Enrolled Courses</h3>
-                <span id="enrolledCourses">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Assignments Due</h3>
-                <span id="assignmentsDue">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Certificates</h3>
-                <span id="certificates">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Notifications</h3>
-                <span id="notifications">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Profile Completion</h3>
-                <span id="profileCompletion">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Attendance</h3>
-                <span id="attendance">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>GPA</h3>
-                <span id="gpa">—</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>Messages</h3>
-                <span id="messages">—</span>
-            </div>
-
+      <div class="dashboard-content">
+        <section class="welcome-banner">
+          <div class="banner-copy">
+            <span class="eyebrow"><i class="fa-solid fa-sun"></i> YOUR LEARNING JOURNEY</span>
+            <h1>Welcome back,<br><span id="welcomeName">Student</span></h1>
+            <p>Keep moving forward. Your next achievement starts here.</p>
+          </div>
+          <div class="banner-quote">“Global qualifications<br>for a brighter future.”</div>
+          <div class="banner-accent"></div>
         </section>
 
-        <!-- DEADLINES AND ACADEMIC CALENDAR -->
-        <section class="dashboard-grid">
-
-            <div class="dashboard-panel">
-                <h3>Upcoming Deadlines</h3>
-
-                <div class="dashboard-title-line"></div>
-
-                <div id="upcomingDeadlines">
-                    <p>Loading deadlines...</p>
-                </div>
-            </div>
-
-            <div class="dashboard-panel">
-                <h3>Academic Calendar</h3>
-
-                <p id="calendarSummary">
-                    Loading calendar...
-                </p>
-
-                <ul class="deadline-list" id="academicCalendar">
-                </ul>
-            </div>
-
-        </section>
-
-        <!-- QUALIFICATION PROGRESS -->
-        <section class="dashboard-panel">
-            <h3>Qualification Progress</h3>
-
-            <div id="qualificationProgress">
-                <p>Loading qualification progress...</p>
-            </div>
-        </section>
-
-        <!-- RECENT ACTIVITY AND NOTIFICATIONS -->
-        <section class="dashboard-grid">
-
-            <div class="dashboard-panel">
-                <h3>Recent Activity</h3>
-
-                <ul id="recentActivity">
-                    <li>Loading activity...</li>
-                </ul>
-            </div>
-
-            <div class="dashboard-panel">
-                <h3>Notifications</h3>
-
-                <ul id="dashboardNotifications">
-                    <li>Loading notifications...</li>
-                </ul>
-            </div>
-
-        </section>
-
-    </main>
-</div>
-
-<!-- FOOTER -->
-<footer class="portal-footer">
-    <div class="container">
-
-        <img
-            src="images/logo.png"
-            class="footer-logo"
-            alt="Gouldings Global Academy Logo"
-        >
-
-        <p>
-            Gouldings Global Academy provides internationally
-            recognised qualifications and learner support worldwide.
-        </p>
-
-        <div class="footer-links">
-            <a href="../index.html">Main Website</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms &amp; Conditions</a>
-            <a href="contact.html">Contact Us</a>
+        <div class="section-heading">
+          <div><span class="eyebrow">YOUR OVERVIEW</span><h2>At a glance</h2></div>
+          <span class="last-updated" id="lastUpdated"><i class="fa-regular fa-clock"></i> Loading your latest data…</span>
         </div>
 
-        <p class="copyright">
-            &copy; 2026 Gouldings Global Academy. All Rights Reserved.
-        </p>
+        <section class="stats-grid" aria-label="Student overview statistics">
+          <article class="stat-card stat-blue">
+            <div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="stat-copy"><span>Enrolled qualifications</span><strong id="enrolledCourses">—</strong><small id="enrolledHint">Your active learning</small></div>
+            <a href="qualifications.html" aria-label="View qualifications"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </article>
+          <article class="stat-card stat-rose">
+            <div class="stat-icon"><i class="fa-solid fa-file-circle-exclamation"></i></div>
+            <div class="stat-copy"><span>Assignments due</span><strong id="assignmentsDue">—</strong><small>Needs your attention</small></div>
+            <a href="assignments.html" aria-label="View assignments"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </article>
+          <article class="stat-card stat-green">
+            <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+            <div class="stat-copy"><span>Certificates earned</span><strong id="certificates">—</strong><small>Your achievements</small></div>
+            <a href="certificates.html" aria-label="View certificates"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </article>
+          <article class="stat-card stat-amber">
+            <div class="stat-icon"><i class="fa-solid fa-bell"></i></div>
+            <div class="stat-copy"><span>Notifications</span><strong id="notifications">—</strong><small id="notificationHint">Updates for you</small></div>
+            <a href="#announcements" aria-label="View notifications"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </article>
+          <article class="stat-card stat-gold profile-stat">
+            <div class="completion-ring" id="completionRing"><span id="profileCompletion">—</span></div>
+            <div class="stat-copy"><span>Profile completion</span><strong class="profile-stat-title" id="profileStatus">Complete your profile</strong><small>Keep your details up to date</small></div>
+            <a href="settings.html" aria-label="Complete profile"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </article>
+        </section>
 
-    </div>
-</footer>
+        <section class="content-grid primary-grid">
+          <article class="panel qualifications-panel">
+            <div class="panel-heading"><div><span class="eyebrow">KEEP LEARNING</span><h2>My qualifications</h2></div><a href="qualifications.html" class="view-link">View all <i class="fa-solid fa-chevron-right"></i></a></div>
+            <div id="qualificationList" class="qualification-list"><div class="loading-row"><span class="loading-spinner"></span> Loading qualifications…</div></div>
+          </article>
 
-<!-- STUDENT PROFILE AND LOGOUT -->
-<script>
-    const student = user || {};
+          <article class="panel assignments-panel">
+            <div class="panel-heading"><div><span class="eyebrow">STAY ON TRACK</span><h2>Upcoming assignments</h2></div><a href="assignments.html" class="view-link">View all <i class="fa-solid fa-chevron-right"></i></a></div>
+            <div id="assignmentList" class="assignment-list"><div class="loading-row"><span class="loading-spinner"></span> Loading assignments…</div></div>
+          </article>
 
-    const fullName =
-        student.full_name ||
-        student.fullName ||
-        student.name ||
-        "Student";
+          <article class="panel calendar-panel">
+            <div class="panel-heading"><div><span class="eyebrow">PLAN AHEAD</span><h2>Academic calendar</h2></div><a href="calendar.html" class="view-link">View all</a></div>
+            <div class="calendar-month"><button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button><strong id="calendarMonth">Loading…</strong><button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button></div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="calendar-legend"><span><i class="legend-dot due"></i> Due date</span><span><i class="legend-dot event"></i> Event</span><span><i class="legend-dot exam"></i> Exam</span></div>
+            <div id="calendarEvents" class="calendar-events"><p class="empty-note">No upcoming calendar events available.</p></div>
+          </article>
+        </section>
 
-    const studentNumber =
-        student.student_id ||
-        student.studentId ||
-        "Not assigned";
+        <section class="content-grid secondary-grid">
+          <article class="panel activity-panel">
+            <div class="panel-heading"><div><span class="eyebrow">YOUR PROGRESS</span><h2>Recent activity</h2></div><a href="messages.html" class="view-link">View all <i class="fa-solid fa-chevron-right"></i></a></div>
+            <div id="recentActivity" class="activity-list"><div class="loading-row"><span class="loading-spinner"></span> Loading recent activity…</div></div>
+          </article>
 
-    const nameElement = document.getElementById("studentName");
-    const welcomeElement = document.getElementById("welcomeName");
-    const idElement = document.getElementById("studentId");
-    const avatarElement = document.getElementById("avatar");
+          <article class="panel announcements-panel" id="announcements">
+            <div class="panel-heading"><div><span class="eyebrow">WHAT'S HAPPENING</span><h2>Announcements</h2></div><span class="panel-icon"><i class="fa-solid fa-bullhorn"></i></span></div>
+            <div id="notificationList" class="announcement-list"><div class="loading-row"><span class="loading-spinner"></span> Loading notifications…</div></div>
+          </article>
 
-    if (nameElement) nameElement.textContent = fullName;
-    if (welcomeElement) welcomeElement.textContent = fullName;
+          <article class="panel quicklinks-panel">
+            <div class="panel-heading"><div><span class="eyebrow">SHORTCUTS</span><h2>Quick links</h2></div></div>
+            <div class="quicklinks-grid">
+              <a href="my-courses.html" class="quicklink ql-blue"><i class="fa-solid fa-book-open"></i><span>Learning materials</span><i class="fa-solid fa-arrow-right"></i></a>
+              <a href="assignments.html" class="quicklink ql-gold"><i class="fa-solid fa-cloud-arrow-up"></i><span>Submit assignment</span><i class="fa-solid fa-arrow-right"></i></a>
+              <a href="../contact.html" class="quicklink ql-green"><i class="fa-solid fa-headset"></i><span>Student support</span><i class="fa-solid fa-arrow-right"></i></a>
+              <a href="documents.html" class="quicklink ql-lilac"><i class="fa-solid fa-folder-open"></i><span>My documents</span><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+        </section>
 
-    if (idElement) {
-        idElement.textContent = "Student ID: " + studentNumber;
-    }
-
-    if (avatarElement) {
-        const initials = fullName
-            .trim()
-            .split(/\s+/)
-            .filter(Boolean)
-            .map(part => part.charAt(0))
-            .join("")
-            .toUpperCase();
-
-        avatarElement.textContent = initials || "S";
-    }
-
-    document.getElementById("logoutLink")?.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        window.location.href = "login.html";
-    });
-</script>
-
-<!-- DYNAMIC DASHBOARD DATA -->
-<script src="js/dashboard.js"></script>
-
+        <footer class="dashboard-footer"><span>© 2026 Gouldings Global Academy</span><span>Learn today. Lead tomorrow.</span><a href="../contact.html">Need help?</a></footer>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="dashboardToast" role="status" aria-live="polite"></div>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

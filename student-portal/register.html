@@ -1,127 +1,145 @@
 
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-
-
-<link rel="stylesheet"
-      href="css/login.css">
-
-
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration | Gouldings Global Academy</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
+    <section class="portal-login">
+        <div class="login-box">
 
-<section class="portal-login">
+            <img
+                src="images/logo.png"
+                class="login-logo"
+                alt="Gouldings Global Academy Logo"
+            >
 
-    <div class="login-box">
+            <h1>Student<br>Portal</h1>
+            <p>Create your student account</p>
 
-        <img src="../images/logo.png"
-             class="login-logo">
+            <form id="registerForm">
+                <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="Full Name"
+                    autocomplete="name"
+                    required
+                >
 
-       <h1>
-               Student<br>
-               Portal
-            </h1>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    autocomplete="email"
+                    required
+                >
 
+                <input
+                    id="studentId"
+                    name="studentId"
+                    type="text"
+                    placeholder="Student ID"
+                    required
+                >
 
-        <p>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required
+                >
 
-            Sign in to continue
+                <button id="registerButton" type="submit">
+                    Register
+                </button>
 
-        </p>
+                <p id="registerMessage" role="status" aria-live="polite"></p>
+            </form>
 
-       
-<form id="registerForm">
+            <p class="register-link">
+                Already have an account?
+                <a href="login.html">Login</a>
+            </p>
 
-    <input id="fullName"
-           type="text"
-           placeholder="Full Name"
-           required>
+        </div>
+    </section>
 
-    <input id="email"
-           type="email"
-           placeholder="Email"
-           required>
+    <script>
+        const API_URL =
+            "https://icm-website-test-production.up.railway.app/api/auth/register";
 
-    <input id="studentId"
-           type="text"
-           placeholder="Student ID"
-           required>
+        const registerForm = document.getElementById("registerForm");
+        const registerButton = document.getElementById("registerButton");
+        const registerMessage = document.getElementById("registerMessage");
 
-    <input id="password"
-           type="password"
-           placeholder="Password"
-           required>
+        registerForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-    <button type="submit">
-        Register
-    </button>
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const studentId = document.getElementById("studentId").value.trim();
+            const password = document.getElementById("password").value;
 
-</form>
+            registerMessage.textContent = "";
+            registerButton.disabled = true;
+            registerButton.textContent = "Registering...";
 
-<script>
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        studentId,
+                        password
+                    })
+                });
 
-document
-.getElementById("registerForm")
-.addEventListener("submit",
-async function(e){
+                let data;
 
-    e.preventDefault();
+                try {
+                    data = await response.json();
+                } catch {
+                    throw new Error("The server returned an invalid response.");
+                }
 
-    const fullName =
-    document.getElementById("fullName").value;
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "Registration failed. Please check your details."
+                    );
+                }
 
-    const email =
-    document.getElementById("email").value;
+                registerMessage.textContent =
+                    data.message || "Registration successful. Redirecting to login...";
 
-    const studentId =
-    document.getElementById("studentId").value;
+                registerForm.reset();
 
-    const password =
-    document.getElementById("password").value;
+                setTimeout(function () {
+                    window.location.href = "login.html";
+                }, 1200);
 
-    const response = await fetch(
-    "http://localhost:5000/api/auth/register",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                fullName,
-                email,
-                studentId,
-                password
-            })
-        }
-    );
-
-    const data = await response.json();
-
-console.log(data);
-
-if(response.ok){
-
-    alert("Registration Successful!");
-
-    window.location = "login.html";
-
-}
-else{
-
-    alert(data.message || "Registration Failed");
-
-}
-
-});
-</script>
-
+            } catch (error) {
+                registerMessage.textContent =
+                    error.message === "Failed to fetch"
+                        ? "Cannot connect to the registration server. Please try again later."
+                        : error.message;
+            } finally {
+                registerButton.disabled = false;
+                registerButton.textContent = "Register";
+            }
+        });
+    </script>
 </body>
 </html>
