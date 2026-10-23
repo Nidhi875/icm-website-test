@@ -232,3 +232,82 @@ OUR STORY GRID
     border-left: none !important;
     border-right: none !important;
 }
+
+
+/* International team — responsive professional cards */
+.international-team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 28px;
+}
+
+.international-team-card {
+    padding: 26px;
+    background: #fff;
+    border: 1px solid #e5eaf1;
+    border-top: 4px solid #d5ad45;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 31, 69, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.international-team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 31, 69, 0.12);
+}
+
+.team-card-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: #eef3fa;
+    color: #08264c;
+    font-size: 21px;
+}
+
+.team-card-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #9b7826;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+.international-team-card h3 {
+    margin: 0 0 16px;
+    color: #08264c;
+    font-size: 19px;
+    line-height: 1.4;
+}
+
+.international-team-card p {
+    margin: 7px 0 0;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .international-team-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .international-team-card {
+        padding: 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .international-team-card {
+        transition: none;
+    }
+
+    .international-team-card:hover {
+        transform: none;
+    }
+}
