@@ -1806,27 +1806,37 @@ nav > a{
     display:none;
 }
 
-/* Mobile */
-@media (max-width:768px){
-
-    .logo-desktop{
-        display:none !important;
+/* MOBILE LOGO — larger and properly positioned */
+@media (max-width: 768px) {
+    .navbar-inner {
+        min-height: 85px !important;
+        padding: 0 18px !important;
+        align-items: center !important;
     }
 
+    .logo {
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+    }
 
-.logo-mobile{
-    display:block !important;
-    width:auto;
-    height:80px !important;
-    max-height:none;
+    .logo-desktop {
+        display: none !important;
+    }
 
-    transform:translateY(-2px) scale(1.4);
-    transform-origin:left center;
-
-    margin-left:-20px;
+    .logo-mobile {
+        display: block !important;
+        width: 100px !important;
+        height: 75px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: left center !important;
+        transform: none !important;
+        margin: 0 !important;
+    }
 }
 
-}
 
 /* Mobile only */
 @media (max-width:768px){
@@ -3544,4 +3554,56 @@ header .logo img,
 .navbar .logo,
 .navbar .logo img {
     transform: translateY(8px);
+}
+
+
+/* Mobile header logo size and positioning */
+@media (max-width: 768px) {
+    header .logo img,
+    header .site-logo img,
+    header .navbar-brand img {
+        width: 100px !important;
+        height: 65px !important;
+        max-height: none !important;
+        object-fit: contain;
+        object-position: left center;
+        display: block;
+    }
+}
+
+
+/* MOBILE LOGO — larger and vertically centred */
+@media screen and (max-width: 768px) {
+    header .logo img.logo-mobile {
+        display: block !important;
+        width: 150px !important;
+        height: 75px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        transform: scale(1.7) !important;
+        transform-origin: left center !important;
+        margin: 0 !important;
+        position: relative !important;
+        top: -6px !important;
+    }
+
+    header .logo {
+        width: 150px !important;
+        min-width: 150px !important;
+        height: 85px !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+        margin: 0 !important;
+    }
+
+    header .navbar-inner {
+        min-height: 85px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 18px !important;
+    }
 }
