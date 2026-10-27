@@ -3583,9 +3583,9 @@ header .logo img,
         object-fit: contain !important;
         transform: scale(1.7) !important;
         transform-origin: left center !important;
-        margin: 0 !important;
+        margin: -35px !important;
         position: relative !important;
-        top: -6px !important;
+        top: -8px !important;
     }
 
     header .logo {
