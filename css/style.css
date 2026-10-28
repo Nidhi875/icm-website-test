@@ -3666,3 +3666,702 @@ header .logo img,
         overscroll-behavior: contain;
     }
 }
+
+
+
+/* ==========================================
+   GOULDINGS GLOBAL ACADEMY FOOTER
+   Clean, compact contact layout
+========================================== */
+
+.footer-top {
+    background: #303030;
+    padding: 38px 24px;
+    margin: 0;
+    height: auto;
+    min-height: 0;
+    box-sizing: border-box;
+    border-bottom: 2px solid #d4af37;
+}
+
+
+.social-footer {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    height: auto;
+    min-height: 0;
+    border: none;
+}
+
+.footer-contact-item {
+    justify-content: flex-start;
+    padding: 18px 12px;
+}
+
+
+.footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 14px;
+    min-width: 0;
+    margin: 0;
+    padding: 12px 22px;
+    box-sizing: border-box;
+    border: none;
+}
+
+
+/* Horizontal gold separators between contact items */
+.footer-contact-item + .footer-contact-item {
+    border-left: none;
+    border-top: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+
+.footer-contact-item > i {
+    flex: 0 0 24px;
+    margin-top: 3px;
+    color: #d4af37;
+    font-size: 21px;
+    text-align: center;
+}
+
+.footer-contact-item p {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.footer-contact-item strong {
+    display: block;
+    color: #e4c45e;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.footer-contact-item a,
+.footer-contact-item span {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-contact-item a:hover {
+    color: #e4c45e;
+}
+
+/* Navy lower footer */
+.footer-bottom {
+    background: #06234f;
+    margin: 0;
+    padding: 28px 20px 22px;
+    height: auto;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.footer-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto 24px;
+}
+
+.footer-buttons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 26px;
+    box-sizing: border-box;
+}
+
+.partner-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    margin: 0 auto 22px;
+}
+
+.partner-badges img {
+    display: block;
+    width: 180px;
+    height: 95px;
+    padding: 10px;
+    object-fit: contain;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+.copyright {
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+    .footer-top {
+        padding: 22px 18px;
+    }
+
+    .social-footer {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .footer-contact-item {
+        justify-content: flex-start;
+        padding: 16px 8px;
+    }
+
+    .footer-contact-item + .footer-contact-item {
+        border-left: none;
+        border-top: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .footer-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer-buttons a {
+        width: 100%;
+    }
+
+    .partner-badges img {
+        width: 145px;
+        height: 80px;
+    }
+
+    .copyright {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================
+   GGA FOOTER — REFERENCE DESIGN
+========================================= */
+
+.footer-top {
+    background: #303030;
+    color: #ffffff;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+.social-footer {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 12px 30px;
+    margin: 0;
+    position: relative;
+    border: none;
+}
+
+.footer-contact-item + .footer-contact-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 42px;
+    background: #b99a35;
+}
+
+.footer-contact-item > i {
+    color: #e7b936;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.footer-contact-item p {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 0;
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1.7;
+    text-align: left;
+}
+
+.footer-contact-item p strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.footer-contact-item a,
+.footer-contact-item span {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-contact-address p {
+    max-width: 360px;
+}
+
+/* Navy footer bottom */
+.footer-bottom {
+    background: #062653;
+    color: #ffffff;
+    padding: 24px 20px 28px;
+    text-align: center;
+    margin: 0;
+}
+
+/* Footer buttons */
+.footer-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin: 0 auto 30px;
+}
+
+.footer-buttons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 62px;
+    padding: 14px 28px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    background: transparent;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.footer-buttons a:hover {
+    background: #ffffff;
+    color: #062653;
+}
+
+/* Partner logos */
+.partner-badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 34px;
+    margin: 0 auto 28px;
+}
+
+.partner-badges img {
+    display: block;
+    width: 220px;
+    height: 110px;
+    object-fit: contain;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+/* Copyright with horizontal lines */
+.copyright {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.copyright::before,
+.copyright::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.copyright span {
+    white-space: nowrap;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+    .social-footer {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 520px;
+    }
+
+    .footer-contact-item {
+        justify-content: flex-start;
+        padding: 18px 12px;
+    }
+
+    .footer-contact-item + .footer-contact-item::before {
+        top: 0;
+        left: 12px;
+        transform: none;
+        width: calc(100% - 24px);
+        height: 1px;
+    }
+
+    .footer-contact-item p {
+        flex-wrap: wrap;
+    }
+
+    .footer-buttons {
+        gap: 12px;
+    }
+
+    .footer-buttons a {
+        min-height: 50px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .partner-badges {
+        gap: 16px;
+    }
+
+    .partner-badges img {
+        width: 180px;
+        height: 95px;
+    }
+
+    .copyright {
+        gap: 12px;
+        font-size: 14px;
+    }
+
+    .copyright span {
+        white-space: normal;
+    }
+}
+
+
+
+/* =========================================
+   FINAL OVERRIDE — MATCH FOOTER REFERENCE
+   Place at the VERY BOTTOM of style.css
+========================================= */
+
+.footer-top {
+    background: #303030 !important;
+    padding: 45px 20px 40px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    border-bottom: none !important;
+    display: block !important;
+}
+
+.footer-top .social-footer {
+    width: 100% !important;
+    max-width: 850px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+}
+
+/* Each contact detail occupies its own row */
+.footer-top .footer-contact-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 22px !important;
+    padding: 14px 15px !important;
+    margin: 0 !important;
+
+    position: relative !important;
+    border: none !important;
+}
+
+/* Remove the old vertical divider */
+.footer-top .footer-contact-item + .footer-contact-item {
+    border: none !important;
+}
+
+.footer-top .footer-contact-item + .footer-contact-item::before {
+    content: none !important;
+}
+
+/* Short horizontal gold separator between rows */
+.footer-top .footer-contact-item:not(:last-child)::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 45px !important;
+    height: 2px !important;
+    background: #d4af37 !important;
+    left: 50% !important;
+    bottom: 0 !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
+}
+
+/* Gold icons */
+.footer-top .footer-contact-item > i {
+    color: #e7b936 !important;
+    font-size: 29px !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+}
+
+/* Keep label and contact value on the SAME LINE */
+.footer-top .footer-contact-item p {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 20px !important;
+    line-height: 1.6 !important;
+    text-align: left !important;
+    overflow-wrap: normal !important;
+}
+
+.footer-top .footer-contact-item strong {
+    display: inline !important;
+    color: #fff !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.footer-top .footer-contact-item a,
+.footer-top .footer-contact-item span {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+/* Address wraps naturally onto a second line */
+.footer-top .footer-contact-address p {
+    max-width: 500px !important;
+}
+
+/* Navy bottom section */
+.footer-bottom {
+    background: #062653 !important;
+    padding: 24px 20px 28px !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    text-align: center !important;
+}
+
+/* Buttons */
+.footer-bottom .footer-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 18px !important;
+    margin: 0 auto 30px !important;
+}
+
+.footer-bottom .footer-buttons a {
+    width: auto !important;
+    min-height: 62px !important;
+    padding: 14px 28px !important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    text-align: center !important;
+}
+
+/* ReachDeck and Moodle */
+.footer-bottom .partner-badges {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 34px !important;
+    margin: 0 auto 28px !important;
+}
+
+.footer-bottom .partner-badges img {
+    width: 220px !important;
+    height: 110px !important;
+    padding: 10px !important;
+    object-fit: contain !important;
+    background: #fff !important;
+}
+
+/* Copyright and horizontal lines */
+.footer-bottom .copyright {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 28px !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    line-height: 1.5 !important;
+}
+
+.footer-bottom .copyright::before,
+.footer-bottom .copyright::after {
+    content: "" !important;
+    display: block !important;
+    height: 1px !important;
+    flex: 1 1 auto !important;
+    background: rgba(255,255,255,.55) !important;
+}
+
+.footer-bottom .copyright span {
+    white-space: nowrap !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .footer-top {
+        padding: 25px 15px !important;
+    }
+
+    .footer-top .footer-contact-item {
+        justify-content: flex-start !important;
+        gap: 14px !important;
+        padding: 18px 8px !important;
+    }
+
+    .footer-top .footer-contact-item p,
+    .footer-top .footer-contact-item strong {
+        font-size: 15px !important;
+    }
+
+    .footer-top .footer-contact-item > i {
+        font-size: 22px !important;
+    }
+
+    .footer-top .footer-contact-item:not(:last-child)::after {
+        left: 50% !important;
+    }
+
+    .footer-bottom .footer-buttons {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .footer-bottom .footer-buttons a {
+        width: 90% !important;
+        min-height: 50px !important;
+    }
+
+    .footer-bottom .partner-badges {
+        flex-direction: row !important;
+        gap: 14px !important;
+    }
+
+    .footer-bottom .partner-badges img {
+        width: 145px !important;
+        height: 85px !important;
+    }
+
+    .footer-bottom .copyright {
+        gap: 10px !important;
+        font-size: 13px !important;
+    }
+
+    .footer-bottom .copyright span {
+        white-space: normal !important;
+    }
+}
+
+
+
+/* FOOTER TYPOGRAPHY — MATCH THE REFERENCE IMAGE */
+
+/* Contact text */
+.footer-top .footer-contact-item p {
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 1.65 !important;
+    color: #ffffff !important;
+}
+
+/* Labels: Phone, Email, Address */
+.footer-top .footer-contact-item strong {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+/* Contact details should remain regular weight */
+.footer-top .footer-contact-item a,
+.footer-top .footer-contact-item span {
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 1.65 !important;
+    color: #ffffff !important;
+}
+
+/* Slightly smaller gold icons */
+.footer-top .footer-contact-item > i {
+    font-size: 27px !important;
+}
+
+/* Footer buttons */
+.footer-bottom .footer-buttons a {
+    font-size: 18px !important;
+    font-weight: 400 !important;
+}
+
+/* Copyright */
+.footer-bottom .copyright {
+    font-size: 18px !important;
+    font-weight: 400 !important;
+}
