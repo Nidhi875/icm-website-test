@@ -3607,3 +3607,62 @@ header .logo img,
         padding: 0 18px !important;
     }
 }
+
+
+/* =========================================
+   NAVBAR SOCIAL MEDIA ICONS
+========================================= */
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+
+    margin-left: 18px;
+    padding-left: 18px;
+
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.navbar-social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    font-size: 19px;
+    text-decoration: none;
+
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-social-icons a:hover {
+    color: #d4af37;
+    transform: translateY(-2px);
+}
+
+/* Keep the existing hamburger menu on smaller screens */
+@media (max-width: 1200px) {
+    .navbar-social-icons {
+        display: none;
+    }
+}
+
+/* Keep nested navbar dropdowns from creating excessive scrollbars */
+@media (min-width: 1201px) {
+    nav .nav-item--nested > .nav-submenu {
+        max-height: 60vh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    nav > .nav-item > .nav-submenu {
+        overscroll-behavior: contain;
+    }
+}
