@@ -1,0 +1,74 @@
+.staff-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.staff-card {
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 220px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #e5eaf0;
+    border-top: 4px solid #d9ad36;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(11, 35, 69, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.staff-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(11, 35, 69, 0.12);
+}
+
+.staff-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    background: #eef3fa;
+    color: #0b2345;
+    font-size: 22px;
+}
+
+.staff-card-tag {
+    display: block;
+    margin-bottom: 9px;
+    color: #a9780c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    line-height: 1.5;
+}
+
+.staff-card h3 {
+    margin: 0 0 18px;
+    color: #0b2345;
+    font-size: 20px;
+    line-height: 1.45;
+}
+
+.staff-card p {
+    margin: 0;
+    color: #53647a;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .staff-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .staff-card {
+        min-height: auto;
+        padding: 24px;
+    }
+}
