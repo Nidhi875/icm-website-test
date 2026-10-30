@@ -4421,3 +4421,240 @@ header .logo img,
 .icm-awarding-banner .banner-content {
     transform: translate(-120px, 40px);
 }
+
+
+
+/* FOOTER CONTACT LAYOUT OVERRIDE */
+.footer-bottom {
+    background: #082752;
+    color: #ffffff;
+    padding: 32px 20px 24px;
+}
+
+.footer-contact-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin: 30px auto 24px;
+    text-align: center;
+}
+
+.footer-contact-bottom .footer-contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: #ffffff;
+}
+
+.footer-contact-bottom .footer-contact-item > i {
+    color: #f2c230;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.footer-contact-bottom .footer-contact-item p {
+    margin: 0;
+    color: #ffffff;
+    line-height: 1.7;
+}
+
+.footer-contact-bottom .footer-contact-item a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-contact-bottom .footer-contact-address {
+    align-items: flex-start;
+}
+
+.footer-contact-bottom .footer-contact-address p {
+    text-align: left;
+}
+
+.footer-bottom .copyright {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .footer-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-contact-bottom .footer-contact-item {
+        gap: 10px;
+    }
+}
+
+
+
+/* Refined footer contact layout */
+.footer-contact-bottom {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px 55px;
+    max-width: 1100px;
+    margin: 32px auto 24px;
+    padding: 24px 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.footer-contact-bottom .footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12px;
+    flex: 0 1 auto;
+    min-width: 220px;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.footer-contact-bottom .footer-contact-item > i {
+    color: #f2c230;
+    font-size: 22px;
+    margin-top: 3px;
+}
+
+.footer-contact-bottom .footer-contact-item p {
+    margin: 0;
+    line-height: 1.7;
+    color: #ffffff;
+    text-align: left;
+}
+
+.footer-contact-bottom .footer-contact-item strong {
+    display: inline;
+    margin-right: 4px;
+}
+
+.footer-contact-bottom .footer-contact-item a,
+.footer-contact-bottom .footer-contact-item span {
+    color: #ffffff;
+}
+
+.footer-contact-bottom .footer-contact-address {
+    align-items: flex-start;
+}
+
+.footer-bottom .copyright {
+    margin-top: 22px;
+}
+
+@media (max-width: 700px) {
+    .footer-contact-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .footer-contact-bottom .footer-contact-item {
+        width: 100%;
+        max-width: 320px;
+        min-width: 0;
+    }
+}
+
+
+
+/* Footer contact icon and divider fixes */
+.footer-contact-bottom .footer-contact-item > i {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-style: normal;
+    font-size: 22px;
+    color: #f2c230;
+    display: inline-block;
+    border: none !important;
+    min-width: 24px;
+}
+
+.footer-contact-bottom .footer-contact-item {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.footer-contact-bottom .footer-contact-item::before,
+.footer-contact-bottom .footer-contact-item::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove vertical separators between contact items */
+.footer-contact-bottom .footer-contact-item + .footer-contact-item {
+    border-left: none !important;
+}
+
+.footer-contact-bottom .footer-contact-address {
+    border-left: none !important;
+}
+
+.footer-contact-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+
+/* Policies & Handbooks page */
+.policies-page {
+    padding-top: 55px;
+    padding-bottom: 70px;
+}
+
+.policies-page > h2 {
+    color: #082752;
+    font-size: clamp(28px, 3vw, 38px);
+    margin-bottom: 15px;
+}
+
+.policy-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 35px;
+}
+
+.policy-card {
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e1e7ef;
+    border-top: 4px solid #e0b62f;
+    border-radius: 8px;
+    box-shadow: 0 5px 18px rgba(3, 25, 57, 0.07);
+}
+
+.policy-card > i {
+    color: #c9a227;
+    font-size: 28px;
+    margin-bottom: 16px;
+}
+
+.policy-card h3 {
+    color: #082752;
+    font-size: 20px;
+    margin: 0 0 12px;
+}
+
+.policy-card p {
+    color: #4b5563;
+    line-height: 1.7;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .policy-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .policy-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
