@@ -4658,3 +4658,129 @@ header .logo img,
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* GLOBAL PAGE BANNER OVERLAY - REFINED */
+.qualifications-banner,
+.about-banner,
+.page-banner {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/* Background image */
+.qualifications-banner > img,
+.about-banner > img,
+.page-banner > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Softer navy overlay */
+.qualifications-banner .banner-overlay,
+.about-banner .banner-overlay,
+.page-banner .banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(3, 25, 57, 0.62) 0%,
+        rgba(3, 25, 57, 0.42) 42%,
+        rgba(3, 25, 57, 0.15) 75%,
+        rgba(3, 25, 57, 0.03) 100%
+    );
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Keep banner text above the overlay */
+.qualifications-banner .container,
+.about-banner .container,
+.page-banner .container {
+    position: relative;
+    z-index: 1;
+}
+
+.qualifications-banner .banner-content,
+.about-banner .banner-content,
+.page-banner .banner-content {
+    position: relative;
+    z-index: 2;
+}
+
+.qualifications-banner .banner-content h1,
+.qualifications-banner .banner-content p,
+.qualifications-banner .banner-content span,
+.about-banner .banner-content h1,
+.about-banner .banner-content p,
+.about-banner .banner-content span,
+.page-banner .banner-content h1,
+.page-banner .banner-content p,
+.page-banner .banner-content span {
+    color: #ffffff;
+}
+
+
+
+/* Governance Team banner - softer overlay only */
+.governance-banner .banner-overlay {
+    background: linear-gradient(
+        90deg,
+        rgba(3, 25, 57, 0.48) 0%,
+        rgba(3, 25, 57, 0.30) 42%,
+        rgba(3, 25, 57, 0.10) 72%,
+        rgba(3, 25, 57, 0.02) 100%
+    );
+}
+
+/* Keep Governance Team banner text bright */
+.governance-banner .banner-content,
+.governance-banner .banner-content h1,
+.governance-banner .banner-content p,
+.governance-banner .banner-content span {
+    color: #ffffff;
+}
+
+/* Fixed logo size on mobile */
+@media screen and (max-width: 768px) {
+    header .logo {
+        width: 180px !important;
+        min-width: 180px !important;
+        height: 70px !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+        margin: 0 !important;
+    }
+
+    header .logo img {
+        display: block !important;
+        width: 180px !important;
+        height: 70px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: left center !important;
+        transform: none !important;
+        margin: 0 !important;
+    }
+}
+
+/* Reduce spacing in Team banner */
+.team-banner h1 {
+    margin-bottom: 5px !important;
+    line-height: 1.05 !important;
+}
+
+.team-banner p {
+    line-height: 1.1 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
