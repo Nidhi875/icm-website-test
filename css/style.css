@@ -1118,61 +1118,77 @@ nav a{
 
 }
 
-@media(max-width:768px){
 
-.hero{
+/* =========================================
+   MOBILE HERO — ALL IPHONE SIZES
+========================================= */
 
-    height:100vh;
+@media (max-width: 768px) {
 
-    justify-content:flex-end;
+    .hero {
+        height: auto !important;
+        min-height: calc(100svh - 75px);
+        padding: 35px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
 
-    align-items:flex-start;
+    .hero video,
+    .hero .overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .hero video {
+        object-fit: cover;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: left;
+        width: 100%;
+        max-width: 100%;
+        padding: 45px 24px 25px !important;
+        margin: 0 !important;
+    }
+
+    .hero h1 {
+        font-size: clamp(32px, 9vw, 40px);
+        line-height: 1.12;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 17px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .hero button {
+        width: 100%;
+        max-width: 300px;
+        min-height: 55px;
+        margin: 0;
+        padding: 14px 18px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
 }
 
-.hero-content{
-
-    text-align:left;
-
-    width:100%;
-
-    padding:30px;
-
-    margin-top:250px;
-}
-
-.hero h1{
-
-    font-size:44px;
-
-    line-height:1.1;
-}
-
-.hero p{
-
-    font-size:18px;
-
-    line-height:1.7;
-}
-
-.hero-buttons{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    gap:15px;
-}
-
-.hero button{
-
-    width:240px;
-
-    margin:0;
-}
-
-}
 
 /* ==========================
 ICM STORY MOBILE
@@ -4992,59 +5008,6 @@ header .logo img,
     }
 }
 
-
-/* =================================
-   FINAL MOBILE HERO RESPONSIVE FIX
-================================= */
-
-@media screen and (max-width: 768px) {
-
-    .hero {
-        height: auto !important;
-        min-height: 0 !important;
-        padding: 35px 0 40px !important;
-        box-sizing: border-box !important;
-        overflow: visible !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-    }
-
-    .hero-content {
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 20px 24px !important;
-        margin: 0 !important;
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero h1 {
-        font-size: clamp(34px, 10vw, 42px) !important;
-        line-height: 1.12 !important;
-        overflow-wrap: normal;
-        margin-bottom: 20px;
-    }
-
-    .hero p {
-        font-size: 17px !important;
-        line-height: 1.6 !important;
-        margin-bottom: 25px;
-    }
-
-    .hero-buttons {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 14px !important;
-    }
-
-    .hero button {
-        width: 100% !important;
-        max-width: 240px !important;
-        margin: 0 !important;
-    }
-}
 
 
 
