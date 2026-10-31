@@ -4936,4 +4936,60 @@ header .logo img,
 }
 
 
+/* ==========================================
+   STANDARD BANNER CONTENT POSITION
+   CONSISTENT ACROSS ALL WEBSITE PAGES
+   ========================================== */
+
+.standard-page-banner {
+    position: relative;
+}
+
+.standard-page-banner .container {
+    position: relative;
+    z-index: 2;
+}
+
+.standard-page-banner .banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    transform: translate(0, 0);
+    text-align: left;
+}
+
+/* Small uppercase banner label */
+.standard-page-banner .banner-content > span {
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* Main banner heading */
+.standard-page-banner .banner-content h1 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    text-align: left;
+    line-height: 1.15;
+}
+
+/* Banner description */
+.standard-page-banner .banner-content p {
+    margin-top: 0;
+    text-align: left;
+    line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .standard-page-banner .banner-content {
+        transform: none;
+    }
+
+    .standard-page-banner .banner-content h1 {
+        white-space: normal;
+    }
+}
+
 
