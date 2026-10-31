@@ -4784,3 +4784,156 @@ header .logo img,
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
+
+
+
+/* =========================================
+   GLOBAL WEBSITE BREADCRUMB DESIGN
+   ========================================= */
+
+.breadcrumbs {
+    padding: 16px 0 8px !important;
+    margin: 0 !important;
+    background: #ffffff;
+}
+
+.breadcrumbs .container {
+    background: #f4f6f9;
+    border-radius: 10px;
+    padding: 15px 22px !important;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.breadcrumbs a {
+    color: #1769a6;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.breadcrumbs span {
+    color: #8993a1;
+}
+
+.breadcrumbs strong {
+    color: #142d4e;
+    font-weight: 600;
+}
+
+/* Mobile breadcrumb */
+@media (max-width: 768px) {
+    .breadcrumbs {
+        padding: 15px 0 !important;
+    }
+
+    .breadcrumbs .container {
+        padding: 12px 15px !important;
+        min-height: auto;
+        gap: 8px;
+    }
+}
+
+
+/* ==========================================
+   GLOBAL SPACING BELOW PAGE BANNERS
+   ========================================== */
+
+
+
+
+/* GLOBAL: Reduce space between breadcrumb and page content */
+.breadcrumbs + section {
+    padding-top: 12px !important;
+    margin-top: 0 !important;
+}
+
+/* Keep breadcrumb content neatly aligned */
+.breadcrumbs .container {
+    width: min(1280px, 92%);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Consistent page introduction headings */
+.about-intro-block > h2,
+.page-introduction > h1 {
+    color: #102b4e;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+/* Gold accent under page introduction headings */
+.about-intro-block > .red-divider,
+.page-introduction > .title-divider {
+    width: 70px;
+    height: 5px;
+    background: #d6a62a;
+    border-radius: 3px;
+    margin: 0 0 25px;
+}
+
+/* Mobile spacing */
+@media (max-width: 768px) {
+    .breadcrumbs + section {
+        padding-top: 22px !important;
+    }
+
+    .about-intro-block > h2,
+    .page-introduction > h1 {
+        line-height: 1.2;
+        margin-bottom: 14px;
+    }
+
+    .about-intro-block > .red-divider,
+    .page-introduction > .title-divider {
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        padding: 12px 0 6px !important;
+    }
+
+    .breadcrumbs + section {
+        padding-top: 10px !important;
+        margin-top: 0 !important;
+    }
+}
+
+/* Keep About page banner heading on one line */
+@media (min-width: 769px) {
+    .qualifications-banner .banner-content h1 {
+        white-space: nowrap !important;
+        max-width: none !important;
+        width: max-content !important;
+        font-size: clamp(38px, 4vw, 64px) !important;
+    }
+
+    .qualifications-banner .banner-content {
+        max-width: none !important;
+        width: 100% !important;
+    }
+}
+
+/* Slightly reposition the complete banner text */
+@media (min-width: 769px) {
+    .qualifications-banner .banner-content {
+        position: relative;
+        left: -32px;
+        top: 18px;
+    }
+
+    .qualifications-banner .banner-content h1 {
+        position: static;
+    }
+}
+
+
+
