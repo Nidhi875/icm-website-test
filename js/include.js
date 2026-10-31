@@ -3,10 +3,14 @@ console.log("include.js loaded");
 document.addEventListener("DOMContentLoaded", () => {
 
     // NAVBAR
-   fetch("/components/navbar.html")
-    .then(r => r.text())
+ fetch("/components/navbar.html")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Navbar could not be loaded: " + response.status);
+        }
+        return response.text();
+    })
     .then(data => {
-
         const navbar =
             document.getElementById("navbar");
 
@@ -151,28 +155,22 @@ submenuItems.forEach(item => {
 
 
 // Highlight normal top-level links
-nav.querySelectorAll(":scope > a").forEach(link => {
+if (nav) {
+    nav.querySelectorAll(":scope > a").forEach(link => {
 
-    const href =
-        link.getAttribute("href");
+        const href = link.getAttribute("href");
+        if (!href) return;
 
-    if (!href) return;
-
-
-    const linkPath =
-        new URL(href, window.location.href)
+        const linkPath = new URL(href, window.location.href)
             .pathname
             .replace(/\/+$/, "") || "/";
 
+        if (linkPath === currentPath) {
+            link.classList.add("active");
+        }
 
-    if (linkPath === currentPath) {
-
-        link.classList.add("active");
-
-    }
-
-});
-
+    });
+}
 
     // NESTED ACADEMY ACCORDION (Business Academy, Tourism & Hospitality,
     // etc. inside the Qualifications dropdown/sidebar). Works on click,
@@ -237,9 +235,8 @@ nav.querySelectorAll(":scope > a").forEach(link => {
 
     if (sidebar) {
 
-        fetch(
-            "components/qualifications-sidebar.html"
-        )
+      fetch("/components/qualifications-sidebar.html")
+      
         .then(r => r.text())
         .then(data => {
             sidebar.innerHTML = data;
@@ -280,6 +277,10 @@ nav.querySelectorAll(":scope > a").forEach(link => {
 
     }
 
+    })
+
+        .catch(error => {
+        console.error("Navbar Error:", error);
     });
 
 });
